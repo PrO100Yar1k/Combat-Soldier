@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class HPController
 {
-    private TroopCanvasController _troopCanvasController;
+    private readonly TroopCanvasController _troopCanvasController;
 
     private string _currentName = default;
 
     private int _currentHealPoint = default;
-    private int _currentDefencePoint = default;
+    private int _currentDefensePoint = default;
 
     private float _currentBlockRate = default;
 
@@ -23,7 +23,7 @@ public class HPController
         _currentName = currentDivisionScriptable.Name;
 
         _currentHealPoint = currentDivisionScriptable.maxHealPoint;
-        _currentDefencePoint = currentDivisionScriptable.maxDefencePoint;
+        _currentDefensePoint = currentDivisionScriptable.maxDefencePoint;
 
         _currentBlockRate = currentDivisionScriptable.BlockRate;
     }
@@ -36,28 +36,52 @@ public class HPController
         int blockedHP = (int) (damage * _currentBlockRate);
         int takenDamage = damage - blockedHP;
 
-        if (_currentDefencePoint >= blockedHP) { // to do ?
-            _currentDefencePoint -= blockedHP;
+        if (_currentDefensePoint >= blockedHP) { // to do ?
+            _currentDefensePoint -= blockedHP;
         }
         else {
-            _currentHealPoint -= blockedHP - _currentDefencePoint;
-            _currentDefencePoint = 0;
+            _currentHealPoint -= blockedHP - _currentDefensePoint;
+            _currentDefensePoint = 0;
         }
 
         _currentHealPoint -= takenDamage;
 
-        ChangeSliderValues();
+        ChangeSliderAndTextValues();
 
         CheckTroopDeath();
     }
 
-    private void ChangeSliderValues()
+    #region Increase Points
+
+    public void IncreaseHealPoints(int healPoint) // to think about namespacing
+    {
+        if (healPoint <= 0)
+            return;
+
+        _currentHealPoint += healPoint;
+
+        ChangeSliderAndTextValues();
+    }
+
+    public void IncreaseDefensePoints(int defensePoint) // to think about namespacing
+    {
+        if (defensePoint <= 0)
+            return;
+
+        _currentDefensePoint += defensePoint;
+
+        ChangeSliderAndTextValues();
+    }
+
+    #endregion
+
+    private void ChangeSliderAndTextValues()
     {
         if (_troopCanvasController == null) //maybe not neccesary
             return;
 
         _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
-        _troopCanvasController.ChangeDefensePointSlider(_currentDefencePoint);
+        _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
     }
 
     private void CheckTroopDeath() // to do

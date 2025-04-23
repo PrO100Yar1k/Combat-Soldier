@@ -7,6 +7,8 @@ public class TroopCanvasController : MonoBehaviour
     [SerializeField] private Slider _healPointSlider = default;
     [SerializeField] private Slider _defensePointSlider = default;
 
+    [Space(3)]
+
     [SerializeField] private TextMeshProUGUI _healPointText = default;
     [SerializeField] private TextMeshProUGUI _defensePointText = default;
 
@@ -15,6 +17,17 @@ public class TroopCanvasController : MonoBehaviour
     public void InitializeScriptableObject(TroopScriptable troopScriptable)
     {
         _troopScriptable = troopScriptable;
+
+        AssignMaxSliderValues();
+    }
+
+    private void AssignMaxSliderValues()
+    {
+        _healPointSlider.maxValue = _troopScriptable.maxHealPoint;
+        _defensePointSlider.maxValue = _troopScriptable.maxDefencePoint;
+
+        _healPointSlider.value = _healPointSlider.maxValue;
+        _defensePointSlider.value = _defensePointSlider.maxValue;
     }
 
     public void ChangeHealPointSlider(int targetHealPoint)

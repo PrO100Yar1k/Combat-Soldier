@@ -24,5 +24,8 @@ public class TroopController : MonoBehaviour
         UIController = new TroopUIController(); // to do
 
         _troopCanvasController.InitializeScriptableObject(_troopScriptable);
+
+        //test
+        HPController.TakeDamage(25);
     }
 }
