@@ -5,7 +5,7 @@ public class TroopMoveState : TroopBaseState
 {
     public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
 
-    private bool _isRunning = false;
+    private bool _isRunning = false; // to do
 
     private Tween _movementTween;
     private Tween _rotationTween;
@@ -39,15 +39,14 @@ public class TroopMoveState : TroopBaseState
         _isRunning = true;
 
         Transform troopTransform = _troopController.transform;
-        Vector3 currentPos = troopTransform.position;
 
-        Vector3 pointPos = new Vector3(point.x, currentPos.y, point.z); // don't change y-pos
+        Vector3 currentPos = troopTransform.position;
+        Vector3 pointPos = new Vector3(point.x, currentPos.y, point.z);
+
         Vector3 offset = (pointPos - currentPos).normalized * 0.1f;
-          
         Vector3 finalPos = new Vector3(pointPos.x - offset.x, currentPos.y, pointPos.z - offset.z);
 
         SmoothlyRotateTroop(finalPos.normalized);
-        //troopTransform.LookAt(finalPos); // to do
 
         float distance = Vector3.Distance(finalPos, currentPos);
         float timeToArrive = distance / speed;

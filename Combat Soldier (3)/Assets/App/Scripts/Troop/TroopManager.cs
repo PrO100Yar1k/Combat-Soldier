@@ -8,9 +8,11 @@ public class TroopManager : MonoBehaviour
 
     [SerializeField] private TroopController _currentTroopController = default;
 
-    [Header("Other Components")] [Space(3)]
+    [Header("Layers")] [Space(3)]
 
-    [SerializeField] private GameObject Terrain = default; // to do
+    [SerializeField] private LayerMask _terrainLayer = default;
+
+    [SerializeField] private LayerMask _troopsLayer = default;
 
     private TroopStateController _troopStateController;
 
@@ -36,30 +38,32 @@ public class TroopManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetButtonDown("Fire1")) {
-            Fire();
+            RaycastToScreenPoint();
         }
     }
 
-    private void Fire()
+    private void RaycastToScreenPoint()
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out hit)) // do by layer 
+        if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider != null) // to do
+            if (hit.collider != null)
             {
-                if (hit.collider.gameObject == Terrain) 
-                {
+                LayerMask hitObjectLayer = hit.collider.gameObject.layer;
+                int shiftedMask = (1 << hitObjectLayer);
+
+                if ((shiftedMask & _terrainLayer.value) != 0) {
                     _troopStateController.ActivateMoveState();
-                    GameEvents.instance.TroopMovement(hit.point, 5); // to do
+                    GameEvents.instance.TroopMovement(hit.point, 5); // to change
                 }
-
-                //else if (hit.collider.gameObject == currentDivision.gameObject) currentDivision.OpenMainMenu();
-
-                //else currentDivision.Attack();
+                else if ((shiftedMask & _troopsLayer.value) != 0) { // ?
+                    _currentTroopController = hit.collider.GetComponent<TroopController>();
+                    _currentTroopController.UIController.OpenMainMenu();
+                }
             }
-        } 
+        }
     }
 }
 

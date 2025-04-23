@@ -2,53 +2,73 @@ using UnityEngine;
 
 public class HPController
 {
-    private string currentName = default; // slider
+    private TroopCanvasController _troopCanvasController;
 
-    private int currentHealPoint = default;
-    private int currentDefencePoint = default;
+    private string _currentName = default;
 
-    private float currentBlockRate = default;
+    private int _currentHealPoint = default;
+    private int _currentDefencePoint = default;
 
-    public HPController(TroopScriptable currentDivisionScriptable)
+    private float _currentBlockRate = default;
+
+    public HPController(TroopScriptable currentDivisionScriptable, TroopCanvasController troopCanvasController)
     {
-        currentName = currentDivisionScriptable.Name;
+        _troopCanvasController = troopCanvasController;
 
-        currentHealPoint = currentDivisionScriptable.maxHealPoint;
-        currentDefencePoint = currentDivisionScriptable.maxDefencePoint;
-
-        currentBlockRate = currentDivisionScriptable.BlockRate;
+        AssignBasicParameters(currentDivisionScriptable);
     }
 
-    public void TakeDamage(int Damage)
+    private void AssignBasicParameters(TroopScriptable currentDivisionScriptable)
     {
-        if (Damage <= 0)
+        _currentName = currentDivisionScriptable.Name;
+
+        _currentHealPoint = currentDivisionScriptable.maxHealPoint;
+        _currentDefencePoint = currentDivisionScriptable.maxDefencePoint;
+
+        _currentBlockRate = currentDivisionScriptable.BlockRate;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (damage <= 0)
             return;
 
-        int blockedHP = (int) (Damage * currentBlockRate);
-        int takenDamage = Damage - blockedHP;
+        int blockedHP = (int) (damage * _currentBlockRate);
+        int takenDamage = damage - blockedHP;
 
-        if (currentDefencePoint >= blockedHP) { // to do ?
-            currentDefencePoint -= blockedHP;
+        if (_currentDefencePoint >= blockedHP) { // to do ?
+            _currentDefencePoint -= blockedHP;
         }
         else {
-            currentHealPoint -= blockedHP - currentDefencePoint;
-            currentDefencePoint = 0;
+            _currentHealPoint -= blockedHP - _currentDefencePoint;
+            _currentDefencePoint = 0;
         }
 
-        currentHealPoint -= takenDamage;
+        _currentHealPoint -= takenDamage;
+
+        ChangeSliderValues();
 
         CheckTroopDeath();
     }
 
+    private void ChangeSliderValues()
+    {
+        if (_troopCanvasController == null) //maybe not neccesary
+            return;
+
+        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
+        _troopCanvasController.ChangeDefensePointSlider(_currentDefencePoint);
+    }
+
     private void CheckTroopDeath() // to do
     {
-        if (currentHealPoint <= 0)
+        if (_currentHealPoint <= 0)
             TroopDeath();
     }
 
     private void TroopDeath()
     {
-        Debug.Log($"The {currentName} was died");
+        Debug.Log($"The {_currentName} was died");
 
         // Destroy object
     }
