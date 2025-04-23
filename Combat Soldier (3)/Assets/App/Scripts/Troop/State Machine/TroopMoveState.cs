@@ -14,12 +14,12 @@ public class TroopMoveState : TroopBaseState
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopMovement += SetWaypoint;
+        GameEvents.instance.OnTroopStartedMovement += SetWaypoint;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopMovement -= SetWaypoint;
+        GameEvents.instance.OnTroopStartedMovement -= SetWaypoint;
     }
 
     #endregion

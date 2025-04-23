@@ -8,9 +8,6 @@ public class EnemyController : TroopController
 {
     [SerializeField] private TroopScriptable _currentDivision = default;
 
-    [SerializeField] private RectTransform _attackCircleRange = default;
-    [SerializeField] private RectTransform _viewCircleRange = default;
-
     [SerializeField] private bool isAttack = false;
 
     private TroopController currentEnemy = default;
@@ -19,7 +16,7 @@ public class EnemyController : TroopController
 
     private void Awake()
     {
-        SetupCircleRanges();
+
     }
 
     private void FixedUpdate()
@@ -107,54 +104,5 @@ public class EnemyController : TroopController
         isAttack = false;
     }
 
-
-    /*
-    private bool isCanAttackEnemy()
-    {
-        foreach (TroopController TroopController in TroopManager.instance.TroopList)
-        {
-            if (Vector3.Distance(transform.position, TroopController.transform.position) <= _currentDivision.attackDamage)
-                return true;
-        }
-
-        return false;
-    }
-
-    private TroopController EnemyInAttackRange()
-    {
-        foreach (TroopController TroopController in TroopManager.instance.TroopList)
-        {
-            if (Vector3.Distance(transform.position, TroopController.transform.position) <= _currentDivision.attackDamage)
-                return TroopController;
-        }
-
-        throw new System.Exception("Attack enemy wasn't founded!");
-    }
-
-    private TroopController EnemyInViewRange()
-    {
-        foreach (TroopController TroopController in TroopManager.instance.TroopList)
-        {
-            if (Vector3.Distance(transform.position, TroopController.transform.position) <= _currentDivision.viewRangeRadius)
-            {
-                LastEnemyPosition = TroopController.transform.position;
-                currentEnemy = TroopController;
-
-                return TroopController;
-            }
-        }
-
-        return null;
-    }
-    */
-
-
-    private void SetupCircleRanges()
-    {
-        float attackRangeRadius = _currentDivision.attackRangeRadius;
-        float viewRangeRadius = _currentDivision.viewRangeRadius;
-
-        _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius, attackRangeRadius);
-        _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius, viewRangeRadius);
-    }
+    // isCanAttackEnemy EnemyInViewRange EnemyInAttackRange 
 }

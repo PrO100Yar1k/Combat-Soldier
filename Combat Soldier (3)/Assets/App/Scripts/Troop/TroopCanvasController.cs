@@ -12,9 +12,14 @@ public class TroopCanvasController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _healPointText = default;
     [SerializeField] private TextMeshProUGUI _defensePointText = default;
 
+    [Space(3)]
+
+    [SerializeField] private RectTransform _attackCircleRange = default;
+    [SerializeField] private RectTransform _viewCircleRange = default;
+
     private TroopScriptable _troopScriptable;
 
-    public void InitializeScriptableObject(TroopScriptable troopScriptable)
+    public void InitializeTroopCanvas(TroopScriptable troopScriptable)
     {
         _troopScriptable = troopScriptable;
 
@@ -50,5 +55,14 @@ public class TroopCanvasController : MonoBehaviour
         _defensePointSlider.value = targetDefensePoint;
 
         _defensePointText.text = $"{targetDefensePoint}";
+    }
+
+    public void SetupCircleRanges()
+    {
+        float attackRangeRadius = _troopScriptable.attackRangeRadius;
+        float viewRangeRadius = _troopScriptable.viewRangeRadius;
+
+        _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius, attackRangeRadius);
+        _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius, viewRangeRadius);
     }
 }

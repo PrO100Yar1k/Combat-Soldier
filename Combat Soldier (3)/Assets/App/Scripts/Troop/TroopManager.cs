@@ -14,25 +14,32 @@ public class TroopManager : MonoBehaviour
 
     [SerializeField] private LayerMask _troopsLayer = default;
 
+    private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
+    private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
+
     private TroopStateController _troopStateController;
 
     private RaycastHit hit;
 
     #region Events
+
     private void OnEnable()
     {
-        // to do
+        GameEvents.instance.OnTroopSpawned += AddTroopToList;
+        GameEvents.instance.OnTroopDied += RemoveTroopFromList;
     }
 
     private void OnDisable()
     {
-
+        GameEvents.instance.OnTroopSpawned -= AddTroopToList;
+        GameEvents.instance.OnTroopDied -= RemoveTroopFromList;
     }
+
     #endregion
 
     private void Start()
     {
-        _troopStateController = _currentTroopController.StateController;
+        _troopStateController = _currentTroopController.StateController; // to do
     }
 
     private void Update()
@@ -65,6 +72,23 @@ public class TroopManager : MonoBehaviour
             }
         }
     }
+
+    private void AddTroopToList(TroopController troopController, TroopSide troopSide)
+    {
+        GetTroopControllersList(troopSide).Add(troopController);
+
+        Debug.Log("Troop successfully added!");
+    }
+
+    private void RemoveTroopFromList(TroopController troopController, TroopSide troopSide)
+    {
+        GetTroopControllersList(troopSide).Remove(troopController);
+
+        Debug.Log("Troop successfully removed!");
+    }
+
+    public List<TroopController> GetTroopControllersList(TroopSide troopSide)
+        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList; 
 }
 
 public enum TroopType
