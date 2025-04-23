@@ -23,7 +23,7 @@ MonoBehaviour:
   timeToNextAttack: 5
   countAttackWaves: 5
   attackDamage: 25
-  attackRangeRadius: 3
-  viewRangeRadius: 10
+  attackRangeRadius: 10
+  viewRangeRadius: 20
   countInDivision: 50
-  speed: 2.5
+  speed: 10

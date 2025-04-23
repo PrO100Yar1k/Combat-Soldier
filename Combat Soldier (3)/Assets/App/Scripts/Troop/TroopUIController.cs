@@ -10,7 +10,7 @@ public class TroopUIController
 
         _canvasController.InitializeTroopCanvas(troopScriptable);
 
-        _canvasController.SetupCircleRanges();
+        //_canvasController.SetupCircleRanges();
     }
 
     public void OpenMainMenu()
