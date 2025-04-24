@@ -17,13 +17,21 @@ public class TroopCanvasController : MonoBehaviour
     [SerializeField] private RectTransform _attackCircleRange = default;
     [SerializeField] private RectTransform _viewCircleRange = default;
 
+    [Space(3)]
+
+    [SerializeField] private Button _attackButton = default;
+    [SerializeField] private Button _moveButton = default;
+
+    [SerializeField] private Button _cancelButton = default;
+
     private TroopScriptable _troopScriptable;
 
-    public void InitializeTroopCanvas(TroopScriptable troopScriptable)
+    public void InitializeTroopCanvas(TroopScriptable troopScriptable, TroopController troopController)
     {
         _troopScriptable = troopScriptable;
 
         AssignMaxSliderValues();
+        AssignButtonsListener(troopController);
     }
 
     private void AssignMaxSliderValues()
@@ -33,6 +41,19 @@ public class TroopCanvasController : MonoBehaviour
 
         _healPointSlider.value = _healPointSlider.maxValue;
         _defensePointSlider.value = _defensePointSlider.maxValue;
+    }
+
+    private void AssignButtonsListener(TroopController troopController)
+    {
+        _attackButton.onClick.AddListener(delegate { GameEvents.instance.TroopEnterAnyMode(troopController, OrderMode.Attack); });
+        _moveButton.onClick.AddListener(delegate { GameEvents.instance.TroopEnterAnyMode(troopController, OrderMode.Move); });
+
+        _cancelButton.onClick.AddListener(delegate { GameEvents.instance.TroopCancelEnteringMode(); });
+    }
+
+    private void SubscribeToEvents()
+    {
+        //GameEvents.instance.OnTroopEnterAnyMode += ChangeCancelButtonState;
     }
 
     public void ChangeHealPointSlider(int targetHealPoint)
@@ -65,4 +86,7 @@ public class TroopCanvasController : MonoBehaviour
         _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius, attackRangeRadius);
         _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius, viewRangeRadius);
     }
+
+    public void ChangeCancelButtonState(bool state)
+        => _cancelButton.gameObject.SetActive(state);
 }

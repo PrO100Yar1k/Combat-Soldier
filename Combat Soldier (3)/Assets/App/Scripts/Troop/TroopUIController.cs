@@ -4,25 +4,32 @@ public class TroopUIController
 {
     private readonly TroopCanvasController _canvasController = default;
 
-    public TroopUIController(TroopScriptable troopScriptable, TroopCanvasController canvasController)
+    public TroopUIController(TroopScriptable troopScriptable, TroopCanvasController canvasController, TroopController troopController)
     {
         _canvasController = canvasController;
 
-        _canvasController.InitializeTroopCanvas(troopScriptable);
+        _canvasController.InitializeTroopCanvas(troopScriptable, troopController);
+
+        ChangeCanvasActivationState(false);
 
         //_canvasController.SetupCircleRanges();
     }
 
-    public void OpenMainMenu()
+    public void OpenTroopActionMenu()
     {
-        Debug.Log("Main menu has been opened");
+        ChangeCanvasActivationState(true);
 
-        // canvascontrololer open it
+        Debug.Log("Main menu has been opened");
     }
 
     public void Attack()
     {
         Debug.Log("Attacked");
+
         // canvascontrololer open attack menu ?
     }
+
+
+    public void ChangeCanvasActivationState(bool state)
+        => _canvasController.gameObject.SetActive(state);
 }
