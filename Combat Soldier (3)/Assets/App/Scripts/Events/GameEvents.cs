@@ -34,4 +34,7 @@ public class GameEvents : MonoBehaviour
 
     public event Action OnTroopCancelEnteringMode = default;
     public void TroopCancelEnteringMode() => OnTroopCancelEnteringMode?.Invoke();
+
+    public event Action OnDisableCanvases = default;
+    public void DisableCanvases() => OnDisableCanvases?.Invoke();
 }

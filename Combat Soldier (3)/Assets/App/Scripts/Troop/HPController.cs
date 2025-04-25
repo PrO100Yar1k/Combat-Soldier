@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HPController
 {
-    private readonly TroopCanvasController _troopCanvasController;
+    private readonly ScreenCanvasController _troopCanvasController;
 
     private string _currentName = default;
 
@@ -11,7 +11,7 @@ public class HPController
 
     private float _currentBlockRate = default;
 
-    public HPController(TroopScriptable currentDivisionScriptable, TroopCanvasController troopCanvasController)
+    public HPController(TroopScriptable currentDivisionScriptable, ScreenCanvasController troopCanvasController)
     {
         _troopCanvasController = troopCanvasController;
 

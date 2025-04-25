@@ -2,22 +2,37 @@ using UnityEngine;
 
 public class TroopUIController 
 {
-    private readonly TroopCanvasController _canvasController = default;
+    private readonly ScreenCanvasController _screenCanvasController = default;
+    private readonly WorldCanvasController _worldCanvasController = default;
 
-    public TroopUIController(TroopScriptable troopScriptable, TroopCanvasController canvasController, TroopController troopController)
+    #region Events
+
+    private void SubscribeToEvents()
     {
-        _canvasController = canvasController;
+        GameEvents.instance.OnDisableCanvases += DisableAllCanvases;
+    }
 
-        _canvasController.InitializeCanvas(troopScriptable, troopController);
+    private void UnSubscribeFromEvents()
+    {
+        GameEvents.instance.OnDisableCanvases -= DisableAllCanvases;
+    }
 
-        ChangeCanvasActivationState(false);
+    #endregion
+
+    public TroopUIController(TroopController troopController, ScreenCanvasController screenCanvasController, WorldCanvasController worldCanvasController)
+    {
+        _screenCanvasController = screenCanvasController;
+        _worldCanvasController = worldCanvasController;
+
+        _screenCanvasController.InitializeCanvas(troopController);
+        _worldCanvasController.InitializeCanvas(troopController);
+
+        DisableAllCanvases();
     }
 
     public void OpenTroopActionMenu()
     {
-        ChangeCanvasActivationState(true);
-
-        _canvasController.ChangeCirclesState(true);
+        EnableAllCanvases();
 
         Debug.Log("Main menu has been opened");
     }
@@ -30,6 +45,19 @@ public class TroopUIController
     }
 
 
-    public void ChangeCanvasActivationState(bool state)
-        => _canvasController.gameObject.SetActive(state);
+    private void EnableAllCanvases()
+    {
+        _screenCanvasController.EnableCanvas();
+        _worldCanvasController.EnableCanvas();
+
+        SubscribeToEvents();
+    }
+
+    private void DisableAllCanvases()
+    {
+        _screenCanvasController.DisableCanvas();
+        _worldCanvasController.DisableCanvas();
+
+        UnSubscribeFromEvents();
+    }
 }

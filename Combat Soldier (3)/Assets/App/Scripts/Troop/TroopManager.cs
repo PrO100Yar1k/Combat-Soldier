@@ -20,7 +20,10 @@ public class TroopManager : MonoBehaviour
 
     private RaycastHit hit;
 
-    #region Events
+    #region Events & Initialization
+
+    public void InitializeManager()
+        => SubscribeToEvents();
 
     private void OnDisable()
         => UnSubscribeFromEvents();
@@ -46,9 +49,6 @@ public class TroopManager : MonoBehaviour
     }
 
     #endregion
-
-    public void InitializeManager()
-        => SubscribeToEvents();
 
     private void Update()
     {
@@ -136,7 +136,9 @@ public class TroopManager : MonoBehaviour
     private void CancelEnteringModeAndDisableMenu()
     {
         if (_selectedTroopController != null)
-            _selectedTroopController.UIController.ChangeCanvasActivationState(false);
+            GameEvents.instance.DisableCanvases();
+
+        //_selectedTroopController.UIController.ChangeCanvasActivationState(false);
 
         AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
@@ -161,10 +163,10 @@ public class TroopManager : MonoBehaviour
         => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
 
 
-    public TroopController[] GetEnemyInCertainRange(Vector3 troopPosition, float troopRange, TroopSide troopSide)
+    public TroopController[] GetEnemyInCertainRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
     {
         List<TroopController> enemyControllersList = new List<TroopController>();
-        List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(troopSide));
+        List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(enemyTroopSide));
 
         foreach (TroopController troopController in troopControllersList)
         {

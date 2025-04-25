@@ -6,7 +6,8 @@ public abstract class TroopController : MonoBehaviour
 
     [Space(2)]
 
-    [SerializeField] protected TroopCanvasController _canvasController = default;
+    [SerializeField] protected ScreenCanvasController _screenCanvasController = default;
+    [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
     [Space(2)]
 

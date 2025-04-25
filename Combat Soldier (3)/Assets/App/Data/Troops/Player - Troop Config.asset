@@ -26,4 +26,4 @@ MonoBehaviour:
   attackRangeRadius: 10
   viewRangeRadius: 20
   countInDivision: 50
-  speed: 10
+  speed: 2

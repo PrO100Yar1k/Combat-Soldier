@@ -2,11 +2,16 @@ using UnityEngine;
 
 public abstract class CanvasController : MonoBehaviour
 {
-    protected TroopScriptable _troopScriptable = default;
     protected TroopController _troopController = default;
+    protected TroopScriptable _troopScriptable = default;
 
-    public abstract void InitializeCanvas(TroopScriptable troopScriptable, TroopController troopController);
+    protected Canvas _canvasComponent = default;
 
-    protected abstract void EnableCanvas();
-    protected abstract void DisableCanvas();
+    public abstract void InitializeCanvas(TroopController troopController);
+
+    public abstract void EnableCanvas();
+    public abstract void DisableCanvas();
+
+    protected virtual void Awake()
+        => _canvasComponent = GetComponent<Canvas>();
 }

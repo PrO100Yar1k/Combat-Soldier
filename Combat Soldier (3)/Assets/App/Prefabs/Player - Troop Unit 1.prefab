@@ -800,7 +800,7 @@ GameObject:
   - component: {fileID: 75681528285945990}
   - component: {fileID: 4254404540874079716}
   m_Layer: 6
-  m_Name: Devision - 1
+  m_Name: Player - Troop Unit 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,7 +910,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _troopScriptable: {fileID: 11400000, guid: 0f607a16f14f517449142260da9de9a5, type: 2}
-  _canvasController: {fileID: 7460137965326824879}
+  _screenCanvasController: {fileID: 7460137965326824879}
+  _worldCanvasController: {fileID: 5827126088596338853}
   _troopSide: 0
 --- !u!1 &5111053461726891211
 GameObject:
@@ -1651,7 +1652,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 40
   m_TargetDisplay: 0
 --- !u!114 &5917057920600896711
 MonoBehaviour:
@@ -1709,8 +1710,6 @@ MonoBehaviour:
   _defensePointSlider: {fileID: 6185236526920986221}
   _healPointText: {fileID: 1466018285077061471}
   _defensePointText: {fileID: 7047906414270016386}
-  _attackCircleRange: {fileID: 2510536782232248351}
-  _viewCircleRange: {fileID: 4124468249522095173}
   _attackButton: {fileID: 5141482709142329181}
   _moveButton: {fileID: 4772928017527714065}
   _cancelButton: {fileID: 8612654705541670849}
@@ -2034,6 +2033,7 @@ GameObject:
   - component: {fileID: 3149299120718858604}
   - component: {fileID: 2462800765722843578}
   - component: {fileID: 8554009346867002173}
+  - component: {fileID: 5827126088596338853}
   m_Layer: 5
   m_Name: World Canvas - Troop
   m_TagString: Untagged
@@ -2082,7 +2082,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!114 &2462800765722843578
 MonoBehaviour:
@@ -2124,6 +2124,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5827126088596338853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7908560114402340154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35462a32b5adb4940ad834d4c4398166, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackCircleRange: {fileID: 2510536782232248351}
+  _viewCircleRange: {fileID: 4124468249522095173}
 --- !u!1 &7956913550559239577
 GameObject:
   m_ObjectHideFlags: 0
