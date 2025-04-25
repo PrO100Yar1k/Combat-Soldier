@@ -38,6 +38,8 @@ public class TroopController : MonoBehaviour
 
         HPController.TakeDamage(25); // test
     }
+
+    public float GetTroopSpeed() => _troopScriptable.speed;
 }
 
 public enum TroopSide

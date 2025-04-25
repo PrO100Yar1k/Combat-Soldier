@@ -48,13 +48,13 @@ public class TroopManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1") && !IsPointerOverUI()) {  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
             if (_selectedOrderMode == OrderMode.None) {
-                RaycastInteraction();
+                NoSelectedTroopRaycast();
             } 
-            else RaycastToScreenPoint();
+            else SelectedTroopRaycastAction();
         }
     }
 
-    private void RaycastInteraction() // 
+    private void NoSelectedTroopRaycast() // 
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -66,9 +66,9 @@ public class TroopManager : MonoBehaviour
                 LayerMask hitObjectLayer = hit.collider.gameObject.layer;
                 int shiftedMask = (1 << hitObjectLayer);
 
-                if ((shiftedMask & _troopsLayer.value) != 0)
+                if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
                 {
-                    _selectedTroopController = hit.collider.GetComponent<TroopController>();
+                    _selectedTroopController = troopController;
                     _selectedTroopController.UIController.OpenTroopActionMenu();
                 }
                 else if (_selectedTroopController != null)
@@ -77,7 +77,7 @@ public class TroopManager : MonoBehaviour
         }
     }
 
-    private void RaycastToScreenPoint() //
+    private void SelectedTroopRaycastAction() // to do
     {
         if (_selectedTroopController == null)
             return;
@@ -96,12 +96,11 @@ public class TroopManager : MonoBehaviour
 
                 if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move) {
                     _troopStateController.ActivateMoveState();
-                    GameEvents.instance.TroopMovement(hit.point, 5); // to change
+                    GameEvents.instance.TroopMovement(hit.point, _selectedTroopController.GetTroopSpeed());
                 }
-                //else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack) { // ?
-                //    _selectedTroopController = hit.collider.GetComponent<TroopController>();
-                //    _selectedTroopController.UIController.OpenMainMenu();
-                //}
+                else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && _selectedTroopController != hit.collider) {
+                    _selectedTroopController.UIController.OpenAttackMenu();
+                }
             }
         }
         _selectedOrderMode = OrderMode.None;
@@ -139,7 +138,8 @@ public class TroopManager : MonoBehaviour
     public List<TroopController> GetTroopControllersList(TroopSide troopSide)
         => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
 
-    private bool IsPointerOverUI() //
+
+    private bool IsPointerOverUI()
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);

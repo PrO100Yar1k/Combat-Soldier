@@ -25,13 +25,17 @@ public class TroopCanvasController : MonoBehaviour
     [SerializeField] private Button _cancelButton = default;
 
     private TroopScriptable _troopScriptable;
+    private TroopController _troopController;
 
-    public void InitializeTroopCanvas(TroopScriptable troopScriptable, TroopController troopController)
+    public void InitializeCanvas(TroopScriptable troopScriptable, TroopController troopController)
     {
         _troopScriptable = troopScriptable;
+        _troopController = troopController;
+
+        SetupCircles();
 
         AssignMaxSliderValues();
-        AssignButtonsListener(troopController);
+        AssignButtonsListener(_troopController);
     }
 
     private void AssignMaxSliderValues()
@@ -51,9 +55,26 @@ public class TroopCanvasController : MonoBehaviour
         _cancelButton.onClick.AddListener(delegate { GameEvents.instance.TroopCancelEnteringMode(); });
     }
 
+    private void SetupCircles()
+    {
+        ChangeCirclesState(false);
+        SetupCircleRanges();
+    }
+
     private void SubscribeToEvents()
     {
         //GameEvents.instance.OnTroopEnterAnyMode += ChangeCancelButtonState;
+    }
+
+    public void EnableCanvas()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void DisableCanvas()
+    {
+        gameObject.SetActive(false);
+        ChangeCirclesState(false);
     }
 
     public void ChangeHealPointSlider(int targetHealPoint)
@@ -85,6 +106,12 @@ public class TroopCanvasController : MonoBehaviour
 
         _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius, attackRangeRadius);
         _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius, viewRangeRadius);
+    }
+
+    public void ChangeCirclesState(bool state)
+    {
+        _attackCircleRange.gameObject.SetActive(state);
+        _viewCircleRange.gameObject.SetActive(state);
     }
 
     public void ChangeCancelButtonState(bool state)

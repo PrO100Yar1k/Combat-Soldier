@@ -5,10 +5,10 @@ public class TroopMoveState : TroopBaseState
 {
     public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
 
-    private bool _isRunning = false; // to do
+    //private bool _isRunning = false; // to do
 
-    private Tween _movementTween;
-    private Tween _rotationTween;
+    private Tween _movementTween = default;
+    private Tween _rotationTween = default;
 
     #region Events
 
@@ -36,7 +36,7 @@ public class TroopMoveState : TroopBaseState
 
     private void SetWaypoint(Vector3 point, float speed)
     {
-        _isRunning = true;
+        //_isRunning = true;
 
         Transform troopTransform = _troopController.transform;
 
@@ -78,7 +78,7 @@ public class TroopMoveState : TroopBaseState
 
     private void Finished()
     {
-        _isRunning = false;
+        //_isRunning = false;
 
         Debug.Log("Finished Waypoint!");
 

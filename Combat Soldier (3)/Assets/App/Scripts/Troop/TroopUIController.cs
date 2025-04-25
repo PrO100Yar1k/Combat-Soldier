@@ -8,23 +8,23 @@ public class TroopUIController
     {
         _canvasController = canvasController;
 
-        _canvasController.InitializeTroopCanvas(troopScriptable, troopController);
+        _canvasController.InitializeCanvas(troopScriptable, troopController);
 
         ChangeCanvasActivationState(false);
-
-        //_canvasController.SetupCircleRanges();
     }
 
     public void OpenTroopActionMenu()
     {
         ChangeCanvasActivationState(true);
 
+        _canvasController.ChangeCirclesState(true);
+
         Debug.Log("Main menu has been opened");
     }
 
-    public void Attack()
+    public void OpenAttackMenu()
     {
-        Debug.Log("Attacked");
+        Debug.Log("Attack Menu Opened");
 
         // canvascontrololer open attack menu ?
     }
