@@ -22,7 +22,10 @@ public class TroopManager : MonoBehaviour
 
     #region Events
 
-    private void OnEnable()
+    private void OnDisable()
+        => UnSubscribeFromEvents();
+
+    private void SubscribeToEvents()
     {
         GameEvents.instance.OnTroopSpawned += AddTroopToList;
 
@@ -32,7 +35,7 @@ public class TroopManager : MonoBehaviour
         GameEvents.instance.OnTroopDied += RemoveTroopFromList;
     }
 
-    private void OnDisable()
+    private void UnSubscribeFromEvents()
     {
         GameEvents.instance.OnTroopSpawned -= AddTroopToList;
 
@@ -43,6 +46,9 @@ public class TroopManager : MonoBehaviour
     }
 
     #endregion
+
+    public void InitializeManager()
+        => SubscribeToEvents();
 
     private void Update()
     {
@@ -135,11 +141,6 @@ public class TroopManager : MonoBehaviour
         AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
 
-
-    public List<TroopController> GetTroopControllersList(TroopSide troopSide)
-        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
-
-
     private bool IsPointerOverUI()
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
@@ -153,6 +154,52 @@ public class TroopManager : MonoBehaviour
                 return true;
 
         return false;
+    }
+
+
+    public List<TroopController> GetTroopControllersList(TroopSide troopSide)
+        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
+
+
+    public TroopController[] GetEnemyInCertainRange(Vector3 troopPosition, float troopRange, TroopSide troopSide)
+    {
+        List<TroopController> enemyControllersList = new List<TroopController>();
+        List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(troopSide));
+
+        foreach (TroopController troopController in troopControllersList)
+        {
+            Vector3 currentEnemyPosition = troopController.transform.position;
+
+            if (Vector3.Distance(troopPosition, currentEnemyPosition) <= troopRange) {
+                enemyControllersList.Add(troopController);
+            }
+        }
+
+        return enemyControllersList.ToArray();
+    }
+
+    public TroopController GetEnemyInCertainRange(Vector3 troopPosition, TroopController[] enemyControllersList, TroopController targetPriorityEnemy)
+    {
+        float closestDistance = Mathf.Infinity;
+        TroopController targetEnemy = default;
+
+        foreach (TroopController enemyController in enemyControllersList)
+        {
+            Vector3 currentEnemyPosition = enemyController.transform.position;
+
+            float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
+
+            if (enemyController == targetPriorityEnemy)
+                return targetPriorityEnemy;
+
+            if (currentDistanceBetweenEnemy < closestDistance)
+            {
+                targetEnemy = enemyController;
+                closestDistance = currentDistanceBetweenEnemy;
+            }
+        }
+
+        return targetEnemy;
     }
 }
 

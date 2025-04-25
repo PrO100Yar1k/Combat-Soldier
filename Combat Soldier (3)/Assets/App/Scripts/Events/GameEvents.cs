@@ -6,7 +6,7 @@ public class GameEvents : MonoBehaviour
     #region Singleton activation
     [HideInInspector] public static GameEvents instance;
 
-    private void Awake()
+    public void Initialize()
     {
         if (instance != null)
         {
