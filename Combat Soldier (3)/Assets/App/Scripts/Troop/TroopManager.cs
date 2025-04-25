@@ -46,7 +46,8 @@ public class TroopManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !IsPointerOverUI()) {  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
+        if (Input.GetButtonDown("Fire1") && !IsPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
+        {  
             if (_selectedOrderMode == OrderMode.None) {
                 NoSelectedTroopRaycast();
             } 
@@ -96,7 +97,7 @@ public class TroopManager : MonoBehaviour
 
                 if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move) {
                     _troopStateController.ActivateMoveState();
-                    GameEvents.instance.TroopMovement(hit.point, _selectedTroopController.GetTroopSpeed());
+                    GameEvents.instance.TroopMovement(hit.point);
                 }
                 else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && _selectedTroopController != hit.collider) {
                     _selectedTroopController.UIController.OpenAttackMenu();

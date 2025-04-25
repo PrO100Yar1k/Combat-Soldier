@@ -34,7 +34,7 @@ public class TroopMoveState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    private void SetWaypoint(Vector3 point, float speed)
+    private void SetWaypoint(Vector3 point)
     {
         //_isRunning = true;
 
@@ -49,7 +49,8 @@ public class TroopMoveState : TroopBaseState
         SmoothlyRotateTroop(finalPos.normalized);
 
         float distance = Vector3.Distance(finalPos, currentPos);
-        float timeToArrive = distance / speed;
+
+        float timeToArrive = distance / _troopScriptable.speed;
 
         _movementTween?.Kill();
         _movementTween = troopTransform.DOMove(finalPos, timeToArrive)

@@ -1,45 +1,38 @@
 using UnityEngine;
 
-public class TroopController : MonoBehaviour
+public abstract class TroopController : MonoBehaviour
 {
-    [SerializeField] private TroopScriptable _troopScriptable = default;
+    [SerializeField] protected TroopScriptable _troopScriptable = default;
 
     [Space(2)]
 
-    [SerializeField] private TroopCanvasController _canvasController = default;
+    [SerializeField] protected TroopCanvasController _canvasController = default;
 
     [Space(2)]
 
-    [SerializeField] private TroopSide _troopSide = default;
+    [SerializeField] protected TroopSide _troopSide = default;
 
-    public TroopStateController StateController { get; private set; } // ?
+    public TroopStateController StateController { get; protected set; }
 
-    public TroopVisionController VisionController { get; private set; } 
+    public TroopVisionController VisionController { get; protected set; } 
     
-    public TroopUIController UIController { get; private set; }
+    public TroopUIController UIController { get; protected set; }
 
-    public HPController HPController { get; private set; }
+    public HPController HPController { get; protected set; }
 
-    private void OnEnable() 
+    public TroopScriptable TroopScriptable => _troopScriptable; // ?
+
+    protected virtual void OnEnable() 
         => GameEvents.instance.TroopSpawned(this, _troopSide);
 
-    private void OnDisable()
+    protected virtual void OnDisable()
         => GameEvents.instance.TroopDied(this, _troopSide);
 
-    private void Awake()
-    {
-        //to do setup correct sequence of scripts
+    protected virtual void Awake()
+        => InitializeTroop();
 
-        StateController = new TroopStateController(this);
-        VisionController = new TroopVisionController(); // to do
 
-        UIController = new TroopUIController(_troopScriptable, _canvasController, this);
-        HPController = new HPController(_troopScriptable, _canvasController);
-
-        HPController.TakeDamage(25); // test
-    }
-
-    public float GetTroopSpeed() => _troopScriptable.speed;
+    protected abstract void InitializeTroop();
 }
 
 public enum TroopSide

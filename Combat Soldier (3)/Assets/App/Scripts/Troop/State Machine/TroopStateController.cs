@@ -8,7 +8,7 @@ public class TroopStateController : ISwitchableState
     private TroopController _troopController = default;
 
     private List<TroopBaseState> _allStates = default;
-    private TroopBaseState currentState = default;
+    private TroopBaseState _currentState = default;
 
     public TroopStateController(TroopController troopController)
     {
@@ -27,7 +27,7 @@ public class TroopStateController : ISwitchableState
             new TroopDefenseState(_troopController, this)
         };
 
-        currentState = _allStates[0];
+        _currentState = _allStates[0];
     }
 
     public void ActivateDefaultState()
@@ -54,10 +54,10 @@ public class TroopStateController : ISwitchableState
     {
         TroopBaseState state = _allStates.FirstOrDefault(s => s is T);
 
-        currentState.Stop();
-        currentState = state;
+        _currentState.Stop();
+        _currentState = state;
 
-        currentState.Start();
+        _currentState.Start();
     }
 }
 
