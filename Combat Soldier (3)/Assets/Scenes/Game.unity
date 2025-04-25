@@ -699,7 +699,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3437367921145203574, guid: 788d53ac1f037184db39c489e2d3155e, type: 3}
       propertyPath: m_Name
-      value: Devision - 1
+      value: Player - Troop Unit 1
       objectReference: {fileID: 0}
     - target: {fileID: 3773101957354319440, guid: 788d53ac1f037184db39c489e2d3155e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -755,10 +755,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7132150717993450394, guid: 788d53ac1f037184db39c489e2d3155e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779089583757995470, guid: 788d53ac1f037184db39c489e2d3155e, type: 3}
-      propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -862,7 +858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _troopManager: {fileID: 1411919299}
   _gameEvents: {fileID: 214147611}
---- !u!1001 &1900993958
+--- !u!1001 &2570270077238099446
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -872,7 +868,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.3012009
+      value: 4.68
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -880,11 +876,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.3844914
+      value: 2.3535933
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9925462
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -892,7 +888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.12186928
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -904,15 +900,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2997209388218888303, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3842987116288003965, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084280386546498155, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5555289593626844165, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_Name
-      value: Enemy - 1
+      value: Enemy - Troop Unit 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8681018945065911024, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -928,7 +940,7 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 431947514}
   - {fileID: 1300931242}
-  - {fileID: 1900993958}
+  - {fileID: 2570270077238099446}
   - {fileID: 324527132}
   - {fileID: 621687805}
   - {fileID: 1535682300}

@@ -24,8 +24,8 @@ public class TroopCanvasController : MonoBehaviour
 
     [SerializeField] private Button _cancelButton = default;
 
-    private TroopScriptable _troopScriptable;
     private TroopController _troopController;
+    private TroopScriptable _troopScriptable;
 
     public void InitializeCanvas(TroopScriptable troopScriptable, TroopController troopController)
     {
