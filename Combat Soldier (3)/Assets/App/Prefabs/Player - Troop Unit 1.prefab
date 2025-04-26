@@ -1602,6 +1602,7 @@ GameObject:
   - component: {fileID: 5917057920600896711}
   - component: {fileID: 8966087342967692017}
   - component: {fileID: 7460137965326824879}
+  - component: {fileID: 3423588492860484205}
   m_Layer: 5
   m_Name: Screen Canvas - Troop
   m_TagString: Untagged
@@ -1713,6 +1714,18 @@ MonoBehaviour:
   _attackButton: {fileID: 5141482709142329181}
   _moveButton: {fileID: 4772928017527714065}
   _cancelButton: {fileID: 8612654705541670849}
+--- !u!114 &3423588492860484205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7381899144711834296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57aabc2c02ee34544ba859d2b97d3a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7408272744849112653
 GameObject:
   m_ObjectHideFlags: 0
