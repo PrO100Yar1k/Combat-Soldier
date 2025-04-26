@@ -30,8 +30,8 @@ public class ScreenCanvasController : CanvasController
 
     private void AssignMaxSliderValues()
     {
-        _healPointSlider.maxValue = _troopScriptable.maxHealPoint;
-        _defensePointSlider.maxValue = _troopScriptable.maxDefencePoint;
+        _healPointSlider.maxValue = _troopScriptable.MaxHealPoint;
+        _defensePointSlider.maxValue = _troopScriptable.MaxDefencePoint;
 
         _healPointSlider.value = _healPointSlider.maxValue;
         _defensePointSlider.value = _defensePointSlider.maxValue;
@@ -61,7 +61,7 @@ public class ScreenCanvasController : CanvasController
 
     public void ChangeHealPointSlider(int targetHealPoint)
     {
-        targetHealPoint = Mathf.Clamp(targetHealPoint, 0, _troopScriptable.maxHealPoint);
+        targetHealPoint = Mathf.Clamp(targetHealPoint, 0, _troopScriptable.MaxHealPoint);
         _healPointSlider.value = targetHealPoint;
 
         _healPointText.text = $"{targetHealPoint}";
@@ -69,7 +69,7 @@ public class ScreenCanvasController : CanvasController
 
     public void ChangeDefensePointSlider(int targetDefensePoint)
     {
-        targetDefensePoint = Mathf.Clamp(targetDefensePoint, 0, _troopScriptable.maxDefencePoint);
+        targetDefensePoint = Mathf.Clamp(targetDefensePoint, 0, _troopScriptable.MaxDefencePoint);
         _defensePointSlider.value = targetDefensePoint;
 
         _defensePointText.text = $"{targetDefensePoint}";

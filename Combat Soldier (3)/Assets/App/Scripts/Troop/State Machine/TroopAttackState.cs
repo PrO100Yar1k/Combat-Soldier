@@ -38,14 +38,14 @@ public class TroopAttackState : TroopBaseState
 
     private void TryToAttackEnemy(TroopController targetEnemy)
     {
-        Debug.Log("Attack state entered!");
-
         Vector3 troopPosition = _troopController.transform.position;
         TroopSide enemyTroopSide = TroopSide.Enemy;
 
-        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, _troopScriptable.attackRangeRadius, targetEnemy);
+        float attackRange = _troopScriptable.AttackRangeRadius;
 
-        if (enemyTroopController == null)   // !isEnemyInAttackRange()
+        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, targetEnemy);
+
+        if (enemyTroopController == null)
             return;
 
         AttackCoroutineStarter(enemyTroopController);
@@ -68,15 +68,18 @@ public class TroopAttackState : TroopBaseState
     {
         //_isAttack = true;
 
-        yield return new WaitUntil(()=> _remainingAttackWaves == 0);
+        yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
-        float timeBetweenAttackWaves = _troopScriptable.timeBetweenAttackWaves;
+        float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
         while (_remainingAttackWaves > 0)
         {
-            enemyController.HPController.TakeDamage(_troopScriptable.attackDamage);
+            if (enemyController == null)
+                break;
 
-            Debug.Log($"Attacked with damage {_troopScriptable.attackDamage}; Wave - {_troopScriptable.countAttackWaves - _remainingAttackWaves}");
+            enemyController.HPController.TakeDamage(_troopScriptable.AttackDamage);
+
+            Debug.Log($"Attacked with damage {_troopScriptable.AttackDamage}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
 
             _remainingAttackWaves--;
 
@@ -90,7 +93,7 @@ public class TroopAttackState : TroopBaseState
 
     private IEnumerator ReloadAttack()
     {
-        float timeToReloadAttack = _troopScriptable.timeToReloadAttack;
+        float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
 
         yield return new WaitForSeconds(timeToReloadAttack);
 
@@ -98,5 +101,5 @@ public class TroopAttackState : TroopBaseState
     }
 
     private void SetupDefaultCountAttackWaves()
-        => _remainingAttackWaves = _troopScriptable.countAttackWaves;
+        => _remainingAttackWaves = _troopScriptable.CountAttackWaves;
 }

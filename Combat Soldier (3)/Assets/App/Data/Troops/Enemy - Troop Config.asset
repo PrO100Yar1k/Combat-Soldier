@@ -12,18 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a538e3094a2fbfd41bd2d732298d647d, type: 3}
   m_Name: Enemy - Troop Config
   m_EditorClassIdentifier: 
-  Name: Troop_test
+  Name: Enemy_test
   TroopType: 0
   AttackType: 0
-  currentHealPoint: 100
-  currentDefencePoint: 100
-  maxHealPoint: 100
-  maxDefencePoint: 100
+  MaxHealPoint: 100
+  MaxDefencePoint: 100
   BlockRate: 0.2
-  timeToNextAttack: 5
-  countAttackWaves: 5
-  attackDamage: 25
-  attackRangeRadius: 10
-  viewRangeRadius: 20
-  countInDivision: 50
-  speed: 2
+  TimeToReloadAttack: 5
+  TimeBetweenAttackWaves: 5
+  AttackDamage: 25
+  AttackRangeRadius: 2
+  CountAttackWaves: 5
+  ViewRangeRadius: 4
+  TroopsPerUnit: 50
+  Speed: 5

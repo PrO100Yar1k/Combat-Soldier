@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class HPController
 {
-    private readonly ScreenCanvasController _troopCanvasController;
+    private readonly ScreenCanvasController _troopCanvasController = default;
+    private TroopController _troopController = default;
 
     private string _currentName = default;
 
@@ -11,19 +12,20 @@ public class HPController
 
     private float _currentBlockRate = default;
 
-    public HPController(TroopScriptable currentDivisionScriptable, ScreenCanvasController troopCanvasController)
+    public HPController(TroopController troopController, ScreenCanvasController troopCanvasController, TroopScriptable troopScriptable)
     {
+        _troopController = troopController;
         _troopCanvasController = troopCanvasController;
 
-        AssignBasicParameters(currentDivisionScriptable);
+        AssignBasicParameters(troopScriptable);
     }
 
     private void AssignBasicParameters(TroopScriptable currentDivisionScriptable)
     {
         _currentName = currentDivisionScriptable.Name;
 
-        _currentHealPoint = currentDivisionScriptable.maxHealPoint;
-        _currentDefensePoint = currentDivisionScriptable.maxDefencePoint;
+        _currentHealPoint = currentDivisionScriptable.MaxHealPoint;
+        _currentDefensePoint = currentDivisionScriptable.MaxDefencePoint;
 
         _currentBlockRate = currentDivisionScriptable.BlockRate;
     }
@@ -94,6 +96,6 @@ public class HPController
     {
         Debug.Log($"The {_currentName} was died");
 
-        // Destroy object
+        Object.Destroy(_troopController.gameObject);
     }
 }

@@ -71,6 +71,7 @@ public class TroopGeneralManager : MonoBehaviour
     public TroopController GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopRange, TroopController targetPriorityEnemy)
     {
         TroopController[] enemyControllersList = GetEnemyListInRange(troopPosition, troopRange, enemyTroopSide);
+        Debug.Log($"gg - {enemyControllersList.Length}");
 
         TroopController targetEnemy = default;
         float closestDistance = Mathf.Infinity;

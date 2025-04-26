@@ -10,25 +10,26 @@ public class TroopScriptable : ScriptableObject
 
     [Space(5)]
 
-    public int maxHealPoint = 100;
-    public int maxDefencePoint = 100;
+    public int MaxHealPoint = 100;
+    public int MaxDefencePoint = 100;
 
     public float BlockRate = 0.2f;
 
     [Space(5)]
 
-    public float timeToReloadAttack = 5;
-    public float timeBetweenAttackWaves = 5;
+    public float TimeToReloadAttack = 5;
+    public float TimeBetweenAttackWaves = 5;
 
-    public int countAttackWaves = 5;
-    public int attackDamage = 25;
-    public float attackRangeRadius = 3;
+    public int AttackDamage = 25;
+    public float AttackRangeRadius = 3;
+
+    public int CountAttackWaves = 5;
 
     [Space(5)]
 
-    public float viewRangeRadius = 10;
+    public float ViewRangeRadius = 10;
 
-    public int troopsPerUnit = 50;
+    public int TroopsPerUnit = 50;
 
-    public float speed = 2.5f;  // max speed; min speed; timeToMaxSpeed; SpeedUnderAttack ???
+    public float Speed = 2.5f;  // max speed; min speed; timeToMaxSpeed; SpeedUnderAttack ???
 }

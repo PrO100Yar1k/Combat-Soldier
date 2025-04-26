@@ -51,7 +51,7 @@ public class TroopMoveState : TroopBaseState
 
         float distance = Vector3.Distance(finalPos, currentPos);
 
-        float timeToArrive = distance / _troopScriptable.speed;
+        float timeToArrive = distance / _troopScriptable.Speed;
 
         _movementTween?.Kill();
         _movementTween = troopTransform.DOMove(finalPos, timeToArrive)

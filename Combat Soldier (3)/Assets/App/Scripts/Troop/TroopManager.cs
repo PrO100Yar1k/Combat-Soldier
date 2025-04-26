@@ -99,23 +99,27 @@ public class TroopManager : MonoBehaviour // code refactoring
                     troopStateController.ActivateMoveState(targetPoint, null);
                 }
                 else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hitObject.TryGetComponent(out EnemyTroopController enemy)) {
-                    ActivateAttackState(enemy, targetPoint, troopStateController);
+                    //_selectedTroopController.UIController.OpenAttackMenu();
+                    ActivateAttackState(enemy, enemy.transform.position, troopStateController);
                 }
             }
         }
         _selectedOrderMode = OrderMode.None;
     }
 
-    private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController)
+    private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController) // to do
     {
-        //float troopAttackRange = _selectedTroopController.TroopScriptable.attackRangeRadius;
-        // targetPoint -= troopAttackRange !!!!
+        Vector3 direction = (targetPoint - _selectedTroopController.transform.position).normalized;
+        float troopAttackRange = _selectedTroopController.TroopScriptable.AttackRangeRadius;
+
+        const float distanceModifier = 0.8f; // could be changed a little bit
+
+        targetPoint -= direction * troopAttackRange * distanceModifier;
+
         Action action = default;
         action += delegate { _troopStateController.ActivateAttackState(enemy); } ;
 
         _troopStateController.ActivateMoveState(targetPoint, action);
-
-        //_selectedTroopController.UIController.OpenAttackMenu();
     }
 
     private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode) // think about namespacing

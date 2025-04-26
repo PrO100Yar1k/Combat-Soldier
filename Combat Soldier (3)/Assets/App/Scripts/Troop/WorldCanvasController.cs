@@ -35,11 +35,11 @@ public class WorldCanvasController : CanvasController
 
     public void SetupCircleRanges()
     {
-        float attackRangeRadius = _troopScriptable.attackRangeRadius;
-        float viewRangeRadius = _troopScriptable.viewRangeRadius;
+        float attackRangeRadius = _troopScriptable.AttackRangeRadius;
+        float viewRangeRadius = _troopScriptable.ViewRangeRadius;
 
-        _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius, attackRangeRadius);
-        _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius, viewRangeRadius);
+        _attackCircleRange.localScale = new Vector2(attackRangeRadius * 2, attackRangeRadius * 2);
+        _viewCircleRange.localScale = new Vector2(viewRangeRadius * 2, viewRangeRadius * 2);
     }
 
     public void ChangeCirclesState(bool state)
