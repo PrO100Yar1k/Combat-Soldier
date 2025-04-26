@@ -68,7 +68,7 @@ public class TroopManager : MonoBehaviour // code refactoring
                 if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
                 {
                     _selectedTroopController = troopController;
-                    _selectedTroopController.UIController.OpenTroopActionMenu();
+                    _selectedTroopController.UIController.OpenTroopGeneralMenu();
                 }
                 else if (_selectedTroopController != null)
                     CancelEnteringModeAndDisableMenu();
@@ -104,7 +104,8 @@ public class TroopManager : MonoBehaviour // code refactoring
                 }
             }
         }
-        _selectedOrderMode = OrderMode.None;
+        CancelEnteringModeAndDisableMenu();
+        //_selectedOrderMode = OrderMode.None;
     }
 
     private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController) // to do

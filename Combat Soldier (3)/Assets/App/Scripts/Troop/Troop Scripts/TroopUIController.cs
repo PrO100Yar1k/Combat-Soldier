@@ -30,7 +30,7 @@ public class TroopUIController
         DisableAllCanvases();
     }
 
-    public void OpenTroopActionMenu()
+    public void OpenTroopGeneralMenu()
     {
         EnableAllCanvases();
 

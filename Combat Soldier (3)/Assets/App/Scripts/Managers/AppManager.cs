@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class AppManager : MonoBehaviour
+public class AppManager : MonoBehaviour // to do
 {
     public bool IsInitialized { get; private set; } = false;
 

@@ -21,8 +21,8 @@ public class ScreenCanvasController : CanvasController
 
     public override void InitializeCanvas(TroopController troopController)
     {
-        _troopController = troopController;
         _troopScriptable = troopController.TroopScriptable;
+        _troopController = troopController;
 
         AssignMaxSliderValues();
         AssignButtonsListener();
@@ -39,23 +39,33 @@ public class ScreenCanvasController : CanvasController
 
     private void AssignButtonsListener()
     {
-        _attackButton.onClick.AddListener(delegate { GameEvents.instance.TroopEnterAnyMode(_troopController, OrderMode.Attack); });
-        _moveButton.onClick.AddListener(delegate { GameEvents.instance.TroopEnterAnyMode(_troopController, OrderMode.Move); });
+        _attackButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Attack); });
+        _moveButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Move); });
 
-        _cancelButton.onClick.AddListener(delegate { GameEvents.instance.TroopCancelEnteringMode(); });
+        _cancelButton.onClick.AddListener(AddEventOnCancelButton);
     }
+
+    private void AddEventOnActionButtons(OrderMode orderMode)
+    {
+        GameEvents.instance.TroopEnterAnyMode(_troopController, orderMode);
+        _cancelButton.gameObject.SetActive(true);
+    }
+
+    private void AddEventOnCancelButton()
+    {
+        GameEvents.instance.TroopCancelEnteringMode();
+        _cancelButton.gameObject.SetActive(false);
+    }
+
 
     public override void EnableCanvas()
     {
-        // to do
-
+        _cancelButton.gameObject.SetActive(false);
         _canvasComponent.enabled = true;
     }
 
     public override void DisableCanvas()
     {
-        // to do
-
         _canvasComponent.enabled = false;
     }
 
