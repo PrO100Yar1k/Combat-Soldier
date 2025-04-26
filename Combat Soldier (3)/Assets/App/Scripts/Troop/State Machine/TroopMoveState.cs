@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class TroopMoveState : TroopBaseState
 {
@@ -34,7 +35,7 @@ public class TroopMoveState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    private void SetWaypoint(Vector3 point)
+    private void SetWaypoint(Vector3 point, Action finishAction)
     {
         //_isRunning = true;
 
@@ -55,7 +56,7 @@ public class TroopMoveState : TroopBaseState
         _movementTween?.Kill();
         _movementTween = troopTransform.DOMove(finalPos, timeToArrive)
             .SetEase(Ease.Flash)
-            .OnComplete(Finished);
+            .OnComplete(delegate { Finished(finishAction); });
     }
 
     private void SmoothlyRotateTroop(Vector3 moveDirection)
@@ -77,12 +78,14 @@ public class TroopMoveState : TroopBaseState
             .SetEase(Ease.Flash);
     }
 
-    private void Finished()
+    private void Finished(Action finishAction) // make like a target state after finishing point instead of event ?
     {
         //_isRunning = false;
 
         Debug.Log("Finished Waypoint!");
 
         _switcherState.SwitchState<TroopDefaultState>();
+
+        finishAction?.Invoke();
     }
 }

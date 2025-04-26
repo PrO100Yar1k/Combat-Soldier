@@ -1,18 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TroopManager : MonoBehaviour
+public class TroopManager : MonoBehaviour // code refactoring
 {
     [Header("Layers")] [Space(3)]
 
     [SerializeField] private LayerMask _terrainLayer = default;
 
     [SerializeField] private LayerMask _troopsLayer = default;
-
-    private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
-    private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
 
     private TroopController _selectedTroopController = default;
 
@@ -30,28 +28,22 @@ public class TroopManager : MonoBehaviour
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopSpawned += AddTroopToList;
-
         GameEvents.instance.OnTroopEnterAnyMode += AssignTroopControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
-
-        GameEvents.instance.OnTroopDied += RemoveTroopFromList;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopSpawned -= AddTroopToList;
-
         GameEvents.instance.OnTroopEnterAnyMode -= AssignTroopControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
-
-        GameEvents.instance.OnTroopDied -= RemoveTroopFromList;
     }
 
     #endregion
 
     private void Update()
     {
+        // check with new input system
+
         if (Input.GetButtonDown("Fire1") && !IsPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
         {  
             if (_selectedOrderMode == OrderMode.None) {
@@ -96,35 +88,34 @@ public class TroopManager : MonoBehaviour
         {
             if (hit.collider != null)
             {
-                LayerMask hitObjectLayer = hit.collider.gameObject.layer;
-                int shiftedMask = (1 << hitObjectLayer);
+                GameObject hitObject = hit.collider.gameObject;
+                int shiftedMask = (1 << hitObject.layer);
 
-                var _troopStateController = _selectedTroopController.StateController;
+                var troopStateController = _selectedTroopController.StateController;
+
+                Vector3 targetPoint = hit.point;
 
                 if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move) {
-                    _troopStateController.ActivateMoveState();
-                    GameEvents.instance.TroopMovement(hit.point);
+                    troopStateController.ActivateMoveState(targetPoint, null);
                 }
-                else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && _selectedTroopController != hit.collider) {
-                    _selectedTroopController.UIController.OpenAttackMenu();
+                else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hitObject.TryGetComponent(out EnemyTroopController enemy)) {
+                    ActivateAttackState(enemy, targetPoint, troopStateController);
                 }
             }
         }
         _selectedOrderMode = OrderMode.None;
     }
 
-    private void AddTroopToList(TroopController troopController, TroopSide troopSide)
+    private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController)
     {
-        GetTroopControllersList(troopSide).Add(troopController);
+        //float troopAttackRange = _selectedTroopController.TroopScriptable.attackRangeRadius;
+        // targetPoint -= troopAttackRange !!!!
+        Action action = default;
+        action += delegate { _troopStateController.ActivateAttackState(enemy); } ;
 
-        Debug.Log("Troop successfully added!");
-    }
+        _troopStateController.ActivateMoveState(targetPoint, action);
 
-    private void RemoveTroopFromList(TroopController troopController, TroopSide troopSide)
-    {
-        GetTroopControllersList(troopSide).Remove(troopController);
-
-        Debug.Log("Troop successfully removed!");
+        //_selectedTroopController.UIController.OpenAttackMenu();
     }
 
     private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode) // think about namespacing
@@ -137,8 +128,6 @@ public class TroopManager : MonoBehaviour
     {
         if (_selectedTroopController != null)
             GameEvents.instance.DisableCanvases();
-
-        //_selectedTroopController.UIController.ChangeCanvasActivationState(false);
 
         AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
@@ -156,52 +145,6 @@ public class TroopManager : MonoBehaviour
                 return true;
 
         return false;
-    }
-
-
-    public List<TroopController> GetTroopControllersList(TroopSide troopSide)
-        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
-
-
-    public TroopController[] GetEnemyInCertainRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
-    {
-        List<TroopController> enemyControllersList = new List<TroopController>();
-        List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(enemyTroopSide));
-
-        foreach (TroopController troopController in troopControllersList)
-        {
-            Vector3 currentEnemyPosition = troopController.transform.position;
-
-            if (Vector3.Distance(troopPosition, currentEnemyPosition) <= troopRange) {
-                enemyControllersList.Add(troopController);
-            }
-        }
-
-        return enemyControllersList.ToArray();
-    }
-
-    public TroopController GetEnemyInCertainRange(Vector3 troopPosition, TroopController[] enemyControllersList, TroopController targetPriorityEnemy)
-    {
-        float closestDistance = Mathf.Infinity;
-        TroopController targetEnemy = default;
-
-        foreach (TroopController enemyController in enemyControllersList)
-        {
-            Vector3 currentEnemyPosition = enemyController.transform.position;
-
-            float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
-
-            if (enemyController == targetPriorityEnemy)
-                return targetPriorityEnemy;
-
-            if (currentDistanceBetweenEnemy < closestDistance)
-            {
-                targetEnemy = enemyController;
-                closestDistance = currentDistanceBetweenEnemy;
-            }
-        }
-
-        return targetEnemy;
     }
 }
 

@@ -39,9 +39,9 @@ public class TroopUIController
 
     public void OpenAttackMenu()
     {
-        Debug.Log("Attack Menu Opened");
+        // to do
 
-        // canvascontrololer open attack menu ?
+        Debug.Log("Attack menu opened");
     }
 
 

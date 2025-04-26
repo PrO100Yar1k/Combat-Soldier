@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -35,9 +36,11 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopDefaultState>();
     }
     
-    public void ActivateAttackState()
+    public void ActivateAttackState(TroopController enemy)
     {
         SwitchState<TroopAttackState>();
+
+        GameEvents.instance.TroopStartedAttack(enemy);
     }
 
     public void ActivateDefenceState()
@@ -45,9 +48,11 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopDefenseState>();
     }
 
-    public void ActivateMoveState()
+    public void ActivateMoveState(Vector3 targetPoint, Action finishAction)
     {
         SwitchState<TroopMoveState>();
+
+        GameEvents.instance.TroopMovement(targetPoint, finishAction);
     }
 
     public void SwitchState<T>() where T : TroopBaseState

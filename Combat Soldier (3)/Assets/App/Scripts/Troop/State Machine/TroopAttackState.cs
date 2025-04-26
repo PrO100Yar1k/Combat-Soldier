@@ -11,6 +11,8 @@ public class TroopAttackState : TroopBaseState
 
     public TroopAttackState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState)
     {
+        // to do
+
         SetupDefaultCountAttackWaves();
     }
 
@@ -26,23 +28,30 @@ public class TroopAttackState : TroopBaseState
 
     private void SubscribeToEvents()
     {
-        //GameEvents.instance.OnTroopStartedMovement += SetWaypoint;
+        GameEvents.instance.OnTroopStartedAttack += TryToAttackEnemy;
     }
 
     private void UnSubscribeFromEvents()
     {
-        //GameEvents.instance.OnTroopStartedMovement -= SetWaypoint;
+        GameEvents.instance.OnTroopStartedAttack -= TryToAttackEnemy;
     }
 
-    private void TryToAttackEnemy(TroopController enemyController)
+    private void TryToAttackEnemy(TroopController targetEnemy)
     {
-        if (!isEnemyInAttackRange())
+        Debug.Log("Attack state entered!");
+
+        Vector3 troopPosition = _troopController.transform.position;
+        TroopSide enemyTroopSide = TroopSide.Enemy;
+
+        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, _troopScriptable.attackRangeRadius, targetEnemy);
+
+        if (enemyTroopController == null)   // !isEnemyInAttackRange()
             return;
 
-        AttackCoroutineStarter(enemyController);
+        AttackCoroutineStarter(enemyTroopController);
     }
 
-    private void AttackCoroutineStarter(TroopController enemyController)
+    private void AttackCoroutineStarter(TroopController targetEnemy)
     {
         if (_attackCoroutine != null)
         {
@@ -51,7 +60,7 @@ public class TroopAttackState : TroopBaseState
         }
         else
         {
-            _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(enemyController));
+            _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(targetEnemy));
         }
     }
 
@@ -59,27 +68,33 @@ public class TroopAttackState : TroopBaseState
     {
         //_isAttack = true;
 
-        float timeBetweenAttack = _troopScriptable.timeToNextAttack;
+        yield return new WaitUntil(()=> _remainingAttackWaves == 0);
+
+        float timeBetweenAttackWaves = _troopScriptable.timeBetweenAttackWaves;
 
         while (_remainingAttackWaves > 0)
         {
             enemyController.HPController.TakeDamage(_troopScriptable.attackDamage);
 
-            _remainingAttackWaves--;
-
             Debug.Log($"Attacked with damage {_troopScriptable.attackDamage}; Wave - {_troopScriptable.countAttackWaves - _remainingAttackWaves}");
 
-            yield return new WaitForSeconds(timeBetweenAttack);
+            _remainingAttackWaves--;
+
+            yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
+
+        _troopController.StartCoroutine(ReloadAttack());
 
         //_isAttack = false;
     }
 
-    private bool isEnemyInAttackRange()
+    private IEnumerator ReloadAttack()
     {
-        return true;
+        float timeToReloadAttack = _troopScriptable.timeToReloadAttack;
 
-        //if ()
+        yield return new WaitForSeconds(timeToReloadAttack);
+
+        SetupDefaultCountAttackWaves();
     }
 
     private void SetupDefaultCountAttackWaves()

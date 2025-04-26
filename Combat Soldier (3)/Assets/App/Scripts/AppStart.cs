@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class AppStart : MonoBehaviour
 {
+    [SerializeField] private TroopGeneralManager _troopGeneralManager = default;
     [SerializeField] private TroopManager _troopManager = default;
+
     [SerializeField] private GameEvents _gameEvents = default;
 
     private void Awake()
@@ -11,6 +13,6 @@ public class AppStart : MonoBehaviour
 
         _troopManager.InitializeManager();
 
-        // to do
+        _troopGeneralManager.InitializeManager();
     }
 }

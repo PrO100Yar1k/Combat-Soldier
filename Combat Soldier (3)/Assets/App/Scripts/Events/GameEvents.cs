@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GameEvents : MonoBehaviour
 {
-    #region Singleton activation
+    #region Singleton Activation
+
     [HideInInspector] public static GameEvents instance;
 
     public void Initialize()
@@ -16,6 +17,7 @@ public class GameEvents : MonoBehaviour
 
         instance = this;
     }
+
     #endregion
 
     public event Action<TroopController, TroopSide> OnTroopSpawned = default;
@@ -25,8 +27,11 @@ public class GameEvents : MonoBehaviour
     public void TroopDied(TroopController troopController, TroopSide troopSide) => OnTroopDied?.Invoke(troopController, troopSide);
 
 
-    public event Action<Vector3> OnTroopStartedMovement = default;
-    public void TroopMovement(Vector3 point) => OnTroopStartedMovement?.Invoke(point);
+    public event Action<Vector3, Action> OnTroopStartedMovement = default;
+    public void TroopMovement(Vector3 point, Action finishAction) => OnTroopStartedMovement?.Invoke(point, finishAction);
+    
+    public event Action<TroopController> OnTroopStartedAttack = default;
+    public void TroopStartedAttack(TroopController enemyController) => OnTroopStartedAttack?.Invoke(enemyController);
 
 
     public event Action<TroopController, OrderMode> OnTroopEnterAnyMode = default;
