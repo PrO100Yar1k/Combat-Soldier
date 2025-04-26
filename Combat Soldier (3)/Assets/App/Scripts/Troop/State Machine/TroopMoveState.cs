@@ -4,12 +4,10 @@ using System;
 
 public class TroopMoveState : TroopBaseState
 {
+    private Tween _movementTweenerController = default;
+    private Tween _rotationTweenerController = default;
+
     public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
-
-    //private bool _isRunning = false; // to do
-
-    private Tween _movementTween = default;
-    private Tween _rotationTween = default;
 
     #region Events
 
@@ -37,8 +35,6 @@ public class TroopMoveState : TroopBaseState
 
     private void SetWaypoint(Vector3 point, Action finishAction)
     {
-        //_isRunning = true;
-
         Transform troopTransform = _troopController.transform;
 
         Vector3 currentPos = troopTransform.position;
@@ -53,8 +49,8 @@ public class TroopMoveState : TroopBaseState
 
         float timeToArrive = distance / _troopScriptable.Speed;
 
-        _movementTween?.Kill();
-        _movementTween = troopTransform.DOMove(finalPos, timeToArrive)
+        _movementTweenerController?.Kill();
+        _movementTweenerController = troopTransform.DOMove(finalPos, timeToArrive)
             .SetEase(Ease.Flash)
             .OnComplete(delegate { Finished(finishAction); });
     }
@@ -73,19 +69,18 @@ public class TroopMoveState : TroopBaseState
 
         float rotationDuration = angle / rotationSpeed;
 
-        _rotationTween?.Kill();
-        _rotationTween = _troopController.transform.DORotate(new Vector3(0, targetAngle, 0), rotationDuration) // normalization // + targetAngle / 6
+        _rotationTweenerController?.Kill();
+        _rotationTweenerController = _troopController.transform.DORotate(new Vector3(0, targetAngle, 0), rotationDuration) // normalization // + targetAngle / 6
             .SetEase(Ease.Flash);
     }
 
     private void Finished(Action finishAction) // make like a target state after finishing point instead of event ?
     {
-        //_isRunning = false;
-
         Debug.Log("Finished Waypoint!");
 
-        _switcherState.SwitchState<TroopDefaultState>();
-
         finishAction?.Invoke();
+
+        if (finishAction == null)
+            _switcherState.SwitchState<TroopDefaultState>(); // ??
     }
 }

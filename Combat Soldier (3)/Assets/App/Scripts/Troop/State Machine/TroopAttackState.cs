@@ -7,12 +7,8 @@ public class TroopAttackState : TroopBaseState
 
     private Coroutine _attackCoroutine = default;
 
-    //private bool _isAttack = false;
-
     public TroopAttackState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState)
     {
-        // to do
-
         SetupDefaultCountAttackWaves();
     }
 
@@ -66,8 +62,6 @@ public class TroopAttackState : TroopBaseState
 
     private IEnumerator AttackEnemy(TroopController enemyController)
     {
-        //_isAttack = true;
-
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
         float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
@@ -87,8 +81,6 @@ public class TroopAttackState : TroopBaseState
         }
 
         _troopController.StartCoroutine(ReloadAttack());
-
-        //_isAttack = false;
     }
 
     private IEnumerator ReloadAttack()
