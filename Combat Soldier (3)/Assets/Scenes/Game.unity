@@ -463,10 +463,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 260138135905111716, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.78
@@ -507,21 +503,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1330794283593036407, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+    - target: {fileID: 3472948890224623127, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1713174048004189303, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4267770153691833884, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+    - target: {fileID: 5434525828633089727, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5555289593626844165, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_Name
       value: Enemy - Troop Unit 2.0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038800154034946434, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928376212756248792, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -913,25 +913,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 847046501250468822, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+    - target: {fileID: 2881238589335354393, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2489527697973944253, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+    - target: {fileID: 3402170694710746714, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2827434427001356733, guid: 0e6664c653e352645a21e900729830d1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704008762701210478, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+    - target: {fileID: 4091064566272276575, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_Name
       value: Player - Troop Unit 2.0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848454158540478654, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9183972724890329364, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_LocalPosition.x
