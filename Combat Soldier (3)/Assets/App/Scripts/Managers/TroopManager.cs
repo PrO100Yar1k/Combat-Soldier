@@ -51,13 +51,13 @@ public class TroopManager : MonoBehaviour // code refactoring
         if (Input.GetButtonDown("Fire1") && !IsPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
         {  
             if (_selectedOrderMode == OrderMode.None) {
-                NoSelectedTroopRaycast();
+                NoSelectedActionTroopRaycast();
             } 
             else SelectedTroopRaycastAction();
         }
     }
 
-    private void NoSelectedTroopRaycast() // 
+    private void NoSelectedActionTroopRaycast() // 
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -69,13 +69,14 @@ public class TroopManager : MonoBehaviour // code refactoring
                 LayerMask hitObjectLayer = hit.collider.gameObject.layer;
                 int shiftedMask = (1 << hitObjectLayer);
 
+                if (_selectedTroopController != null)
+                    CancelEnteringModeAndDisableMenu();
+
                 if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
                 {
                     _selectedTroopController = troopController;
                     _selectedTroopController.UIController.OpenTroopGeneralMenu();
                 }
-                else if (_selectedTroopController != null)
-                    CancelEnteringModeAndDisableMenu();
             }
         }
     }
