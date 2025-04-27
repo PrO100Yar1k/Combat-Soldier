@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HPController // to do
+public class HPController
 {
     private readonly ScreenCanvasController _troopCanvasController = default;
     private TroopController _troopController = default;
@@ -30,6 +30,8 @@ public class HPController // to do
         _currentBlockRate = currentDivisionScriptable.BlockRate;
     }
 
+    #region Take Damage
+
     public void TakeDamage(int damage)
     {
         if (damage <= 0)
@@ -50,8 +52,19 @@ public class HPController // to do
 
         ChangeSliderAndTextValues();
 
-        CheckTroopDeath();
+        CheckForTroopDeath();
     }
+
+    private void ChangeSliderAndTextValues()
+    {
+        if (_troopCanvasController == null) //maybe not neccesary
+            return;
+
+        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
+        _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
+    }
+
+    #endregion
 
     #region Increase Points
 
@@ -77,16 +90,9 @@ public class HPController // to do
 
     #endregion
 
-    private void ChangeSliderAndTextValues()
-    {
-        if (_troopCanvasController == null) //maybe not neccesary
-            return;
+    #region Death
 
-        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
-        _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
-    }
-
-    private void CheckTroopDeath() // to do
+    private void CheckForTroopDeath() // to do
     {
         if (_currentHealPoint <= 0)
             TroopDeath();
@@ -100,4 +106,6 @@ public class HPController // to do
 
         Object.DestroyImmediate(_troopController.gameObject);
     }
+
+    #endregion
 }

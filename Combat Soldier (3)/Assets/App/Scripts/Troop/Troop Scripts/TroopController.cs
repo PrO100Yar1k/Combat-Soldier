@@ -11,7 +11,7 @@ public abstract class TroopController : MonoBehaviour
 
     [Space(2)]
 
-    [SerializeField] protected TroopSide _troopSide = default;
+    [SerializeField] protected TroopModelController _troopModelController = default;
 
     public TroopStateController StateController { get; protected set; }
 
@@ -22,6 +22,9 @@ public abstract class TroopController : MonoBehaviour
     public HPController HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable; // ?
+
+    protected TroopSide _troopSide => _troopScriptable.TroopSide;
+
 
     protected virtual void OnEnable() 
         => GameEvents.instance.TroopSpawned(this, _troopSide);

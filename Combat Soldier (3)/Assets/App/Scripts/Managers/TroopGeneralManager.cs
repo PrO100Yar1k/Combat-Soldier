@@ -38,7 +38,6 @@ public class TroopGeneralManager : MonoBehaviour
         GameEvents.instance.OnTroopSpawned += AddTroopToList;
 
         GameEvents.instance.OnTroopDied += RemoveTroopFromList;
-
     }
 
     private void UnSubscribeFromEvents()
@@ -50,7 +49,7 @@ public class TroopGeneralManager : MonoBehaviour
 
     #endregion
 
-    private TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
+    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
     {
         List<TroopController> enemyControllersList = new List<TroopController>();
         List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(enemyTroopSide));
@@ -95,6 +94,11 @@ public class TroopGeneralManager : MonoBehaviour
     }
 
 
+    public List<TroopController> GetTroopControllersList(TroopSide troopSide)
+        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
+
+    #region Operations with List
+
     private void AddTroopToList(TroopController troopController, TroopSide troopSide)
     {
         GetTroopControllersList(troopSide).Add(troopController);
@@ -109,6 +113,5 @@ public class TroopGeneralManager : MonoBehaviour
         Debug.Log("Troop successfully removed!");
     }
 
-    private List<TroopController> GetTroopControllersList(TroopSide troopSide)
-        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
+    #endregion
 }

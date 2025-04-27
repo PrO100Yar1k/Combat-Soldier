@@ -15,6 +15,7 @@ MonoBehaviour:
   Name: Enemy_test
   TroopType: 0
   AttackType: 0
+  TroopSide: 1
   MaxHealPoint: 100
   MaxDefencePoint: 100
   BlockRate: 0.2

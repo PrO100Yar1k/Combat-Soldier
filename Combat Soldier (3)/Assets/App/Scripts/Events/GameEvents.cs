@@ -28,7 +28,7 @@ public class GameEvents : MonoBehaviour
 
 
     public event Action<Vector3, Action> OnTroopStartedMovement = default;
-    public void TroopMovement(Vector3 point, Action finishAction) => OnTroopStartedMovement?.Invoke(point, finishAction);
+    public void TroopStartedMovement(Vector3 point, Action finishAction) => OnTroopStartedMovement?.Invoke(point, finishAction);
     
     public event Action<TroopController> OnTroopStartedAttack = default;
     public void TroopStartedAttack(TroopController enemyController) => OnTroopStartedAttack?.Invoke(enemyController);
@@ -40,6 +40,6 @@ public class GameEvents : MonoBehaviour
     public event Action OnTroopCancelEnteringMode = default;
     public void TroopCancelEnteringMode() => OnTroopCancelEnteringMode?.Invoke();
 
-    public event Action OnDisableCanvases = default;
-    public void DisableCanvases() => OnDisableCanvases?.Invoke();
+    public event Action OnTroopDisableCanvases = default;
+    public void TroopDisableCanvases() => OnTroopDisableCanvases?.Invoke();
 }

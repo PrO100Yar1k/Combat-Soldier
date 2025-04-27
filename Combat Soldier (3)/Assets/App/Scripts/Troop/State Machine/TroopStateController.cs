@@ -52,7 +52,7 @@ public class TroopStateController : ISwitchableState
     {
         SwitchState<TroopMoveState>();
 
-        GameEvents.instance.TroopMovement(targetPoint, finishAction);
+        GameEvents.instance.TroopStartedMovement(targetPoint, finishAction);
     }
 
     public void SwitchState<T>() where T : TroopBaseState

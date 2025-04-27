@@ -7,6 +7,7 @@ public class TroopScriptable : ScriptableObject
 
     public TroopType TroopType = default;
     public AttackType AttackType = AttackType.Land;
+    public TroopSide TroopSide = TroopSide.Player;
 
     [Space(5)]
 

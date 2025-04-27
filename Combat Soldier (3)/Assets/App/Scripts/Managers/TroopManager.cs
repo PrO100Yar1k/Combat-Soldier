@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class TroopManager : MonoBehaviour // code refactoring
 {
-    [Header("Layers")] [Space(3)]
+    [Header("Raycast Layers")] [Space(3)]
 
     [SerializeField] private LayerMask _terrainLayer = default;
 
@@ -135,7 +135,7 @@ public class TroopManager : MonoBehaviour // code refactoring
     private void CancelEnteringModeAndDisableMenu()
     {
         if (_selectedTroopController != null)
-            GameEvents.instance.DisableCanvases();
+            GameEvents.instance.TroopDisableCanvases();
 
         AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }

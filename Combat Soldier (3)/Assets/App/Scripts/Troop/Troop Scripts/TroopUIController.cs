@@ -9,14 +9,14 @@ public class TroopUIController
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnDisableCanvases += DisableAllCanvases;
+        GameEvents.instance.OnTroopDisableCanvases += DisableAllCanvases;
 
         GameEvents.instance.OnTroopDied += DisableObject;
     }
 
-    public void UnSubscribeFromEvents() // called before destroying in HPController
+    private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnDisableCanvases -= DisableAllCanvases;
+        GameEvents.instance.OnTroopDisableCanvases -= DisableAllCanvases;
 
         GameEvents.instance.OnTroopDied -= DisableObject;
     }
