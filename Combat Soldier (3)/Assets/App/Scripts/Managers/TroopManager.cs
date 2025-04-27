@@ -30,12 +30,16 @@ public class TroopManager : MonoBehaviour // code refactoring
     {
         GameEvents.instance.OnTroopEnterAnyMode += AssignTroopControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
+
+        GameEvents.instance.OnTroopDied += UpdateTroopStatus;
     }
 
     private void UnSubscribeFromEvents()
     {
         GameEvents.instance.OnTroopEnterAnyMode -= AssignTroopControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
+
+        GameEvents.instance.OnTroopDied -= UpdateTroopStatus;
     }
 
     #endregion
@@ -105,7 +109,6 @@ public class TroopManager : MonoBehaviour // code refactoring
             }
         }
         CancelEnteringModeAndDisableMenu();
-        //_selectedOrderMode = OrderMode.None;
     }
 
     private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController) // to do
@@ -150,6 +153,12 @@ public class TroopManager : MonoBehaviour // code refactoring
                 return true;
 
         return false;
+    }
+
+    private void UpdateTroopStatus(TroopController troopController, TroopSide troopSide)
+    {
+        if (_selectedTroopController == troopController)
+            AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
 }
 

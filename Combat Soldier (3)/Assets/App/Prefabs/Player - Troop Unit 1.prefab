@@ -1704,7 +1704,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7381899144711834296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0960f1b75d181f44394cbf45a941a8f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 23b04e8e59dd9c14a957bebe8a9ff48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healPointSlider: {fileID: 7924319850259118218}
@@ -2146,7 +2146,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7908560114402340154}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35462a32b5adb4940ad834d4c4398166, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ef698687ca116f4d9440d0bfdaa4bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _attackCircleRange: {fileID: 2510536782232248351}

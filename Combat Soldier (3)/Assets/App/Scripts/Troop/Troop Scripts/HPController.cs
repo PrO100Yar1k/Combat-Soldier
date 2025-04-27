@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HPController
+public class HPController // to do
 {
     private readonly ScreenCanvasController _troopCanvasController = default;
     private TroopController _troopController = default;
@@ -95,6 +95,8 @@ public class HPController
     private void TroopDeath()
     {
         Debug.Log($"The {_currentName} was died");
+
+        _troopController.StopAllCoroutines();
 
         Object.Destroy(_troopController.gameObject);
     }
