@@ -98,6 +98,6 @@ public class HPController // to do
 
         _troopController.StopAllCoroutines();
 
-        Object.Destroy(_troopController.gameObject);
+        Object.DestroyImmediate(_troopController.gameObject);
     }
 }

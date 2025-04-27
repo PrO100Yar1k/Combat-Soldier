@@ -10,11 +10,15 @@ public class TroopUIController
     private void SubscribeToEvents()
     {
         GameEvents.instance.OnDisableCanvases += DisableAllCanvases;
+
+        GameEvents.instance.OnTroopDied += DisableObject;
     }
 
-    private void UnSubscribeFromEvents()
+    public void UnSubscribeFromEvents() // called before destroying in HPController
     {
         GameEvents.instance.OnDisableCanvases -= DisableAllCanvases;
+
+        GameEvents.instance.OnTroopDied -= DisableObject;
     }
 
     #endregion
@@ -59,5 +63,10 @@ public class TroopUIController
         _worldCanvasController.DisableCanvas();
 
         UnSubscribeFromEvents();
+    }
+
+    private void DisableObject(TroopController troopController, TroopSide troopSide)
+    {
+        DisableAllCanvases(); // disable and unsubscribe
     }
 }
