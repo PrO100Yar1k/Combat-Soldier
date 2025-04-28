@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -48,7 +47,7 @@ public class TroopManager : MonoBehaviour // code refactoring
     {
         // check with new input system
 
-        if (Input.GetButtonDown("Fire1") && !IsPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
+        if (Input.GetButtonDown("Fire1") && !isPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
         {  
             if (_selectedOrderMode == OrderMode.None) {
                 NoSelectedActionTroopRaycast();
@@ -141,7 +140,15 @@ public class TroopManager : MonoBehaviour // code refactoring
         AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
 
-    private bool IsPointerOverUI()
+    private void UpdateTroopStatus(TroopController troopController, TroopSide troopSide)
+    {
+        if (_selectedTroopController == troopController)
+            AssignTroopControllerAndChangeMode(null, OrderMode.None);
+    }
+
+
+
+    private bool isPointerOverUI()
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
@@ -154,12 +161,6 @@ public class TroopManager : MonoBehaviour // code refactoring
                 return true;
 
         return false;
-    }
-
-    private void UpdateTroopStatus(TroopController troopController, TroopSide troopSide)
-    {
-        if (_selectedTroopController == troopController)
-            AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
 }
 

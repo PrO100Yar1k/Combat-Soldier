@@ -6,7 +6,7 @@ public class TroopDefaultState : TroopBaseState
 
     public override void Start()
     {
-        Debug.Log("Default State Entered!");
+
     }
 
     public override void Stop()
