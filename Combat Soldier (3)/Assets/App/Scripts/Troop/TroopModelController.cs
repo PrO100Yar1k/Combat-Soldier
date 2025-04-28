@@ -5,26 +5,21 @@ public class TroopModelController : MonoBehaviour
 {
     [SerializeField] private Material _invisibleMaterial = default;
 
-    private Material[] _defaultMaterialList = default; // to do
+    private Material _defaultMaterial = default;
 
-    #region Events
-
-    private void SubscribeToEvents()
-    {
-
-    }
-
-    private void UnSubscribeFromEvents()
-    {
-
-    }
-
-    #endregion
+    private MeshRenderer _meshRenderer = default;
 
     public void InitializeModelController()
     {
-        _defaultMaterialList = GetComponent<MeshRenderer>().materials;
+        _meshRenderer = GetComponent<MeshRenderer>();
 
-        // to do
+        _defaultMaterial = _meshRenderer.material; // maybe remake it with a list of materials
     }
+
+
+    public void AppearTroopModel()
+        => _meshRenderer.material = _defaultMaterial;
+
+    public void DisappearTroopModel()
+        => _meshRenderer.material = _invisibleMaterial;
 }

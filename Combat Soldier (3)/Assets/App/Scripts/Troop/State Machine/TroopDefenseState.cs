@@ -6,11 +6,11 @@ public class TroopDefenseState : TroopBaseState
 
     public override void Start()
     {
-
+        Debug.Log("Entered to Defense State!");
     }
 
     public override void Stop()
     {
-
+        Debug.Log("Exit from Defense State!");
     }
 }

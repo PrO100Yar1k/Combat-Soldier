@@ -33,6 +33,9 @@ public class TroopAttackState : TroopBaseState
 
     public override void Stop()
     {
+        DisableCoroutine();
+        ReloadAttackStarter();
+
         UnSubscribeFromEvents();
     }
 
@@ -48,21 +51,38 @@ public class TroopAttackState : TroopBaseState
         if (enemyTroopController == null)
             return;
 
+        enemyTroopController.StateController.ActivateDefenceState(); // maybe change it to event ?
+
         AttackEnemyCoroutineStarter(enemyTroopController);
     }
 
+    #region Coroutine Starter
+
     private void AttackEnemyCoroutineStarter(TroopController targetEnemy)
     {
-        if (_attackCoroutine != null)
-        {
-            _troopController.StopCoroutine(_attackCoroutine);
-            _attackCoroutine = null;
-        }
-        else
-        {
-            _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(targetEnemy));
-        }
+        DisableCoroutine();
+
+        EnableCoroutine(targetEnemy);
     }
+
+    private void DisableCoroutine()
+    {
+        if (_attackCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_attackCoroutine);
+
+        _attackCoroutine = null;
+    }
+
+    private void EnableCoroutine(TroopController targetEnemy)
+    {
+        _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(targetEnemy));
+    }
+
+    #endregion
+
+    #region Attack Coroutine
 
     private IEnumerator AttackEnemy(TroopController enemyController)
     {
@@ -84,6 +104,15 @@ public class TroopAttackState : TroopBaseState
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
 
+        ReloadAttackStarter();
+    }
+
+    #endregion
+
+    #region Reload Attack
+
+    private void ReloadAttackStarter()
+    {
         _troopController.StartCoroutine(ReloadAttack());
     }
 
@@ -98,4 +127,6 @@ public class TroopAttackState : TroopBaseState
 
     private void SetupDefaultCountAttackWaves()
         => _remainingAttackWaves = _troopScriptable.CountAttackWaves;
+
+    #endregion
 }

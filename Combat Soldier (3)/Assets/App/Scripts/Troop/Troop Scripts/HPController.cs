@@ -18,6 +18,7 @@ public class HPController
         _troopCanvasController = troopCanvasController;
 
         AssignBasicParameters(troopScriptable);
+        ChangeSliderAndTextValues();
     }
 
     private void AssignBasicParameters(TroopScriptable currentDivisionScriptable)
@@ -30,6 +31,15 @@ public class HPController
         _currentBlockRate = currentDivisionScriptable.BlockRate;
     }
 
+    private void ChangeSliderAndTextValues()
+    {
+        if (_troopCanvasController == null) //maybe it is not neccesary
+            return;
+
+        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
+        _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
+    }
+
     #region Take Damage
 
     public void TakeDamage(int damage)
@@ -37,10 +47,22 @@ public class HPController
         if (damage <= 0)
             return;
 
-        int blockedHP = (int) (damage * _currentBlockRate);
+        if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
+            TakeDamageWithDefenseState(damage);
+        
+        else TakeDamageWithoutDefenseState(damage);
+
+        ChangeSliderAndTextValues();
+
+        CheckForTroopDeath();
+    }
+
+    private void TakeDamageWithDefenseState(int damage)
+    {
+        int blockedHP = (int)(damage * _currentBlockRate);
         int takenDamage = damage - blockedHP;
 
-        if (_currentDefensePoint >= blockedHP) { // to do ?
+        if (_currentDefensePoint >= blockedHP) {
             _currentDefensePoint -= blockedHP;
         }
         else {
@@ -49,19 +71,11 @@ public class HPController
         }
 
         _currentHealPoint -= takenDamage;
-
-        ChangeSliderAndTextValues();
-
-        CheckForTroopDeath();
     }
 
-    private void ChangeSliderAndTextValues()
+    private void TakeDamageWithoutDefenseState(int damage)
     {
-        if (_troopCanvasController == null) //maybe not neccesary
-            return;
-
-        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
-        _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
+        _currentHealPoint -= damage;
     }
 
     #endregion

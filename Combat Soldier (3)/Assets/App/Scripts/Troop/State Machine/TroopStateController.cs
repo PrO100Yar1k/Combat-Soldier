@@ -55,9 +55,19 @@ public class TroopStateController : ISwitchableState
         GameEvents.instance.TroopStartedMovement(targetPoint, finishAction);
     }
 
-    public void SwitchState<T>() where T : TroopBaseState
+    public bool CheckStateForActivity<State>() where State : TroopBaseState
     {
-        TroopBaseState state = _allStates.FirstOrDefault(s => s is T);
+        TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
+
+        if (_currentState == state)
+            return true;
+
+        return false;
+    }
+
+    public void SwitchState<State>() where State : TroopBaseState
+    {
+        TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
 
         _currentState.Stop();
         _currentState = state;
