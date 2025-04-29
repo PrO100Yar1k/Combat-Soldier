@@ -7,8 +7,6 @@ public class TroopMoveState : TroopBaseState
     private Tween _movementTweenerController = default;
     private Tween _rotationTweenerController = default;
 
-    public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
-
     #region Events
 
     private void SubscribeToEvents()
@@ -23,6 +21,8 @@ public class TroopMoveState : TroopBaseState
 
     #endregion
 
+    public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
+
     public override void Start()
     {
         SubscribeToEvents();
@@ -33,8 +33,11 @@ public class TroopMoveState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    private void SetWaypoint(Vector3 point, Action finishAction)
+    private void SetWaypoint(TroopController troopController, Vector3 point, Action finishAction) // TroopController troopController ?
     {
+        if (troopController != _troopController)
+            return;
+
         Transform troopTransform = _troopController.transform;
 
         Vector3 currentPos = troopTransform.position;

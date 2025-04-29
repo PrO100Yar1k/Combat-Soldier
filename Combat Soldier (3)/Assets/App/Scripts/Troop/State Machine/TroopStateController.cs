@@ -47,11 +47,11 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopDefenseState>();
     }
 
-    public void ActivateMoveState(Vector3 targetPoint, Action finishAction)
+    public void ActivateMoveState(TroopController troopController, Vector3 targetPoint, Action finishAction)
     {
         SwitchState<TroopMoveState>();
 
-        GameEvents.instance.TroopStartedMovement(targetPoint, finishAction);
+        GameEvents.instance.TroopStartedMovement(troopController, targetPoint, finishAction);
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState

@@ -27,8 +27,8 @@ public class GameEvents : MonoBehaviour
     public void TroopDied(TroopController troopController, TroopSide troopSide) => OnTroopDied?.Invoke(troopController, troopSide);
 
 
-    public event Action<Vector3, Action> OnTroopStartedMovement = default;
-    public void TroopStartedMovement(Vector3 point, Action finishAction) => OnTroopStartedMovement?.Invoke(point, finishAction);
+    public event Action<TroopController, Vector3, Action> OnTroopStartedMovement = default;
+    public void TroopStartedMovement(TroopController troopController, Vector3 point, Action finishAction) => OnTroopStartedMovement?.Invoke(troopController, point, finishAction);
     
     public event Action<TroopController> OnTroopStartedAttack = default;
     public void TroopStartedAttack(TroopController enemyController) => OnTroopStartedAttack?.Invoke(enemyController);

@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class TroopManager : MonoBehaviour // code refactoring
+public class TroopManager : MonoBehaviour
 {
-    [Header("Raycast Layers")] [Space(3)]
+    [Header("Raycast Layers")]
 
     [SerializeField] private LayerMask _terrainLayer = default;
 
@@ -14,8 +12,6 @@ public class TroopManager : MonoBehaviour // code refactoring
     private TroopController _selectedTroopController = default;
 
     private OrderMode _selectedOrderMode = default;
-
-    private RaycastHit hit;
 
     #region Events & Initialization
 
@@ -43,73 +39,78 @@ public class TroopManager : MonoBehaviour // code refactoring
 
     #endregion
 
-    private void Update()
+    public void ChangeTroopControllerAndState()
     {
-        // check with new input system
-
-        if (Input.GetButtonDown("Fire1") && !isPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
-        {  
-            if (_selectedOrderMode == OrderMode.None) {
-                NoSelectedActionTroopRaycast();
-            } 
-            else SelectedTroopRaycastAction();
+        if (_selectedOrderMode == OrderMode.None) {
+            NoSelectedOrderTroopAction();
+        }
+        else {
+            SelectedOrderTroopAction();
         }
     }
 
-    private void NoSelectedActionTroopRaycast() // 
+    private void NoSelectedOrderTroopAction()
     {
-        Vector3 mousePos = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        RaycastHit hit = GetRaycastHit();
 
-        if (Physics.Raycast(ray, out hit))
+        if (hit.collider == null)
+            return;
+
+        LayerMask hitLayer = hit.collider.gameObject.layer;
+        int shiftedMask = (1 << hitLayer);
+
+        if (_selectedTroopController != null)
+            CancelEnteringModeAndDisableMenu();
+
+        if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
         {
-            if (hit.collider != null)
-            {
-                LayerMask hitObjectLayer = hit.collider.gameObject.layer;
-                int shiftedMask = (1 << hitObjectLayer);
-
-                if (_selectedTroopController != null)
-                    CancelEnteringModeAndDisableMenu();
-
-                if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
-                {
-                    _selectedTroopController = troopController;
-                    _selectedTroopController.UIController.OpenTroopGeneralMenu();
-                }
-            }
+            _selectedTroopController = troopController;
+            _selectedTroopController.UIController.OpenTroopGeneralMenu();
         }
     }
 
-    private void SelectedTroopRaycastAction() // to do
+    private void SelectedOrderTroopAction()
     {
         if (_selectedTroopController == null)
             return;
 
+        RaycastHit hit = GetRaycastHit();
+
+        if (hit.collider == null)
+            return;
+
+        TroopStateController troopStateController = _selectedTroopController.StateController;
+
+        LayerMask hitLayer = hit.collider.gameObject.layer;
+        int shiftedMask = (1 << hitLayer);
+
+        Vector3 targetPoint = hit.point;
+
+        if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move)
+        {
+            troopStateController.ActivateMoveState(_selectedTroopController, targetPoint, null);
+        }
+        else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out EnemyTroopController enemy))
+        {
+            //_selectedTroopController.UIController.OpenAttackMenu();
+            ActivateAttackState(enemy, enemy.transform.position, troopStateController);
+        }
+
+        CancelEnteringModeAndDisableMenu();
+    }
+
+    private RaycastHit GetRaycastHit()
+    {
+        RaycastHit hit;
+
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider != null)
-            {
-                GameObject hitObject = hit.collider.gameObject;
-                int shiftedMask = (1 << hitObject.layer);
+        Physics.Raycast(ray, out hit);
 
-                var troopStateController = _selectedTroopController.StateController;
-
-                Vector3 targetPoint = hit.point;
-
-                if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move) {
-                    troopStateController.ActivateMoveState(targetPoint, null);
-                }
-                else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hitObject.TryGetComponent(out EnemyTroopController enemy)) {
-                    //_selectedTroopController.UIController.OpenAttackMenu();
-                    ActivateAttackState(enemy, enemy.transform.position, troopStateController);
-                }
-            }
-        }
-        CancelEnteringModeAndDisableMenu();
+        return hit;
     }
+
 
     private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController) // to do
     {
@@ -123,7 +124,7 @@ public class TroopManager : MonoBehaviour // code refactoring
         Action action = default;
         action += delegate { _troopStateController.ActivateAttackState(enemy); } ;
 
-        _troopStateController.ActivateMoveState(targetPoint, action);
+        _troopStateController.ActivateMoveState(enemy, targetPoint, action);
     }
 
     private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode) // think about namespacing
@@ -144,23 +145,6 @@ public class TroopManager : MonoBehaviour // code refactoring
     {
         if (_selectedTroopController == troopController)
             AssignTroopControllerAndChangeMode(null, OrderMode.None);
-    }
-
-
-
-    private bool isPointerOverUI()
-    {
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-
-        for (int i = 0; i < results.Count; i++)
-            if (results[i].gameObject.layer == 5)
-                return true;
-
-        return false;
     }
 }
 
