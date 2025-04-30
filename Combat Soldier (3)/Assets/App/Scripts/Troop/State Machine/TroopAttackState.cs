@@ -11,12 +11,12 @@ public class TroopAttackState : TroopBaseState
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopStartedAttack += TryToAttackEnemy;
+        GameEvents.instance.OnTroopAttackEnemy += TryToAttackEnemy;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopStartedAttack -= TryToAttackEnemy;
+        GameEvents.instance.OnTroopAttackEnemy -= TryToAttackEnemy;
     }
 
     #endregion

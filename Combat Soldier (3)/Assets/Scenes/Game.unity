@@ -140,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_Name
-      value: Player - Troop Unit 2.0 (1)
+      value: Player - Troop Unit 2.0 2
       objectReference: {fileID: 0}
     - target: {fileID: 5848454158540478654, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 214147610}
   - component: {fileID: 214147611}
   m_Layer: 0
-  m_Name: GameEvents
+  m_Name: Game Events
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,6 +268,7 @@ Transform:
   - {fileID: 567059791}
   - {fileID: 1411919298}
   - {fileID: 214147610}
+  - {fileID: 1089139086}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
@@ -552,7 +553,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.78
+      value: 8.04
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -560,7 +561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.53
+      value: 4.47
       objectReference: {fileID: 0}
     - target: {fileID: 1095471726244663735, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -903,6 +904,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1089139085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1089139086}
+  - component: {fileID: 1089139087}
+  m_Layer: 0
+  m_Name: Troop Model Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1089139086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089139085}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 324527132}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1089139087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089139085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4830bc12e94fd664a9dc8a7f45385e2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1411919297
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,6 +1044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _troopGeneralManager: {fileID: 567059792}
   _troopManager: {fileID: 1411919299}
+  _troopModelManager: {fileID: 1089139087}
   _gameEvents: {fileID: 214147611}
 --- !u!1001 &7298785271920545970
 PrefabInstance:

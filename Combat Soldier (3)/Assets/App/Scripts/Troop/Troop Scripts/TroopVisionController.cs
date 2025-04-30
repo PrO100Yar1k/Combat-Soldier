@@ -3,91 +3,27 @@ using UnityEngine;
 
 public class TroopVisionController
 {
+    public bool IsTroopVisible { get; private set; } = true;
+
     private TroopController _troopController = default;
     private TroopScriptable _troopScriptable = default;
 
-    private TroopSide _troopSide = default;
-
-    private Coroutine _visionCoroutine = default;
-
-    #region Events
-
-    private void SubscribeToEvents()
-    {
-        //GameEvents.instance.OnTroopStartedMovement += ProvideEnemyVisionCoroutineStarter;
-
-        GameEvents.instance.OnTroopDied += DisableObject;
-    }
-
-    private void UnSubscribeFromEvents()
-    {
-        GameEvents.instance.OnTroopDied -= DisableObject;
-    }
-
-    #endregion
-
-    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable, TroopSide troopSide)
+    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable, TroopSide troopSide) // to do
     {
         _troopController = troopController;
         _troopScriptable = troopScriptable;
-
-        _troopSide = troopSide;
-
-        SubscribeToEvents();
-
-        DisableAllEnemies();
-
-        ProvideVisionCoroutineStarter(); // make an event with movement any troop and subscibe to it
     }
 
-    private void ProvideVisionCoroutineStarter()
+    public TroopController[] GetEnemiesInVisionRange()
     {
-        if (_visionCoroutine != null)
-        {
-            _troopController.StopCoroutine(_visionCoroutine);
-            _visionCoroutine = null;
-        }
-        else
-        {
-            _visionCoroutine = _troopController.StartCoroutine(ProvideEnemyDeploymentData());
-        }
-    }
+        Vector3 currentPosition = _troopController.transform.position;
+        float viewRange = _troopScriptable.ViewRangeRadius;
 
-    private IEnumerator ProvideEnemyDeploymentData()
-    {
-        while (true)
-        {
-            Vector3 currentPosition = _troopController.transform.position;
-            float viewRange = _troopScriptable.ViewRangeRadius;
+        TroopSide enemyTroopSide = GetEnemyTroopSide();
 
-            TroopSide enemyTroopSide = GetEnemyTroopSide();
-
-            TroopController[] EnemyControllersList = TroopGeneralManager.instance.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
-
-            if (EnemyControllersList.Length > 0)
-            {
-
-            }
-
-            yield return new WaitForSeconds(1);
-        }
-    }
-
-    private void DisableAllEnemies()
-    {
-        TroopController[] EnemyControllersList = TroopGeneralManager.instance.GetTroopControllersList(GetEnemyTroopSide()).ToArray();
-
-        foreach (TroopController troopController in EnemyControllersList)
-        {
-            //troopController.GetComponent<MeshRenderer>().material = 
-        }
+        return TroopGeneralManager.instance.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
     }
 
     private TroopSide GetEnemyTroopSide()
-        => _troopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
-
-    private void DisableObject(TroopController troopController, TroopSide troopSide)
-    {
-        UnSubscribeFromEvents();
-    }
+        => _troopScriptable.TroopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
 }

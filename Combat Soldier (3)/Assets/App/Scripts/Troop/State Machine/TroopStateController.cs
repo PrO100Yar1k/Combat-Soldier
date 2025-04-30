@@ -39,7 +39,7 @@ public class TroopStateController : ISwitchableState
     {
         SwitchState<TroopAttackState>();
 
-        GameEvents.instance.TroopStartedAttack(enemy);
+        GameEvents.instance.TroopAttackEnemy(enemy);
     }
 
     public void ActivateDefenceState()
@@ -51,7 +51,7 @@ public class TroopStateController : ISwitchableState
     {
         SwitchState<TroopMoveState>();
 
-        GameEvents.instance.TroopStartedMovement(troopController, targetPoint, finishAction);
+        GameEvents.instance.TroopMoveToPoint(troopController, targetPoint, finishAction); // херня повна
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState

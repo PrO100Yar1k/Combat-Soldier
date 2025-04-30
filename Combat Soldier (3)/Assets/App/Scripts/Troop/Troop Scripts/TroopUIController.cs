@@ -37,8 +37,6 @@ public class TroopUIController
     public void OpenTroopGeneralMenu()
     {
         EnableAllCanvases();
-
-        Debug.Log("Main menu has been opened");
     }
 
     public void OpenAttackMenu()

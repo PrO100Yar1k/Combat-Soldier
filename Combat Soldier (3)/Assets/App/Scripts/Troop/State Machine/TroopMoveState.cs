@@ -11,12 +11,12 @@ public class TroopMoveState : TroopBaseState
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopStartedMovement += SetWaypoint;
+        GameEvents.instance.OnTroopMoveToPoint += SetWaypoint;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopStartedMovement -= SetWaypoint;
+        GameEvents.instance.OnTroopMoveToPoint -= SetWaypoint;
     }
 
     #endregion
@@ -81,9 +81,8 @@ public class TroopMoveState : TroopBaseState
     {
         Debug.Log("Finished Waypoint!");
 
-        finishAction?.Invoke();
+        _switcherState.SwitchState<TroopDefaultState>(); // ??
 
-        if (finishAction == null)
-            _switcherState.SwitchState<TroopDefaultState>(); // ??
+        finishAction?.Invoke();
     }
 }

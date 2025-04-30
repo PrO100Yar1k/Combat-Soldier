@@ -41,13 +41,12 @@ public class TroopManager : MonoBehaviour
 
     public void ChangeTroopControllerAndState()
     {
-        if (_selectedOrderMode == OrderMode.None) {
+        if (_selectedOrderMode == OrderMode.None)
             NoSelectedOrderTroopAction();
-        }
-        else {
+        else 
             SelectedOrderTroopAction();
-        }
     }
+
 
     private void NoSelectedOrderTroopAction()
     {
@@ -92,8 +91,8 @@ public class TroopManager : MonoBehaviour
         }
         else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out EnemyTroopController enemy))
         {
-            //_selectedTroopController.UIController.OpenAttackMenu();
             ActivateAttackState(enemy, enemy.transform.position, troopStateController);
+            //_selectedTroopController.UIController.OpenAttackMenu();
         }
 
         CancelEnteringModeAndDisableMenu();
@@ -111,8 +110,7 @@ public class TroopManager : MonoBehaviour
         return hit;
     }
 
-
-    private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController _troopStateController) // to do
+    private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController troopStateController)
     {
         Vector3 direction = (targetPoint - _selectedTroopController.transform.position).normalized;
         float troopAttackRange = _selectedTroopController.TroopScriptable.AttackRangeRadius;
@@ -122,12 +120,12 @@ public class TroopManager : MonoBehaviour
         targetPoint -= direction * troopAttackRange * distanceModifier;
 
         Action action = default;
-        action += delegate { _troopStateController.ActivateAttackState(enemy); } ;
+        action += delegate { troopStateController.ActivateAttackState(enemy); } ;
 
-        _troopStateController.ActivateMoveState(enemy, targetPoint, action);
+        troopStateController.ActivateMoveState(_selectedTroopController, targetPoint, action);
     }
 
-    private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode) // think about namespacing
+    private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode)
     {
         _selectedTroopController = troopController;
         _selectedOrderMode = orderMode;
