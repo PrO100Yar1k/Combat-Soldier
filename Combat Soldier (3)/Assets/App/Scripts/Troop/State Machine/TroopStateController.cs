@@ -7,6 +7,11 @@ public class TroopStateController : ISwitchableState
 {
     private TroopController _troopController = default;
 
+    private TroopDefaultState _troopDefaultState = default;
+    private TroopMoveState _troopMoveState = default;
+    private TroopAttackState _troopAttackState = default;
+    private TroopDefenseState _troopDefenseState = default;
+
     private List<TroopBaseState> _allStates = default;
     private TroopBaseState _currentState = default;
 
@@ -19,14 +24,12 @@ public class TroopStateController : ISwitchableState
 
     private void InitializeBaseTroopStates()
     {
-        _allStates = new List<TroopBaseState>()
-        {
-            new TroopDefaultState(_troopController, this),
-            new TroopMoveState(_troopController, this),
-            new TroopAttackState(_troopController, this),
-            new TroopDefenseState(_troopController, this)
-        };
+        _troopDefaultState = new TroopDefaultState(_troopController, this);
+        _troopMoveState = new TroopMoveState(_troopController, this);
+        _troopAttackState = new TroopAttackState(_troopController, this);
+        _troopDefenseState = new TroopDefenseState(_troopController, this);
 
+        _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState };
         _currentState = _allStates[0];
     }
 
@@ -39,7 +42,7 @@ public class TroopStateController : ISwitchableState
     {
         SwitchState<TroopAttackState>();
 
-        GameEvents.instance.TroopAttackEnemy(enemy);
+        _troopAttackState.TryToAttackEnemy(enemy);
     }
 
     public void ActivateDefenceState()
@@ -47,21 +50,18 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopDefenseState>();
     }
 
-    public void ActivateMoveState(TroopController troopController, Vector3 targetPoint, Action finishAction)
+    public void ActivateMoveState(Vector3 targetPoint, Action finishAction)
     {
         SwitchState<TroopMoveState>();
 
-        GameEvents.instance.TroopMoveToPoint(troopController, targetPoint, finishAction); // херня повна
+        _troopMoveState.SetWaypoint(targetPoint, finishAction);
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState
     {
         TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
 
-        if (_currentState == state)
-            return true;
-
-        return false;
+        return _currentState == state;
     }
 
     public void SwitchState<State>() where State : TroopBaseState
@@ -70,7 +70,6 @@ public class TroopStateController : ISwitchableState
 
         _currentState.Stop();
         _currentState = state;
-
         _currentState.Start();
     }
 }

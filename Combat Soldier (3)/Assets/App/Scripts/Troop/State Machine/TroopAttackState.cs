@@ -7,20 +7,6 @@ public class TroopAttackState : TroopBaseState
 
     private Coroutine _attackCoroutine = default;
 
-    #region Events
-
-    private void SubscribeToEvents()
-    {
-        GameEvents.instance.OnTroopAttackEnemy += TryToAttackEnemy;
-    }
-
-    private void UnSubscribeFromEvents()
-    {
-        GameEvents.instance.OnTroopAttackEnemy -= TryToAttackEnemy;
-    }
-
-    #endregion
-
     public TroopAttackState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState)
     {
         SetupDefaultCountAttackWaves();
@@ -28,7 +14,7 @@ public class TroopAttackState : TroopBaseState
 
     public override void Start()
     {
-        SubscribeToEvents();
+        //SubscribeToEvents();
     }
 
     public override void Stop()
@@ -36,10 +22,10 @@ public class TroopAttackState : TroopBaseState
         DisableCoroutine();
         ReloadAttackStarter();
 
-        UnSubscribeFromEvents();
+        //UnSubscribeFromEvents();
     }
 
-    private void TryToAttackEnemy(TroopController targetEnemy)
+    public void TryToAttackEnemy(TroopController targetEnemy)
     {
         Vector3 troopPosition = _troopController.transform.position;
         TroopSide enemyTroopSide = TroopSide.Enemy;

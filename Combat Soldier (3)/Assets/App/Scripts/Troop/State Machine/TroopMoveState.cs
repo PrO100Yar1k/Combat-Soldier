@@ -7,37 +7,24 @@ public class TroopMoveState : TroopBaseState
     private Tween _movementTweenerController = default;
     private Tween _rotationTweenerController = default;
 
-    #region Events
-
-    private void SubscribeToEvents()
-    {
-        GameEvents.instance.OnTroopMoveToPoint += SetWaypoint;
-    }
-
-    private void UnSubscribeFromEvents()
-    {
-        GameEvents.instance.OnTroopMoveToPoint -= SetWaypoint;
-    }
-
-    #endregion
-
     public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
 
     public override void Start()
     {
-        SubscribeToEvents();
+        //SubscribeToEvents();
+
+        GameEvents.instance.TroopStartedMovement();
     }
 
     public override void Stop()
     {
-        UnSubscribeFromEvents();
+        //UnSubscribeFromEvents();
+
+        GameEvents.instance.TroopFinishedMovement();
     }
 
-    private void SetWaypoint(TroopController troopController, Vector3 point, Action finishAction) // TroopController troopController ?
+    public void SetWaypoint(Vector3 point, Action finishAction)
     {
-        if (troopController != _troopController)
-            return;
-
         Transform troopTransform = _troopController.transform;
 
         Vector3 currentPos = troopTransform.position;

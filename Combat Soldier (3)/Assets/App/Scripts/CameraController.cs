@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private TroopManager _troopManager = default;
+    [SerializeField] private PlayerTroopManager _troopManager = default;
 
     private void Update()
     {

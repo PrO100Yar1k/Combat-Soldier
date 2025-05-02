@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TroopManager : MonoBehaviour
+public class PlayerTroopManager : MonoBehaviour
 {
     [Header("Raycast Layers")]
 
@@ -87,7 +87,7 @@ public class TroopManager : MonoBehaviour
 
         if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move)
         {
-            troopStateController.ActivateMoveState(_selectedTroopController, targetPoint, null);
+            troopStateController.ActivateMoveState(targetPoint, null);
         }
         else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out EnemyTroopController enemy))
         {
@@ -112,17 +112,26 @@ public class TroopManager : MonoBehaviour
 
     private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController troopStateController)
     {
-        Vector3 direction = (targetPoint - _selectedTroopController.transform.position).normalized;
+        Vector3 _selectedTroopPosition = _selectedTroopController.transform.position;
         float troopAttackRange = _selectedTroopController.TroopScriptable.AttackRangeRadius;
 
-        const float distanceModifier = 0.8f; // could be changed a little bit
+        if (Vector3.Distance(enemy.transform.position, _selectedTroopPosition) < troopAttackRange)
+        {
+            troopStateController.ActivateAttackState(enemy);
+        }
+        else
+        {
+            Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
 
-        targetPoint -= direction * troopAttackRange * distanceModifier;
+            const float distanceModifier = 0.85f; // could be changed a little bit
 
-        Action action = default;
-        action += delegate { troopStateController.ActivateAttackState(enemy); } ;
+            targetPoint -= direction * troopAttackRange * distanceModifier;
 
-        troopStateController.ActivateMoveState(_selectedTroopController, targetPoint, action);
+            Action action = default;
+            action += delegate { troopStateController.ActivateAttackState(enemy); };
+
+            troopStateController.ActivateMoveState(targetPoint, action);
+        }
     }
 
     private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode)

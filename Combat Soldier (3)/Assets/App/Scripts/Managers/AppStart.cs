@@ -3,7 +3,7 @@ using UnityEngine;
 public class AppStart : MonoBehaviour
 {
     [SerializeField] private TroopGeneralManager _troopGeneralManager = default;
-    [SerializeField] private TroopManager _troopManager = default;
+    [SerializeField] private PlayerTroopManager _playerTroopManager = default;
 
     [Space(2)]
 
@@ -13,7 +13,7 @@ public class AppStart : MonoBehaviour
     {
         _gameEvents.Initialize();
 
-        _troopManager.InitializeManager();
+        _playerTroopManager.InitializeManager();
         _troopGeneralManager.InitializeManager();
     }
 }

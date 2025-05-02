@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 1411919298}
   - component: {fileID: 1411919299}
   m_Layer: 0
-  m_Name: Troop Manager
+  m_Name: Player Troop Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1043,8 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _troopGeneralManager: {fileID: 567059792}
-  _troopManager: {fileID: 1411919299}
-  _troopModelManager: {fileID: 1089139087}
+  _playerTroopManager: {fileID: 1411919299}
   _gameEvents: {fileID: 214147611}
 --- !u!1001 &7298785271920545970
 PrefabInstance:

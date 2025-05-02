@@ -11,8 +11,6 @@ public class PlayerTroopController : TroopController
         UIController = new TroopUIController(this, _screenCanvasController, _worldCanvasController);
         HPController = new HPController(this, _screenCanvasController, _troopScriptable);
 
-        TroopModelController.InitializeModelController();
-
         HPController.TakeDamage(25); // test
     }
 }
