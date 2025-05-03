@@ -97,6 +97,12 @@ public class TroopGeneralManager : MonoBehaviour
     public List<TroopController> GetTroopControllersList(TroopSide troopSide)
         => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
 
+    public List<TroopController> GetPlayerTroopControllersList()
+        => _troopControllersPlayerList;
+
+    public List<TroopController> GetEnemyTroopControllersList()
+        => _troopControllersEnemyList;
+
     #region Operations with List
 
     private void AddTroopToList(TroopController troopController, TroopSide troopSide)

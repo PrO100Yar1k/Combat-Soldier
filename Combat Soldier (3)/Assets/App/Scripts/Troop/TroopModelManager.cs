@@ -36,16 +36,16 @@ public class TroopModelManager : MonoBehaviour
         ProvideEnemyVisionCoroutineStarter();
     }
 
-    private TroopController[] GetVisibleTroops()
+    private EnemyTroopController[] GetVisibleEnemies()
     {
-        List<TroopController> targetList = new List<TroopController>();
-        List<TroopController> enemyControllersList = TroopGeneralManager.instance.GetTroopControllersList(TroopSide.Player); // ?
+        List<EnemyTroopController> targetList = new List<EnemyTroopController>();
+        List<TroopController> playerControllersList = new List<TroopController>(TroopGeneralManager.instance.GetPlayerTroopControllersList());
 
-        foreach (TroopController playerController in enemyControllersList)
+        foreach (TroopController playerController in playerControllersList)
         {
             TroopController[] playerControllersInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
 
-            foreach (TroopController unit in playerControllersInVisionRange)
+            foreach (EnemyTroopController unit in playerControllersInVisionRange)
             {
                 targetList.Add(unit);
             }
@@ -87,28 +87,27 @@ public class TroopModelManager : MonoBehaviour
     private void UpdateTroopDeploymentData()
     {
         DisableAllEnemies();
-        EnableAllVisibleTroops();
+        EnableAllVisibleEnemies();
     }
 
 
-    private void EnableAllVisibleTroops()
+    private void EnableAllVisibleEnemies()
     {
-        TroopController[] troopControllers = GetVisibleTroops(); // player side
+        EnemyTroopController[] enemyControllers = GetVisibleEnemies();
 
-        foreach (TroopController troopController in troopControllers)
+        foreach (EnemyTroopController enemyController in enemyControllers)
         {
-            troopController.TroopModelController.AppearTroopModel();
+            enemyController.TroopModelController.AppearTroopModel();
         }
     }
 
     private void DisableAllEnemies()
     {
-        List<TroopController> list = new List<TroopController>(TroopGeneralManager.instance.GetTroopControllersList(TroopSide.Enemy));
+        List<TroopController> enemyControllersList = new List<TroopController>(TroopGeneralManager.instance.GetEnemyTroopControllersList());
 
-        foreach (TroopController troopController in list)
+        foreach (EnemyTroopController troopController in enemyControllersList)
         {
             troopController.TroopModelController.DisappearTroopModel();
         }
     }
-
 }
