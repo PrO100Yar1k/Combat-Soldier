@@ -9,9 +9,7 @@ public abstract class TroopController : MonoBehaviour
     [SerializeField] protected ScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
-    public TroopStateController StateController { get; protected set; }
-    public TroopVisionController VisionController { get; protected set; } 
-    
+    public TroopStateController StateController { get; protected set; }    
     public TroopUIController UIController { get; protected set; }
     public HPController HPController { get; protected set; }
 

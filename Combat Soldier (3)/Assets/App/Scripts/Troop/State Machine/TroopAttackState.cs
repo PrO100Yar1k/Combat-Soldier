@@ -1,11 +1,28 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class TroopAttackState : TroopBaseState
 {
+    private event Action<TroopController> OnActivateTroopAttack = default;
+
     private int _remainingAttackWaves = default;
 
     private Coroutine _attackCoroutine = default;
+
+    #region Events
+
+    private void SubscribeToEvents()
+    {
+        OnActivateTroopAttack += TryToAttackEnemy;
+    }
+
+    private void UnSubscribeFromEvents()
+    {
+        OnActivateTroopAttack -= TryToAttackEnemy;
+    }
+
+    #endregion
 
     public TroopAttackState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState)
     {
@@ -14,30 +31,34 @@ public class TroopAttackState : TroopBaseState
 
     public override void Start()
     {
-        //SubscribeToEvents();
+        SubscribeToEvents();
     }
 
     public override void Stop()
     {
+        UnSubscribeFromEvents();
+
         DisableCoroutine();
         ReloadAttackStarter();
-
-        //UnSubscribeFromEvents();
     }
 
-    public void TryToAttackEnemy(TroopController targetEnemy)
+    public void ActivateTroopAttack(TroopController enemyController)
+        => OnActivateTroopAttack?.Invoke(enemyController);
+
+
+    private void TryToAttackEnemy(TroopController enemyController)
     {
         Vector3 troopPosition = _troopController.transform.position;
         TroopSide enemyTroopSide = TroopSide.Enemy;
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, targetEnemy);
+        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, enemyController);
 
         if (enemyTroopController == null)
             return;
 
-        enemyTroopController.StateController.ActivateDefenceState(); // maybe change it to event ?
+        enemyTroopController.StateController.ActivateDefenceState(); 
 
         AttackEnemyCoroutineStarter(enemyTroopController);
     }
@@ -82,6 +103,8 @@ public class TroopAttackState : TroopBaseState
                 break;
 
             enemyController.HPController.TakeDamage(_troopScriptable.AttackDamage);
+
+            enemyController.StateController.TroopDefenseState.ActivateDefenseUnderAttack(_troopController);
 
             Debug.Log($"Attacked with damage {_troopScriptable.AttackDamage}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
 

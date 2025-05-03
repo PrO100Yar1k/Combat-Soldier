@@ -98,18 +98,6 @@ public class PlayerTroopManager : MonoBehaviour
         CancelEnteringModeAndDisableMenu();
     }
 
-    private RaycastHit GetRaycastHit()
-    {
-        RaycastHit hit;
-
-        Vector3 mousePos = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        Physics.Raycast(ray, out hit);
-
-        return hit;
-    }
-
     private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController troopStateController)
     {
         Vector3 _selectedTroopPosition = _selectedTroopController.transform.position;
@@ -117,6 +105,7 @@ public class PlayerTroopManager : MonoBehaviour
 
         if (Vector3.Distance(enemy.transform.position, _selectedTroopPosition) < troopAttackRange)
         {
+            _selectedTroopController.transform.LookAt(enemy.transform); // ?
             troopStateController.ActivateAttackState(enemy);
         }
         else
@@ -133,6 +122,19 @@ public class PlayerTroopManager : MonoBehaviour
             troopStateController.ActivateMoveState(targetPoint, action);
         }
     }
+
+    private RaycastHit GetRaycastHit()
+    {
+        RaycastHit hit;
+
+        Vector3 mousePos = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        Physics.Raycast(ray, out hit);
+
+        return hit;
+    }
+
 
     private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode)
     {

@@ -4,26 +4,46 @@ using System;
 
 public class TroopMoveState : TroopBaseState
 {
+    private event Action<Vector3, Action> OnActivateTroopMovement = default;
+
     private Tween _movementTweenerController = default;
     private Tween _rotationTweenerController = default;
+
+    #region Events
+
+    private void SubscribeToEvents()
+    {
+        OnActivateTroopMovement += SetWaypoint;
+    }
+
+    private void UnSubscribeFromEvents()
+    {
+        OnActivateTroopMovement -= SetWaypoint;
+    }
+
+    #endregion
 
     public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
 
     public override void Start()
     {
-        //SubscribeToEvents();
+        SubscribeToEvents();
 
-        GameEvents.instance.TroopStartedMovement();
+        GameEvents.instance.TroopStartedMovement(); // for vision controller // maybe change a little bit
     }
 
     public override void Stop()
     {
-        //UnSubscribeFromEvents();
+        UnSubscribeFromEvents();
 
-        GameEvents.instance.TroopFinishedMovement();
+        GameEvents.instance.TroopFinishedMovement(); // for vision controller // maybe change a little bit
     }
 
-    public void SetWaypoint(Vector3 point, Action finishAction)
+    public void ActivateTroopMovement(Vector3 point, Action finishAction)
+        => OnActivateTroopMovement?.Invoke(point, finishAction);
+
+
+    private void SetWaypoint(Vector3 point, Action finishAction)
     {
         Transform troopTransform = _troopController.transform;
 

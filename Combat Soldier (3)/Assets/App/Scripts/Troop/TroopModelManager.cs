@@ -41,7 +41,7 @@ public class TroopModelManager : MonoBehaviour
         List<EnemyTroopController> targetList = new List<EnemyTroopController>();
         List<TroopController> playerControllersList = new List<TroopController>(TroopGeneralManager.instance.GetPlayerTroopControllersList());
 
-        foreach (TroopController playerController in playerControllersList)
+        foreach (PlayerTroopController playerController in playerControllersList)
         {
             TroopController[] playerControllersInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
 

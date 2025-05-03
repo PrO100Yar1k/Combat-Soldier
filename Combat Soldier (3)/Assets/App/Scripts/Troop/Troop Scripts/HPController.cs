@@ -3,7 +3,7 @@ using UnityEngine;
 public class HPController
 {
     private readonly ScreenCanvasController _troopCanvasController = default;
-    private TroopController _troopController = default;
+    private readonly TroopController _troopController = default;
 
     private string _currentName = default;
 
@@ -33,7 +33,7 @@ public class HPController
 
     private void ChangeSliderAndTextValues()
     {
-        if (_troopCanvasController == null) //maybe it is not neccesary
+        if (_troopCanvasController == null) // maybe it is not neccesary
             return;
 
         _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
@@ -42,19 +42,19 @@ public class HPController
 
     #region Take Damage
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int attackDamage)
     {
-        if (damage <= 0)
+        if (attackDamage <= 0)
             return;
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
-            TakeDamageWithDefenseState(damage);
+            TakeDamageWithDefenseState(attackDamage);
         
-        else TakeDamageWithoutDefenseState(damage);
+        else TakeDamageWithoutDefenseState(attackDamage);
 
         ChangeSliderAndTextValues();
 
-        CheckForTroopDeath();
+        CheckHealPointsForTroopDeath();
     }
 
     private void TakeDamageWithDefenseState(int damage)
@@ -106,7 +106,7 @@ public class HPController
 
     #region Death
 
-    private void CheckForTroopDeath() // to do
+    private void CheckHealPointsForTroopDeath()
     {
         if (_currentHealPoint <= 0)
             TroopDeath();

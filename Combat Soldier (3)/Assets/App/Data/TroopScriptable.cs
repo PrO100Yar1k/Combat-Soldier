@@ -3,10 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TroopScriptable", menuName = "Scriptable Objects/TroopScriptable")]
 public class TroopScriptable : ScriptableObject
 {
-    public string Name = default; // to add headers if it necessary
+    public string Name = default; // to do add headers
 
-    public TroopType TroopType = default;
-    public AttackType AttackType = AttackType.Land;
+    //public TroopType TroopType = default;
+    //public AttackType AttackType = AttackType.Land;
     public TroopSide TroopSide = TroopSide.Player;
 
     [Space(5)]
@@ -23,6 +23,8 @@ public class TroopScriptable : ScriptableObject
 
     public int AttackDamage = 25;
     public float AttackRangeRadius = 3;
+
+    public int DamageUnderAttack = 10;
 
     public int CountAttackWaves = 5;
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class TroopVisionController
@@ -8,7 +7,7 @@ public class TroopVisionController
     private TroopController _troopController = default;
     private TroopScriptable _troopScriptable = default;
 
-    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable, TroopSide troopSide) // to do
+    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable)
     {
         _troopController = troopController;
         _troopScriptable = troopScriptable;

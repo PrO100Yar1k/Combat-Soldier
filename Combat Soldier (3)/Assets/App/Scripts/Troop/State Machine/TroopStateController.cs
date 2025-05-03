@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class TroopStateController : ISwitchableState
 {
-    private TroopController _troopController = default;
+    private readonly TroopController _troopController = default;
 
     private TroopDefaultState _troopDefaultState = default;
     private TroopMoveState _troopMoveState = default;
     private TroopAttackState _troopAttackState = default;
     private TroopDefenseState _troopDefenseState = default;
+
+    public TroopDefenseState TroopDefenseState => _troopDefenseState; //
 
     private List<TroopBaseState> _allStates = default;
     private TroopBaseState _currentState = default;
@@ -30,7 +32,16 @@ public class TroopStateController : ISwitchableState
         _troopDefenseState = new TroopDefenseState(_troopController, this);
 
         _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState };
+
         _currentState = _allStates[0];
+    }
+
+
+    public bool CheckStateForActivity<State>() where State : TroopBaseState
+    {
+        TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
+
+        return _currentState == state;
     }
 
     public void ActivateDefaultState()
@@ -42,7 +53,7 @@ public class TroopStateController : ISwitchableState
     {
         SwitchState<TroopAttackState>();
 
-        _troopAttackState.TryToAttackEnemy(enemy);
+        _troopAttackState.ActivateTroopAttack(enemy);
     }
 
     public void ActivateDefenceState()
@@ -54,15 +65,9 @@ public class TroopStateController : ISwitchableState
     {
         SwitchState<TroopMoveState>();
 
-        _troopMoveState.SetWaypoint(targetPoint, finishAction);
+        _troopMoveState.ActivateTroopMovement(targetPoint, finishAction);
     }
 
-    public bool CheckStateForActivity<State>() where State : TroopBaseState
-    {
-        TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
-
-        return _currentState == state;
-    }
 
     public void SwitchState<State>() where State : TroopBaseState
     {
