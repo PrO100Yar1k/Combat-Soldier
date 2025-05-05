@@ -90,6 +90,6 @@ public class TroopMoveState : TroopBaseState
 
         _switcherState.SwitchState<TroopDefaultState>(); // ??
 
-        finishAction?.Invoke();
+        finishAction?.Invoke(); // change state to another
     }
 }
