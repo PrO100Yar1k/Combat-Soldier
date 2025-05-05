@@ -14,7 +14,7 @@ public class TroopScriptable : ScriptableObject
     public int MaxHealPoint = 100;
     public int MaxDefencePoint = 100;
 
-    public float BlockRate = 0.2f;
+    [Range(0, 1)] public float BlockRate = 0.2f;
 
     [Space(5)]
 

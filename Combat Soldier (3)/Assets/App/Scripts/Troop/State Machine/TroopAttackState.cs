@@ -6,9 +6,10 @@ public class TroopAttackState : TroopBaseState
 {
     private event Action<TroopController> OnActivateTroopAttack = default;
 
-    private int _remainingAttackWaves = default;
-
+    private Coroutine _reloadAttackCoroutine = default;
     private Coroutine _attackCoroutine = default;
+
+    private int _remainingAttackWaves = default;
 
     #region Events
 
@@ -38,7 +39,7 @@ public class TroopAttackState : TroopBaseState
     {
         UnSubscribeFromEvents();
 
-        DisableCoroutine();
+        DisableAttackCoroutine();
         ReloadAttackStarter();
     }
 
@@ -67,12 +68,12 @@ public class TroopAttackState : TroopBaseState
 
     private void AttackEnemyCoroutineStarter(TroopController targetEnemy)
     {
-        DisableCoroutine();
+        DisableAttackCoroutine();
 
         EnableCoroutine(targetEnemy);
     }
 
-    private void DisableCoroutine()
+    private void DisableAttackCoroutine()
     {
         if (_attackCoroutine == null)
             return;
@@ -122,7 +123,10 @@ public class TroopAttackState : TroopBaseState
 
     private void ReloadAttackStarter()
     {
-        _troopController.StartCoroutine(ReloadAttack());
+        if (_reloadAttackCoroutine != null)
+            return;
+
+        _reloadAttackCoroutine = _troopController.StartCoroutine(ReloadAttack());
     }
 
     private IEnumerator ReloadAttack()

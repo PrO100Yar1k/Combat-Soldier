@@ -13,17 +13,16 @@ MonoBehaviour:
   m_Name: Enemy - Troop Config
   m_EditorClassIdentifier: 
   Name: Enemy_test
-  TroopType: 0
-  AttackType: 0
   TroopSide: 1
-  MaxHealPoint: 100
+  MaxHealPoint: 1
   MaxDefencePoint: 100
   BlockRate: 0.2
   TimeToReloadAttack: 5
   TimeBetweenAttackWaves: 5
   AttackDamage: 25
   AttackRangeRadius: 2
-  CountAttackWaves: 5
+  DamageUnderAttack: 10
+  CountAttackWaves: 1
   ViewRangeRadius: 4
   TroopsPerUnit: 50
   Speed: 5

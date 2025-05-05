@@ -29,14 +29,14 @@ public class TroopMoveState : TroopBaseState
     {
         SubscribeToEvents();
 
-        GameEvents.instance.TroopStartedMovement(); // for vision controller // maybe change a little bit
+        GameEvents.instance.TroopStartedMovement(); // for vision controller - maybe change
     }
 
     public override void Stop()
     {
         UnSubscribeFromEvents();
 
-        GameEvents.instance.TroopFinishedMovement(); // for vision controller // maybe change a little bit
+        GameEvents.instance.TroopFinishedMovement(); // for vision controller - maybe change
     }
 
     public void ActivateTroopMovement(Vector3 point, Action finishAction)
