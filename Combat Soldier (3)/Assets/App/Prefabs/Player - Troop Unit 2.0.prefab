@@ -1326,7 +1326,6 @@ MonoBehaviour:
   _troopScriptable: {fileID: 11400000, guid: 0f607a16f14f517449142260da9de9a5, type: 2}
   _screenCanvasController: {fileID: 5336135371400083224}
   _worldCanvasController: {fileID: 7827163840812583108}
-  _troopModelController: {fileID: 0}
 --- !u!1 &4695644944325969335
 GameObject:
   m_ObjectHideFlags: 0
