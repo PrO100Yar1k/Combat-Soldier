@@ -9,8 +9,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         // check with new input system
-
-        if (Input.GetButtonDown("Fire1") && !isPointerOverUI())  //IsPointerOverUI() MUST BE ALWAYS ON FALSE
+        if (Input.GetButtonDown("Fire1") && !isPointerOverUI())
         {
             _troopManager.ChangeTroopControllerAndState();
         }

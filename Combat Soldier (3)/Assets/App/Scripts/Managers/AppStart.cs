@@ -16,9 +16,13 @@ public class AppStart : MonoBehaviour
     {
         _gameEvents.Initialize();
 
-        _playerTroopManager.InitializeManager(); // constroll sequence of script call if it necessary ?
+        _playerTroopManager.InitializeManager(); 
         _troopGeneralManager.InitializeManager();
 
-        _enemyFactory.InitializeManager(); // create interface for every of those IInitializeManager
+        _enemyFactory.InitializeManager();
+
+        // create interface for every of those IInitializeManager
+
+        // controll right sequence of manager initializations
     }
 }

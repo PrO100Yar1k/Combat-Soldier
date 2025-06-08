@@ -32,28 +32,10 @@ public class TroopModelManager : MonoBehaviour
 
     private void Start()
     {
-        //UpdateTroopDeploymentData(); // change it? not in start
         ProvideEnemyVisionCoroutineStarter();
     }
 
-    private EnemyTroopController[] GetVisibleEnemies()
-    {
-        List<EnemyTroopController> targetList = new List<EnemyTroopController>();
-        List<TroopController> playerControllersList = new List<TroopController>(TroopGeneralManager.instance.GetPlayerTroopControllersList());
-
-        foreach (PlayerTroopController playerController in playerControllersList)
-        {
-            TroopController[] playerControllersInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
-
-            foreach (EnemyTroopController unit in playerControllersInVisionRange)
-            {
-                targetList.Add(unit);
-            }
-        }
-
-        return targetList.ToArray();
-    }
-
+    #region Coroutine Starter & Stopper
 
     private void ProvideEnemyVisionCoroutineStarter()
     {
@@ -71,6 +53,8 @@ public class TroopModelManager : MonoBehaviour
         StopCoroutine(_visionCoroutine);
         _visionCoroutine = null;
     }
+
+    #endregion
 
     private IEnumerator ProvideTroopDeploymentData()
     {
@@ -90,6 +74,7 @@ public class TroopModelManager : MonoBehaviour
         EnableAllVisibleEnemies();
     }
 
+    #region Enable & Disable Enemies
 
     private void EnableAllVisibleEnemies()
     {
@@ -110,4 +95,25 @@ public class TroopModelManager : MonoBehaviour
             troopController.TroopModelController.DisappearTroopModel();
         }
     }
+
+    private EnemyTroopController[] GetVisibleEnemies()
+    {
+        List<EnemyTroopController> targetList = new List<EnemyTroopController>();
+        List<TroopController> playerControllersList = new List<TroopController>(TroopGeneralManager.instance.GetPlayerTroopControllersList());
+
+        foreach (PlayerTroopController playerController in playerControllersList)
+        {
+            TroopController[] playerControllersInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
+
+            foreach (EnemyTroopController unit in playerControllersInVisionRange)
+            {
+                targetList.Add(unit);
+            }
+        }
+
+        return targetList.ToArray();
+    }
+
+    #endregion
+
 }
