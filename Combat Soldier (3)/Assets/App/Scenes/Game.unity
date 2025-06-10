@@ -381,7 +381,7 @@ GameObject:
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Player - Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1130,10 +1130,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6766f248733ed9f4b88cb4eca322e248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _troopGeneralManager: {fileID: 567059792}
-  _playerTroopManager: {fileID: 1411919299}
-  _enemyFactory: {fileID: 125552398}
-  _gameEvents: {fileID: 214147611}
+  InitializeManagerList:
+  - {fileID: 214147611}
+  - {fileID: 1411919299}
+  - {fileID: 567059792}
+  - {fileID: 125552398}
 --- !u!1001 &7298785271920545970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1211,8 +1212,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 324527132}
   - {fileID: 330585546}
+  - {fileID: 324527132}
   - {fileID: 7298785271920545970}
   - {fileID: 410236407}
   - {fileID: 186576859}

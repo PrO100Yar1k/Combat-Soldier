@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TroopGeneralManager : MonoBehaviour
+public class TroopGeneralManager : MonoBehaviour, IInitializeManager
 {
     private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
     private List<TroopController> _troopControllersEnemyList = new List<TroopController>();

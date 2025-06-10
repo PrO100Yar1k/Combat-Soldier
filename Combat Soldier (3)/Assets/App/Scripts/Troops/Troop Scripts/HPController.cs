@@ -33,9 +33,6 @@ public class HPController
 
     private void ChangeSliderAndTextValues()
     {
-        if (_troopCanvasController == null) // maybe it is not neccesary
-            return;
-
         _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
         _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
     }
@@ -49,7 +46,7 @@ public class HPController
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
             TakeDamageWithDefenseState(attackDamage);
-        
+
         else TakeDamageWithoutDefenseState(attackDamage);
 
         ChangeSliderAndTextValues();
@@ -82,7 +79,7 @@ public class HPController
 
     #region Increase Points
 
-    public void IncreaseHealPoints(int healPoint) // to think about namespacing
+    public void IncreaseHealPoints(int healPoint)
     {
         if (healPoint <= 0)
             return;
@@ -92,7 +89,7 @@ public class HPController
         ChangeSliderAndTextValues();
     }
 
-    public void IncreaseDefensePoints(int defensePoint) // to think about namespacing
+    public void IncreaseDefensePoints(int defensePoint)
     {
         if (defensePoint <= 0)
             return;

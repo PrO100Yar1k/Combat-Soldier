@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WorldCanvasController : CanvasController // maybe make this class abstract
+public abstract class WorldCanvasController : CanvasController
 {
     [SerializeField] private RectTransform _attackCircleRange = default;
     [SerializeField] private RectTransform _viewCircleRange = default;

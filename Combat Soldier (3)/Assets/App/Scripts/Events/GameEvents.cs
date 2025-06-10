@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 
-public class GameEvents : MonoBehaviour
+public class GameEvents : MonoBehaviour, IInitializeManager
 {
     #region Singleton Activation
 
     [HideInInspector] public static GameEvents instance;
 
-    public void Initialize()
+    public void InitializeManager()
     {
         if (instance != null)
         {

@@ -1,27 +1,36 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AppStart : MonoBehaviour
 {
-    [SerializeField] private TroopGeneralManager _troopGeneralManager = default;
-    [SerializeField] private PlayerTroopManager _playerTroopManager = default;
+    [SerializeField] private List<MonoBehaviour> InitializeManagerList = new List<MonoBehaviour>();
 
-    [Space(2)]
+    private void OnValidate()
+    {
+        for (int i = 0; i < InitializeManagerList.Count; i++)
+        {
+            MonoBehaviour currentComponent = InitializeManagerList[i];
 
-    [SerializeField] private EnemyFactory _enemyFactory = default;
-    [Space(2)]
+            if (currentComponent is not IInitializeManager)
+            {
+                Debug.LogWarning($"Component {currentComponent.name} doesn't implement IInitializeManager. It will be removed.", this);
 
-    [SerializeField] private GameEvents _gameEvents = default;
+                InitializeManagerList.RemoveAt(i);
+            }
+        }
+    }
 
     private void Awake()
+        => InitializeAllManagers();
+
+    private void InitializeAllManagers()
     {
-        _gameEvents.Initialize();
-
-        _playerTroopManager.InitializeManager(); 
-        _troopGeneralManager.InitializeManager();
-
-        _enemyFactory.InitializeManager();
-
-        // create interface for every of those IInitializeManager
-        // controll right sequence of manager initializations
+        foreach (IInitializeManager Manager in InitializeManagerList)
+            Manager.InitializeManager();
     }
+}
+
+public interface IInitializeManager
+{
+    public void InitializeManager();
 }

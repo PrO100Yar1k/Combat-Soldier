@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class EnemyFactory : MonoBehaviour
+public class EnemyFactory : MonoBehaviour, IInitializeManager
 {
-    public void InitializeManager() => CreateEnemies();
+    public void InitializeManager()
+        => CreateEnemies();
 
     private void CreateEnemies()
     {

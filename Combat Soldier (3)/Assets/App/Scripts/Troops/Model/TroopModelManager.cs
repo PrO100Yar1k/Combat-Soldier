@@ -12,7 +12,7 @@ public class TroopModelManager : MonoBehaviour
     //    => SubscribeToEvents();
 
     //private void OnDisable()
-    //    => UnSubscribeFromEvents();
+    //    => UnSubscribeFromEvents(); to do
 
     private void SubscribeToEvents()
     {
@@ -45,7 +45,7 @@ public class TroopModelManager : MonoBehaviour
             _visionCoroutine = StartCoroutine(ProvideTroopDeploymentData());
     }
 
-    private void ProvideEnemyVisionCoroutineStopper() // ?
+    private void ProvideEnemyVisionCoroutineStopper()
     {
         if (_visionCoroutine == null)
             return;
@@ -115,5 +115,4 @@ public class TroopModelManager : MonoBehaviour
     }
 
     #endregion
-
 }

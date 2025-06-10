@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerTroopManager : MonoBehaviour
+public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 {
     [Header("Raycast Layers")]
 
