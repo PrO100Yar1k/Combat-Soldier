@@ -22,7 +22,6 @@ public class AppStart : MonoBehaviour
         _enemyFactory.InitializeManager();
 
         // create interface for every of those IInitializeManager
-
         // controll right sequence of manager initializations
     }
 }

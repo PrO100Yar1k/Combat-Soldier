@@ -1,6 +1,6 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public abstract class ScreenCanvasController : CanvasController
 {

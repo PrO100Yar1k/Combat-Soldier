@@ -43,5 +43,5 @@ public class TroopScriptable : ScriptableObject
 
     [field: SerializeField] public float Speed { get; private set; } = 7f;
     
-    // max speed; min speed; timeToMaxSpeed; SpeedUnderAttack ???
+    // maybe create additional variables like: MaxSpeed; MinSpeed; timeToGetMaxSpeed; SpeedUnderAttack
 }
