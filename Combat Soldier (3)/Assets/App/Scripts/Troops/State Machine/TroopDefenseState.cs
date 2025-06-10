@@ -34,7 +34,6 @@ public class TroopDefenseState : TroopBaseState
     public void ActivateDefenseUnderAttack(TroopController enemyController)
         => OnActivateDefenseUnderAttack?.Invoke(enemyController);
 
-
     private void FightBackToEnemy(TroopController enemyController)
     {
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;

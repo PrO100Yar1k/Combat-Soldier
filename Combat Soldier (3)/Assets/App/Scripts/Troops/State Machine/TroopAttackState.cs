@@ -105,7 +105,7 @@ public class TroopAttackState : TroopBaseState
 
             enemyController.HPController.TakeDamage(_troopScriptable.AttackDamage);
 
-            enemyController.StateController.TroopDefenseState.ActivateDefenseUnderAttack(_troopController);
+            enemyController.StateController.ActivateDefenseUnderAttack(_troopController);
 
             Debug.Log($"Attacked with damage {_troopScriptable.AttackDamage}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
 

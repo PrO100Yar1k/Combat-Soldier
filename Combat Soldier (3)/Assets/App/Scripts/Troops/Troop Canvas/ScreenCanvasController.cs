@@ -29,6 +29,7 @@ public abstract class ScreenCanvasController : CanvasController
         _defensePointSlider.value = _defensePointSlider.maxValue;
     }
 
+
     public void ChangeHealPointSlider(int targetHealPoint)
     {
         targetHealPoint = Mathf.Clamp(targetHealPoint, 0, _troopScriptable.MaxHealPoint);

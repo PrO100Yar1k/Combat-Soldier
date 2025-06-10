@@ -6,11 +6,11 @@ public class TroopDefaultState : TroopBaseState
 
     public override void Start()
     {
-
+        // enable idle animation
     }
 
     public override void Stop()
     {
-
+        // disable idle animation
     }
 }
