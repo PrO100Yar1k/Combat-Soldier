@@ -23,10 +23,11 @@ public class TroopMoveState : TroopBaseState
 
     #endregion
 
-    public TroopMoveState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
+    public TroopMoveState(TroopController troopController, ScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
 
     public override void Start()
     {
+        EnableStateIcon();
         SubscribeToEvents();
 
         GameEvents.instance.TroopStartedMovement(); // for vision controller - maybe change
@@ -42,6 +43,11 @@ public class TroopMoveState : TroopBaseState
     public void ActivateTroopMovement(Vector3 point, Action finishAction)
         => OnActivateTroopMovement?.Invoke(point, finishAction);
 
+    protected override void EnableStateIcon()
+    {
+        Sprite targetIcon = Resources.Load<Sprite>("State Icons/movement_icon");
+        _screenCanvasController.ChangeStateIcon(targetIcon);
+    }
 
     private void SetWaypoint(Vector3 point, Action finishAction)
     {

@@ -13,7 +13,7 @@ public class AppStart : MonoBehaviour
 
             if (currentComponent is not IInitializeManager)
             {
-                Debug.LogWarning($"Component {currentComponent.name} doesn't implement IInitializeManager. It will be removed.", this);
+                Debug.LogWarning($"Component {currentComponent.name} doesn't implement IInitializeManager!", this);
 
                 InitializeManagerList.RemoveAt(i);
             }

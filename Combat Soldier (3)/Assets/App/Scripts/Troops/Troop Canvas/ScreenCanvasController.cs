@@ -12,6 +12,10 @@ public abstract class ScreenCanvasController : CanvasController
     [SerializeField] private TextMeshProUGUI _healPointText = default;
     [SerializeField] private TextMeshProUGUI _defensePointText = default;
 
+    [Space(3)]
+
+    [SerializeField] private Image _stateIcon = default;
+
     public override void InitializeCanvas(TroopController troopController)
     {
         _troopController = troopController;
@@ -45,4 +49,7 @@ public abstract class ScreenCanvasController : CanvasController
 
         _defensePointText.text = $"{targetDefensePoint}";
     }
+
+    public void ChangeStateIcon(Sprite targetSprite)
+        => _stateIcon.sprite = targetSprite;
 }

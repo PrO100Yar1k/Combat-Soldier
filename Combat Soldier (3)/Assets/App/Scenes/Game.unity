@@ -691,8 +691,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3472948890224623127, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5434525828633089727, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5434525828633089727, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5555289593626844165, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
@@ -1155,21 +1163,41 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2881238589335354393, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -70
+      objectReference: {fileID: 0}
     - target: {fileID: 3402170694710746714, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3402170694710746714, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4091064566272276575, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4091064566272276575, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -70
+      objectReference: {fileID: 0}
     - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_Name
       value: Player - Troop Unit 2.0
       objectReference: {fileID: 0}
+    - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5848454158540478654, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848454158540478654, guid: 0e6664c653e352645a21e900729830d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 9183972724890329364, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_LocalPosition.x

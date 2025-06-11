@@ -25,13 +25,14 @@ public class TroopAttackState : TroopBaseState
 
     #endregion
 
-    public TroopAttackState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState)
+    public TroopAttackState(TroopController troopController, ScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
     {
         SetupDefaultCountAttackWaves();
     }
 
     public override void Start()
     {
+        EnableStateIcon();
         SubscribeToEvents();
     }
 
@@ -46,6 +47,11 @@ public class TroopAttackState : TroopBaseState
     public void ActivateTroopAttack(TroopController enemyController)
         => OnActivateTroopAttack?.Invoke(enemyController);
 
+    protected override void EnableStateIcon()
+    {
+        Sprite targetIcon = Resources.Load<Sprite>("State Icons/attack_icon");
+        _screenCanvasController.ChangeStateIcon(targetIcon);
+    }
 
     private void TryToAttackEnemy(TroopController enemyController)
     {

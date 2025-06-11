@@ -7,7 +7,7 @@ public class EnemyTroopController : TroopController
 
     protected override void InitializeTroop()
     {
-        StateController = new TroopStateController(this);
+        StateController = new TroopStateController(this, _screenCanvasController);
 
         UIController = new TroopUIController(this, _screenCanvasController, _worldCanvasController);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);

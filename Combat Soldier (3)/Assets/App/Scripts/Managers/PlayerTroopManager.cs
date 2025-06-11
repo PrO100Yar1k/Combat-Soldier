@@ -6,7 +6,6 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
     [Header("Raycast Layers")]
 
     [SerializeField] private LayerMask _terrainLayer = default;
-
     [SerializeField] private LayerMask _troopsLayer = default;
 
     private TroopController _selectedTroopController = default;
@@ -38,6 +37,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
     }
 
     #endregion
+
+    // to do add region to this script
 
     public void ChangeTroopControllerAndState()
     {
@@ -110,9 +111,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         }
         else
         {
-            Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
-
             const float distanceModifier = 0.85f; // could be changed a little bit
+            Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
 
             targetPoint -= direction * troopAttackRange * distanceModifier;
 
@@ -161,7 +161,9 @@ public enum TroopType
 {
     Soldier_Type_1,
     Soldier_Type_2,
-    AntiTank_Soldier
+    AntiTank_Soldier,
+    etc_1,
+    etc_2
 }
 
 public enum AttackType
@@ -175,5 +177,6 @@ public enum OrderMode
 {
     None,
     Move,
-    Attack
+    Attack,
+    etc
 }

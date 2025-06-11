@@ -16,18 +16,19 @@ public class TroopStateController : ISwitchableState
 
     private TroopBaseState _currentState = default;
 
-    public TroopStateController(TroopController troopController)
+    public TroopStateController(TroopController troopController, ScreenCanvasController screenCanvasController)
     {
         _troopController = troopController;
 
-        _troopDefaultState = new TroopDefaultState(_troopController, this);
-        _troopMoveState = new TroopMoveState(_troopController, this);
-        _troopAttackState = new TroopAttackState(_troopController, this);
-        _troopDefenseState = new TroopDefenseState(_troopController, this);
+        _troopDefaultState = new TroopDefaultState(_troopController, screenCanvasController, this);
+        _troopMoveState = new TroopMoveState(_troopController, screenCanvasController, this);
+        _troopAttackState = new TroopAttackState(_troopController, screenCanvasController, this);
+        _troopDefenseState = new TroopDefenseState(_troopController, screenCanvasController, this);
 
         _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState };
-
         _currentState = _allStates[0];
+
+        ActivateDefaultState();
     }
 
     public void ActivateDefaultState()

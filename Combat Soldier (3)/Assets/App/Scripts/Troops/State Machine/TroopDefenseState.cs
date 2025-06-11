@@ -19,10 +19,11 @@ public class TroopDefenseState : TroopBaseState
 
     #endregion
 
-    public TroopDefenseState(TroopController troopController, ISwitchableState switcherState) : base(troopController, switcherState) { }
+    public TroopDefenseState(TroopController troopController, ScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
 
     public override void Start()
     {
+        EnableStateIcon();
         SubscribeToEvents();
     }
 
@@ -33,6 +34,12 @@ public class TroopDefenseState : TroopBaseState
 
     public void ActivateDefenseUnderAttack(TroopController enemyController)
         => OnActivateDefenseUnderAttack?.Invoke(enemyController);
+
+    protected override void EnableStateIcon()
+    {
+        Sprite targetIcon = Resources.Load<Sprite>("State Icons/defense_icon");
+        _screenCanvasController.ChangeStateIcon(targetIcon);
+    }
 
     private void FightBackToEnemy(TroopController enemyController)
     {
