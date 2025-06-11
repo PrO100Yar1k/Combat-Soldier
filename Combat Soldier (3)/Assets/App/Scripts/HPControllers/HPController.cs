@@ -13,12 +13,6 @@ public abstract class HPController
         _troopCanvasController = troopCanvasController;
     }
 
-    protected abstract void ChangeSliderAndTextValues();
-
-    protected abstract void CheckHealPointsForTroopDeath();
-
-    public abstract void TakeDamage(int attackDamage);
-
     public void IncreaseHealPoints(int healPoint)
     {
         if (healPoint <= 0)
@@ -28,6 +22,12 @@ public abstract class HPController
 
         ChangeSliderAndTextValues();
     }
+
+    public abstract void TakeDamage(int attackDamage);
+
+    protected abstract void ChangeSliderAndTextValues();
+
+    protected abstract void CheckHealPointsForTroopDeath();
 
     protected void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
     {

@@ -7,7 +7,7 @@ public class BuildingController : MonoBehaviour, IDamagable
 
     [SerializeField] private BuildingScriptable _buildingScriptable = default;
 
-    [SerializeField] private TroopController _troopInsideBuilding = default; // maybe make just private
+    [SerializeField] private TroopController _troopInsideBuilding = default; // maybe make it just private in the future
 
     public HPControllerBuilding HPController { get; private set; }
 
@@ -19,11 +19,13 @@ public class BuildingController : MonoBehaviour, IDamagable
     private void InitializeBuilding()
     {
         HPController = new HPControllerBuilding(this, _screenCanvasController, _buildingScriptable);
+
+        // to do
     }
 
     public void TakeDamage(int attackDamage)
     {
-
+        // to do
     }
 
     public void GetTroopInsideBuilding(TroopController troopController)
