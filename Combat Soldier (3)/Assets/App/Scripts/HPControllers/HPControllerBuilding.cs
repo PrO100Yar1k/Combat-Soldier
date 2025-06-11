@@ -3,11 +3,18 @@ public class HPControllerBuilding : HPController
 {
     private readonly BuildingController _buildingController = default;
 
-    public HPControllerBuilding(BuildingController buildingController, ScreenCanvasController troopCanvasController, BuildingScriptable buildingScriptable) : base(troopCanvasController, buildingScriptable)
+    public HPControllerBuilding(BuildingController buildingController, ScreenCanvasController troopCanvasController, BuildingScriptable buildingScriptable) : base(troopCanvasController)
     {
         _buildingController = buildingController;
 
-        base.AssignBasicParameters(buildingScriptable);
+        AssignBasicParameters(buildingScriptable);
+        ChangeSliderAndTextValues();
+    }
+
+    private void AssignBasicParameters(BuildingScriptable buildingScriptable)
+    {
+        _currentName = buildingScriptable.Name;
+        _currentHealPoint = buildingScriptable.MaxHealPoint;
     }
 
     protected override void ChangeSliderAndTextValues()

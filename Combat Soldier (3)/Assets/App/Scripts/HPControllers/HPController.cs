@@ -8,18 +8,9 @@ public abstract class HPController
 
     protected int _currentHealPoint = default;
 
-    public HPController(ScreenCanvasController troopCanvasController, HPScriptable HPScriptableObject)
+    public HPController(ScreenCanvasController troopCanvasController)
     {
         _troopCanvasController = troopCanvasController;
-
-        AssignBasicParameters(HPScriptableObject);
-        ChangeSliderAndTextValues();
-    }
-
-    protected virtual void AssignBasicParameters(HPScriptable troopScriptable)
-    {
-        _currentName = troopScriptable.Name;
-        _currentHealPoint = troopScriptable.MaxHealPoint;
     }
 
     protected abstract void ChangeSliderAndTextValues();

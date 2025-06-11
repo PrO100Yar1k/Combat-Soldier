@@ -6,18 +6,20 @@ public class HPControllerTroop : HPController
     private int _currentDefensePoint = default;
     private float _currentBlockRate = default;
 
-    public HPControllerTroop(TroopController troopController, ScreenCanvasController troopCanvasController, TroopScriptable troopScriptable) : base (troopCanvasController, troopScriptable)
+    public HPControllerTroop(TroopController troopController, ScreenCanvasController troopCanvasController, TroopScriptable troopScriptable) : base (troopCanvasController)
     {
         _troopController = troopController;
 
         AssignBasicParameters(troopScriptable);
+        ChangeSliderAndTextValues();
     }
 
     private void AssignBasicParameters(TroopScriptable troopScriptable)
     {
-        base.AssignBasicParameters(troopScriptable);
-
+        _currentName = troopScriptable.Name;
         _currentBlockRate = troopScriptable.BlockRate;
+
+        _currentHealPoint = troopScriptable.MaxHealPoint;
         _currentDefensePoint = troopScriptable.MaxDefencePoint;
     }
 

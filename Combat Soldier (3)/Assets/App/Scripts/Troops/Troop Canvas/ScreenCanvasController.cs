@@ -14,8 +14,8 @@ public abstract class ScreenCanvasController : CanvasController
 
     public override void InitializeCanvas(TroopController troopController)
     {
-        _troopScriptable = troopController.TroopScriptable;
         _troopController = troopController;
+        _troopScriptable = troopController.TroopScriptable;
 
         AssignMaxSliderValues();
     }
