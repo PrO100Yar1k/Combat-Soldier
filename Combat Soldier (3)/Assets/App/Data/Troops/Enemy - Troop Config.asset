@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a538e3094a2fbfd41bd2d732298d647d, type: 3}
   m_Name: Enemy - Troop Config
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
+  <Name>k__BackingField: Enemy Troop Test
   <TroopType>k__BackingField: 0
   <AttackType>k__BackingField: 0
   <TroopSide>k__BackingField: 1

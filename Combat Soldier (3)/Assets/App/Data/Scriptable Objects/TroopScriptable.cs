@@ -1,11 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TroopScriptable", menuName = "Scriptable Objects/TroopScriptable")]
-public class TroopScriptable : ScriptableObject
+public class TroopScriptable : HPScriptable
 {
     [Header("Basic Parameters")]
-
-    [field: SerializeField] public string Name { get; private set; } = default; // to do add headers
 
     [field: SerializeField] public TroopType TroopType { get; private set; } = default;
     [field: SerializeField] public AttackType AttackType { get; private set; } = default;
@@ -13,9 +11,8 @@ public class TroopScriptable : ScriptableObject
 
     [field: Space(5)]
 
-    [Header("Heal & Defense Parameters")]
+    [Header("Defense Parameters")]
 
-    [field: SerializeField] public int MaxHealPoint { get; private set; } = 100;
     [field: SerializeField] public int MaxDefencePoint { get; private set; } = 100;
 
     [field: SerializeField, Range(0, 1)] public float BlockRate { get; private set; } = 0.2f;

@@ -11,7 +11,7 @@ public abstract class TroopController : MonoBehaviour, IDamagable
 
     public TroopStateController StateController { get; protected set; }    
     public TroopUIController UIController { get; protected set; }
-    public HPController HPController { get; protected set; }
+    public HPControllerTroop HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable;
 

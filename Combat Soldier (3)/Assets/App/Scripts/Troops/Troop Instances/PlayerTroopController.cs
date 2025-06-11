@@ -9,7 +9,7 @@ public class PlayerTroopController : TroopController
         VisionController = new TroopVisionController(this, _troopScriptable);
 
         UIController = new TroopUIController(this, _screenCanvasController, _worldCanvasController);
-        HPController = new HPController(this, _screenCanvasController, _troopScriptable);
+        HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
 
         //HPController.TakeDamage(25);
     }

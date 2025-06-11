@@ -10,7 +10,7 @@ public class EnemyTroopController : TroopController
         StateController = new TroopStateController(this);
 
         UIController = new TroopUIController(this, _screenCanvasController, _worldCanvasController);
-        HPController = new HPController(this, _screenCanvasController, _troopScriptable);
+        HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
 
         _troopModelController.InitializeModelController(gameObject);
     }
