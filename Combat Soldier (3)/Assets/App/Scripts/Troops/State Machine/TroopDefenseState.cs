@@ -5,6 +5,8 @@ public class TroopDefenseState : TroopBaseState
 {
     private event Action<TroopController> OnActivateDefenseUnderAttack = default;
 
+    private TroopController AttackingTroop = default;
+
     #region Events
 
     private void SubscribeToEvents()
@@ -43,9 +45,15 @@ public class TroopDefenseState : TroopBaseState
 
     private void FightBackToEnemy(TroopController enemyController)
     {
+        if (AttackingTroop == null)
+            AttackingTroop = enemyController;
+
+        else if (AttackingTroop != enemyController)
+            return;   // do not fight back if troop is already under attack
+
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyController.HPController.TakeDamage(damageUnderAttack);
 
-        Debug.Log($"I fought back to {enemyController.TroopScriptable.Name} with damage {damageUnderAttack}");
+        Debug.Log($"I fought back to {enemyController.TroopScriptable.Name} with damage {damageUnderAttack}!");
     }
 }
