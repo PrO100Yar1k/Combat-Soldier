@@ -28,10 +28,10 @@ public class HPControllerBuilding : HPController
 
         ChangeSliderAndTextValues();
 
-        CheckHealPointsForTroopDeath();
+        CheckHealPointsForBuildingDestroy();
     }
 
-    protected override void CheckHealPointsForTroopDeath()
+    protected override void CheckHealPointsForBuildingDestroy()
     {
         if (_currentHealPoint <= 0)
             base.TroopDeath(_buildingController, _buildingController.gameObject);

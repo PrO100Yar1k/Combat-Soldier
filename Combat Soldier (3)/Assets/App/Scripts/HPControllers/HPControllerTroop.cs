@@ -43,7 +43,7 @@ public class HPControllerTroop : HPController
 
         ChangeSliderAndTextValues();
 
-        CheckHealPointsForTroopDeath();
+        CheckHealPointsForBuildingDestroy();
     }
 
     private void TakeDamageWithDefenseState(int attackDamage)
@@ -87,7 +87,7 @@ public class HPControllerTroop : HPController
 
     #region Death
 
-    protected override void CheckHealPointsForTroopDeath()
+    protected override void CheckHealPointsForBuildingDestroy()
     {
         if (_currentHealPoint <= 0)
             base.TroopDeath(_troopController, _troopController.gameObject);

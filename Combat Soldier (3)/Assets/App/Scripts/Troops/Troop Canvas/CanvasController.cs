@@ -9,8 +9,15 @@ public abstract class CanvasController : MonoBehaviour
 
     public abstract void InitializeCanvas(TroopController troopController);
 
-    public abstract void EnableCanvas();
-    public abstract void DisableCanvas();
+    public virtual void EnableCanvas() 
+    {
+        _canvasComponent.enabled = true;
+    }
+
+    public virtual void DisableCanvas()
+    {
+        _canvasComponent.enabled = false;
+    }
 
     protected virtual void Awake()
         => _canvasComponent = GetComponent<Canvas>();

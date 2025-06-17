@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyTroopController : TroopController
 {
-    [SerializeField] protected TroopModelController _troopModelController = default;
+    [SerializeField, Space(2)] protected TroopModelController _troopModelController = default;
     public TroopModelController TroopModelController => _troopModelController;
 
     protected override void InitializeTroop()

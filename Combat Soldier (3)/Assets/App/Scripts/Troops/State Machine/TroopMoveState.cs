@@ -86,16 +86,16 @@ public class TroopMoveState : TroopBaseState
         float rotationDuration = angle / rotationSpeed;
 
         _rotationTweenerController?.Kill();
-        _rotationTweenerController = _troopController.transform.DORotate(new Vector3(0, targetAngle, 0), rotationDuration) // normalization // + targetAngle / 6
+        _rotationTweenerController = _troopController.transform.DORotate(new Vector3(0, targetAngle, 0), rotationDuration) // normalization + targetAngle / 6
             .SetEase(Ease.Flash);
     }
 
-    private void Finished(Action finishAction) // make like a target state after finishing point instead of event ?
+    private void Finished(Action finishAction)
     {
         Debug.Log("Finished Waypoint!");
 
-        _switcherState.SwitchState<TroopDefaultState>(); // ??
+        _switcherState.SwitchState<TroopDefaultState>();
 
-        finishAction?.Invoke(); // change state to another
+        finishAction?.Invoke();
     }
 }

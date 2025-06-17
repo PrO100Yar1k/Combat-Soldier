@@ -41,14 +41,9 @@ public class PlayerScreenCanvasController : ScreenCanvasController
     public override void EnableCanvas()
     {
         _cancelButton.gameObject.SetActive(false);
-        _canvasComponent.enabled = true;
-    }
 
-    public override void DisableCanvas()
-    {
-        _canvasComponent.enabled = false;
+        base.EnableCanvas();
     }
-
 
     public void ChangeCancelButtonState(bool state)
         => _cancelButton.gameObject.SetActive(state);

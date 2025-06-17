@@ -27,7 +27,7 @@ public abstract class HPController
 
     protected abstract void ChangeSliderAndTextValues();
 
-    protected abstract void CheckHealPointsForTroopDeath();
+    protected abstract void CheckHealPointsForBuildingDestroy();
 
     protected void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
     {

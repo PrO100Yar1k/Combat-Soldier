@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 {
-    [Header("Raycast Layers")]
+    [Header("Raycast Layers")] [Space(3)]
 
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _troopsLayer = default;
+    [SerializeField] private LayerMask _buildingsLayer = default;
 
     private TroopController _selectedTroopController = default;
 
@@ -93,7 +94,12 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out EnemyTroopController enemy))
         {
             ActivateAttackState(enemy, enemy.transform.position, troopStateController);
+
             //_selectedTroopController.UIController.OpenAttackMenu();
+        }
+        else if ((shiftedMask & _buildingsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out BuildingController building))
+        {
+            // to do
         }
 
         CancelEnteringModeAndDisableMenu();
