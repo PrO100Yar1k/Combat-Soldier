@@ -91,15 +91,17 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         {
             troopStateController.ActivateMoveState(targetPoint, null);
         }
-        else if ((shiftedMask & _troopsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out EnemyTroopController enemy))
+        else if (_selectedOrderMode == OrderMode.Attack)
         {
-            ActivateAttackState(enemy, enemy.transform.position, troopStateController);
+            if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out EnemyTroopController enemy))
+            {
+                ActivateAttackState(enemy, enemy.transform.position, troopStateController);
+                //_selectedTroopController.UIController.OpenAttackMenu();
+            }
+            else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController building))
+            {
 
-            //_selectedTroopController.UIController.OpenAttackMenu();
-        }
-        else if ((shiftedMask & _buildingsLayer.value) != 0 && _selectedOrderMode == OrderMode.Attack && hit.collider.TryGetComponent(out BuildingController building))
-        {
-            // to do
+            }
         }
 
         CancelEnteringModeAndDisableMenu();

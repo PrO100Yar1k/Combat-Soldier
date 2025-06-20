@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class TroopDefenseState : TroopBaseState
 {
-    private event Action<TroopController> OnActivateDefenseUnderAttack = default;
-
-    private TroopController AttackingTroop = default;
+    private event Action<HPController> OnActivateDefenseUnderAttack = default;
 
     #region Events
 
@@ -34,8 +32,8 @@ public class TroopDefenseState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    public void ActivateDefenseUnderAttack(TroopController enemyController)
-        => OnActivateDefenseUnderAttack?.Invoke(enemyController);
+    public void ActivateDefenseUnderAttack(HPController enemyHPController)
+        => OnActivateDefenseUnderAttack?.Invoke(enemyHPController);
 
     protected override void EnableStateIcon()
     {
@@ -43,17 +41,11 @@ public class TroopDefenseState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void FightBackToEnemy(TroopController enemyController)
+    private void FightBackToEnemy(HPController enemyHPController)
     {
-        if (AttackingTroop == null)
-            AttackingTroop = enemyController;
-
-        else if (AttackingTroop != enemyController)
-            return;   // do not fight back if troop is already under attack
-
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
-        enemyController.HPController.TakeDamage(damageUnderAttack);
+        enemyHPController.TakeDamage(damageUnderAttack);
 
-        Debug.Log($"I fought back to {enemyController.TroopScriptable.Name} with damage {damageUnderAttack}!");
+        Debug.Log($"I fought back to {enemyHPController._currentName} with damage {damageUnderAttack}!");
     }
 }

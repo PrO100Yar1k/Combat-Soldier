@@ -4,9 +4,9 @@ public abstract class HPController
 {
     protected readonly ScreenCanvasController _troopCanvasController = default;
 
-    protected string _currentName = default;
-
     protected int _currentHealPoint = default;
+
+    public string _currentName { get; protected set; } = default; // to do 1
 
     public HPController(ScreenCanvasController troopCanvasController)
     {
@@ -24,6 +24,8 @@ public abstract class HPController
     }
 
     public abstract void TakeDamage(int attackDamage);
+
+    public abstract void ActivateDefenseUnderAttack(HPController enemyHPController);
 
     protected abstract void ChangeSliderAndTextValues();
 

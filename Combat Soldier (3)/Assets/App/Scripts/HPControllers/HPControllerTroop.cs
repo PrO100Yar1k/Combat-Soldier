@@ -46,6 +46,11 @@ public class HPControllerTroop : HPController
         CheckHealPointsForBuildingDestroy();
     }
 
+    public override void ActivateDefenseUnderAttack(HPController enemyHPController)
+    {
+         _troopController.StateController.ActivateDefenseUnderAttack(enemyHPController);
+    }
+
     private void TakeDamageWithDefenseState(int attackDamage)
     {
         int blockedHP = (int)(attackDamage * _currentBlockRate);

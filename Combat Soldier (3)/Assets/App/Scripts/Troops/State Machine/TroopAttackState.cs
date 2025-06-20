@@ -109,11 +109,13 @@ public class TroopAttackState : TroopBaseState
             if (enemyController == null)
                 break;
 
-            enemyController.HPController.TakeDamage(_troopScriptable.AttackDamage);
+            HPController enemyHPController = enemyController.HPController;
 
-            enemyController.StateController.ActivateDefenseUnderAttack(_troopController);
+            enemyHPController.TakeDamage(_troopScriptable.AttackDamage);
 
-            Debug.Log($"Attacked with damage {_troopScriptable.AttackDamage}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
+            enemyHPController.ActivateDefenseUnderAttack(_troopController.HPController);
+
+            Debug.Log($"Attacked {enemyHPController._currentName}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
 
             _remainingAttackWaves--;
 

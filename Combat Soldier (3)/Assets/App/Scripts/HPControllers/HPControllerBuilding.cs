@@ -36,4 +36,9 @@ public class HPControllerBuilding : HPController
         if (_currentHealPoint <= 0)
             base.TroopDeath(_buildingController, _buildingController.gameObject);
     }
+
+    public override void ActivateDefenseUnderAttack(HPController enemyHPController)
+    {
+        throw new System.NotImplementedException();
+    }
 }
