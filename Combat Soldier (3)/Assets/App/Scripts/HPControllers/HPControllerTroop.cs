@@ -8,7 +8,7 @@ public class HPControllerTroop : HPController
     private int _currentDefensePoint = default;
     private float _currentBlockRate = default;
 
-    public HPControllerTroop(TroopController troopController, ScreenCanvasController troopCanvasController, TroopScriptable troopScriptable) : base (troopCanvasController)
+    public HPControllerTroop(TroopController troopController, ScreenTroopCanvasController troopCanvasController, TroopScriptable troopScriptable) : base (troopCanvasController)
     {
         _troopController = troopController;
 

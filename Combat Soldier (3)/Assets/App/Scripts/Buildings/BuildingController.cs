@@ -6,7 +6,7 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
 
     [Space(2)]
 
-    [SerializeField] protected ScreenCanvasController _screenCanvasController = default;
+    [SerializeField] protected ScreenTroopCanvasController _screenCanvasController = default;
 
     //[SerializeField] protected WorldCanvasController _worldCanvasController = default;
 

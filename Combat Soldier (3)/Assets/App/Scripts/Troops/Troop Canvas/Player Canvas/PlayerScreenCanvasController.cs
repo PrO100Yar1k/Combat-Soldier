@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerScreenCanvasController : ScreenCanvasController
+public class PlayerScreenCanvasController : ScreenTroopCanvasController
 {
     [Space(3)]
 

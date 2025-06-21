@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class CanvasController : MonoBehaviour
+public abstract class TroopCanvasController : MonoBehaviour
 {
     protected TroopController _troopController = default;
     protected TroopScriptable _troopScriptable = default;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BuildingScreenCanvasController : ScreenCanvasController
+public class BuildingScreenCanvasController : ScreenTroopCanvasController
 {
 
 }

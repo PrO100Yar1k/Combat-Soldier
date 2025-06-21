@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public abstract class ScreenCanvasController : CanvasController
+public abstract class ScreenTroopCanvasController : TroopCanvasController
 {
     [SerializeField] private Slider _healPointSlider = default;
     [SerializeField] private Slider _defensePointSlider = default;

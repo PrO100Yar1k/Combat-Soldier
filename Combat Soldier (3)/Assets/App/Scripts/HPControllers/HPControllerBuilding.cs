@@ -3,7 +3,7 @@ public class HPControllerBuilding : HPController
 {
     private readonly BuildingController _buildingController = default;
 
-    public HPControllerBuilding(BuildingController buildingController, ScreenCanvasController troopCanvasController, BuildingScriptable buildingScriptable) : base(troopCanvasController)
+    public HPControllerBuilding(BuildingController buildingController, ScreenTroopCanvasController troopCanvasController, BuildingScriptable buildingScriptable) : base(troopCanvasController)
     {
         _buildingController = buildingController;
 

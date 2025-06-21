@@ -2,13 +2,13 @@ using UnityEngine;
 
 public abstract class HPController
 {
-    protected readonly ScreenCanvasController _troopCanvasController = default;
+    protected readonly ScreenTroopCanvasController _troopCanvasController = default;
 
     protected int _currentHealPoint = default;
 
     public string _currentName { get; protected set; } = default; // to do 1
 
-    public HPController(ScreenCanvasController troopCanvasController)
+    public HPController(ScreenTroopCanvasController troopCanvasController)
     {
         _troopCanvasController = troopCanvasController;
     }

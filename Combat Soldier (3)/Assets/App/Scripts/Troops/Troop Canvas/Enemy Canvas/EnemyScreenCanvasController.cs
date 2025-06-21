@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyScreenCanvasController : ScreenCanvasController
+public class EnemyScreenCanvasController : ScreenTroopCanvasController
 {
 
 }

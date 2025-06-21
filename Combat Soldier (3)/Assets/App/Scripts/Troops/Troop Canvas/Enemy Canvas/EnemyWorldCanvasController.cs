@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyWorldCanvasController : WorldCanvasController
+public class EnemyWorldCanvasController : WorldTroopCanvasController
 {
     // to do
 }

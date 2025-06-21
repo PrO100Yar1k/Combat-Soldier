@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class TroopUIController 
 {
-    private readonly ScreenCanvasController _screenCanvasController = default;
-    private readonly WorldCanvasController _worldCanvasController = default;
+    private readonly ScreenTroopCanvasController _screenCanvasController = default;
+    private readonly WorldTroopCanvasController _worldCanvasController = default;
 
     #region Events
 
@@ -23,7 +23,7 @@ public class TroopUIController
 
     #endregion
 
-    public TroopUIController(TroopController troopController, ScreenCanvasController screenCanvasController, WorldCanvasController worldCanvasController)
+    public TroopUIController(TroopController troopController, ScreenTroopCanvasController screenCanvasController, WorldTroopCanvasController worldCanvasController)
     {
         _screenCanvasController = screenCanvasController;
         _worldCanvasController = worldCanvasController;
