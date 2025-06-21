@@ -67,11 +67,12 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public TroopController GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopRange, TroopController targetPriorityEnemy)
+    public TroopController GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopRange, IDamagable targetPriorityEnemy)
     {
         TroopController[] enemyControllersList = GetEnemyListInRange(troopPosition, troopRange, enemyTroopSide);
 
         TroopController targetEnemy = default;
+
         float closestDistance = Mathf.Infinity;
 
         foreach (TroopController enemyController in enemyControllersList)
@@ -80,8 +81,8 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
 
             float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
 
-            if (enemyController == targetPriorityEnemy)
-                return targetPriorityEnemy;
+            if (enemyController.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
+                return enemyController;
 
             if (currentDistanceBetweenEnemy < closestDistance)
             {

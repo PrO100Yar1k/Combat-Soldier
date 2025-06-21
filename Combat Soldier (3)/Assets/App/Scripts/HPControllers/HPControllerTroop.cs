@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class HPControllerTroop : HPController
 {
     private readonly TroopController _troopController = default;
@@ -34,6 +36,9 @@ public class HPControllerTroop : HPController
     public override void TakeDamage(int attackDamage)
     {
         if (attackDamage <= 0)
+            return;
+
+        if (_troopController == null)
             return;
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
@@ -98,5 +103,13 @@ public class HPControllerTroop : HPController
             base.TroopDeath(_troopController, _troopController.gameObject);
     }
 
+    protected override void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
+    {
+        _troopController.StateController.ActivateDeathState();
+
+        base.TroopDeath(controller, objectToDestroy);
+    }
+
     #endregion
+
 }

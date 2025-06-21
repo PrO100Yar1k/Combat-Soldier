@@ -31,7 +31,7 @@ public abstract class HPController
 
     protected abstract void CheckHealPointsForBuildingDestroy();
 
-    protected void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
+    protected virtual void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
     {
         controller.StopAllCoroutines();
 

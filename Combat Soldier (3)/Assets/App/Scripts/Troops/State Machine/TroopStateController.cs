@@ -11,6 +11,7 @@ public class TroopStateController : ISwitchableState
     private readonly TroopMoveState _troopMoveState = default;
     private readonly TroopAttackState _troopAttackState = default;
     private readonly TroopDefenseState _troopDefenseState = default;
+    private readonly TroopDeathState _troopDeathState = default;
 
     private readonly List<TroopBaseState> _allStates = default;
 
@@ -24,8 +25,9 @@ public class TroopStateController : ISwitchableState
         _troopMoveState = new TroopMoveState(_troopController, screenCanvasController, this);
         _troopAttackState = new TroopAttackState(_troopController, screenCanvasController, this);
         _troopDefenseState = new TroopDefenseState(_troopController, screenCanvasController, this);
+        _troopDeathState = new TroopDeathState(_troopController, screenCanvasController, this);
 
-        _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState };
+        _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState, _troopDeathState };
         _currentState = _allStates[0];
 
         ActivateDefaultState();
@@ -36,7 +38,7 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopDefaultState>();
     }
     
-    public void ActivateAttackState(TroopController enemy)
+    public void ActivateAttackState(IDamagable enemy)
     {
         SwitchState<TroopAttackState>();
 
@@ -58,6 +60,11 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopMoveState>();
 
         _troopMoveState.ActivateTroopMovement(targetPoint, finishAction);
+    }
+    
+    public void ActivateDeathState()
+    {
+        SwitchState<TroopDeathState>();
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState

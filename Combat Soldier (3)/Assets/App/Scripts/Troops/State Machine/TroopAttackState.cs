@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TroopAttackState : TroopBaseState
 {
-    private event Action<TroopController> OnActivateTroopAttack = default;
+    private event Action<IDamagable> OnActivateTroopAttack = default;
 
     private Coroutine _reloadAttackCoroutine = default;
     private Coroutine _attackCoroutine = default;
@@ -44,8 +44,8 @@ public class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
     }
 
-    public void ActivateTroopAttack(TroopController enemyController)
-        => OnActivateTroopAttack?.Invoke(enemyController);
+    public void ActivateTroopAttack(IDamagable enemyHPController)
+        => OnActivateTroopAttack?.Invoke(enemyHPController);
 
     protected override void EnableStateIcon()
     {
@@ -53,14 +53,14 @@ public class TroopAttackState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void TryToAttackEnemy(TroopController enemyController)
+    private void TryToAttackEnemy(IDamagable enemyDamagable)
     {
         Vector3 troopPosition = _troopController.transform.position;
         TroopSide enemyTroopSide = TroopSide.Enemy;
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, enemyController);
+        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, enemyDamagable);
 
         if (enemyTroopController == null)
             return;
@@ -89,16 +89,16 @@ public class TroopAttackState : TroopBaseState
         _attackCoroutine = null;
     }
 
-    private void EnableCoroutine(TroopController targetEnemy)
+    private void EnableCoroutine(TroopController enemyController)
     {
-        _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(targetEnemy));
+        _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(enemyController));
     }
 
     #endregion
 
     #region Attack Coroutine
 
-    private IEnumerator AttackEnemy(TroopController enemyController)
+    private IEnumerator AttackEnemy(TroopController enemyTroopController)
     {
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
@@ -106,10 +106,10 @@ public class TroopAttackState : TroopBaseState
 
         while (_remainingAttackWaves > 0)
         {
-            if (enemyController == null)
+            if (enemyTroopController == null)
                 break;
 
-            HPController enemyHPController = enemyController.HPController;
+            HPController enemyHPController = enemyTroopController.HPController;
 
             enemyHPController.TakeDamage(_troopScriptable.AttackDamage);
 

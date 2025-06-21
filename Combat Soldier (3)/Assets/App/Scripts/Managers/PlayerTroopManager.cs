@@ -95,27 +95,32 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         {
             if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out EnemyTroopController enemy))
             {
-                ActivateAttackState(enemy, enemy.transform.position, troopStateController);
+                ActivateAttackState(enemy, troopStateController);
                 //_selectedTroopController.UIController.OpenAttackMenu();
             }
             else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController building))
             {
-
+                ActivateAttackState(building, troopStateController);
             }
         }
 
         CancelEnteringModeAndDisableMenu();
     }
 
-    private void ActivateAttackState(EnemyTroopController enemy, Vector3 targetPoint, TroopStateController troopStateController)
+    private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable 
     {
         Vector3 _selectedTroopPosition = _selectedTroopController.transform.position;
         float troopAttackRange = _selectedTroopController.TroopScriptable.AttackRangeRadius;
 
-        if (Vector3.Distance(enemy.transform.position, _selectedTroopPosition) < troopAttackRange)
+        Transform targetTransform = target.transform;
+        Vector3 targetPoint = targetTransform.position;
+
+        IDamagable targetDamagable = (IDamagable) target;
+
+        if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) < troopAttackRange)
         {
-            _selectedTroopController.transform.LookAt(enemy.transform); // ?
-            troopStateController.ActivateAttackState(enemy);
+            _selectedTroopController.transform.LookAt(targetTransform); // ?
+            troopStateController.ActivateAttackState(targetDamagable);
         }
         else
         {
@@ -125,7 +130,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             targetPoint -= direction * troopAttackRange * distanceModifier;
 
             Action action = default;
-            action += delegate { troopStateController.ActivateAttackState(enemy); };
+            action += delegate { troopStateController.ActivateAttackState(targetDamagable); };
 
             troopStateController.ActivateMoveState(targetPoint, action);
         }
