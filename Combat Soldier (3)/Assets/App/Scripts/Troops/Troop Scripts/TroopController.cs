@@ -7,7 +7,7 @@ public abstract class TroopController : MonoBehaviour, IDamagable
     [Space(2)]
 
     [SerializeField] protected ScreenTroopCanvasController _screenCanvasController = default;
-    [SerializeField] protected WorldTroopCanvasController _worldCanvasController = default;
+    [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
     public TroopStateController StateController { get; protected set; }    
     public TroopUIController UIController { get; protected set; }
@@ -28,7 +28,7 @@ public abstract class TroopController : MonoBehaviour, IDamagable
     protected virtual void Awake()
         => InitializeTroop();
 
-    public void TakeDamage(int attackDamage)
+    public void TakeDamage(int attackDamage) // ???
         => HPController.TakeDamage(attackDamage);
 }
 

@@ -38,7 +38,7 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
     }
 }
 
-public interface IDamagable     // ???
+public interface IDamagable
 {
     public void TakeDamage(int attackDamage);
 }
