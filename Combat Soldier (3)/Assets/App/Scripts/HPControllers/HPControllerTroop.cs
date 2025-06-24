@@ -1,16 +1,18 @@
-
 using UnityEngine;
 
 public class HPControllerTroop : HPController
 {
-    private readonly TroopController _troopController = default;
+    protected readonly TroopScreenCanvasController _troopCanvasController = default;
+
+    protected readonly TroopController _troopController = default;
 
     private int _currentDefensePoint = default;
     private float _currentBlockRate = default;
 
-    public HPControllerTroop(TroopController troopController, ScreenTroopCanvasController troopCanvasController, TroopScriptable troopScriptable) : base (troopCanvasController)
+    public HPControllerTroop(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable)
     {
         _troopController = troopController;
+        _troopCanvasController = troopCanvasController;
 
         AssignBasicParameters(troopScriptable);
         ChangeSliderAndTextValues();
@@ -18,7 +20,7 @@ public class HPControllerTroop : HPController
 
     private void AssignBasicParameters(TroopScriptable troopScriptable)
     {
-        _currentName = troopScriptable.Name;
+        HPControllerName = troopScriptable.Name;
         _currentBlockRate = troopScriptable.BlockRate;
 
         _currentHealPoint = troopScriptable.MaxHealPoint;
@@ -33,7 +35,7 @@ public class HPControllerTroop : HPController
 
     #region Take Damage
     
-    public override void TakeDamage(int attackDamage)
+    public override void TakeDamage(int attackDamage) // to do (under)
     {
         if (attackDamage <= 0)
             return;
@@ -48,7 +50,7 @@ public class HPControllerTroop : HPController
 
         ChangeSliderAndTextValues();
 
-        CheckHealPointsForBuildingDestroy();
+        CheckHealPointsForDeath();
     }
 
     public override void ActivateDefenseUnderAttack(HPController enemyHPController)
@@ -97,7 +99,7 @@ public class HPControllerTroop : HPController
 
     #region Death
 
-    protected override void CheckHealPointsForBuildingDestroy()
+    protected override void CheckHealPointsForDeath()
     {
         if (_currentHealPoint <= 0)
             base.TroopDeath(_troopController, _troopController.gameObject);

@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
-public class TroopUIController 
+public class UICanvasController<T>
 {
-    private readonly ScreenTroopCanvasController _screenCanvasController = default;
-    private readonly WorldCanvasController _worldCanvasController = default;
+    private readonly CanvasController _screenCanvasController = default;
+    private readonly CanvasController _worldCanvasController = default;
 
     #region Events
 
@@ -23,26 +24,24 @@ public class TroopUIController
 
     #endregion
 
-    public TroopUIController(TroopController troopController, ScreenTroopCanvasController screenCanvasController, WorldCanvasController worldCanvasController)
+    public UICanvasController(T controller, CanvasController screenCanvasController, CanvasController worldCanvasController) 
     {
         _screenCanvasController = screenCanvasController;
         _worldCanvasController = worldCanvasController;
 
-        _screenCanvasController.InitializeCanvas(troopController);
-        _worldCanvasController.InitializeCanvas(troopController);
+        _screenCanvasController.InitializeCanvas(controller);
+        _worldCanvasController.InitializeCanvas(controller);
 
         DisableAllCanvases();
     }
 
-    public void OpenTroopGeneralMenu()
+    public void OpenTroopGeneralMenu() // to do
     {
         EnableAllCanvases();
     }
 
-    public void OpenAttackMenu()
+    public void OpenAttackMenu() // to do
     {
-        // to do
-
         Debug.Log("Attack menu opened");
     }
 

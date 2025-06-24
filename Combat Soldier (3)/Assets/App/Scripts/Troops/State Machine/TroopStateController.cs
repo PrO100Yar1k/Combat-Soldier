@@ -17,7 +17,7 @@ public class TroopStateController : ISwitchableState
 
     private TroopBaseState _currentState = default;
 
-    public TroopStateController(TroopController troopController, ScreenTroopCanvasController screenCanvasController)
+    public TroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController)
     {
         _troopController = troopController;
 

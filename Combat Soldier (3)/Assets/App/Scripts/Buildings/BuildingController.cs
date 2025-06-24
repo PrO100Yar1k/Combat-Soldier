@@ -6,22 +6,25 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
 
     [Space(2)]
 
-    [SerializeField] protected ScreenTroopCanvasController _screenCanvasController = default;
+    [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
+    [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
     //[SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
-    private HPControllerBuilding HPController; // { get; private set; }
+    public UICanvasController<BuildingController> UIController { get; private set; }
+    public HPControllerBuilding HPController { get; private set; }
+
+    public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
     private TroopController _troopInsideBuilding = default; // [SerializeField] 
 
     private void Awake()
-    {
-        InitializeBuilding();
-    }
+        => InitializeBuilding();
 
     private void InitializeBuilding()
     {
-        HPController = new HPControllerBuilding(this, _screenCanvasController, _buildingScriptable);
+        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController);
+        HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
     }
 
     public void TakeDamage(int attackDamage)

@@ -1,24 +1,15 @@
 using UnityEngine;
 
-public abstract class TroopCanvasController : MonoBehaviour
+public abstract class TroopCanvasController : CanvasController
 {
     protected TroopController _troopController = default;
     protected TroopScriptable _troopScriptable = default;
 
-    protected Canvas _canvasComponent = default;
-
-    public abstract void InitializeCanvas(TroopController troopController);
-
-    public virtual void EnableCanvas() 
+    public override void InitializeCanvas<T>(T troopController)
     {
-        _canvasComponent.enabled = true;
-    }
+        _troopController = troopController as TroopController;
+        _troopScriptable = _troopController.TroopScriptable; // implement interface ICanvasInitializable for Scriptable Object ?
 
-    public virtual void DisableCanvas()
-    {
-        _canvasComponent.enabled = false;
+        AssignDefaultCanvasValues();
     }
-
-    protected virtual void Awake()
-        => _canvasComponent = GetComponent<Canvas>();
 }

@@ -1,11 +1,14 @@
 
 public class HPControllerBuilding : HPController
 {
+    protected readonly BuildingScreenCanvasController _buildingCanvasController = default;
+
     private readonly BuildingController _buildingController = default;
 
-    public HPControllerBuilding(BuildingController buildingController, ScreenTroopCanvasController troopCanvasController, BuildingScriptable buildingScriptable) : base(troopCanvasController)
+    public HPControllerBuilding(BuildingController buildingController, BuildingScreenCanvasController buildingCanvasController, BuildingScriptable buildingScriptable)
     {
         _buildingController = buildingController;
+        _buildingCanvasController = buildingCanvasController;
 
         AssignBasicParameters(buildingScriptable);
         ChangeSliderAndTextValues();
@@ -13,13 +16,13 @@ public class HPControllerBuilding : HPController
 
     private void AssignBasicParameters(BuildingScriptable buildingScriptable)
     {
-        _currentName = buildingScriptable.Name;
+        HPControllerName = buildingScriptable.Name;
         _currentHealPoint = buildingScriptable.MaxHealPoint;
     }
 
     protected override void ChangeSliderAndTextValues()
     {
-        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
+        _buildingCanvasController.ChangeHealPointSlider(_currentHealPoint);
     }
 
     public override void TakeDamage(int attackDamage)
@@ -27,18 +30,12 @@ public class HPControllerBuilding : HPController
         _currentHealPoint -= attackDamage;
 
         ChangeSliderAndTextValues();
-
-        CheckHealPointsForBuildingDestroy();
+        CheckHealPointsForDeath();
     }
 
-    protected override void CheckHealPointsForBuildingDestroy()
+    protected override void CheckHealPointsForDeath()
     {
         if (_currentHealPoint <= 0)
             base.TroopDeath(_buildingController, _buildingController.gameObject);
-    }
-
-    public override void ActivateDefenseUnderAttack(HPController enemyHPController)
-    {
-        throw new System.NotImplementedException();
     }
 }

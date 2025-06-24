@@ -25,7 +25,7 @@ public class TroopAttackState : TroopBaseState
 
     #endregion
 
-    public TroopAttackState(TroopController troopController, ScreenTroopCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
     {
         SetupDefaultCountAttackWaves();
     }
@@ -115,7 +115,7 @@ public class TroopAttackState : TroopBaseState
 
             enemyHPController.ActivateDefenseUnderAttack(_troopController.HPController);
 
-            Debug.Log($"Attacked {enemyHPController._currentName}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
+            Debug.Log($"Attacked {enemyHPController.HPControllerName}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
 
             _remainingAttackWaves--;
 

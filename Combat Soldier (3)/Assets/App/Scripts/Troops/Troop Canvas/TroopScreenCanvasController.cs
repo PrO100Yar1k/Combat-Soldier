@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
-public abstract class ScreenTroopCanvasController : TroopCanvasController
+public abstract class TroopScreenCanvasController : TroopCanvasController
 {
     [SerializeField] private Slider _healPointSlider = default;
     [SerializeField] private Slider _defensePointSlider = default;
@@ -16,15 +17,7 @@ public abstract class ScreenTroopCanvasController : TroopCanvasController
 
     [SerializeField] private Image _stateIcon = default;
 
-    public override void InitializeCanvas(TroopController troopController)
-    {
-        _troopController = troopController;
-        _troopScriptable = troopController.TroopScriptable;
-
-        AssignMaxSliderValues();
-    }
-
-    private void AssignMaxSliderValues()
+    protected override void AssignDefaultCanvasValues()
     {
         _healPointSlider.maxValue = _troopScriptable.MaxHealPoint;
         _defensePointSlider.maxValue = _troopScriptable.MaxDefencePoint;

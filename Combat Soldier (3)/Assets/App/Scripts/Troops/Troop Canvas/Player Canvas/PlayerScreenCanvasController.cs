@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerScreenCanvasController : ScreenTroopCanvasController
+public class PlayerScreenCanvasController : TroopScreenCanvasController
 {
     [Space(3)]
 
@@ -10,15 +10,10 @@ public class PlayerScreenCanvasController : ScreenTroopCanvasController
 
     [SerializeField] private Button _cancelButton = default;
 
-    public override void InitializeCanvas(TroopController troopController)
+    protected override void AssignDefaultCanvasValues()
     {
-        base.InitializeCanvas(troopController);
+        base.AssignDefaultCanvasValues();
 
-        AssignButtonsListener();
-    }
-
-    private void AssignButtonsListener()
-    {
         _attackButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Attack); });
         _moveButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Move); });
 

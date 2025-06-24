@@ -6,11 +6,11 @@ public abstract class TroopController : MonoBehaviour, IDamagable
 
     [Space(2)]
 
-    [SerializeField] protected ScreenTroopCanvasController _screenCanvasController = default;
+    [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
+    public UICanvasController<TroopController> UIController { get; protected set; }
     public TroopStateController StateController { get; protected set; }    
-    public TroopUIController UIController { get; protected set; }
     public HPControllerTroop HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable;

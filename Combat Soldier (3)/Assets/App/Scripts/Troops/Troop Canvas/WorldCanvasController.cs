@@ -5,15 +5,7 @@ public abstract class WorldCanvasController : TroopCanvasController
     [SerializeField] private RectTransform _attackCircleRange = default;
     [SerializeField] private RectTransform _viewCircleRange = default;
 
-    public override void InitializeCanvas(TroopController troopController)
-    {
-        _troopController = troopController;
-        _troopScriptable = troopController.TroopScriptable;
-
-        SetupCircles();
-    }
-
-    private void SetupCircles()
+    protected override void AssignDefaultCanvasValues()
     {
         ChangeCirclesState(false);
         SetupCircleRanges();

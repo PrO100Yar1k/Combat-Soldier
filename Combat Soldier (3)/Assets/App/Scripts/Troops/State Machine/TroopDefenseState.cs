@@ -19,7 +19,7 @@ public class TroopDefenseState : TroopBaseState
 
     #endregion
 
-    public TroopDefenseState(TroopController troopController, ScreenTroopCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
+    public TroopDefenseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
 
     public override void Start()
     {
@@ -46,6 +46,6 @@ public class TroopDefenseState : TroopBaseState
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyHPController.TakeDamage(damageUnderAttack);
 
-        Debug.Log($"I fought back to {enemyHPController._currentName} with damage {damageUnderAttack}!");
+        Debug.Log($"I fought back to {enemyHPController.HPControllerName} with damage {damageUnderAttack}!");
     }
 }
