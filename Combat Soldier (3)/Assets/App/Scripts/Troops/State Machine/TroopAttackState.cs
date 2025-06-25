@@ -115,7 +115,7 @@ public class TroopAttackState : TroopBaseState
 
             enemyHPController.ActivateDefenseUnderAttack(_troopController.HPController);
 
-            Debug.Log($"Attacked {enemyHPController.HPControllerName}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves}");
+            Debug.Log($"Attacked {enemyHPController.HPControllerName}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves + 1}");
 
             _remainingAttackWaves--;
 

@@ -9,7 +9,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
     [SerializeField] private LayerMask _troopsLayer = default;
     [SerializeField] private LayerMask _buildingsLayer = default;
 
-    private TroopController _selectedController = default;
+    private MonoBehaviour _selectedController = default;
     private OrderMode _selectedOrderMode = default;
 
     #region Events & Initialization
@@ -42,14 +42,14 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     public void ChangeTroopControllerAndState()
     {
-        if (_selectedOrderMode == OrderMode.None)
-            NoSelectedOrderTroopAction();
-        else 
-            SelectedOrderTroopAction();
+        if (_selectedOrderMode == OrderMode.None) 
+            NoSelectedOrderAction();
+
+        else SelectedOrderTroopAction(); // could be used only for troops
     }
 
 
-    private void NoSelectedOrderTroopAction()
+    private void NoSelectedOrderAction()
     {
         RaycastHit hit = GetRaycastHit();
 
@@ -64,19 +64,19 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
         if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
         {
+            troopController.UIController.OpenTroopGeneralMenu();
             _selectedController = troopController;
-            _selectedController.UIController.OpenTroopGeneralMenu();
         }
         else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController buildingController))
         {
-            _selectedController = buildingController;
             buildingController.UIController.OpenTroopGeneralMenu();
+            _selectedController = buildingController;
         }
     }
 
     private void SelectedOrderTroopAction()
     {
-        if (_selectedController == null)
+        if (_selectedController is not TroopController)
             return;
 
         RaycastHit hit = GetRaycastHit();
@@ -84,7 +84,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         if (hit.collider == null)
             return;
 
-        TroopStateController troopStateController = _selectedController.StateController;
+        TroopController troopController = _selectedController as TroopController;
+        TroopStateController troopStateController = troopController.StateController;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
         int shiftedMask = (1 << hitLayer);
@@ -113,8 +114,13 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable 
     {
+        if (_selectedController is not TroopController)
+            return;
+
+        TroopController troopController = _selectedController as TroopController;
+
         Vector3 _selectedTroopPosition = _selectedController.transform.position;
-        float troopAttackRange = _selectedController.TroopScriptable.AttackRangeRadius;
+        float troopAttackRange = troopController.TroopScriptable.AttackRangeRadius;
 
         Transform targetTransform = target.transform;
         Vector3 targetPoint = targetTransform.position;
