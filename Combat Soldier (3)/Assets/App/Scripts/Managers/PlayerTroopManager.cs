@@ -9,8 +9,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
     [SerializeField] private LayerMask _troopsLayer = default;
     [SerializeField] private LayerMask _buildingsLayer = default;
 
-    private TroopController _selectedTroopController = default;
-
+    private TroopController _selectedController = default;
     private OrderMode _selectedOrderMode = default;
 
     #region Events & Initialization
@@ -60,19 +59,24 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         LayerMask hitLayer = hit.collider.gameObject.layer;
         int shiftedMask = (1 << hitLayer);
 
-        if (_selectedTroopController != null)
+        if (_selectedController != null)
             CancelEnteringModeAndDisableMenu();
 
         if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
         {
-            _selectedTroopController = troopController;
-            _selectedTroopController.UIController.OpenTroopGeneralMenu();
+            _selectedController = troopController;
+            _selectedController.UIController.OpenTroopGeneralMenu();
+        }
+        else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController buildingController))
+        {
+            _selectedController = buildingController;
+            buildingController.UIController.OpenTroopGeneralMenu();
         }
     }
 
     private void SelectedOrderTroopAction()
     {
-        if (_selectedTroopController == null)
+        if (_selectedController == null)
             return;
 
         RaycastHit hit = GetRaycastHit();
@@ -80,7 +84,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         if (hit.collider == null)
             return;
 
-        TroopStateController troopStateController = _selectedTroopController.StateController;
+        TroopStateController troopStateController = _selectedController.StateController;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
         int shiftedMask = (1 << hitLayer);
@@ -109,8 +113,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable 
     {
-        Vector3 _selectedTroopPosition = _selectedTroopController.transform.position;
-        float troopAttackRange = _selectedTroopController.TroopScriptable.AttackRangeRadius;
+        Vector3 _selectedTroopPosition = _selectedController.transform.position;
+        float troopAttackRange = _selectedController.TroopScriptable.AttackRangeRadius;
 
         Transform targetTransform = target.transform;
         Vector3 targetPoint = targetTransform.position;
@@ -119,7 +123,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
         if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) < troopAttackRange)
         {
-            _selectedTroopController.transform.LookAt(targetTransform); // ?
+            _selectedController.transform.LookAt(targetTransform); // ?
             troopStateController.ActivateAttackState(targetDamagable);
         }
         else
@@ -151,13 +155,13 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode)
     {
-        _selectedTroopController = troopController;
+        _selectedController = troopController;
         _selectedOrderMode = orderMode;
     }
 
     private void CancelEnteringModeAndDisableMenu()
     {
-        if (_selectedTroopController != null)
+        if (_selectedController != null)
             GameEvents.instance.TroopDisableCanvases();
 
         AssignTroopControllerAndChangeMode(null, OrderMode.None);
@@ -165,7 +169,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void UpdateTroopStatus(TroopController troopController, TroopSide troopSide)
     {
-        if (_selectedTroopController == troopController)
+        if (_selectedController == troopController)
             AssignTroopControllerAndChangeMode(null, OrderMode.None);
     }
 }

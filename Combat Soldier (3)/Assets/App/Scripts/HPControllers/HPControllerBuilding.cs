@@ -14,8 +14,10 @@ public class HPControllerBuilding : HPController
         ChangeSliderAndTextValues();
     }
 
-    private void AssignBasicParameters(BuildingScriptable buildingScriptable)
+    protected override void AssignBasicParameters<T>(T scriptableObject)
     {
+        BuildingScriptable buildingScriptable = scriptableObject as BuildingScriptable;
+
         HPControllerName = buildingScriptable.Name;
         _currentHealPoint = buildingScriptable.MaxHealPoint;
     }

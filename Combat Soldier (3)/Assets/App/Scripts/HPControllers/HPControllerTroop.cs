@@ -18,8 +18,10 @@ public class HPControllerTroop : HPController
         ChangeSliderAndTextValues();
     }
 
-    private void AssignBasicParameters(TroopScriptable troopScriptable)
+    protected override void AssignBasicParameters<T>(T scriptableObject)
     {
+        TroopScriptable troopScriptable = scriptableObject as TroopScriptable;
+
         HPControllerName = troopScriptable.Name;
         _currentBlockRate = troopScriptable.BlockRate;
 
@@ -35,7 +37,7 @@ public class HPControllerTroop : HPController
 
     #region Take Damage
     
-    public override void TakeDamage(int attackDamage) // to do (under)
+    public override void TakeDamage(int attackDamage) // to do
     {
         if (attackDamage <= 0)
             return;

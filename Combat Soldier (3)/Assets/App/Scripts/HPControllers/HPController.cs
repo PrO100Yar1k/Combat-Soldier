@@ -16,12 +16,14 @@ public abstract class HPController
         ChangeSliderAndTextValues();
     }
 
+    public abstract void TakeDamage(int attackDamage);
+
     public virtual void ActivateDefenseUnderAttack(HPController enemyHPController) 
     {
 
     }
 
-    public abstract void TakeDamage(int attackDamage);
+    protected abstract void AssignBasicParameters<T>(T scriptableObject) where T : ScriptableObject;
 
     protected abstract void ChangeSliderAndTextValues();
 
