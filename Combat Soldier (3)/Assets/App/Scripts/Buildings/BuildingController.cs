@@ -9,14 +9,19 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
-    //[SerializeField] protected WorldCanvasController _worldCanvasController = default;
-
     public UICanvasController<BuildingController> UIController { get; private set; }
     public HPControllerBuilding HPController { get; private set; }
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
     private TroopController _troopInsideBuilding = default; // [SerializeField] 
+
+    protected virtual void OnEnable() // to do
+        => GameEvents.instance.BuildingSpawned(this);
+
+    protected virtual void OnDisable()
+        => GameEvents.instance.BuildingDestroyed(this);
+
 
     private void Awake()
         => InitializeBuilding();
@@ -44,4 +49,9 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
 public interface IDamagable
 {
     public void TakeDamage(int attackDamage);
+}
+
+public interface IResistable
+{
+    public void ActivateDefenseUnderAttack(HPController enemyHPController);
 }

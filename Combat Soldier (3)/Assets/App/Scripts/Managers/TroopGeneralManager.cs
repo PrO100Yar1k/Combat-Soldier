@@ -6,6 +6,8 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
     private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
     private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
 
+    private List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
+
     #region Singleton Activation & Initialization
 
     [HideInInspector] public static TroopGeneralManager instance;
@@ -36,14 +38,18 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
     private void SubscribeToEvents()
     {
         GameEvents.instance.OnTroopSpawned += AddTroopToList;
+        GameEvents.instance.OnBuildingSpawned += AddBuildingToList;
 
+        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
         GameEvents.instance.OnTroopDied += RemoveTroopFromList;
     }
 
     private void UnSubscribeFromEvents()
     {
         GameEvents.instance.OnTroopSpawned -= AddTroopToList;
+        GameEvents.instance.OnBuildingSpawned -= AddBuildingToList;
 
+        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
         GameEvents.instance.OnTroopDied -= RemoveTroopFromList;
     }
 
@@ -67,26 +73,29 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public TroopController GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopRange, IDamagable targetPriorityEnemy)
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopRange, IDamagable targetPriorityEnemy)
     {
-        TroopController[] enemyControllersList = GetEnemyListInRange(troopPosition, troopRange, enemyTroopSide);
+        List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 
-        TroopController targetEnemy = default;
+        enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, troopRange, enemyTroopSide));
+        enemyControllersList.AddRange(_buildingControllersEnemyList);
+
+        MonoBehaviour targetEnemy = default;
 
         float closestDistance = Mathf.Infinity;
 
-        foreach (TroopController enemyController in enemyControllersList)
+        foreach (MonoBehaviour enemy in enemyControllersList)
         {
-            Vector3 currentEnemyPosition = enemyController.transform.position;
+            Vector3 currentEnemyPosition = enemy.transform.position;
 
             float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
 
-            if (enemyController.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
-                return enemyController;
+            if (enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
+                return enemy;
 
             if (currentDistanceBetweenEnemy < closestDistance)
             {
-                targetEnemy = enemyController;
+                targetEnemy = enemy;
                 closestDistance = currentDistanceBetweenEnemy;
             }
         }
@@ -123,5 +132,18 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
         Debug.Log("Troop successfully removed!");
     }
 
+    private void AddBuildingToList(BuildingController buildingController)
+    {
+        _buildingControllersEnemyList.Add(buildingController);
+
+        Debug.Log("Building successfully added!");
+    }
+
+    private void RemoveBuildingFromList(BuildingController buildingController)
+    {
+        _buildingControllersEnemyList.Remove(buildingController);
+
+        Debug.Log("Building successfully removed!");
+    }
     #endregion
 }

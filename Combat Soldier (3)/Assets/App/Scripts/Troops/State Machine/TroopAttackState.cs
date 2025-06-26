@@ -60,19 +60,26 @@ public class TroopAttackState : TroopBaseState
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        TroopController enemyTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, enemyDamagable);
+        MonoBehaviour enemyTroop = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, enemyDamagable);
 
-        if (enemyTroopController == null)
+        if (enemyTroop == null)
             return;
 
-        enemyTroopController.StateController.ActivateDefenceState(); 
-
-        AttackEnemyCoroutineStarter(enemyTroopController);
+        if (enemyTroop.TryGetComponent(out TroopController troopController))
+        {
+            troopController.StateController.ActivateDefenceState(); 
+            AttackEnemyCoroutineStarter(troopController);
+        }
+        else if (enemyTroop.TryGetComponent(out BuildingController buildingController))
+        {
+            AttackEnemyCoroutineStarter(buildingController);
+        }
+        
     }
 
     #region Coroutine Starter
 
-    private void AttackEnemyCoroutineStarter(TroopController targetEnemy)
+    private void AttackEnemyCoroutineStarter<T>(T targetEnemy) where T : MonoBehaviour, IDamagable
     {
         DisableAttackCoroutine();
 
@@ -89,7 +96,7 @@ public class TroopAttackState : TroopBaseState
         _attackCoroutine = null;
     }
 
-    private void EnableCoroutine(TroopController enemyController)
+    private void EnableCoroutine<T>(T enemyController) where T : MonoBehaviour, IDamagable
     {
         _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(enemyController));
     }
@@ -98,24 +105,24 @@ public class TroopAttackState : TroopBaseState
 
     #region Attack Coroutine
 
-    private IEnumerator AttackEnemy(TroopController enemyTroopController)
+    private IEnumerator AttackEnemy<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
     {
+        Debug.Log("Attacked");
+
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
         float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
         while (_remainingAttackWaves > 0)
         {
-            if (enemyTroopController == null)
+            if (enemyTroop == null)
                 break;
 
-            HPController enemyHPController = enemyTroopController.HPController;
+            IResistable enemyResistable = enemyTroop as IResistable;
 
-            enemyHPController.TakeDamage(_troopScriptable.AttackDamage);
+            enemyTroop.TakeDamage(_troopScriptable.AttackDamage);
 
-            enemyHPController.ActivateDefenseUnderAttack(_troopController.HPController);
-
-            Debug.Log($"Attacked {enemyHPController.HPControllerName}; Wave - {_troopScriptable.CountAttackWaves - _remainingAttackWaves + 1}");
+            enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController);
 
             _remainingAttackWaves--;
 

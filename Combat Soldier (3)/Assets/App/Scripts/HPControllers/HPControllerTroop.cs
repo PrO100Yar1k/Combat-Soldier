@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HPControllerTroop : HPController
+public class HPControllerTroop : HPController     //, IResistable
 {
     protected readonly TroopScreenCanvasController _troopCanvasController = default;
 
@@ -55,7 +55,7 @@ public class HPControllerTroop : HPController
         CheckHealPointsForDeath();
     }
 
-    public override void ActivateDefenseUnderAttack(HPController enemyHPController)
+    public void ActivateDefenseUnderAttack(HPController enemyHPController)
     {
          _troopController.StateController.ActivateDefenseUnderAttack(enemyHPController);
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class TroopController : MonoBehaviour, IDamagable
+public abstract class TroopController : MonoBehaviour, IDamagable, IResistable
 {
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
@@ -28,8 +28,12 @@ public abstract class TroopController : MonoBehaviour, IDamagable
     protected virtual void Awake()
         => InitializeTroop();
 
+
     public void TakeDamage(int attackDamage) // ???
         => HPController.TakeDamage(attackDamage);
+
+    public void ActivateDefenseUnderAttack(HPController enemyHPController) // ???
+        => HPController.ActivateDefenseUnderAttack(enemyHPController);
 }
 
 public enum TroopSide
