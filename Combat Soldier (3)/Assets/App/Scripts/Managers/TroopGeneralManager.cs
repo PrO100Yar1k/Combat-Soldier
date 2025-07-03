@@ -8,7 +8,7 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
 
     private List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
-    #region Singleton Activation & Initialization
+    #region Initialization & Singleton
 
     [HideInInspector] public static TroopGeneralManager instance;
 

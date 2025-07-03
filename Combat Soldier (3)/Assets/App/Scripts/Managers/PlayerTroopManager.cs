@@ -22,18 +22,20 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopEnterAnyMode += AssignTroopControllerAndChangeMode;
+        GameEvents.instance.OnTroopEnterAnyMode += AssignControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
 
-        GameEvents.instance.OnTroopDied += UpdateTroopStatus;
+        GameEvents.instance.OnTroopDiedSimple += UpdateTroopStatus;
+        GameEvents.instance.OnBuildingDestroyed += UpdateTroopStatus;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopEnterAnyMode -= AssignTroopControllerAndChangeMode;
+        GameEvents.instance.OnTroopEnterAnyMode -= AssignControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
 
-        GameEvents.instance.OnTroopDied -= UpdateTroopStatus;
+        GameEvents.instance.OnTroopDiedSimple -= UpdateTroopStatus;
+        GameEvents.instance.OnBuildingDestroyed -= UpdateTroopStatus;
     }
 
     #endregion
@@ -156,24 +158,24 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
     }
 
 
-    private void AssignTroopControllerAndChangeMode(TroopController troopController, OrderMode orderMode)
+    private void AssignControllerAndChangeMode(MonoBehaviour troopController, OrderMode orderMode)
     {
         _selectedController = troopController;
         _selectedOrderMode = orderMode;
     }
 
-    private void UpdateTroopStatus(TroopController troopController, TroopSide troopSide)
+    private void UpdateTroopStatus(MonoBehaviour controller)
     {
-        if (_selectedController == troopController)
-            AssignTroopControllerAndChangeMode(null, OrderMode.None);
+        if (_selectedController == controller)
+            AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
     private void CancelEnteringModeAndDisableMenu()
     {
-        if (_selectedController != null)
-            GameEvents.instance.TroopDisableCanvases();
+        //if (_selectedController != null)
+        GameEvents.instance.DisableActiveCanvases();
 
-        AssignTroopControllerAndChangeMode(null, OrderMode.None);
+        AssignControllerAndChangeMode(null, OrderMode.None);
     }
 }
 

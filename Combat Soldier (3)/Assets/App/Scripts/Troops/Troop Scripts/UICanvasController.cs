@@ -1,31 +1,37 @@
 using System;
 using UnityEngine;
 
-public class UICanvasController<T>
+public class UICanvasController<T> where T : MonoBehaviour
 {
     private readonly CanvasController _screenCanvasController = default;
     private readonly CanvasController _worldCanvasController = default;
+
+    private readonly MonoBehaviour _currentController = default;
 
     #region Events
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopDisableCanvases += DisableAllCanvases;
+        GameEvents.instance.OnDisableActiveCanvases += DisableAllCanvases;
 
-        GameEvents.instance.OnTroopDied += DisableObject;
+        GameEvents.instance.OnBuildingDestroyed += DisableObject;
+        GameEvents.instance.OnTroopDiedSimple += DisableObject;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopDisableCanvases -= DisableAllCanvases;
+        GameEvents.instance.OnDisableActiveCanvases -= DisableAllCanvases;
 
-        GameEvents.instance.OnTroopDied -= DisableObject;
+        GameEvents.instance.OnBuildingDestroyed -= DisableObject;
+        GameEvents.instance.OnTroopDiedSimple -= DisableObject;
     }
 
     #endregion
 
     public UICanvasController(T controller, CanvasController screenCanvasController, CanvasController worldCanvasController) 
     {
+        _currentController = controller;
+
         _screenCanvasController = screenCanvasController;
         _worldCanvasController = worldCanvasController;
 
@@ -35,10 +41,9 @@ public class UICanvasController<T>
         DisableAllCanvases();
     }
 
-    public void OpenTroopGeneralMenu() // to do
-    {
-        EnableAllCanvases();
-    }
+    public void OpenTroopGeneralMenu()
+        => EnableAllCanvases();
+
 
     public void OpenAttackMenu() // to do
     {
@@ -62,8 +67,9 @@ public class UICanvasController<T>
         UnSubscribeFromEvents();
     }
 
-    private void DisableObject(TroopController troopController, TroopSide troopSide)
+    private void DisableObject(MonoBehaviour controller)
     {
-        DisableAllCanvases(); // disable and unsubscribe
+        if (controller == _currentController)
+            DisableAllCanvases();
     }
 }

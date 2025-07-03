@@ -24,7 +24,14 @@ public class GameEvents : MonoBehaviour, IInitializeManager
     public void TroopSpawned(TroopController troopController, TroopSide troopSide) => OnTroopSpawned?.Invoke(troopController, troopSide);
 
     public event Action<TroopController, TroopSide> OnTroopDied = default;
-    public void TroopDied(TroopController troopController, TroopSide troopSide) => OnTroopDied?.Invoke(troopController, troopSide);
+    public event Action<MonoBehaviour> OnTroopDiedSimple = default;
+
+    public void TroopDied(TroopController troopController, TroopSide troopSide)
+    {
+        OnTroopDied?.Invoke(troopController, troopSide);
+        OnTroopDiedSimple?.Invoke(troopController);
+    }
+
     
     public event Action<BuildingController> OnBuildingSpawned = default;
     public void BuildingSpawned(BuildingController buildingController) => OnBuildingSpawned?.Invoke(buildingController);
@@ -40,8 +47,8 @@ public class GameEvents : MonoBehaviour, IInitializeManager
     public event Action OnTroopCancelEnteringMode = default;
     public void TroopCancelEnteringMode() => OnTroopCancelEnteringMode?.Invoke();
 
-    public event Action OnTroopDisableCanvases = default;
-    public void TroopDisableCanvases() => OnTroopDisableCanvases?.Invoke();
+    public event Action OnDisableActiveCanvases = default;
+    public void DisableActiveCanvases() => OnDisableActiveCanvases?.Invoke();
 
     /// 
 
