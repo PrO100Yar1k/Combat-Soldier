@@ -1342,7 +1342,7 @@ GameObject:
   - component: {fileID: 2432846635482096286}
   - component: {fileID: 6013754442806558966}
   m_Layer: 6
-  m_Name: Player - Troop Unit 2.0
+  m_Name: Player - Troop Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

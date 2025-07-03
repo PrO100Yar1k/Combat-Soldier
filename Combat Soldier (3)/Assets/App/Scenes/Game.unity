@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_Name
-      value: Player - Troop Unit 2.0 2
+      value: Player - Troop Unit 01
       objectReference: {fileID: 0}
     - target: {fileID: 5848454158540478654, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -709,7 +709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5555289593626844165, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_Name
-      value: Enemy - Troop Unit 2.0
+      value: Enemy - Troop Unit 00
       objectReference: {fileID: 0}
     - target: {fileID: 6038800154034946434, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1192,7 +1192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_Name
-      value: Player - Troop Unit 2.0
+      value: Player - Troop Unit 00
       objectReference: {fileID: 0}
     - target: {fileID: 4141524973501845249, guid: 0e6664c653e352645a21e900729830d1, type: 3}
       propertyPath: m_IsActive

@@ -106,11 +106,11 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             }
             else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController building))
             {
-                ActivateAttackState(building, troopStateController);
+                ActivateAttackState(building, troopStateController); //_selectedTroopController.UIController.OpenAttackMenu();
             }
         }
 
-        CancelEnteringModeAndDisableMenu();
+        CancelEnteringModeAndDisableMenu(); // for future feature - not disabling canvas after troop order
     }
 
     private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable 
@@ -128,14 +128,14 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
         if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) < troopAttackRange)
         {
-            _selectedController.transform.LookAt(targetTransform); // ?
+            _selectedController.transform.LookAt(targetTransform); // to do
             troopStateController.ActivateAttackState(target);
         }
         else
         {
             const float distanceModifier = 0.85f; // could be changed a little bit
-            Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
 
+            Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
             targetPoint -= direction * troopAttackRange * distanceModifier;
 
             Action action = default;
@@ -172,7 +172,6 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void CancelEnteringModeAndDisableMenu()
     {
-        //if (_selectedController != null)
         GameEvents.instance.DisableActiveCanvases();
 
         AssignControllerAndChangeMode(null, OrderMode.None);
