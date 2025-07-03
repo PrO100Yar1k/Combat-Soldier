@@ -53,5 +53,5 @@ public interface IDamagable
 
 public interface IResistable
 {
-    public void ActivateDefenseUnderAttack(HPController enemyHPController);
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition);
 }

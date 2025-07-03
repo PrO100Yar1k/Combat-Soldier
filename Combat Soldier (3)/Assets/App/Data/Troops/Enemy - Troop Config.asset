@@ -18,7 +18,7 @@ MonoBehaviour:
   <TroopSide>k__BackingField: 1
   <MaxHealPoint>k__BackingField: 100
   <MaxDefencePoint>k__BackingField: 100
-  <BlockRate>k__BackingField: 0.2
+  <BlockRate>k__BackingField: 0.4
   <TimeToReloadAttack>k__BackingField: 5
   <TimeBetweenAttackWaves>k__BackingField: 5
   <AttackDamage>k__BackingField: 25

@@ -32,8 +32,8 @@ public abstract class TroopController : MonoBehaviour, IDamagable, IResistable
     public void TakeDamage(int attackDamage) // ???
         => HPController.TakeDamage(attackDamage);
 
-    public void ActivateDefenseUnderAttack(HPController enemyHPController) // ???
-        => HPController.ActivateDefenseUnderAttack(enemyHPController);
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition) // ???
+        => HPController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
 }
 
 public enum TroopSide

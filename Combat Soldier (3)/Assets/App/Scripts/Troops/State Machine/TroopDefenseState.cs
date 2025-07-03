@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TroopDefenseState : TroopBaseState
 {
-    private event Action<HPController> OnActivateDefenseUnderAttack = default;
+    private event Action<HPController, Vector3> OnActivateDefenseUnderAttack = default;
 
     #region Events
 
@@ -32,8 +32,8 @@ public class TroopDefenseState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    public void ActivateDefenseUnderAttack(HPController enemyHPController)
-        => OnActivateDefenseUnderAttack?.Invoke(enemyHPController);
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
+        => OnActivateDefenseUnderAttack?.Invoke(enemyHPController, enemyPosition);
 
     protected override void EnableStateIcon()
     {
@@ -41,8 +41,17 @@ public class TroopDefenseState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void FightBackToEnemy(HPController enemyHPController)
+    private void FightBackToEnemy(HPController enemyHPController, Vector3 enemyPosition) // IDamagable instead of HPController
     {
+        if (_troopController == null)
+            return;
+
+        Vector3 troopPosition = _troopController.transform.position;
+        float attackRange = _troopController.TroopScriptable.AttackRangeRadius;
+
+        if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
+            return;
+
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyHPController.TakeDamage(damageUnderAttack);
 

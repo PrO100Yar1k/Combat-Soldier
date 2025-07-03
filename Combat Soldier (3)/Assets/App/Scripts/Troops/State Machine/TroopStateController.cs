@@ -50,9 +50,9 @@ public class TroopStateController : ISwitchableState
         SwitchState<TroopDefenseState>();
     }
 
-    public void ActivateDefenseUnderAttack(HPController enemyHPController)
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
     {
-        _troopDefenseState.ActivateDefenseUnderAttack(enemyHPController);
+        _troopDefenseState.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
     }
 
     public void ActivateMoveState(Vector3 targetPoint, Action finishAction)

@@ -40,18 +40,15 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     #endregion
 
-    // to do add region to this script
-
     public void ChangeTroopControllerAndState()
     {
         if (_selectedOrderMode == OrderMode.None) 
-            NoSelectedOrderAction();
+            NoSelectedController();
 
-        else SelectedOrderTroopAction(); // could be used only for troops
+        else SelectedOrderTroopAction();
     }
 
-
-    private void NoSelectedOrderAction()
+    private void NoSelectedController()
     {
         RaycastHit hit = GetRaycastHit();
 
@@ -61,15 +58,14 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         LayerMask hitLayer = hit.collider.gameObject.layer;
         int shiftedMask = (1 << hitLayer);
 
-        if (_selectedController != null)
-            CancelEnteringModeAndDisableMenu();
+        CancelEnteringModeAndDisableMenu();
 
-        if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out TroopController troopController))
+        if (isShiftedMaskOverLayer(shiftedMask, _troopsLayer) && isComponentExists(hit, out TroopController troopController))
         {
             troopController.UIController.OpenTroopGeneralMenu();
             _selectedController = troopController;
         }
-        else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController buildingController))
+        else if (isShiftedMaskOverLayer(shiftedMask, _buildingsLayer) && isComponentExists(hit, out BuildingController buildingController))
         {
             buildingController.UIController.OpenTroopGeneralMenu();
             _selectedController = buildingController;
@@ -90,28 +86,43 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         TroopStateController troopStateController = troopController.StateController;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
-        int shiftedMask = (1 << hitLayer);
+        int shiftedLayerMask = (1 << hitLayer);
 
         Vector3 targetPoint = hit.point;
 
-        if ((shiftedMask & _terrainLayer.value) != 0 && _selectedOrderMode == OrderMode.Move)
+        switch (_selectedOrderMode)
         {
-            troopStateController.ActivateMoveState(targetPoint, null);
-        }
-        else if (_selectedOrderMode == OrderMode.Attack)
-        {
-            if ((shiftedMask & _troopsLayer.value) != 0 && hit.collider.TryGetComponent(out EnemyTroopController enemy))
-            {
-                ActivateAttackState(enemy, troopStateController);   //_selectedTroopController.UIController.OpenAttackMenu();
-            }
-            else if ((shiftedMask & _buildingsLayer.value) != 0 && hit.collider.TryGetComponent(out BuildingController building))
-            {
-                ActivateAttackState(building, troopStateController); //_selectedTroopController.UIController.OpenAttackMenu();
-            }
+            case OrderMode.Move:
+
+                if (isShiftedMaskOverLayer(shiftedLayerMask, _terrainLayer))
+                    troopStateController.ActivateMoveState(targetPoint, null);
+
+                break;
+            case OrderMode.Attack:
+
+                if (isShiftedMaskOverLayer(shiftedLayerMask, _troopsLayer) && isComponentExists(hit, out EnemyTroopController enemy))
+                    ActivateAttackState(enemy, troopStateController); // instead - enemy.UIController.OpenAttackMenu();
+
+                else if (isShiftedMaskOverLayer(shiftedLayerMask, _buildingsLayer) && isComponentExists(hit, out BuildingController building))
+                    ActivateAttackState(building, troopStateController); // instead - building.UIController.OpenAttackMenu();
+
+                break;
         }
 
         CancelEnteringModeAndDisableMenu(); // for future feature - not disabling canvas after troop order
     }
+
+    #region Helper Methods
+
+    private bool isShiftedMaskOverLayer(int shiftedMask, int layer)
+        => (shiftedMask & layer) != 0;
+
+    private bool isComponentExists<T>(RaycastHit hit, out T component) where T : MonoBehaviour
+        => hit.collider.TryGetComponent(out component);
+
+    #endregion
+
+    #region Activate Attack
 
     private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable 
     {
@@ -120,10 +131,11 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
         TroopController troopController = _selectedController as TroopController;
 
-        Vector3 _selectedTroopPosition = _selectedController.transform.position;
         float troopAttackRange = troopController.TroopScriptable.AttackRangeRadius;
 
         Transform targetTransform = target.transform;
+
+        Vector3 _selectedTroopPosition = _selectedController.transform.position;
         Vector3 targetPoint = targetTransform.position;
 
         if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) < troopAttackRange)
@@ -133,7 +145,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         }
         else
         {
-            const float distanceModifier = 0.85f; // could be changed a little bit
+            const float distanceDelta = 0.15f;
+            const float distanceModifier = 1 - distanceDelta;
 
             Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
             targetPoint -= direction * troopAttackRange * distanceModifier;
@@ -144,6 +157,10 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             troopStateController.ActivateMoveState(targetPoint, action);
         }
     }
+
+    #endregion
+
+    #region Raycast
 
     private RaycastHit GetRaycastHit()
     {
@@ -157,6 +174,9 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         return hit;
     }
 
+    #endregion
+
+    #region Assigning & Updating Order Mode
 
     private void AssignControllerAndChangeMode(MonoBehaviour troopController, OrderMode orderMode)
     {
@@ -176,6 +196,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
         AssignControllerAndChangeMode(null, OrderMode.None);
     }
+
+    #endregion
 }
 
 public enum TroopType

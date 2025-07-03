@@ -105,9 +105,9 @@ public class TroopAttackState : TroopBaseState
 
     #region Attack Coroutine
 
-    private IEnumerator AttackEnemy<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
+    private IEnumerator AttackEnemy<T>(T enemyGenericTroop) where T : MonoBehaviour, IDamagable
     {
-        Debug.Log("Attacked");
+        Debug.Log("Troop has been attacked by Enemy!");
 
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
@@ -115,14 +115,14 @@ public class TroopAttackState : TroopBaseState
 
         while (_remainingAttackWaves > 0)
         {
-            if (enemyTroop == null)
+            if (enemyGenericTroop == null)
                 break;
 
-            IResistable enemyResistable = enemyTroop as IResistable;
+            IResistable enemyResistable = enemyGenericTroop as IResistable;
 
-            enemyTroop.TakeDamage(_troopScriptable.AttackDamage);
+            enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
 
-            enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController);
+            enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.transform.position);
 
             _remainingAttackWaves--;
 
@@ -130,6 +130,9 @@ public class TroopAttackState : TroopBaseState
         }
 
         ReloadAttackStarter();
+
+        if (enemyGenericTroop != null)
+            AttackEnemyCoroutineStarter(enemyGenericTroop);
     }
 
     #endregion

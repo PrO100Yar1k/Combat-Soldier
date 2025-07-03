@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HPControllerTroop : HPController     //, IResistable
+public class HPControllerTroop : HPController, IResistable
 {
     protected readonly TroopScreenCanvasController _troopCanvasController = default;
 
@@ -39,10 +39,7 @@ public class HPControllerTroop : HPController     //, IResistable
     
     public override void TakeDamage(int attackDamage) // to do
     {
-        if (attackDamage <= 0)
-            return;
-
-        if (_troopController == null)
+        if (_troopController == null || attackDamage <= 0)
             return;
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
@@ -55,9 +52,9 @@ public class HPControllerTroop : HPController     //, IResistable
         CheckHealPointsForDeath();
     }
 
-    public void ActivateDefenseUnderAttack(HPController enemyHPController)
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
     {
-         _troopController.StateController.ActivateDefenseUnderAttack(enemyHPController);
+         _troopController.StateController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
     }
 
     private void TakeDamageWithDefenseState(int attackDamage)
