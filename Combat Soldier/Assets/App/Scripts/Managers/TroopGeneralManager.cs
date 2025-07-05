@@ -73,11 +73,11 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopRange, IDamagable targetPriorityEnemy)
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopAttackRange, IDamagable targetPriorityEnemy)
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 
-        enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, troopRange, enemyTroopSide));
+        enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, troopAttackRange, enemyTroopSide));
         enemyControllersList.AddRange(_buildingControllersEnemyList);
 
         MonoBehaviour targetEnemy = default;
@@ -90,10 +90,10 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
 
             float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
 
-            if (enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
+            if (currentDistanceBetweenEnemy <= troopAttackRange && enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
                 return enemy;
 
-            if (currentDistanceBetweenEnemy < closestDistance)
+            if (currentDistanceBetweenEnemy < closestDistance && isEnemyInAttackRange(troopPosition, currentEnemyPosition, troopAttackRange))
             {
                 targetEnemy = enemy;
                 closestDistance = currentDistanceBetweenEnemy;
@@ -101,6 +101,19 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
         }
 
         return targetEnemy;
+    }
+
+    private bool isEnemyInAttackRange(Vector3 startPoint, Vector3 finalPoint, float raycastDistance)
+    {
+        Vector3 direction = finalPoint - startPoint;
+
+        if (Physics.Raycast(startPoint, direction, out RaycastHit hit, raycastDistance))
+        {
+            if (hit.collider != null && hit.collider.TryGetComponent(out IDamagable _))
+                return true;
+        }
+
+        return false;
     }
 
     #region Player & Enemy Lists

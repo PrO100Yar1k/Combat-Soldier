@@ -140,7 +140,9 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
         if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) < troopAttackRange)
         {
-            _selectedController.transform.LookAt(targetTransform); // to do
+            Vector3 targetLookAtPosition = new Vector3(targetTransform.position.x, _selectedController.transform.position.y, targetTransform.position.z);
+            _selectedController.transform.LookAt(targetLookAtPosition);    // to do
+
             troopStateController.ActivateAttackState(target);
         }
         else

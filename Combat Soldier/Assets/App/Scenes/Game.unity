@@ -690,7 +690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2135926656582437196, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3472948890224623127, guid: f6b47d05945802249ab2ba014144ee8c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443dc4d3e5b8b5c438bf4e30d57f480d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 0}
+  _bulletPrefab: {fileID: 7587741845031886254, guid: dda102d82a15d9a459bdc37e33eef077, type: 3}
 --- !u!1 &567059790
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour, IInitializeManager
 
     private void SetupPool()
     {
-        ObjectPooler.SetupPool(_bulletPrefab, 10, "bullet");
+        if (_bulletPrefab == null)
+            return;
+
+        ObjectPooler.SetupPool(_bulletPrefab, 10, "Bullet");
     }
 }

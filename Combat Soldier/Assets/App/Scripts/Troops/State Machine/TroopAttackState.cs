@@ -120,6 +120,13 @@ public class TroopAttackState : TroopBaseState
 
             IResistable enemyResistable = enemyGenericTroop as IResistable;
 
+
+            BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
+            bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
+
+            yield return new WaitForSeconds(bulletController.GetBulletLifetime());
+
+
             enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
 
             enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.transform.position);
