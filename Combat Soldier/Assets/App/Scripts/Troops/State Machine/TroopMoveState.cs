@@ -76,26 +76,25 @@ public class TroopMoveState : TroopBaseState
         if (moveDirection == Vector3.zero)
             return;
 
+        const float rotationSpeed = 270f;
+
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-
-        const float rotationSpeed = 180f;
-
-        float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
         float angle = Quaternion.Angle(_troopController.transform.rotation, targetRotation);
-
         float rotationDuration = angle / rotationSpeed;
 
         _rotationTweenerController?.Kill();
-        _rotationTweenerController = _troopController.transform.DORotate(new Vector3(0, targetAngle, 0), rotationDuration) // normalization + targetAngle / 6
-            .SetEase(Ease.Flash);
+        _rotationTweenerController = _troopController.transform
+            .DORotateQuaternion(targetRotation, rotationDuration)
+            .SetEase(Ease.OutSine);
     }
+
 
     private void Finished(Action finishAction)
     {
         Debug.Log("Finished Waypoint!");
 
-        _switcherState.SwitchState<TroopDefaultState>();
+        _switcherState.SwitchState<TroopDefaultState>(); // ?
 
-        finishAction?.Invoke();
+        finishAction?.Invoke(); // ?
     }
 }

@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class BulletController : MonoBehaviour
 {
-    private const float _bulletSpeed = 20f;
+    private const float _bulletSpeed = 15f;
 
     private Vector3 _targetPosition = default;
 
@@ -25,6 +25,7 @@ public class BulletController : MonoBehaviour
     private void BulletStartMovement()
     {
         float duration = GetBulletLifetime();
+
         transform.DOMove(_targetPosition, duration)
             .OnComplete(() => ObjectPooler.EnqueueObject(this, "Bullet"));
     }

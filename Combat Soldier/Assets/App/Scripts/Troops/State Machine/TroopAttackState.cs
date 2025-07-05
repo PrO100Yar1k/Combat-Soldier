@@ -107,15 +107,11 @@ public class TroopAttackState : TroopBaseState
 
     private IEnumerator AttackEnemy<T>(T enemyGenericTroop) where T : MonoBehaviour, IDamagable
     {
-        Debug.Log("Troop has been attacked by Enemy!");
-
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
-        float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
-
-        while (_remainingAttackWaves > 0)
+        for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
         {
-            if (enemyGenericTroop == null)
+            if (isEnemyStillAlive(enemyGenericTroop) == false)
                 break;
 
             IResistable enemyResistable = enemyGenericTroop as IResistable;
@@ -128,19 +124,28 @@ public class TroopAttackState : TroopBaseState
 
 
             enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
-
             enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.transform.position);
 
-            _remainingAttackWaves--;
+
+            float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
 
         ReloadAttackStarter();
 
-        if (enemyGenericTroop != null)
+        if (isEnemyStillAlive(enemyGenericTroop))
+        {
             AttackEnemyCoroutineStarter(enemyGenericTroop);
+        }
     }
+
+    #endregion
+
+    #region Helper Methods
+
+    private bool isEnemyStillAlive<T>(T enemy) where T : MonoBehaviour, IDamagable
+        => enemy != null;
 
     #endregion
 
