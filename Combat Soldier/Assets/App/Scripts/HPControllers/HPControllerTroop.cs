@@ -104,7 +104,7 @@ public class HPControllerTroop : HPController, IResistable
             base.TroopDeath(_troopController, _troopController.gameObject);
     }
 
-    protected override void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
+    protected override void TroopDeath<T>(T controller, GameObject objectToDestroy)
     {
         _troopController.StateController.ActivateDeathState();
 
@@ -112,5 +112,9 @@ public class HPControllerTroop : HPController, IResistable
     }
 
     #endregion
+}
 
+public interface IResistable
+{
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition);
 }

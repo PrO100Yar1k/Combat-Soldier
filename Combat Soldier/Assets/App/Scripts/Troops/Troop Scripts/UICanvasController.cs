@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class UICanvasController<T> where T : MonoBehaviour
+public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 {
     private readonly CanvasController _screenCanvasController = default;
     private readonly CanvasController _worldCanvasController = default;
@@ -41,9 +41,11 @@ public class UICanvasController<T> where T : MonoBehaviour
         DisableAllCanvases();
     }
 
+    public void Dispose()
+        => UnSubscribeFromEvents();
+
     public void OpenTroopGeneralMenu()
         => EnableAllCanvases();
-
 
     public void OpenAttackMenu() // to do
     {

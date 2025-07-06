@@ -8,12 +8,12 @@ public class TroopDefenseState : TroopBaseState
 
     #region Events
 
-    private void SubscribeToEvents()
+    protected override void SubscribeToEvents()
     {
         OnActivateDefenseUnderAttack += FightBackToEnemy;
     }
 
-    private void UnSubscribeFromEvents()
+    protected override void UnSubscribeFromEvents()
     {
         OnActivateDefenseUnderAttack -= FightBackToEnemy;
     }

@@ -24,12 +24,14 @@ public abstract class HPController
 
     protected abstract void CheckHealPointsForDeath();
 
-    protected virtual void TroopDeath(MonoBehaviour controller, GameObject objectToDestroy)
+    protected virtual void TroopDeath<T>(T controller, GameObject objectToDestroy) where T : MonoBehaviour, System.IDisposable
     {
+        controller.Dispose();
+
         controller.StopAllCoroutines();
 
-        Debug.Log($"The {HPControllerName} was died");
-
         Object.DestroyImmediate(objectToDestroy);
+
+        Debug.Log($"The {HPControllerName} was died");
     }
 }

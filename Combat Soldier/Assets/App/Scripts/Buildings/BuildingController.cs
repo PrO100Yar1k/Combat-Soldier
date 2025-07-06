@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BuildingController : MonoBehaviour, IDamagable // make this class abstract
+public class BuildingController : MonoBehaviour, System.IDisposable, IDamagable // make this class abstract
 {
     [SerializeField] private BuildingScriptable _buildingScriptable = default;
 
@@ -16,12 +16,11 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
 
     private TroopController _troopInsideBuilding = default; // [SerializeField] 
 
-    protected virtual void OnEnable() // to do
+    protected virtual void OnEnable()
         => GameEvents.instance.BuildingSpawned(this);
 
     protected virtual void OnDisable()
         => GameEvents.instance.BuildingDestroyed(this);
-
 
     private void Awake()
         => InitializeBuilding();
@@ -33,9 +32,10 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
     }
 
     public void TakeDamage(int attackDamage)
-    {
-        HPController.TakeDamage(attackDamage);
-    }
+        => HPController.TakeDamage(attackDamage);
+
+    public void Dispose()
+        => UIController.Dispose();
 
     public void GetTroopInsideBuilding(TroopController troopController)
     {
@@ -49,9 +49,4 @@ public class BuildingController : MonoBehaviour, IDamagable // make this class a
 public interface IDamagable
 {
     public void TakeDamage(int attackDamage);
-}
-
-public interface IResistable
-{
-    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition);
 }

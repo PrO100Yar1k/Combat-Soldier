@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-public class TroopStateController : ISwitchableState
+public class TroopStateController : ISwitchableState, IDisposable
 {
     private readonly TroopController _troopController = default;
 
@@ -31,6 +31,12 @@ public class TroopStateController : ISwitchableState
         _currentState = _allStates[0];
 
         ActivateDefaultState();
+    }
+
+    public void Dispose()
+    {
+        foreach (TroopBaseState currentState in _allStates)
+            currentState.Dispose();
     }
 
     public void ActivateDefaultState()

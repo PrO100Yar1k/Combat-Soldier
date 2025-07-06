@@ -11,12 +11,12 @@ public class TroopMoveState : TroopBaseState
 
     #region Events
 
-    private void SubscribeToEvents()
+    protected override void SubscribeToEvents()
     {
         OnActivateTroopMovement += SetWaypoint;
     }
 
-    private void UnSubscribeFromEvents()
+    protected override void UnSubscribeFromEvents()
     {
         OnActivateTroopMovement -= SetWaypoint;
     }

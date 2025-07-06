@@ -13,12 +13,12 @@ public class TroopAttackState : TroopBaseState
 
     #region Events
 
-    private void SubscribeToEvents()
+    protected override void SubscribeToEvents()
     {
         OnActivateTroopAttack += TryToAttackEnemy;
     }
 
-    private void UnSubscribeFromEvents()
+    protected override void UnSubscribeFromEvents()
     {
         OnActivateTroopAttack -= TryToAttackEnemy;
     }

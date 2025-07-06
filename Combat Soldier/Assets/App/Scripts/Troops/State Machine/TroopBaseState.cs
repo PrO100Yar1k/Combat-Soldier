@@ -1,5 +1,6 @@
+using System;
 
-public abstract class TroopBaseState
+public abstract class TroopBaseState : IDisposable
 {
     protected TroopScreenCanvasController _screenCanvasController = default;
 
@@ -18,9 +19,16 @@ public abstract class TroopBaseState
         _troopScriptable = troopController.TroopScriptable;
     }
 
+    public void Dispose()
+        => UnSubscribeFromEvents();
+
     public abstract void Start();
 
     public abstract void Stop();
 
     protected abstract void EnableStateIcon();
+
+    protected virtual void SubscribeToEvents() { }
+
+    protected virtual void UnSubscribeFromEvents() { }
 }
