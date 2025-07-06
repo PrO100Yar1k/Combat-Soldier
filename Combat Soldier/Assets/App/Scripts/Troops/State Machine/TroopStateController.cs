@@ -35,8 +35,8 @@ public class TroopStateController : ISwitchableState, IDisposable
 
     public void Dispose()
     {
-        foreach (TroopBaseState currentState in _allStates)
-            currentState.Dispose();
+        foreach (IDisposable disposableState in _allStates)
+            disposableState.Dispose();
     }
 
     public void ActivateDefaultState()
