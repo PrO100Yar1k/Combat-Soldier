@@ -12,8 +12,9 @@ public static class ObjectPooler
             return;
 
         item.transform.position = Vector3.zero;
-        poolDictionary[name].Enqueue(item);
         item.gameObject.SetActive(false);
+
+        poolDictionary[name].Enqueue(item);
     }
 
     public static T DequeueObject<T>(string key) where T : Component
@@ -27,14 +28,16 @@ public static class ObjectPooler
     public static T EnqueueNewInstances<T>(T item, string key) where T : Component
     {
         T newInstance = Object.Instantiate(item);
+
         newInstance.gameObject.SetActive(false);
         newInstance.transform.position = Vector3.zero;
+
         poolDictionary[key].Enqueue(newInstance);
 
         return newInstance;
     }
 
-    public static void SetupPool<T>(T pooledItemPrefab, int poolSize, string dictionaryEntry) where T : Component
+    public static void SetupPool<T>(Transform poolParent, T pooledItemPrefab, int poolSize, string dictionaryEntry) where T : Component
     {
         poolDictionary.Add(dictionaryEntry, new Queue<Component>());
 
@@ -43,7 +46,10 @@ public static class ObjectPooler
         for (int i = 0; i < poolSize; i++)
         {
             T pooledInstance = Object.Instantiate(pooledItemPrefab);
+
             pooledInstance.gameObject.SetActive(false);
+            pooledInstance.transform.SetParent(poolParent);
+
             poolDictionary[dictionaryEntry].Enqueue((T) pooledInstance);
         }
     }
