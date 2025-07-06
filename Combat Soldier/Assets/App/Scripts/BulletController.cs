@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class BulletController : MonoBehaviour
 {
-    private const float _bulletSpeed = 15f;
+    private const float _bulletSpeed = 10f;
 
     private Vector3 _targetPosition = default;
 

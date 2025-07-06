@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class TroopDefenseState : TroopBaseState
@@ -41,7 +42,7 @@ public class TroopDefenseState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void FightBackToEnemy(HPController enemyHPController, Vector3 enemyPosition) // IDamagable instead of HPController
+    private void FightBackToEnemy(HPController enemyHPController, Vector3 enemyPosition) // make IDamagable instead of HPController ??
     {
         if (_troopController == null)
             return;
@@ -51,6 +52,18 @@ public class TroopDefenseState : TroopBaseState
 
         if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
             return;
+
+        _troopController.StartCoroutine(FightBackCoroutine(enemyHPController, enemyPosition));
+    }
+
+    private IEnumerator FightBackCoroutine(HPController enemyHPController, Vector3 enemyPosition)
+    {
+        yield return new WaitForSeconds(1);
+
+        BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
+        bulletController.InitializeBullet(_troopController.transform.position, enemyPosition);
+
+        yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyHPController.TakeDamage(damageUnderAttack);
