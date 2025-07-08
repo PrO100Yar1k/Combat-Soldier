@@ -169,14 +169,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private RaycastHit GetRaycastHit()
     {
-        RaycastHit hit;
-
-        Vector3 mousePos = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        Physics.Raycast(ray, out hit);
-
-        return hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray, out RaycastHit hit) ? hit : default;
     }
 
     #endregion

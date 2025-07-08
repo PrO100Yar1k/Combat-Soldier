@@ -112,10 +112,12 @@ public class TroopAttackState : TroopBaseState
         for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
         {
             if (isEnemyStillAlive(enemyGenericTroop) == false)
+            {
+                ReloadAttackStarter();
                 break;
+            }
 
             IResistable enemyResistable = enemyGenericTroop as IResistable;
-
 
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
             bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
@@ -153,7 +155,10 @@ public class TroopAttackState : TroopBaseState
     private void ReloadAttackStarter()
     {
         if (_reloadAttackCoroutine != null)
-            return;
+        {
+            _troopController.StopCoroutine(_reloadAttackCoroutine);
+            _reloadAttackCoroutine = null;
+        }
 
         _reloadAttackCoroutine = _troopController.StartCoroutine(ReloadAttack());
     }
@@ -161,15 +166,19 @@ public class TroopAttackState : TroopBaseState
     private IEnumerator ReloadAttack()
     {
         float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
+        int attackWavesCount = _troopScriptable.CountAttackWaves;
 
         GameEvents.instance.ReloadingTroop(timeToReloadAttack);
 
-        yield return new WaitForSeconds(timeToReloadAttack);
+        while (_remainingAttackWaves < attackWavesCount + 1)
+        {
+            yield return new WaitForSeconds(timeToReloadAttack / attackWavesCount);
 
-        SetupDefaultCountAttackWaves();
+            _remainingAttackWaves++;
+        }
     }
 
-    private void SetupDefaultCountAttackWaves()
+    private void SetupDefaultCountAttackWaves() // ?
         => _remainingAttackWaves = _troopScriptable.CountAttackWaves;
 
     #endregion

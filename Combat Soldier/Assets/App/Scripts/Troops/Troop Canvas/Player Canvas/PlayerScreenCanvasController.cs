@@ -81,8 +81,6 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
         _reloadBarCoroutine = StartCoroutine(UpdateReloadingSlider(timeToReload));
     }
 
-
-
     public void ChangeCancelButtonState(bool state)
         => _cancelButton.gameObject.SetActive(state);
 
