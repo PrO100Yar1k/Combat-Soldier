@@ -120,14 +120,13 @@ public class TroopAttackState : TroopBaseState
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
             bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
 
-            yield return new WaitForSeconds(bulletController.GetBulletLifetime());
+            float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
+            GameEvents.instance.ReloadingTroop(timeBetweenAttackWaves);
 
+            yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
             enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
             enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.transform.position);
-
-
-            float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
@@ -162,6 +161,8 @@ public class TroopAttackState : TroopBaseState
     private IEnumerator ReloadAttack()
     {
         float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
+
+        GameEvents.instance.ReloadingTroop(timeToReloadAttack);
 
         yield return new WaitForSeconds(timeToReloadAttack);
 

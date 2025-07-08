@@ -52,7 +52,6 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         Debug.Log("Attack menu opened");
     }
 
-
     private void EnableAllCanvases()
     {
         _screenCanvasController.EnableCanvas();

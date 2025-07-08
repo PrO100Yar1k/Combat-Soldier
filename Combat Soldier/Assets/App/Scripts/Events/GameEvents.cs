@@ -57,4 +57,8 @@ public class GameEvents : MonoBehaviour, IInitializeManager
 
     public event Action OnTroopFinishedMovement = default;
     public void TroopFinishedMovement() => OnTroopFinishedMovement?.Invoke();
+
+
+    public event Action<float> OnReloadingTroop = default;
+    public void ReloadingTroop(float reloadingTime) => OnReloadingTroop?.Invoke(reloadingTime);
 }
