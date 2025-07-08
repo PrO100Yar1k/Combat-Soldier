@@ -11,4 +11,7 @@ public class PlayerTroopController : TroopController
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
     }
+
+    public bool GetCanvasActivityStateAfterOrder()
+        => (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
 }

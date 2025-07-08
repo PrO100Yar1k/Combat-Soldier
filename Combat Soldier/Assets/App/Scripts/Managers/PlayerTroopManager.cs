@@ -74,7 +74,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void SelectedOrderTroopAction()
     {
-        if (_selectedController is not TroopController)
+        if (_selectedController is not PlayerTroopController)
             return;
 
         RaycastHit hit = GetRaycastHit();
@@ -82,8 +82,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         if (hit.collider == null)
             return;
 
-        TroopController troopController = _selectedController as TroopController;
-        TroopStateController troopStateController = troopController.StateController;
+        PlayerTroopController playerTroopController = _selectedController as PlayerTroopController;
+        TroopStateController playerTroopStateController = playerTroopController.StateController;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
         int shiftedLayerMask = (1 << hitLayer);
@@ -95,21 +95,24 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             case OrderMode.Move:
 
                 if (isShiftedMaskOverLayer(shiftedLayerMask, _terrainLayer))
-                    troopStateController.ActivateMoveState(targetPoint, null);
+                    playerTroopStateController.ActivateMoveState(targetPoint, null);
 
                 break;
             case OrderMode.Attack:
 
                 if (isShiftedMaskOverLayer(shiftedLayerMask, _troopsLayer) && isComponentExists(hit, out EnemyTroopController enemy))
-                    ActivateAttackState(enemy, troopStateController); // instead - enemy.UIController.OpenAttackMenu();
+                    ActivateAttackState(enemy, playerTroopStateController); // instead - enemy.UIController.OpenAttackMenu();
 
                 else if (isShiftedMaskOverLayer(shiftedLayerMask, _buildingsLayer) && isComponentExists(hit, out BuildingController building))
-                    ActivateAttackState(building, troopStateController); // instead - building.UIController.OpenAttackMenu();
+                    ActivateAttackState(building, playerTroopStateController); // instead - building.UIController.OpenAttackMenu();
 
                 break;
         }
 
-        CancelEnteringModeAndDisableMenu(); // for future feature - not disabling canvas after troop order
+        if (playerTroopController.GetCanvasActivityStateAfterOrder())
+            GameEvents.instance.DisableActiveCanvases();
+
+        AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
     #region Helper Methods

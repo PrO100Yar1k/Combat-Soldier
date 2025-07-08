@@ -4,16 +4,17 @@ using UnityEngine.UI;
 
 public class PlayerScreenCanvasController : TroopScreenCanvasController
 {
-    [Space(3)]
+    [SerializeField, Space(3)] private Slider _reloadingSlider = default;
 
-    [SerializeField] private Slider _reloadingSlider = default;
+    [SerializeField, Space(3)] private Toggle _disableCanvasToggle = default;
 
-    [Space(3)]
+    [SerializeField, Space(3)] private Button _attackButton = default;
 
-    [SerializeField] private Button _attackButton = default;
     [SerializeField] private Button _moveButton = default;
 
     [SerializeField] private Button _cancelButton = default;
+
+    public bool DisableCanvasAfterOrder => _disableCanvasToggle.isOn;
 
     private Coroutine _reloadBarCoroutine = default;
 
