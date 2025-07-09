@@ -5,8 +5,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 {
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
-    [Space(2)]
-
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
@@ -15,7 +13,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public HPControllerTroop HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable;
-
     protected TroopSide _troopSide => _troopScriptable.TroopSide;
 
     protected abstract void InitializeTroop();
@@ -40,6 +37,8 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         UIController.Dispose();
         StateController.Dispose();
     }
+
+    // to do
 }
 
 public enum TroopSide

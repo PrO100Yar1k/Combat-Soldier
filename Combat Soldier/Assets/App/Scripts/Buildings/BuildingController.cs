@@ -14,7 +14,7 @@ public class BuildingController : MonoBehaviour, System.IDisposable, IDamagable 
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
-    private TroopController _troopInsideBuilding = default; // [SerializeField] 
+    private TroopController _troopInsideBuilding = default;
 
     protected virtual void OnEnable()
         => GameEvents.instance.BuildingSpawned(this);

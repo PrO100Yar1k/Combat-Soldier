@@ -27,7 +27,7 @@ public class TroopAttackState : TroopBaseState
 
     public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
     {
-        SetupDefaultCountAttackWaves();
+        _remainingAttackWaves = _troopScriptable.CountAttackWaves;
     }
 
     public override void Start()
@@ -177,9 +177,6 @@ public class TroopAttackState : TroopBaseState
             _remainingAttackWaves++;
         }
     }
-
-    private void SetupDefaultCountAttackWaves() // ?
-        => _remainingAttackWaves = _troopScriptable.CountAttackWaves;
 
     #endregion
 }
