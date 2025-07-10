@@ -29,8 +29,8 @@ public class TroopModelController : MonoBehaviour
     public void DisappearTroopModel()
     {
         int layerIgnoreRaycast = LayerMask.NameToLayer("Ignore Raycast");
-        _troopGameObject.layer = layerIgnoreRaycast;
 
+        _troopGameObject.layer = layerIgnoreRaycast;
         _meshRenderer.material = _invisibleMaterial;
     }
 }

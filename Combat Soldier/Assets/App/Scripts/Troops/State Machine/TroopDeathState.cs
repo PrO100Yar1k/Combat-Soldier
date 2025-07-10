@@ -11,7 +11,7 @@ public class TroopDeathState : TroopBaseState
 
     public override void Stop()
     {
-
+        // maybe remove this class ???
     }
 
     protected override void EnableStateIcon()
