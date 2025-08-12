@@ -37,8 +37,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         UIController.Dispose();
         StateController.Dispose();
     }
-
-    // to do
 }
 
 public enum TroopSide

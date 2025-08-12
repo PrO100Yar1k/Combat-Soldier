@@ -101,7 +101,7 @@ public class HPControllerTroop : HPController, IResistable
     protected override void CheckHealPointsForDeath()
     {
         if (_currentHealPoint <= 0)
-            base.TroopDeath(_troopController, _troopController.gameObject);
+            TroopDeath(_troopController, _troopController.gameObject);
     }
 
     protected override void TroopDeath<T>(T controller, GameObject objectToDestroy)
