@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class BuildingScreenCanvasController : BuildingCanvasController
 {
@@ -12,7 +11,7 @@ public class BuildingScreenCanvasController : BuildingCanvasController
     public override void InitializeCanvas<T>(T buildingController)
     {
         _buildingController = buildingController as BuildingController;
-        _buildingScriptable = _buildingController.BuildingScriptable;
+        _buildingScriptable = _buildingController?.BuildingScriptable;
 
         AssignDefaultCanvasValues();
     }

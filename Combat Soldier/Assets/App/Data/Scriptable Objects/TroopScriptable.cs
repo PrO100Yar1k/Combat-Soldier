@@ -4,6 +4,7 @@ using UnityEngine;
 public class TroopScriptable : ScriptableObject
 {
     [Header("Basic Parameters")]
+
     [field: SerializeField] public string Name { get; private set; } = default;
 
     [field: SerializeField] public TroopType TroopType { get; private set; } = default;

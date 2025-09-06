@@ -13,7 +13,7 @@ public class PlayerTroopController : TroopController
     }
 
     public void ScreenCanvasUpdateReloadingBar(float timeToReload)
-        => (_screenCanvasController as PlayerScreenCanvasController).UpdateReloadingBar(timeToReload);
+        => (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
 
     public bool GetCanvasActivityStateAfterOrder()
         => (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;

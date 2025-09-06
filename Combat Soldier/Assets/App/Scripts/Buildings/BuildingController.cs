@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public class BuildingController : MonoBehaviour, System.IDisposable, IDamagable // make this class abstract
+public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDisposable
 {
-    [SerializeField] private BuildingScriptable _buildingScriptable = default;
+    [SerializeField] protected BuildingScriptable _buildingScriptable = default;
 
     [Space(2)]
 
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
-    public UICanvasController<BuildingController> UIController { get; private set; }
-    public HPControllerBuilding HPController { get; private set; }
+    public UICanvasController<BuildingController> UIController { get; protected set; }
+    public HPControllerBuilding HPController { get; protected set; }
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
-    private TroopController _troopInBuilding = default;
+    [SerializeField] protected TroopController _troopInBuilding = default; //
+
+    #region Events & Interface Implemention
 
     protected virtual void OnEnable()
         => GameEvents.instance.BuildingSpawned(this);
@@ -25,25 +27,23 @@ public class BuildingController : MonoBehaviour, System.IDisposable, IDamagable 
     private void Awake()
         => InitializeBuilding();
 
-    private void InitializeBuilding()
-    {
-        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController);
-        HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
-    }
+    public void Dispose()
+        => UIController.Dispose();
 
-    public void InitializeTroopInsideBuilding(TroopController troopController) //
+    public void TakeDamage(int attackDamage)
+        => HPController.TakeDamage(attackDamage);
+
+    #endregion
+
+    protected abstract void InitializeBuilding();
+
+    public void InitializeTroopInsideBuilding(TroopController troopController)
     {
         if (troopController == null)
             return;
 
         _troopInBuilding = troopController;
     }
-
-    public void TakeDamage(int attackDamage)
-        => HPController.TakeDamage(attackDamage);
-
-    public void Dispose()
-        => UIController.Dispose();
 
     public TroopController GetTroopInsideBuilding()
         => _troopInBuilding;

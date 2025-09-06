@@ -15,7 +15,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public TroopScriptable TroopScriptable => _troopScriptable;
     protected TroopSide _troopSide => _troopScriptable.TroopSide;
 
-    #region Events & Dispose
+    #region Events & Interface Implemention
 
     protected virtual void OnEnable() 
         => GameEvents.instance.TroopSpawned(this, _troopSide);
@@ -32,12 +32,12 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         StateController.Dispose();
     }
 
+    public void TakeDamage(int attackDamage)
+        => HPController.TakeDamage(attackDamage);
+
     #endregion
 
     protected abstract void InitializeTroop();
-
-    public void TakeDamage(int attackDamage)
-        => HPController.TakeDamage(attackDamage);
 
     public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
         => HPController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);

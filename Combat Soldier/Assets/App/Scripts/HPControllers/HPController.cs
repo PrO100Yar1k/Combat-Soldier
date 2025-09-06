@@ -18,11 +18,11 @@ public abstract class HPController
 
     public abstract void TakeDamage(int attackDamage);
 
-    protected abstract void AssignBasicParameters<T>(T scriptableObject) where T : ScriptableObject;
-
     protected abstract void ChangeSliderAndTextValues();
 
     protected abstract void CheckHealPointsForDeath();
+
+    protected abstract void AssignBasicParameters<T>(T scriptableObject) where T : ScriptableObject;
 
     protected virtual void TroopDeath<T>(T controller, GameObject objectToDestroy) where T : MonoBehaviour, System.IDisposable
     {

@@ -81,6 +81,9 @@ public class TroopAttackState : TroopBaseState
 
     private void AttackEnemyCoroutineStarter<T>(T targetEnemy) where T : MonoBehaviour, IDamagable
     {
+        if (targetEnemy == null)
+            return;
+
         DisableAttackCoroutine();
 
         EnableCoroutine(targetEnemy);
@@ -112,10 +115,7 @@ public class TroopAttackState : TroopBaseState
         for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
         {
             if (isEnemyStillAlive(enemyGenericTroop) == false)
-            {
-                ReloadAttackStarter();
                 break;
-            }
 
             IResistable enemyResistable = enemyGenericTroop as IResistable;
 
@@ -138,9 +138,8 @@ public class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
 
         if (isEnemyStillAlive(enemyGenericTroop))
-        {
             AttackEnemyCoroutineStarter(enemyGenericTroop);
-        }
+        else _troopController.StateController.ActivateDefaultState();
     }
 
     #endregion
