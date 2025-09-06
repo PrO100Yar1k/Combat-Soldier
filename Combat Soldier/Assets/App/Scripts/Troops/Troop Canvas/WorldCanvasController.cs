@@ -15,14 +15,14 @@ public abstract class WorldCanvasController : TroopCanvasController
     {
         ChangeCirclesState(true);
 
-        _canvasComponent.enabled = true;
+        base.EnableCanvas();
     }
 
     public override void DisableCanvas()
     {
         ChangeCirclesState(false);
 
-        _canvasComponent.enabled = false;
+        base.DisableCanvas();
     }
 
     public void SetupCircleRanges()

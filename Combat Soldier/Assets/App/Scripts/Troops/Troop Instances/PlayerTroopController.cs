@@ -12,6 +12,9 @@ public class PlayerTroopController : TroopController
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
     }
 
+    public void ScreenCanvasUpdateReloadingBar(float timeToReload)
+        => (_screenCanvasController as PlayerScreenCanvasController).UpdateReloadingBar(timeToReload);
+
     public bool GetCanvasActivityStateAfterOrder()
         => (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
 }

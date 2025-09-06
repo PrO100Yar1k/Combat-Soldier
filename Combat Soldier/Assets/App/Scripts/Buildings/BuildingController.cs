@@ -14,7 +14,7 @@ public class BuildingController : MonoBehaviour, System.IDisposable, IDamagable 
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
-    private TroopController _troopInsideBuilding = default;
+    private TroopController _troopInBuilding = default;
 
     protected virtual void OnEnable()
         => GameEvents.instance.BuildingSpawned(this);
@@ -31,19 +31,22 @@ public class BuildingController : MonoBehaviour, System.IDisposable, IDamagable 
         HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
     }
 
+    public void InitializeTroopInsideBuilding(TroopController troopController) //
+    {
+        if (troopController == null)
+            return;
+
+        _troopInBuilding = troopController;
+    }
+
     public void TakeDamage(int attackDamage)
         => HPController.TakeDamage(attackDamage);
 
     public void Dispose()
         => UIController.Dispose();
 
-    public void GetTroopInsideBuilding(TroopController troopController)
-    {
-        if (_troopInsideBuilding != null)
-            return;
-
-        _troopInsideBuilding = troopController;
-    }
+    public TroopController GetTroopInsideBuilding()
+        => _troopInBuilding;
 }
 
 public interface IDamagable

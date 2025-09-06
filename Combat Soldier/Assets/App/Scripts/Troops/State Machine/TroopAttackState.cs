@@ -123,7 +123,9 @@ public class TroopAttackState : TroopBaseState
             bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
 
             float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
-            GameEvents.instance.ReloadingTroop(timeBetweenAttackWaves);
+
+            PlayerTroopController playerController = _troopController as PlayerTroopController;
+            playerController?.ScreenCanvasUpdateReloadingBar(timeBetweenAttackWaves);
 
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
@@ -168,7 +170,8 @@ public class TroopAttackState : TroopBaseState
         float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
         int attackWavesCount = _troopScriptable.CountAttackWaves;
 
-        GameEvents.instance.ReloadingTroop(timeToReloadAttack);
+        PlayerTroopController playerController = _troopController as PlayerTroopController;
+        playerController?.ScreenCanvasUpdateReloadingBar(timeToReloadAttack);
 
         while (_remainingAttackWaves < attackWavesCount + 1)
         {

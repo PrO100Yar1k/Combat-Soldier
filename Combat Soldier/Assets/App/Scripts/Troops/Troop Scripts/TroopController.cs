@@ -15,7 +15,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public TroopScriptable TroopScriptable => _troopScriptable;
     protected TroopSide _troopSide => _troopScriptable.TroopSide;
 
-    protected abstract void InitializeTroop();
+    #region Events & Dispose
 
     protected virtual void OnEnable() 
         => GameEvents.instance.TroopSpawned(this, _troopSide);
@@ -26,17 +26,21 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     protected virtual void Awake()
         => InitializeTroop();
 
-    public void TakeDamage(int attackDamage)
-        => HPController.TakeDamage(attackDamage);
-
-    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
-        => HPController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
-
     public void Dispose()
     {
         UIController.Dispose();
         StateController.Dispose();
     }
+
+    #endregion
+
+    protected abstract void InitializeTroop();
+
+    public void TakeDamage(int attackDamage)
+        => HPController.TakeDamage(attackDamage);
+
+    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
+        => HPController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
 }
 
 public enum TroopSide

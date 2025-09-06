@@ -1,6 +1,6 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class PlayerScreenCanvasController : TroopScreenCanvasController
 {
@@ -16,22 +16,6 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 
     public bool DisableCanvasAfterOrder => _disableCanvasToggle.isOn;
 
-    private Coroutine _reloadBarCoroutine = default;
-
-    #region Events
-
-    private void OnEnable()
-    {
-        GameEvents.instance.OnReloadingTroop += UpdateReloadingBar;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.instance.OnReloadingTroop -= UpdateReloadingBar;
-    }
-
-    #endregion
-
     protected override void AssignDefaultCanvasValues()
     {
         base.AssignDefaultCanvasValues();
@@ -41,6 +25,8 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 
         _cancelButton.onClick.AddListener(AddEventOnCancelButton);
     }
+
+    #region Button Events
 
     private void AddEventOnActionButtons(OrderMode orderMode)
     {
@@ -54,32 +40,36 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
         _cancelButton.gameObject.SetActive(false);
     }
 
-    private IEnumerator UpdateReloadingSlider(float timeToReload)
+    #endregion
+
+    #region Reloading Bar
+
+    public void UpdateReloadingBar(float timeToReload)
+        => _ = UpdateReloadingSliderAsync(timeToReload);
+
+    private async Task UpdateReloadingSliderAsync(float timeToReload)
     {
         float timeToCompleteReload = timeToReload;
 
+        _reloadingSlider.value = 0f;
+
         _reloadingSlider.maxValue = timeToCompleteReload;
 
-        while (timeToReload > 0)
+        while (timeToReload > 0f)
         {
             timeToReload -= Time.deltaTime;
 
             _reloadingSlider.value = timeToCompleteReload - timeToReload;
 
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    private void UpdateReloadingBar(float timeToReload)
-    {
-        if (_reloadBarCoroutine != null)
-        {
-            StopCoroutine(_reloadBarCoroutine);
-            _reloadBarCoroutine = null;
+            await Task.Yield();
         }
 
-        _reloadBarCoroutine = StartCoroutine(UpdateReloadingSlider(timeToReload));
+        _reloadingSlider.value = timeToCompleteReload;
     }
+
+    #endregion 
+
+    #region Extra Methods
 
     public void ChangeCancelButtonState(bool state)
         => _cancelButton.gameObject.SetActive(state);
@@ -90,4 +80,6 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 
         base.EnableCanvas();
     }
+
+    #endregion
 }
