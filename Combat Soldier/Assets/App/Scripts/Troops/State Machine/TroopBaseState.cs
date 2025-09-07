@@ -6,11 +6,11 @@ public abstract class TroopBaseState : IDisposable
 
     protected TroopController _troopController = default;
 
-    protected ISwitchableState _switcherState = default;
+    protected ISwitchableTroopState _switcherState = default;
 
     protected TroopScriptable _troopScriptable = default;
 
-    public TroopBaseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+    public TroopBaseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableTroopState switcherState)
     {
         _troopController = troopController;
         _switcherState = switcherState;

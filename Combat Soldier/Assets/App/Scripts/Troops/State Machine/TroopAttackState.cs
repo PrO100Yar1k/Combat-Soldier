@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class TroopAttackState : TroopBaseState
 {
@@ -25,7 +25,7 @@ public class TroopAttackState : TroopBaseState
 
     #endregion
 
-    public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableTroopState switcherState) : base(troopController, screenCanvasController, switcherState)
     {
         _remainingAttackWaves = _troopScriptable.CountAttackWaves;
     }
@@ -44,7 +44,7 @@ public class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
     }
 
-    public void ActivateTroopAttack(IDamagable enemyHPController)
+    public void ActivateAttack(IDamagable enemyHPController)
         => OnActivateTroopAttack?.Invoke(enemyHPController);
 
     protected override void EnableStateIcon()

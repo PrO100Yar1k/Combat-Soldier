@@ -1,9 +1,9 @@
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using System;
 
-public class TroopStateController : ISwitchableState, IDisposable
+public class TroopStateController : ISwitchableTroopState, IDisposable
 {
     private readonly TroopController _troopController = default;
 
@@ -48,7 +48,7 @@ public class TroopStateController : ISwitchableState, IDisposable
     {
         SwitchState<TroopAttackState>();
 
-        _troopAttackState.ActivateTroopAttack(enemy);
+        _troopAttackState.ActivateAttack(enemy);
     }
 
     public void ActivateDefenceState()
@@ -90,7 +90,7 @@ public class TroopStateController : ISwitchableState, IDisposable
     }
 }
 
-public interface ISwitchableState
+public interface ISwitchableTroopState
 {
     public void SwitchState<T>() where T : TroopBaseState;
 }

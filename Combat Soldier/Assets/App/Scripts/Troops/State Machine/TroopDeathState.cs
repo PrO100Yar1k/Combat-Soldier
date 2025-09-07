@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TroopDeathState : TroopBaseState
 {
-    public TroopDeathState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
+    public TroopDeathState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableTroopState switcherState) : base(troopController, screenCanvasController, switcherState) { }
 
     public override void Start()
     {
