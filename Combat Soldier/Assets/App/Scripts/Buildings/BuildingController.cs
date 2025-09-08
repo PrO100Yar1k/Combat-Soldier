@@ -4,8 +4,6 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 {
     [SerializeField] protected BuildingScriptable _buildingScriptable = default;
 
-    [Space(2)]
-
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
@@ -14,7 +12,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
-    [SerializeField] protected TroopController _troopInBuilding = default; //
+    protected IAttackable _attackable = default;
 
     #region Events & Interface Implemention
 
@@ -35,21 +33,27 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
     #endregion
 
-    protected abstract void InitializeBuilding();
+    public void Attack(TroopController attackTarget)
+        => _attackable?.Attack(attackTarget);
 
-    public void InitializeTroopInsideBuilding(TroopController troopController)
+    protected void InitializeBuilding()
     {
-        if (troopController == null)
-            return;
+        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController);
+        HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
 
-        _troopInBuilding = troopController;
+        InitializeBuildingBehaviour();
     }
 
-    public TroopController GetTroopInsideBuilding()
-        => _troopInBuilding;
+    protected abstract void InitializeBuildingBehaviour();
 }
+
 
 public interface IDamagable
 {
     public void TakeDamage(int attackDamage);
+}
+
+public interface IAttackable
+{
+    public void Attack(IDamagable attackTarget);
 }

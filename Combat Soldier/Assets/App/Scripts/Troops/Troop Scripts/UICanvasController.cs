@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using System;
 
 public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 {
@@ -70,7 +70,7 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 
     private void DisableObject(MonoBehaviour controller)
     {
-        if (controller == _currentController)
+        if (controller == _currentController) //
             DisableAllCanvases();
     }
 }

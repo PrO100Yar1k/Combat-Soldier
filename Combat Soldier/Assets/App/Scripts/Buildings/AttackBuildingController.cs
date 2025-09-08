@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class AttackBuildingController : BuildingController
 {
-    protected override void InitializeBuilding()
+    protected override void InitializeBuildingBehaviour()
     {
-        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController);
-        HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
+        _attackable = new DefaultBuildingAttack(this, _buildingScriptable);
     }
 }
