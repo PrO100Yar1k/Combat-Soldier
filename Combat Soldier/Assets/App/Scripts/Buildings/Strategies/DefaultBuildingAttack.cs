@@ -12,23 +12,30 @@ public class DefaultBuildingAttack : IAttackable
         _buildingScriptable = buildingScriptable;
     }
 
-    public void Attack(IDamagable attackTarget)
+    public IEnumerator CheckAttackTargetCoroutine()
     {
-        _buildingController.StartCoroutine(AttackCoroutine(attackTarget));
-    }
+        IDamagable targetPriorityEnemy = null;
+        TroopSide targetTroopSide = TroopSide.Player;
 
-    private IEnumerator AttackCoroutine(IDamagable attackTarget)
-    {
+        float attackRange = _buildingScriptable.AttackRange;
+        Vector3 currentPosition = _buildingController.transform.position;
+
         while (true)
         {
-            if (attackTarget == null)
-                break;
+            IDamagable playerTroopController = TroopGeneralManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy) as IDamagable;
 
-            int damage = _buildingScriptable.Damage;
+            if (playerTroopController != null)
+            {
+                yield return _buildingController.StartCoroutine(_buildingController.AttackPlayerCoroutine(playerTroopController));
+            }
 
-            attackTarget.TakeDamage(damage);
-
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(1f);
         }
+    }
+
+    public void Attack(IDamagable attackTarget)
+    {
+        int damage = _buildingScriptable.Damage;
+        attackTarget.TakeDamage(damage);
     }
 }

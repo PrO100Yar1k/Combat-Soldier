@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDisposable
@@ -33,10 +34,26 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
     #endregion
 
-    public void Attack(TroopController attackTarget)
+    public void Attack(IDamagable attackTarget)
         => _attackable?.Attack(attackTarget);
 
-    protected void InitializeBuilding()
+    public IEnumerator AttackPlayerCoroutine(IDamagable playerTroopController)
+    {
+        float attackRange = _buildingScriptable.AttackRange;
+
+        while (playerTroopController != null && Vector3.Distance(transform.position, playerTroopController.transform.position) < attackRange)
+        {
+            const float reactionTime = 0.5f;
+            yield return new WaitForSeconds(reactionTime);
+
+            _attackable?.Attack(playerTroopController);
+
+            float timeToWait = _buildingScriptable.TimeToReload;
+            yield return new WaitForSeconds(timeToWait);
+        }
+    }
+
+    protected virtual void InitializeBuilding()
     {
         UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController);
         HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
@@ -50,10 +67,13 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
 public interface IDamagable
 {
+    public Transform transform { get; }
     public void TakeDamage(int attackDamage);
 }
 
 public interface IAttackable
 {
+    public IEnumerator CheckAttackTargetCoroutine();
+
     public void Attack(IDamagable attackTarget);
 }

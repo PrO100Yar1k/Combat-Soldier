@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd2a3261fc189546be4bc6278ae19c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingScriptable: {fileID: 11400000, guid: 50f4f1dae76bd3548925b745827940fc, type: 2}
+  _buildingScriptable: {fileID: 11400000, guid: f717b9ee8230bc14c8032ce9ce61f1a5, type: 2}
   _buildingScreenCanvasController: {fileID: 4829833737840173114}
   _buildingWorldCanvasController: {fileID: 1824912455665768077}
 --- !u!1 &3669652837918376256

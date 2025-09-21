@@ -60,7 +60,7 @@ public class TroopAttackState : TroopBaseState
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyTroop = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, enemyTroopSide, attackRange, enemyDamagable);
+        MonoBehaviour enemyTroop = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable);
 
         if (enemyTroop == null)
             return;
@@ -166,8 +166,8 @@ public class TroopAttackState : TroopBaseState
 
     private IEnumerator ReloadAttack()
     {
-        float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
         int attackWavesCount = _troopScriptable.CountAttackWaves;
+        float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
 
         PlayerTroopController playerController = _troopController as PlayerTroopController;
         playerController?.ScreenCanvasUpdateReloadingBar(timeToReloadAttack);

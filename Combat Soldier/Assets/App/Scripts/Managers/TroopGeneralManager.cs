@@ -73,7 +73,7 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, TroopSide enemyTroopSide, float troopAttackRange, IDamagable targetPriorityEnemy)
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float troopAttackRange, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy)
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 

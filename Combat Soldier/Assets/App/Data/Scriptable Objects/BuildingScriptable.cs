@@ -8,5 +8,6 @@ public class BuildingScriptable : ScriptableObject
 
     [field: SerializeField] public int Damage { get; private set; } = 20;
 
-    // to do
+    [field: SerializeField] public float TimeToReload { get; private set; } = 3;
+    [field: SerializeField] public float AttackRange { get; private set; } = 5;
 }
