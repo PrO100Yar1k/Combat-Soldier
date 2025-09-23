@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97bfb20c63604ae4ea906e7f8e8abe55, type: 3}
-  m_Name: AttackBuildingScriptable
+  m_Name: SecondAttackBuildingScriptable
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Test Attack Building
-  <MaxHealPoint>k__BackingField: 120
+  <Name>k__BackingField: Test Attack 2 Building
+  <MaxHealPoint>k__BackingField: 130
   <Damage>k__BackingField: 20
-  <TimeToReload>k__BackingField: 3
   <AttackRange>k__BackingField: 5
-  <AttackWave>k__BackingField: 1
+  <AttackWave>k__BackingField: 4
+  <ReloadingTime>k__BackingField: 15
+  <TimeBetweenWaves>k__BackingField: 1

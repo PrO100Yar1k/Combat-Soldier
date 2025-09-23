@@ -55,7 +55,7 @@ public class TroopAttackState : TroopBaseState
 
     private void TryToAttackEnemy(IDamagable enemyDamagable)
     {
-        Vector3 troopPosition = _troopController.transform.position;
+        Vector3 troopPosition = _troopController.ObjectTransform.position;
         TroopSide enemyTroopSide = TroopSide.Enemy;
 
         float attackRange = _troopScriptable.AttackRangeRadius;
@@ -65,7 +65,7 @@ public class TroopAttackState : TroopBaseState
         if (enemyTroop == null)
             return;
 
-        if (enemyTroop.TryGetComponent(out TroopController troopController))
+        if (enemyTroop.TryGetComponent(out TroopController troopController)) //
         {
             troopController.StateController.ActivateDefenceState(); 
             AttackEnemyCoroutineStarter(troopController);
@@ -120,7 +120,7 @@ public class TroopAttackState : TroopBaseState
             IResistable enemyResistable = enemyGenericTroop as IResistable;
 
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-            bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
+            bulletController.InitializeBullet(_troopController.ObjectTransform.position, enemyGenericTroop.transform.position);
 
             float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
@@ -130,7 +130,7 @@ public class TroopAttackState : TroopBaseState
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
             enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
-            enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.transform.position);
+            enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.ObjectTransform.position);
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
@@ -172,11 +172,9 @@ public class TroopAttackState : TroopBaseState
         PlayerTroopController playerController = _troopController as PlayerTroopController;
         playerController?.ScreenCanvasUpdateReloadingBar(timeToReloadAttack);
 
-        while (_remainingAttackWaves < attackWavesCount + 1)
+        for ( ; _remainingAttackWaves < attackWavesCount + 1; _remainingAttackWaves++)
         {
             yield return new WaitForSeconds(timeToReloadAttack / attackWavesCount);
-
-            _remainingAttackWaves++;
         }
     }
 

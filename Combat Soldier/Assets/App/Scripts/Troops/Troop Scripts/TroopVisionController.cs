@@ -15,7 +15,7 @@ public class TroopVisionController
 
     public TroopController[] GetEnemiesInVisionRange()
     {
-        Vector3 currentPosition = _troopController.transform.position;
+        Vector3 currentPosition = _troopController.ObjectTransform.position;
         float viewRange = _troopScriptable.ViewRangeRadius;
 
         TroopSide enemyTroopSide = GetEnemyTroopSide();

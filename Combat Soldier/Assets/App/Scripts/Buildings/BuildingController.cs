@@ -13,7 +13,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
-    protected IAttackable _attackable = default;
+    protected BaseBuildingAttack _buildingAttack = default;
 
     #region Events & Interface Implemention
 
@@ -32,26 +32,9 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
     public void TakeDamage(int attackDamage)
         => HPController.TakeDamage(attackDamage);
 
+    public Transform ObjectTransform => this.transform;
+
     #endregion
-
-    public void Attack(IDamagable attackTarget)
-        => _attackable?.Attack(attackTarget);
-
-    public IEnumerator AttackPlayerCoroutine(IDamagable playerTroopController)
-    {
-        float attackRange = _buildingScriptable.AttackRange;
-
-        while (playerTroopController != null && Vector3.Distance(transform.position, playerTroopController.transform.position) < attackRange)
-        {
-            const float reactionTime = 0.5f;
-            yield return new WaitForSeconds(reactionTime);
-
-            _attackable?.Attack(playerTroopController);
-
-            float timeToWait = _buildingScriptable.TimeToReload;
-            yield return new WaitForSeconds(timeToWait);
-        }
-    }
 
     protected virtual void InitializeBuilding()
     {
@@ -67,7 +50,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
 public interface IDamagable
 {
-    public Transform transform { get; }
+    public Transform ObjectTransform { get; }
     public void TakeDamage(int attackDamage);
 }
 
@@ -75,5 +58,5 @@ public interface IAttackable
 {
     public IEnumerator CheckAttackTargetCoroutine();
 
-    public void Attack(IDamagable attackTarget);
+    public void Attack(IDamagable attackTarget); //
 }

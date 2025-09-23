@@ -51,7 +51,7 @@ public class TroopMoveState : TroopBaseState
 
     private void SetWaypoint(Vector3 point, Action finishAction)
     {
-        Transform troopTransform = _troopController.transform;
+        Transform troopTransform = _troopController.ObjectTransform;
 
         Vector3 currentPos = troopTransform.position;
         Vector3 pointPos = new Vector3(point.x, currentPos.y, point.z);
@@ -79,11 +79,11 @@ public class TroopMoveState : TroopBaseState
         const float rotationSpeed = 270f;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        float angle = Quaternion.Angle(_troopController.transform.rotation, targetRotation);
+        float angle = Quaternion.Angle(_troopController.ObjectTransform.rotation, targetRotation);
         float rotationDuration = angle / rotationSpeed;
 
         _rotationTweenerController?.Kill();
-        _rotationTweenerController = _troopController.transform
+        _rotationTweenerController = _troopController.ObjectTransform
             .DORotateQuaternion(targetRotation, rotationDuration)
             .SetEase(Ease.OutSine);
     }

@@ -6,6 +6,8 @@ public class TroopDefenseState : TroopBaseState
 {
     private event Action<HPController, Vector3> OnActivateDefenseUnderAttack = default;
 
+    private const float _reactionTime = 0.5f;
+
     #region Events
 
     protected override void SubscribeToEvents()
@@ -47,7 +49,7 @@ public class TroopDefenseState : TroopBaseState
         if (_troopController == null)
             return;
 
-        Vector3 troopPosition = _troopController.transform.position;
+        Vector3 troopPosition = _troopController.ObjectTransform.position;
         float attackRange = _troopController.TroopScriptable.AttackRangeRadius;
 
         if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
@@ -58,10 +60,10 @@ public class TroopDefenseState : TroopBaseState
 
     private IEnumerator FightBackCoroutine(HPController enemyHPController, Vector3 enemyPosition)
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(_reactionTime);
 
         BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-        bulletController.InitializeBullet(_troopController.transform.position, enemyPosition);
+        bulletController.InitializeBullet(_troopController.ObjectTransform.position, enemyPosition);
 
         yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 

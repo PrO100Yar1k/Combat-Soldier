@@ -35,6 +35,8 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public void TakeDamage(int attackDamage)
         => HPController.TakeDamage(attackDamage);
 
+    public Transform ObjectTransform => this.transform;
+
     #endregion
 
     protected abstract void InitializeTroop();
