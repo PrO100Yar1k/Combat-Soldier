@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using System;
 
 public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IResistable
 {
@@ -8,9 +8,9 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
-    public UICanvasController<TroopController> UIController { get; protected set; }
-    public TroopStateController StateController { get; protected set; }    
-    public HPControllerTroop HPController { get; protected set; }
+    public UICanvasController<TroopController> UIController { get; protected set; } //
+    public TroopStateController StateController { get; protected set; } //
+    public HPControllerTroop HPController { get; protected set; } //
 
     public TroopScriptable TroopScriptable => _troopScriptable;
     protected TroopSide _troopSide => _troopScriptable.TroopSide;
@@ -35,14 +35,17 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public void TakeDamage(int attackDamage)
         => HPController.TakeDamage(attackDamage);
 
-    public Transform ObjectTransform => this.transform;
+    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition)
+    {
+        if (StateController.CheckStateForActivity<TroopDefaultState>())
+            StateController.ActivateDefenceState();
+
+        StateController.ActivateDefenseUnderAttack(enemyIDamagable, enemyPosition);
+    }
 
     #endregion
 
     protected abstract void InitializeTroop();
-
-    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
-        => HPController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
 }
 
 public enum TroopSide

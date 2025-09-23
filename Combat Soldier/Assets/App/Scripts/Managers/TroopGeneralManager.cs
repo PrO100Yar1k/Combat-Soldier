@@ -62,7 +62,7 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
 
         foreach (TroopController troopController in troopControllersList)
         {
-            Vector3 currentEnemyPosition = troopController.ObjectTransform.position;
+            Vector3 currentEnemyPosition = troopController.transform.position;
 
             if (Vector3.Distance(troopPosition, currentEnemyPosition) <= troopRange)
             {

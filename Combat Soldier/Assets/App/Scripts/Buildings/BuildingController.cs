@@ -32,8 +32,6 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
     public void TakeDamage(int attackDamage)
         => HPController.TakeDamage(attackDamage);
 
-    public Transform ObjectTransform => this.transform;
-
     #endregion
 
     protected virtual void InitializeBuilding()
@@ -50,7 +48,6 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
 public interface IDamagable
 {
-    public Transform ObjectTransform { get; }
     public void TakeDamage(int attackDamage);
 }
 

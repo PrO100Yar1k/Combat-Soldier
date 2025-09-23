@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HPControllerTroop : HPController, IResistable
+public class HPControllerTroop : HPController
 {
     protected readonly TroopScreenCanvasController _troopCanvasController = default;
 
@@ -50,11 +50,6 @@ public class HPControllerTroop : HPController, IResistable
         ChangeSliderAndTextValues();
 
         CheckHealPointsForDeath();
-    }
-
-    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
-    {
-         _troopController.StateController.ActivateDefenseUnderAttack(enemyHPController, enemyPosition);
     }
 
     private void TakeDamageWithDefenseState(int attackDamage)
@@ -116,5 +111,5 @@ public class HPControllerTroop : HPController, IResistable
 
 public interface IResistable
 {
-    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition);
+    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition);
 }

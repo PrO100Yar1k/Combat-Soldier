@@ -55,7 +55,7 @@ public class TroopAttackState : TroopBaseState
 
     private void TryToAttackEnemy(IDamagable enemyDamagable)
     {
-        Vector3 troopPosition = _troopController.ObjectTransform.position;
+        Vector3 troopPosition = _troopController.transform.position;
         TroopSide enemyTroopSide = TroopSide.Enemy;
 
         float attackRange = _troopScriptable.AttackRangeRadius;
@@ -120,7 +120,7 @@ public class TroopAttackState : TroopBaseState
             IResistable enemyResistable = enemyGenericTroop as IResistable;
 
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-            bulletController.InitializeBullet(_troopController.ObjectTransform.position, enemyGenericTroop.transform.position);
+            bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
 
             float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
@@ -130,7 +130,7 @@ public class TroopAttackState : TroopBaseState
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
             enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
-            enemyResistable?.ActivateDefenseUnderAttack(_troopController.HPController, _troopController.ObjectTransform.position);
+            enemyResistable?.ActivateDefenseUnderAttack(_troopController, _troopController.transform.position);
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }

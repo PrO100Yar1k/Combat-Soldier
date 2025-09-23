@@ -41,9 +41,12 @@ public abstract class BaseBuildingAttack
         if (attackTarget == null)
             return;
 
-        int damage = _buildingScriptable.Damage;
+        TroopController enemyTroopController = attackTarget as TroopController;
 
+        int damage = _buildingScriptable.Damage;
         attackTarget.TakeDamage(damage);
+
+        enemyTroopController?.ActivateDefenseUnderAttack(_buildingController, _buildingController.transform.position);
     }
 
     protected bool isTroopStillAlive(IDamagable troopIDamagable, out Transform troopTransform)

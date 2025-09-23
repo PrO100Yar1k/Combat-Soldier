@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TroopDefenseState : TroopBaseState
 {
-    private event Action<HPController, Vector3> OnActivateDefenseUnderAttack = default;
+    private event Action<IDamagable, Vector3> OnActivateDefenseUnderAttack = default;
 
     private const float _reactionTime = 0.5f;
 
@@ -35,8 +35,8 @@ public class TroopDefenseState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    public void ActivateDefenseUnderAttack(HPController enemyHPController, Vector3 enemyPosition)
-        => OnActivateDefenseUnderAttack?.Invoke(enemyHPController, enemyPosition);
+    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition)
+        => OnActivateDefenseUnderAttack?.Invoke(enemyIDamagable, enemyPosition);
 
     protected override void EnableStateIcon()
     {
@@ -44,32 +44,32 @@ public class TroopDefenseState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void FightBackToEnemy(HPController enemyHPController, Vector3 enemyPosition) // make IDamagable instead of HPController ??
+    private void FightBackToEnemy(IDamagable enemyIDamagable, Vector3 enemyPosition)
     {
         if (_troopController == null)
             return;
 
-        Vector3 troopPosition = _troopController.ObjectTransform.position;
+        Vector3 troopPosition = _troopController.transform.position;
         float attackRange = _troopController.TroopScriptable.AttackRangeRadius;
 
         if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
             return;
 
-        _troopController.StartCoroutine(FightBackCoroutine(enemyHPController, enemyPosition));
+        _troopController.StartCoroutine(FightBackCoroutine(enemyIDamagable, enemyPosition));
     }
 
-    private IEnumerator FightBackCoroutine(HPController enemyHPController, Vector3 enemyPosition)
+    private IEnumerator FightBackCoroutine(IDamagable enemyIDamagable, Vector3 enemyPosition)
     {
         yield return new WaitForSeconds(_reactionTime);
 
         BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-        bulletController.InitializeBullet(_troopController.ObjectTransform.position, enemyPosition);
+        bulletController.InitializeBullet(_troopController.transform.position, enemyPosition);
 
         yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
-        enemyHPController.TakeDamage(damageUnderAttack);
+        enemyIDamagable.TakeDamage(damageUnderAttack);
 
-        Debug.Log($"I fought back to {enemyHPController.HPControllerName} with damage {damageUnderAttack}!");
+        Debug.Log($"I fought back to {(enemyIDamagable as UnityEngine.Object).name} with damage {damageUnderAttack}!");
     }
 }
