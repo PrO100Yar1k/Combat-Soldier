@@ -1,54 +1,36 @@
 using UnityEngine;
 using System.Collections;
 
-public class NotDefaultBuildingAttack : BaseBuildingAttack
+public class FirstBuildingAttack : BaseBuildingAttack
 {
-    private int _remainingAttackWaves = default;
-
-    public NotDefaultBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
+    public FirstBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
     {
-        _remainingAttackWaves = _buildingScriptable.AttackWave;
+
     }
 
     protected override IEnumerator AttackCoroutine(IDamagable troopIDamagable)
     {
         float attackRange = _buildingScriptable.AttackRange;
-
         float reloadingTime = _buildingScriptable.ReloadingTime;
-        float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
 
         yield return new WaitForSeconds(_reactionTime);
 
-        for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
+        while (true)
         {
             Transform troopTransform = default;
 
             if (isTroopStillAlive(troopIDamagable, out troopTransform) == false)
-                break;
+                yield break;
 
             Vector3 buildingPosition = _buildingController.transform.position;
             Vector3 troopPosition = troopTransform.position;
 
             if (Vector3.Distance(buildingPosition, troopPosition) > attackRange)
-                break;
+                yield break;
 
             Attack(troopIDamagable);
 
-            yield return new WaitForSeconds(timeBetweenWaves);
-        }
-
-        yield return ReloadAttack();
-    }
-
-    private IEnumerator ReloadAttack()
-    {
-        int totalAttackWavesCount = _buildingScriptable.AttackWave;
-
-        for ( ; _remainingAttackWaves < totalAttackWavesCount + 1; _remainingAttackWaves++)
-        {
-            float reloadingTime = _buildingScriptable.ReloadingTime;
-
-            yield return new WaitForSeconds(reloadingTime / totalAttackWavesCount);
+            yield return new WaitForSeconds(reloadingTime);
         }
     }
 

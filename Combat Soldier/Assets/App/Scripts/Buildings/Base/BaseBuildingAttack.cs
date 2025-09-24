@@ -15,7 +15,7 @@ public abstract class BaseBuildingAttack
         _buildingScriptable = buildingScriptable;
     }
 
-    public IEnumerator CheckAttackTargetCoroutine()
+    public virtual IEnumerator CheckAttackTargetCoroutine()
     {
         Vector3 currentPosition = _buildingController.transform.position;
         float attackRange = _buildingScriptable.AttackRange;

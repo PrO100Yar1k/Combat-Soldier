@@ -160,5 +160,6 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
 
         Debug.Log("Building successfully removed!");
     }
+
     #endregion
 }
