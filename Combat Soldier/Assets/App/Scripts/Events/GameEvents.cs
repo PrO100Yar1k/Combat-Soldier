@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using System;
 
 public class GameEvents : MonoBehaviour, IInitializeManager
 {
@@ -32,12 +32,15 @@ public class GameEvents : MonoBehaviour, IInitializeManager
         OnTroopDiedSimple?.Invoke(troopController);
     }
 
-    
+
     public event Action<BuildingController> OnBuildingSpawned = default;
     public void BuildingSpawned(BuildingController buildingController) => OnBuildingSpawned?.Invoke(buildingController);
 
     public event Action<BuildingController> OnBuildingDestroyed = default;
     public void BuildingDestroyed(BuildingController buildingController) => OnBuildingDestroyed?.Invoke(buildingController);
+
+
+
 
     /// 
 
@@ -49,12 +52,4 @@ public class GameEvents : MonoBehaviour, IInitializeManager
 
     public event Action OnDisableActiveCanvases = default;
     public void DisableActiveCanvases() => OnDisableActiveCanvases?.Invoke();
-
-    /// 
-
-    public event Action OnTroopStartedMovement = default;
-    public void TroopStartedMovement() => OnTroopStartedMovement?.Invoke();
-
-    public event Action OnTroopFinishedMovement = default;
-    public void TroopFinishedMovement() => OnTroopFinishedMovement?.Invoke();
 }

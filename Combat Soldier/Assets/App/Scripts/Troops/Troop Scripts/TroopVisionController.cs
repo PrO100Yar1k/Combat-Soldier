@@ -20,7 +20,7 @@ public class TroopVisionController
 
         TroopSide enemyTroopSide = GetEnemyTroopSide();
 
-        return TroopGeneralManager.instance.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
+        return RepositoryManager.instance.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
     }
 
     private TroopSide GetEnemyTroopSide()

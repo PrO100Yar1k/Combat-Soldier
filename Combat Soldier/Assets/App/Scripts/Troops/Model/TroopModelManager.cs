@@ -1,34 +1,10 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class TroopModelManager : MonoBehaviour
 {
     private Coroutine _visionCoroutine = default;
-
-    #region Events
-
-    //private void OnEnable()
-    //    => SubscribeToEvents();
-
-    //private void OnDisable()
-    //    => UnSubscribeFromEvents(); to do
-
-    private void SubscribeToEvents()
-    {
-        GameEvents.instance.OnTroopStartedMovement += ProvideEnemyVisionCoroutineStarter;
-
-        GameEvents.instance.OnTroopFinishedMovement += ProvideEnemyVisionCoroutineStopper;
-    }
-
-    private void UnSubscribeFromEvents()
-    {
-        GameEvents.instance.OnTroopStartedMovement -= ProvideEnemyVisionCoroutineStarter;
-
-        GameEvents.instance.OnTroopFinishedMovement -= ProvideEnemyVisionCoroutineStopper;
-    }
-
-    #endregion
 
     private void Start()
     {
@@ -39,19 +15,24 @@ public class TroopModelManager : MonoBehaviour
 
     private void ProvideEnemyVisionCoroutineStarter()
     {
-        if (_visionCoroutine != null)
-            ProvideEnemyVisionCoroutineStopper();
-        else
-            _visionCoroutine = StartCoroutine(ProvideTroopDeploymentData());
+        CoroutineStopper();
+
+        CoroutineStarter();
     }
 
-    private void ProvideEnemyVisionCoroutineStopper()
+    private void CoroutineStopper()
     {
         if (_visionCoroutine == null)
             return;
 
         StopCoroutine(_visionCoroutine);
+
         _visionCoroutine = null;
+    }
+
+    private void CoroutineStarter()
+    {
+        _visionCoroutine = StartCoroutine(ProvideTroopDeploymentData());
     }
 
     #endregion
@@ -60,11 +41,11 @@ public class TroopModelManager : MonoBehaviour
     {
         while (true)
         {
-            const float delayPerFrame = 0.3f;
+            const float checkTroopDeploymentDelay = 0.3f;
 
             UpdateTroopDeploymentData();
 
-            yield return new WaitForSeconds(delayPerFrame);
+            yield return new WaitForSeconds(checkTroopDeploymentDelay);
         }
     }
 
@@ -88,7 +69,7 @@ public class TroopModelManager : MonoBehaviour
 
     private void DisableAllEnemies()
     {
-        List<TroopController> enemyControllersList = new List<TroopController>(TroopGeneralManager.instance.GetEnemyTroopControllersList());
+        List<TroopController> enemyControllersList = new List<TroopController>(RepositoryManager.instance.GetEnemyTroopControllersList());
 
         foreach (EnemyTroopController troopController in enemyControllersList)
         {
@@ -99,7 +80,7 @@ public class TroopModelManager : MonoBehaviour
     private EnemyTroopController[] GetVisibleEnemies()
     {
         List<EnemyTroopController> targetList = new List<EnemyTroopController>();
-        List<TroopController> playerControllersList = new List<TroopController>(TroopGeneralManager.instance.GetPlayerTroopControllersList());
+        List<TroopController> playerControllersList = new List<TroopController>(RepositoryManager.instance.GetPlayerTroopControllersList());
 
         foreach (PlayerTroopController playerController in playerControllersList)
         {

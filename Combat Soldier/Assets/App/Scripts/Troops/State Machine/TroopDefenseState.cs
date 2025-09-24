@@ -70,6 +70,6 @@ public class TroopDefenseState : TroopBaseState
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyIDamagable.TakeDamage(damageUnderAttack);
 
-        Debug.Log($"I fought back to {(enemyIDamagable as UnityEngine.Object).name} with damage {damageUnderAttack}!");
+        Debug.Log($"I fought back to {(enemyIDamagable as UnityEngine.Object).name} with total damage of {damageUnderAttack}!");
     }
 }

@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class TroopGeneralManager : MonoBehaviour, IInitializeManager
+public class RepositoryManager : MonoBehaviour, IInitializeManager
 {
     private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
     private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
@@ -10,7 +10,7 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
 
     #region Initialization & Singleton
 
-    [HideInInspector] public static TroopGeneralManager instance;
+    [HideInInspector] public static RepositoryManager instance;
 
     public void InitializeManager()
     {
@@ -38,24 +38,26 @@ public class TroopGeneralManager : MonoBehaviour, IInitializeManager
     private void SubscribeToEvents()
     {
         GameEvents.instance.OnTroopSpawned += AddTroopToList;
-        GameEvents.instance.OnBuildingSpawned += AddBuildingToList;
-
-        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
         GameEvents.instance.OnTroopDied += RemoveTroopFromList;
+
+        GameEvents.instance.OnBuildingSpawned += AddBuildingToList;
+        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
     }
 
     private void UnSubscribeFromEvents()
     {
         GameEvents.instance.OnTroopSpawned -= AddTroopToList;
-        GameEvents.instance.OnBuildingSpawned -= AddBuildingToList;
-
-        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
         GameEvents.instance.OnTroopDied -= RemoveTroopFromList;
+
+        GameEvents.instance.OnBuildingSpawned -= AddBuildingToList;
+        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
     }
 
     #endregion
 
-    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
+    // make extension methods
+
+    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide) 
     {
         List<TroopController> enemyControllersList = new List<TroopController>();
         List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(enemyTroopSide));

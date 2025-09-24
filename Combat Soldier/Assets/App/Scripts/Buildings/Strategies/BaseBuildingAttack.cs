@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public abstract class BaseBuildingAttack
 {
@@ -67,7 +67,6 @@ public abstract class BaseBuildingAttack
 
     protected abstract IEnumerator AttackCoroutine(IDamagable troopIDamagable);
 
-    protected abstract IDamagable GetTargetEnemy(Vector3 currentPosition, float attackRange, 
-        TroopSide targetTroopSide, IDamagable targetPriorityEnemy);
+    protected abstract IDamagable GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy);
 }
 

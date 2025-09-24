@@ -35,5 +35,5 @@ public class DefaultBuildingAttack : BaseBuildingAttack
     }
 
     protected override IDamagable GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
-        => TroopGeneralManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy) as IDamagable;
+        => RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy) as IDamagable;
 }

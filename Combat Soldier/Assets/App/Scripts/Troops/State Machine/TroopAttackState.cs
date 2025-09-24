@@ -60,7 +60,7 @@ public class TroopAttackState : TroopBaseState
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyTroop = TroopGeneralManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable);
+        MonoBehaviour enemyTroop = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable);
 
         if (enemyTroop == null)
             return;
@@ -108,19 +108,19 @@ public class TroopAttackState : TroopBaseState
 
     #region Attack Coroutine
 
-    private IEnumerator AttackEnemy<T>(T enemyGenericTroop) where T : MonoBehaviour, IDamagable
+    private IEnumerator AttackEnemy<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
     {
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
         for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
         {
-            if (isEnemyStillAlive(enemyGenericTroop) == false)
+            if (isEnemyStillAlive(enemyTroop) == false)
                 break;
 
-            IResistable enemyResistable = enemyGenericTroop as IResistable;
+            IResistable enemyResistable = enemyTroop as IResistable;
 
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-            bulletController.InitializeBullet(_troopController.transform.position, enemyGenericTroop.transform.position);
+            bulletController.InitializeBullet(_troopController.transform.position, enemyTroop.transform.position);
 
             float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
@@ -129,7 +129,7 @@ public class TroopAttackState : TroopBaseState
 
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
-            enemyGenericTroop.TakeDamage(_troopScriptable.AttackDamage);
+            enemyTroop.TakeDamage(_troopScriptable.AttackDamage);
             enemyResistable?.ActivateDefenseUnderAttack(_troopController, _troopController.transform.position);
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
@@ -137,9 +137,7 @@ public class TroopAttackState : TroopBaseState
 
         ReloadAttackStarter();
 
-        if (isEnemyStillAlive(enemyGenericTroop))
-            AttackEnemyCoroutineStarter(enemyGenericTroop);
-        else _troopController.StateController.ActivateDefaultState();
+        FinishAttackCoroutineAction(enemyTroop);
     }
 
     #endregion
@@ -148,6 +146,16 @@ public class TroopAttackState : TroopBaseState
 
     private bool isEnemyStillAlive<T>(T enemy) where T : MonoBehaviour, IDamagable
         => enemy != null;
+
+    #endregion
+
+    #region Extra Methods
+
+    private void FinishAttackCoroutineAction<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
+    {
+        if (isEnemyStillAlive(enemyTroop)) AttackEnemyCoroutineStarter(enemyTroop);
+        else _troopController.StateController.ActivateDefaultState();
+    }
 
     #endregion
 

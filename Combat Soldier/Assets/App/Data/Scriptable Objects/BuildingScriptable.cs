@@ -13,5 +13,4 @@ public class BuildingScriptable : ScriptableObject
 
     [field: SerializeField] public float ReloadingTime { get; private set; } = 3;
     [field: SerializeField] public float TimeBetweenWaves { get; private set; } = 0;
-
 }

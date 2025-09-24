@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using System;
 
 public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 {
@@ -185,8 +185,10 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     private void UpdateTroopStatus(MonoBehaviour controller)
     {
-        if (_selectedController == controller)
-            AssignControllerAndChangeMode(null, OrderMode.None);
+        if (_selectedController != controller)
+            return;
+
+        AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
     private void CancelEnteringModeAndDisableMenu()

@@ -1,5 +1,5 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 using System;
 
 public class TroopMoveState : TroopBaseState
@@ -29,15 +29,11 @@ public class TroopMoveState : TroopBaseState
     {
         EnableStateIcon();
         SubscribeToEvents();
-
-        GameEvents.instance.TroopStartedMovement(); // for vision controller - maybe change
     }
 
     public override void Stop()
     {
         UnSubscribeFromEvents();
-
-        GameEvents.instance.TroopFinishedMovement(); // for vision controller - maybe change
     }
 
     public void ActivateTroopMovement(Vector3 point, Action finishAction)
@@ -93,7 +89,7 @@ public class TroopMoveState : TroopBaseState
     {
         Debug.Log("Finished Waypoint!");
 
-        _switcherState.SwitchState<TroopDefaultState>(); // ?
+        _switcherState.SwitchState<TroopDefaultState>();
 
         finishAction?.Invoke(); // ?
     }

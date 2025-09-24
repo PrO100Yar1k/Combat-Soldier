@@ -16,3 +16,9 @@ MonoBehaviour:
   <MaxHealPoint>k__BackingField: 200
   <Damage>k__BackingField: 0
   <AttackRange>k__BackingField: 0
+  <AttackWave>k__BackingField: 1
+  <ReloadingTime>k__BackingField: 3
+  <TimeBetweenWaves>k__BackingField: 0
+  items:
+    itemName: 
+    value: 0
