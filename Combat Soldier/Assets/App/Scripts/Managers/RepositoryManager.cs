@@ -75,12 +75,14 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float troopAttackRange, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy)
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float troopAttackRange, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes)
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 
         enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, troopAttackRange, enemyTroopSide));
-        enemyControllersList.AddRange(_buildingControllersEnemyList);
+
+        if (isBuildingIncludes == true)
+            enemyControllersList.AddRange(_buildingControllersEnemyList);
 
         MonoBehaviour targetEnemy = default;
 

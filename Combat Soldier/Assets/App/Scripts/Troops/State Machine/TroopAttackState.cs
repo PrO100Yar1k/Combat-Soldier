@@ -60,7 +60,7 @@ public class TroopAttackState : TroopBaseState
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyTroop = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable);
+        MonoBehaviour enemyTroop = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable, true);
 
         if (enemyTroop == null)
             return;

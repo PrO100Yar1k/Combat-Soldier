@@ -8,8 +8,13 @@ public class FirstBuildingAttack : BaseBuildingAttack
 
     }
 
-    protected override IEnumerator AttackCoroutine(IDamagable troopIDamagable)
+    protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
     {
+        //if (IDamagableTroopList[0] == null)
+        //    yield break;
+
+        IDamagable troopIDamagable = IDamagableTroopList[0];
+
         float attackRange = _buildingScriptable.AttackRange;
         float reloadingTime = _buildingScriptable.ReloadingTime;
 
@@ -34,6 +39,10 @@ public class FirstBuildingAttack : BaseBuildingAttack
         }
     }
 
-    protected override IDamagable GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
-        => RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy) as IDamagable;
+    protected override IDamagable[] GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
+    {
+        IDamagable IDamagableTroop = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
+
+        return new IDamagable[] { IDamagableTroop };
+    }
 }
