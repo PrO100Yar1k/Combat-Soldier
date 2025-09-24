@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-public class TroopStateController : ISwitchableTroopState, IDisposable
+public class TroopStateController : ISwitchableState, IDisposable
 {
     private readonly TroopController _troopController = default;
 
@@ -90,7 +90,7 @@ public class TroopStateController : ISwitchableTroopState, IDisposable
     }
 }
 
-public interface ISwitchableTroopState
+public interface ISwitchableState
 {
     public void SwitchState<T>() where T : TroopBaseState;
 }

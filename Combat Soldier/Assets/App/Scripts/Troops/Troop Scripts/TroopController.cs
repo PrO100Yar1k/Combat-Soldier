@@ -13,6 +13,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public HPControllerTroop HPController { get; protected set; } //
 
     public TroopScriptable TroopScriptable => _troopScriptable;
+
     protected TroopSide _troopSide => _troopScriptable.TroopSide;
 
     #region Events & Interface Implemention

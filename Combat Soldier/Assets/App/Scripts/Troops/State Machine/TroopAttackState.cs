@@ -25,7 +25,7 @@ public class TroopAttackState : TroopBaseState
 
     #endregion
 
-    public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableTroopState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
     {
         _remainingAttackWaves = _troopScriptable.CountAttackWaves;
     }

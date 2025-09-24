@@ -3,7 +3,6 @@ using UnityEngine;
 public class HPControllerTroop : HPController
 {
     protected readonly TroopScreenCanvasController _troopCanvasController = default;
-
     protected readonly TroopController _troopController = default;
 
     private int _currentDefensePoint = default;
@@ -11,10 +10,10 @@ public class HPControllerTroop : HPController
 
     public HPControllerTroop(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable)
     {
-        _troopController = troopController;
         _troopCanvasController = troopCanvasController;
+        _troopController = troopController;
 
-        AssignBasicParameters(troopScriptable);
+        AssignBasicParameters(troopScriptable); // think about updating values
         ChangeSliderAndTextValues();
     }
 
