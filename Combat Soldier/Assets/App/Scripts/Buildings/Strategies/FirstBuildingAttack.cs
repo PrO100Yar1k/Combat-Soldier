@@ -5,14 +5,11 @@ public class FirstBuildingAttack : BaseBuildingAttack
 {
     public FirstBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
     {
-
+        // Default attack without waves, just usual attack with stable reload
     }
 
     protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
     {
-        //if (IDamagableTroopList[0] == null)
-        //    yield break;
-
         IDamagable troopIDamagable = IDamagableTroopList[0];
 
         float attackRange = _buildingScriptable.AttackRange;
@@ -22,9 +19,7 @@ public class FirstBuildingAttack : BaseBuildingAttack
 
         while (true)
         {
-            Transform troopTransform = default;
-
-            if (isTroopStillAlive(troopIDamagable, out troopTransform) == false)
+            if (isTroopStillAlive(troopIDamagable, out Transform troopTransform) == false)
                 yield break;
 
             Vector3 buildingPosition = _buildingController.transform.position;
@@ -39,7 +34,7 @@ public class FirstBuildingAttack : BaseBuildingAttack
         }
     }
 
-    protected override IDamagable[] GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
+    protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
     {
         IDamagable IDamagableTroop = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
 

@@ -25,7 +25,7 @@ public abstract class BaseBuildingAttack
 
         while (true)
         {
-            IDamagable[] playerTroopController = GetTargetEnemy(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy);
+            IDamagable[] playerTroopController = GetEnemyTargets(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy);
 
             if (playerTroopController != null && playerTroopController.Length > 0)
             {
@@ -67,6 +67,6 @@ public abstract class BaseBuildingAttack
 
     protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);
 
-    protected abstract IDamagable[] GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy);
+    protected abstract IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy);
 }
 

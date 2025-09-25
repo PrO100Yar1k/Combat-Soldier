@@ -26,6 +26,9 @@ public abstract class HPController
 
     protected virtual void TroopDeath<T>(T controller, GameObject objectToDestroy) where T : MonoBehaviour, System.IDisposable
     {
+        if (controller == null || objectToDestroy == null)
+            return;
+
         controller.Dispose();
 
         controller.StopAllCoroutines();

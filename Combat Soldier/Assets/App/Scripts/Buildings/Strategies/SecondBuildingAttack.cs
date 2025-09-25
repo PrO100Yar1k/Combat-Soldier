@@ -8,13 +8,12 @@ public class SecondBuildingAttack : BaseBuildingAttack
     public SecondBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
     {
         _remainingAttackWaves = _buildingScriptable.AttackWave;
+
+        // Large amount of damage in a short period of time,- Waves
     }
 
     protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
     {
-        //if (IDamagableTroopList.Length > 1)
-        //    yield break;
-
         IDamagable troopIDamagable = IDamagableTroopList[0];
 
         float attackRange = _buildingScriptable.AttackRange;
@@ -26,9 +25,7 @@ public class SecondBuildingAttack : BaseBuildingAttack
 
         for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
         {
-            Transform troopTransform = default;
-
-            if (isTroopStillAlive(troopIDamagable, out troopTransform) == false)
+            if (isTroopStillAlive(troopIDamagable, out Transform troopTransform) == false)
                 break;
 
             Vector3 buildingPosition = _buildingController.transform.position;
@@ -57,7 +54,7 @@ public class SecondBuildingAttack : BaseBuildingAttack
         }
     }
 
-    protected override IDamagable[] GetTargetEnemy(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
+    protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
     {
         IDamagable IDamagableTroop = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
 
