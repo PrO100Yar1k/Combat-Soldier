@@ -47,7 +47,7 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
     public void UpdateReloadingBar(float timeToReload)
         => _ = UpdateReloadingSliderAsync(timeToReload);
 
-    private async Task UpdateReloadingSliderAsync(float timeToReload)
+    private async Task UpdateReloadingSliderAsync(float timeToReload) // ?
     {
         float timeToCompleteReload = timeToReload;
 
