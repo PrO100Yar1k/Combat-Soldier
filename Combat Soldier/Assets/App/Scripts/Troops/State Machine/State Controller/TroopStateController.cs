@@ -3,40 +3,39 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-public class TroopStateController : ISwitchableState, IDisposable
+public abstract class TroopStateController : ISwitchableState, IDisposable
 {
-    private readonly TroopController _troopController = default;
+    protected readonly TroopController _troopController = default;
 
-    private readonly TroopDefaultState _troopDefaultState = default;
-    private readonly TroopMoveState _troopMoveState = default;
-    private readonly TroopAttackState _troopAttackState = default;
-    private readonly TroopDefenseState _troopDefenseState = default;
-    private readonly TroopDeathState _troopDeathState = default;
+    protected TroopDefaultState _troopDefaultState = default;
+    protected TroopMoveState _troopMoveState = default;
+    protected TroopAttackState _troopAttackState = default;
+    protected TroopDefenseState _troopDefenseState = default;
+    protected TroopDeathState _troopDeathState = default;
 
-    private readonly List<TroopBaseState> _allStates = default;
+    protected List<TroopBaseState> _allStates = default;
 
-    private TroopBaseState _currentState = default;
+    protected TroopBaseState _currentState = default;
 
-    public TroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController)
+    public TroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController) 
     {
         _troopController = troopController;
 
-        _troopDefaultState = new TroopDefaultState(_troopController, screenCanvasController, this);
         _troopMoveState = new TroopMoveState(_troopController, screenCanvasController, this);
         _troopAttackState = new TroopAttackState(_troopController, screenCanvasController, this);
-        _troopDefenseState = new TroopDefenseState(_troopController, screenCanvasController, this);
         _troopDeathState = new TroopDeathState(_troopController, screenCanvasController, this);
 
-        _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState, _troopDeathState };
-        _currentState = _allStates[0];
-
-        ActivateDefaultState();
     }
 
     public void Dispose()
     {
         foreach (IDisposable disposableState in _allStates)
             disposableState.Dispose();
+    }
+
+    public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
+    {
+        (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target);
     }
 
     public void ActivateDefaultState()

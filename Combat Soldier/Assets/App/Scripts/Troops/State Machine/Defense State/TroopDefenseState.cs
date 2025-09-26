@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public class TroopDefenseState : TroopBaseState
+public abstract class TroopDefenseState : TroopBaseState
 {
     private event Action<IDamagable, Vector3> OnActivateDefenseUnderAttack = default;
 
@@ -72,4 +72,9 @@ public class TroopDefenseState : TroopBaseState
 
         Debug.Log($"I fought back to {(enemyIDamagable as UnityEngine.Object).name} with total damage of {damageUnderAttack}!");
     }
+}
+
+public interface IReactableForDamage
+{
+    public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable;
 }

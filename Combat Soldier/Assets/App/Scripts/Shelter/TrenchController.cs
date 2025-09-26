@@ -62,7 +62,7 @@ public class TrenchController : MonoBehaviour
 
             while (_occupiedPositions.Contains(gridPos) && currentBranchingAttempt < maxBranchingAttempts)
             {
-                Debug.Log($"Number: {i - 1} | Cannot branch to {targetDirection} | Attempt: {currentBranchingAttempt}");
+                //Debug.Log($"Number: {i - 1} | Cannot branch to {targetDirection} | Attempt: {currentBranchingAttempt}");
 
                 targetDirection = GetRandomDirection();
                 targetPosition += DirectionVectors[targetDirection] * unitSpacing;
@@ -74,8 +74,8 @@ public class TrenchController : MonoBehaviour
             if (currentBranchingAttempt >= maxBranchingAttempts)
                 break;
 
-            if (currentBranchingAttempt > 0)
-                Debug.Log($"Number: {i - 1} | Succefully branched to {targetDirection}");
+            //if (currentBranchingAttempt > 0)
+                //Debug.Log($"Number: {i - 1} | Succefully branched to {targetDirection}");
 
             _occupiedPositions.Add(gridPos);
 
