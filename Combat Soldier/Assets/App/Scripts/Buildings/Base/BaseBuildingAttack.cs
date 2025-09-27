@@ -38,15 +38,15 @@ public abstract class BaseBuildingAttack
 
     protected void Attack(IDamagable attackTarget)
     {
-        if (attackTarget == null)
+        if (isTroopStillAlive(attackTarget, out Transform troopTransform) == false)
             return;
 
-        TroopController enemyTroopController = attackTarget as TroopController;
+        IReactableForDamage enemyReactableForDamage = troopTransform as IReactableForDamage;
 
         int damage = _buildingScriptable.Damage;
-        attackTarget.TakeDamage(damage);
 
-        enemyTroopController?.ActivateDefenseUnderAttack(_buildingController, _buildingController.transform.position);
+        attackTarget.TakeDamage(damage);
+        enemyReactableForDamage?.ReactionForTakingDamage(_buildingController);
     }
 
     protected bool isTroopStillAlive(IDamagable troopIDamagable, out Transform troopTransform)

@@ -35,14 +35,9 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
 
     public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     {
-        (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target);
+        (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
     }
 
-    public void ActivateDefaultState()
-    {
-        SwitchState<TroopDefaultState>();
-    }
-    
     public void ActivateAttackState(IDamagable enemy)
     {
         SwitchState<TroopAttackState>();
@@ -50,13 +45,10 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _troopAttackState.ActivateAttack(enemy);
     }
 
-    public void ActivateDefenceState()
-    {
-        SwitchState<TroopDefenseState>();
-    }
-
     public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition)
     {
+        SwitchState<TroopDefenseState>();
+
         _troopDefenseState.ActivateDefenseUnderAttack(enemyIDamagable, enemyPosition);
     }
 
@@ -65,11 +57,6 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         SwitchState<TroopMoveState>();
 
         _troopMoveState.ActivateTroopMovement(targetPoint, finishAction);
-    }
-    
-    public void ActivateDeathState()
-    {
-        SwitchState<TroopDeathState>();
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState

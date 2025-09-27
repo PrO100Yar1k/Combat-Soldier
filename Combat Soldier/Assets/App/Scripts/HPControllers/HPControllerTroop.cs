@@ -53,7 +53,7 @@ public class HPControllerTroop : HPController
 
     private void TakeDamageWithDefenseState(int attackDamage)
     {
-        int blockedHP = (int)(attackDamage * _currentBlockRate);
+        int blockedHP = (int) (attackDamage * _currentBlockRate);
         int takenDamage = attackDamage - blockedHP;
 
         if (_currentDefensePoint >= blockedHP)
@@ -100,15 +100,10 @@ public class HPControllerTroop : HPController
 
     protected override void TroopDeath<T>(T controller, GameObject objectToDestroy)
     {
-        _troopController.StateController.ActivateDeathState();
+        _troopController.StateController.SwitchState<TroopDeathState>();
 
         base.TroopDeath(controller, objectToDestroy);
     }
 
     #endregion
-}
-
-public interface IResistable
-{
-    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition);
 }

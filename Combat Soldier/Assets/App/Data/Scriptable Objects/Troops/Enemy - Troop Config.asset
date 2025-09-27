@@ -22,7 +22,7 @@ MonoBehaviour:
   <TimeToReloadAttack>k__BackingField: 8
   <TimeBetweenAttackWaves>k__BackingField: 3
   <AttackDamage>k__BackingField: 25
-  <DamageUnderAttack>k__BackingField: 10
+  <DamageUnderAttack>k__BackingField: 15
   <AttackRangeRadius>k__BackingField: 3
   <CountAttackWaves>k__BackingField: 5
   <ViewRangeRadius>k__BackingField: 7

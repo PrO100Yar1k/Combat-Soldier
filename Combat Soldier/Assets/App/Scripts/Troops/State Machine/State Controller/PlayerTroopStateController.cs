@@ -10,6 +10,6 @@ public class PlayerTroopStateController : TroopStateController
         _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState, _troopDeathState };
         _currentState = _allStates[0];
 
-        ActivateDefaultState();
+        SwitchState<TroopDefaultState>();
     }
 }

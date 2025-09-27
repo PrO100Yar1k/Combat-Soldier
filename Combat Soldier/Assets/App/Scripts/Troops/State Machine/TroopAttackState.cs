@@ -67,7 +67,7 @@ public class TroopAttackState : TroopBaseState
 
         if (enemyTroop.TryGetComponent(out TroopController troopController)) //
         {
-            troopController.StateController.ActivateDefenceState(); 
+            troopController.StateController.SwitchState<TroopDefenseState>(); 
             AttackEnemyCoroutineStarter(troopController);
         }
         else if (enemyTroop.TryGetComponent(out BuildingController buildingController))
@@ -117,7 +117,7 @@ public class TroopAttackState : TroopBaseState
             if (isEnemyStillAlive(enemyTroop) == false)
                 break;
 
-            IResistable enemyResistable = enemyTroop as IResistable;
+            IReactableForDamage enemyReactableForDamage = enemyTroop as IReactableForDamage;
 
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
             bulletController.InitializeBullet(_troopController.transform.position, enemyTroop.transform.position);
@@ -130,7 +130,7 @@ public class TroopAttackState : TroopBaseState
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
             enemyTroop.TakeDamage(_troopScriptable.AttackDamage);
-            enemyResistable?.ActivateDefenseUnderAttack(_troopController, _troopController.transform.position);
+            enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
@@ -154,7 +154,7 @@ public class TroopAttackState : TroopBaseState
     private void FinishAttackCoroutineAction<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
     {
         if (isEnemyStillAlive(enemyTroop)) AttackEnemyCoroutineStarter(enemyTroop);
-        else _troopController.StateController.ActivateDefaultState();
+        else _troopController.StateController.SwitchState<TroopDefaultState>();
     }
 
     #endregion

@@ -156,10 +156,8 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
             targetPoint -= direction * troopAttackRange * distanceModifier;
 
-            Action action = default;
-            action += delegate { troopStateController.ActivateAttackState(target); };
-
-            troopStateController.ActivateMoveState(targetPoint, action);
+            Action finishAction = () => troopStateController.ActivateAttackState(target);
+            troopStateController.ActivateMoveState(targetPoint, finishAction);
         }
     }
 

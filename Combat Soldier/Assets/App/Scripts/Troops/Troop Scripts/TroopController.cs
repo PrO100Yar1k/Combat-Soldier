@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IResistable
+public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable
 {
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
@@ -35,14 +35,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 
     public void TakeDamage(int attackDamage)
         => HPController.TakeDamage(attackDamage);
-
-    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition)
-    {
-        if (StateController.CheckStateForActivity<TroopDefaultState>())
-            StateController.ActivateDefenceState();
-
-        StateController.ActivateDefenseUnderAttack(enemyIDamagable, enemyPosition);
-    }
 
     #endregion
 

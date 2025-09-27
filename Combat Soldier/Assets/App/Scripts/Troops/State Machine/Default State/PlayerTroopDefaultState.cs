@@ -1,13 +1,8 @@
 using UnityEngine;
 
-public class PlayerTroopDefaultState : TroopDefaultState, IReactableForDamage
+public class PlayerTroopDefaultState : TroopDefaultState
 {
     public PlayerTroopDefaultState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
-    {
-
-    }
-
-    public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     {
 
     }

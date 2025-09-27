@@ -1,5 +1,6 @@
+using UnityEngine;
 
-public class PlayerTroopController : TroopController
+public class PlayerTroopController : TroopController, IReactableForDamage
 {
     public TroopVisionController VisionController { get; private set; }
 
@@ -17,4 +18,20 @@ public class PlayerTroopController : TroopController
 
     public bool GetCanvasActivityStateAfterOrder()
         => (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+
+
+    public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
+    {
+        ActivateDefenseUnderAttack(target);
+
+        Debug.Log("Lord, Your Unit was Damaged!");
+    }
+
+    private void ActivateDefenseUnderAttack<T>(T target) where T : MonoBehaviour, IDamagable
+    {
+        if (StateController.CheckStateForActivity<TroopAttackState>())
+            return;
+
+        StateController.ActivateDefenseUnderAttack(target, target.transform.position);
+    }
 }

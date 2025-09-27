@@ -5,11 +5,11 @@ public class SecondBuildingAttack : BaseBuildingAttack
 {
     private int _remainingAttackWaves = default;
 
+    // Large amount of damage in a short period of time,- Waves
+
     public SecondBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
     {
         _remainingAttackWaves = _buildingScriptable.AttackWave;
-
-        // Large amount of damage in a short period of time,- Waves
     }
 
     protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
