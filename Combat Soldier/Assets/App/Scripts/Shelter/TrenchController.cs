@@ -53,7 +53,7 @@ public class TrenchController : MonoBehaviour
                 targetDirection = randomDirectionChance == 0 ? nextDirection : previousDirection;
             }
 
-            if (i % 70 == 0) directionIndex = GetClosestDirection(directionIndex, 1); //
+            if (i % 110 == 0) directionIndex = GetClosestDirection(directionIndex, 1); //
 
             targetDirection = !isBranchingCondition ? directionIndex : targetDirection; // always save base direction of trench
 

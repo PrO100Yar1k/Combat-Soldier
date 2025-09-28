@@ -1,24 +1,21 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
-public class TroopModelController : MonoBehaviour
+public class TroopModelController
 {
-    [SerializeField] private Material _invisibleMaterial = default;
+    private readonly TroopController _troopController = default;
+    private readonly GameObject _troopGameObject = default;
 
-    private TroopController _troopController = default;
-    private GameObject _troopGameObject = default;
+    private readonly MeshRenderer _meshRenderer = default;
 
-    private MeshRenderer _meshRenderer = default;
+    private readonly Material _defaultMaterial = default;
+    private readonly LayerMask _defaultLayer = default;
 
-    private Material _defaultMaterial = default;
-    private LayerMask _defaultLayer = default;
-
-    public void InitializeModelController(TroopController troopController, GameObject troopGameObject)
+    public TroopModelController(TroopController troopController, GameObject troopGameObject, MeshRenderer meshRenderer)
     {
         _troopController = troopController;
         _troopGameObject = troopGameObject;
 
-        _meshRenderer = GetComponent<MeshRenderer>();
+        _meshRenderer = meshRenderer;
 
         _defaultMaterial = _meshRenderer.material; // maybe remake it with a list of materials
         _defaultLayer = _troopGameObject.layer;
@@ -35,7 +32,7 @@ public class TroopModelController : MonoBehaviour
         int layerIgnoreRaycast = LayerMask.NameToLayer("Ignore Raycast");
 
         _troopGameObject.layer = layerIgnoreRaycast;
-        _meshRenderer.material = _invisibleMaterial;
+        _meshRenderer.material = Resources.Load<Material>("Half-Invisible-Material");
 
         //GameEvents.instance.TroopDisableUI(_troopController); // ?
     }

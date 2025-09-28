@@ -68,7 +68,7 @@ public class TroopAttackState : TroopBaseState
 
         if (enemyTroop.TryGetComponent(out TroopController troopController)) //
         {
-            troopController.StateController.SwitchState<TroopDefenseState>(); 
+            // troopController.StateController.SwitchState<TroopDefenseState>(); 
             AttackEnemyCoroutineStarter(troopController);
         }
         else if (enemyTroop.TryGetComponent(out BuildingController buildingController))
@@ -131,6 +131,10 @@ public class TroopAttackState : TroopBaseState
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
             enemyTroop.TakeDamage(_troopScriptable.AttackDamage);
+
+            if (isEnemyStillAlive(enemyTroop) == false)
+                break;
+
             enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);

@@ -57,7 +57,7 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
 
     // make extension methods
 
-    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide) 
+    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide) // linq remake
     {
         List<TroopController> enemyControllersList = new List<TroopController>();
         List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(enemyTroopSide));

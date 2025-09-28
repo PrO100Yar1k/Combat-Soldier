@@ -60,6 +60,11 @@ public abstract class TroopDefenseState : TroopBaseState
 
     private IEnumerator FightBackCoroutine(IDamagable enemyIDamagable, Vector3 enemyPosition)
     {
+        if (enemyIDamagable as MonoBehaviour == null)
+            yield break;
+
+        string enemyName = (enemyIDamagable as UnityEngine.Object).name;
+
         yield return new WaitForSeconds(_reactionTime);
 
         BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
@@ -70,7 +75,7 @@ public abstract class TroopDefenseState : TroopBaseState
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyIDamagable.TakeDamage(damageUnderAttack);
 
-        Debug.Log($"I fought back to {(enemyIDamagable as UnityEngine.Object).name} with total damage of {damageUnderAttack}!");
+        Debug.Log($"I fought back to {enemyName} with total damage of {damageUnderAttack}!");
     }
 }
 

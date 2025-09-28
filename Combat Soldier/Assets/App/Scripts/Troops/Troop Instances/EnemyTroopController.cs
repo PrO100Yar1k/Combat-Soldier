@@ -4,8 +4,9 @@ using System;
 
 public class EnemyTroopController : TroopController, IReactableForDamage
 {
-    [SerializeField] protected TroopModelController _troopModelController = default;
-    public TroopModelController TroopModelController => _troopModelController;
+    [SerializeField] private MeshRenderer _enemyMeshRendererModel = default;
+
+    public TroopModelController TroopModelController { get; private set; }
 
     protected override void InitializeTroop()
     {
@@ -14,7 +15,7 @@ public class EnemyTroopController : TroopController, IReactableForDamage
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
 
-        _troopModelController.InitializeModelController(this, gameObject);
+        TroopModelController = new TroopModelController(this, gameObject, _enemyMeshRendererModel);
 
         //StartCoroutine(FindPlayerUnits());
     }
@@ -49,7 +50,7 @@ public class EnemyTroopController : TroopController, IReactableForDamage
 
     public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     {
-        if (target == null)
+        if (target == null || StateController.CheckStateForActivity<TroopAttackState>())
             return;
 
         Vector3 currentPosition = transform.position;
@@ -60,7 +61,7 @@ public class EnemyTroopController : TroopController, IReactableForDamage
         MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, troopAttackRange, TroopSide.Player, null, false);
 
         if (enemyInAttackRange != null)
-            StateController.ActivateAttackState(target);
+            StateController.ActivateDefenseUnderAttack(target, targetPos);
         else
         {
             Action finishAction = () => StateController.ActivateAttackState(target);
