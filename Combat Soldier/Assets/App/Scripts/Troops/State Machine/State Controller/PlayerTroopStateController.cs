@@ -6,6 +6,7 @@ public class PlayerTroopStateController : TroopStateController
     {
         _troopDefaultState = new PlayerTroopDefaultState(_troopController, screenCanvasController, this);
         _troopDefenseState = new PlayerTroopDefenseState(_troopController, screenCanvasController, this);
+        _troopAttackState = new PlayerAttackState(_troopController, screenCanvasController, this);
 
         _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState, _troopDeathState };
         _currentState = _allStates[0];

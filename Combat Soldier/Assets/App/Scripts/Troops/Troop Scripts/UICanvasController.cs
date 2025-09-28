@@ -15,6 +15,7 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         GameEvents.instance.OnDisableActiveCanvases += DisableAllCanvases;
 
         GameEvents.instance.OnBuildingDestroyed += DisableObject;
+        GameEvents.instance.OnTroopDisableUI += DisableObject;
         GameEvents.instance.OnTroopDiedUI += DisableObject;
     }
 
@@ -23,6 +24,7 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         GameEvents.instance.OnDisableActiveCanvases -= DisableAllCanvases;
 
         GameEvents.instance.OnBuildingDestroyed -= DisableObject;
+        GameEvents.instance.OnTroopDisableUI -= DisableObject;
         GameEvents.instance.OnTroopDiedUI -= DisableObject;
     }
 

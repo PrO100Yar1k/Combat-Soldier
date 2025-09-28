@@ -32,6 +32,9 @@ public class GameEvents : MonoBehaviour, IInitializeManager
         OnTroopDiedUI?.Invoke(troopController);
     }
 
+    public event Action<TroopController> OnTroopDisableUI = default;
+    public void TroopDisableUI(TroopController troopController) => OnTroopDisableUI?.Invoke(troopController);
+
     //
 
     public event Action<BuildingController> OnBuildingSpawned = default;

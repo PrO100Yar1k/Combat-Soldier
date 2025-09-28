@@ -39,9 +39,12 @@ public class TroopScriptable : ScriptableObject
 
     [field: SerializeField] public float ViewRangeRadius { get; private set; } = 7;
 
+    [field: SerializeField] public float Speed { get; private set; } = 7f;
+
+    //
+
     [field: SerializeField] public int TroopsPerUnit { get; private set; } = 50;
 
-    [field: SerializeField] public float Speed { get; private set; } = 7f;
     
     // maybe create additional parameters like: MaxSpeed; MinSpeed; TimeToGetMaxSpeed; SpeedUnderAttack
 }

@@ -75,11 +75,11 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float troopAttackRange, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes)
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float targetDistance, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes) // extended parameter : bool isBuildingIncludes
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 
-        enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, troopAttackRange, enemyTroopSide));
+        enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, targetDistance, enemyTroopSide));
 
         if (isBuildingIncludes == true)
             enemyControllersList.AddRange(_buildingControllersEnemyList);
@@ -94,10 +94,10 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
 
             float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
 
-            if (currentDistanceBetweenEnemy <= troopAttackRange && enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
+            if (currentDistanceBetweenEnemy <= targetDistance && enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
                 return enemy;
 
-            if (currentDistanceBetweenEnemy < closestDistance && isEnemyInAttackRange(troopPosition, currentEnemyPosition, troopAttackRange))
+            if (currentDistanceBetweenEnemy < closestDistance && isEnemyInAttackRange(troopPosition, currentEnemyPosition, targetDistance))
             {
                 targetEnemy = enemy;
                 closestDistance = currentDistanceBetweenEnemy;

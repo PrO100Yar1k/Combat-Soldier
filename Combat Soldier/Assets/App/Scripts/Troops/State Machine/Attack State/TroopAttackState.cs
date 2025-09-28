@@ -4,12 +4,14 @@ using System.Collections;
 
 public class TroopAttackState : TroopBaseState
 {
-    private event Action<IDamagable> OnActivateTroopAttack = default;
+    protected event Action<IDamagable> OnActivateTroopAttack = default;
 
-    private Coroutine _reloadAttackCoroutine = default;
-    private Coroutine _attackCoroutine = default;
+    protected Coroutine _reloadAttackCoroutine = default;
+    protected Coroutine _attackCoroutine = default;
 
-    private int _remainingAttackWaves = default;
+    protected int _remainingAttackWaves = default;
+
+    protected TroopSide _enemyTroopSide = default;
 
     #region Events
 
@@ -56,11 +58,10 @@ public class TroopAttackState : TroopBaseState
     private void TryToAttackEnemy(IDamagable enemyDamagable)
     {
         Vector3 troopPosition = _troopController.transform.position;
-        TroopSide enemyTroopSide = TroopSide.Enemy;
 
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyTroop = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable, true);
+        MonoBehaviour enemyTroop = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
 
         if (enemyTroop == null)
             return;

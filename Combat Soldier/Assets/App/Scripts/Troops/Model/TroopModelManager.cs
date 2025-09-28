@@ -57,15 +57,6 @@ public class TroopModelManager : MonoBehaviour
 
     #region Enable & Disable Enemies
 
-    private void EnableAllVisibleEnemies()
-    {
-        EnemyTroopController[] enemyControllers = GetVisibleEnemies();
-
-        foreach (EnemyTroopController enemyController in enemyControllers)
-        {
-            enemyController.TroopModelController.AppearTroopModel();
-        }
-    }
 
     private void DisableAllEnemies()
     {
@@ -74,6 +65,16 @@ public class TroopModelManager : MonoBehaviour
         foreach (EnemyTroopController troopController in enemyControllersList)
         {
             troopController.TroopModelController.DisappearTroopModel();
+        }
+    }
+
+    private void EnableAllVisibleEnemies()
+    {
+        EnemyTroopController[] enemyControllers = GetVisibleEnemies();
+
+        foreach (EnemyTroopController enemyController in enemyControllers)
+        {
+            enemyController.TroopModelController.AppearTroopModel();
         }
     }
 

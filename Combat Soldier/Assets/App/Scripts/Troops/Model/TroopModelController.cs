@@ -5,15 +5,19 @@ public class TroopModelController : MonoBehaviour
 {
     [SerializeField] private Material _invisibleMaterial = default;
 
+    private TroopController _troopController = default;
     private GameObject _troopGameObject = default;
+
     private MeshRenderer _meshRenderer = default;
 
     private Material _defaultMaterial = default;
     private LayerMask _defaultLayer = default;
 
-    public void InitializeModelController(GameObject troopGameObject)
+    public void InitializeModelController(TroopController troopController, GameObject troopGameObject)
     {
+        _troopController = troopController;
         _troopGameObject = troopGameObject;
+
         _meshRenderer = GetComponent<MeshRenderer>();
 
         _defaultMaterial = _meshRenderer.material; // maybe remake it with a list of materials
@@ -32,5 +36,7 @@ public class TroopModelController : MonoBehaviour
 
         _troopGameObject.layer = layerIgnoreRaycast;
         _meshRenderer.material = _invisibleMaterial;
+
+        //GameEvents.instance.TroopDisableUI(_troopController); // ?
     }
 }

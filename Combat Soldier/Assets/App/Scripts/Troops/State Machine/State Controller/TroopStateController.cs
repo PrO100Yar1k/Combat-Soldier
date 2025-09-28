@@ -22,9 +22,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _troopController = troopController;
 
         _troopMoveState = new TroopMoveState(_troopController, screenCanvasController, this);
-        _troopAttackState = new TroopAttackState(_troopController, screenCanvasController, this);
         _troopDeathState = new TroopDeathState(_troopController, screenCanvasController, this);
-
     }
 
     public void Dispose()

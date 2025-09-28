@@ -25,7 +25,9 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         GameEvents.instance.OnTroopEnterAnyMode += AssignControllerAndChangeMode;
         GameEvents.instance.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
 
+
         GameEvents.instance.OnTroopDiedUI += UpdateTroopStatus;
+        GameEvents.instance.OnTroopDisableUI += UpdateTroopStatus;
         GameEvents.instance.OnBuildingDestroyed += UpdateTroopStatus;
     }
 
@@ -35,6 +37,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         GameEvents.instance.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
 
         GameEvents.instance.OnTroopDiedUI -= UpdateTroopStatus;
+        GameEvents.instance.OnTroopDisableUI -= UpdateTroopStatus;
         GameEvents.instance.OnBuildingDestroyed -= UpdateTroopStatus;
     }
 

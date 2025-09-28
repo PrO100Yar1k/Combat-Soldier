@@ -14,20 +14,34 @@ public class EnemyTroopController : TroopController, IReactableForDamage
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
 
-        _troopModelController.InitializeModelController(gameObject);
+        _troopModelController.InitializeModelController(this, gameObject);
 
         //StartCoroutine(FindPlayerUnits());
     }
 
     private IEnumerator FindPlayerUnits()
     {
+        IDamagable targetPriorityEnemy = null;
+        TroopSide targetTroopSide = TroopSide.Player;
+
+        float visibleRange = _troopScriptable.ViewRangeRadius;
+
         while (true)
         {
             const float delay = 1.0f;
 
-            float visibleRange = _troopScriptable.ViewRangeRadius;
+            Vector3 currentPosition = transform.position;
 
-            //if ()
+            MonoBehaviour closestEnemyInViewRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, visibleRange, targetTroopSide, targetPriorityEnemy, false);
+
+            if (closestEnemyInViewRange != null)
+            {
+                IDamagable enemyDamagable = closestEnemyInViewRange as IDamagable;
+
+                Vector3 targetPosition = closestEnemyInViewRange.transform.position;
+
+                //
+            }
 
             yield return new WaitForSeconds(delay);
         }
@@ -35,9 +49,29 @@ public class EnemyTroopController : TroopController, IReactableForDamage
 
     public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     {
-        Vector3 targetPos = target.transform.position;
-        Action finishAction = () => StateController.ActivateAttackState(target);
+        if (target == null)
+            return;
 
-        StateController.ActivateMoveState(targetPos, finishAction);
+        Vector3 currentPosition = transform.position;
+        Vector3 targetPos = target.transform.position;
+
+        float troopAttackRange = _troopScriptable.AttackRangeRadius;
+
+        MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, troopAttackRange, TroopSide.Player, null, false);
+
+        if (enemyInAttackRange != null)
+            StateController.ActivateAttackState(target);
+        else
+        {
+            Action finishAction = () => StateController.ActivateAttackState(target);
+
+            const float distanceDelta = 0.15f;
+            const float distanceModifier = 1 - distanceDelta;
+
+            Vector3 direction = (targetPos - transform.position).normalized;
+            targetPos -= direction * troopAttackRange * distanceModifier;
+
+            StateController.ActivateMoveState(targetPos, finishAction);
+        }
     }
 }
