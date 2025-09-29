@@ -1,16 +1,18 @@
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemyTroopController : TroopController, IReactableForDamage
 {
     [SerializeField] private MeshRenderer _enemyMeshRendererModel = default;
 
+    [SerializeField] private List<Transform> targetPointsList = new List<Transform>();
+
     public TroopModelController TroopModelController { get; private set; }
 
     protected override void InitializeTroop()
     {
-        StateController = new EnemyTroopStateController(this, _screenCanvasController);
+        StateController = new EnemyTroopStateController(this, _screenCanvasController, targetPointsList.ToArray());
         TroopModelController = new TroopModelController(this, gameObject, _enemyMeshRendererModel);
 
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController);

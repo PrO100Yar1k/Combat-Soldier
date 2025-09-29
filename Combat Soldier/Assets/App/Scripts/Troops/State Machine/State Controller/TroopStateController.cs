@@ -71,6 +71,8 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _currentState.Stop();
         _currentState = state;
         _currentState.Start();
+
+        Debug.Log(_currentState);
     }
 }
 
