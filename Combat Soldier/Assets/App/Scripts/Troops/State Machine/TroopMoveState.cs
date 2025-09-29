@@ -4,7 +4,7 @@ using System;
 
 public class TroopMoveState : TroopBaseState
 {
-    private event Action<Vector3, Action> OnActivateTroopMovement = default;
+    private event Action<Vector3> OnActivateTroopMovement = default;
 
     private Tween _movementTweenerController = default;
     private Tween _rotationTweenerController = default;
@@ -36,8 +36,8 @@ public class TroopMoveState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    public void ActivateTroopMovement(Vector3 point, Action finishAction)
-        => OnActivateTroopMovement?.Invoke(point, finishAction);
+    public void ActivateTroopMovement(Vector3 point)
+        => OnActivateTroopMovement?.Invoke(point);
 
     protected override void EnableStateIcon()
     {
@@ -45,7 +45,7 @@ public class TroopMoveState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void SetWaypoint(Vector3 point, Action finishAction)
+    private void SetWaypoint(Vector3 point)
     {
         Transform troopTransform = _troopController.transform;
 
@@ -64,7 +64,7 @@ public class TroopMoveState : TroopBaseState
         _movementTweenerController?.Kill();
         _movementTweenerController = troopTransform.DOMove(finalPos, timeToArrive)
             .SetEase(Ease.Flash)
-            .OnComplete(delegate { Finished(finishAction); });
+            .OnComplete(delegate { ActionAfterFinish(); });
     }
 
     private void SmoothlyRotateTroop(Vector3 moveDirection)
@@ -85,12 +85,8 @@ public class TroopMoveState : TroopBaseState
     }
 
 
-    private void Finished(Action finishAction)
+    private void ActionAfterFinish()
     {
-        Debug.Log("Finished Waypoint!");
-
         _switcherState.SwitchState<TroopDefaultState>();
-
-        finishAction?.Invoke(); // ?
     }
 }

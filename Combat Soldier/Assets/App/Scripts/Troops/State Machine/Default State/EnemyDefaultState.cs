@@ -7,7 +7,7 @@ public class EnemyDefaultState : TroopDefaultState
     private readonly Queue<Vector3> _targetPointsQueue = new Queue<Vector3>();
 
     private Coroutine _patrollingCoroutine = default;
-    private Coroutine _findUnitsCoroutine = default;
+    private Coroutine _findEnemyCoroutine = default;
 
     private const float minWaitingTime = 5;
     private const float maxWaitingTime = 10;
@@ -20,9 +20,7 @@ public class EnemyDefaultState : TroopDefaultState
 
     public override void Start()
     {
-        if (_findUnitsCoroutine == null)
-            _findUnitsCoroutine = _troopController.StartCoroutine(FindPlayerUnits());
-
+        StartFindingEnemy();
         StartPatrolling();
 
         EnableStateIcon();
@@ -30,12 +28,7 @@ public class EnemyDefaultState : TroopDefaultState
 
     public override void Stop()
     {
-        if (_findUnitsCoroutine != null)
-        {
-            _troopController.StopCoroutine(_findUnitsCoroutine);
-            _findUnitsCoroutine = null;
-        }
-
+        StopFindingEnemy();
         StopPatrolling();
     }
 
@@ -60,6 +53,27 @@ public class EnemyDefaultState : TroopDefaultState
 
     #endregion
 
+    #region Start & Stop Finidng Enemy Coroutine
+
+    private void StartFindingEnemy()
+    {
+        if (_findEnemyCoroutine != null)
+            return;
+
+        _findEnemyCoroutine = _troopController.StartCoroutine(FindingEnemyCoroutine());
+    }
+
+    private void StopFindingEnemy()
+    {
+        if (_findEnemyCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_findEnemyCoroutine);
+        _findEnemyCoroutine = null;
+    }
+
+    #endregion
+
     #region Patrolling Cycle
 
     private IEnumerator PatrollingCoroutine()
@@ -70,7 +84,7 @@ public class EnemyDefaultState : TroopDefaultState
 
         Vector3 targetPos = GetTargetPosition();
 
-        _troopController.StateController.ActivateMoveState(targetPos, null);
+        _troopController.StateController.ActivateMoveState(targetPos);
     }
 
     private Vector3 GetTargetPosition()
@@ -83,7 +97,9 @@ public class EnemyDefaultState : TroopDefaultState
 
     #endregion
 
-    private IEnumerator FindPlayerUnits()
+    #region Finding Enemy Cycle
+
+    private IEnumerator FindingEnemyCoroutine() // finding player's unit in visible range while default state
     {
         IDamagable targetPriorityEnemy = null;
         TroopSide targetTroopSide = TroopSide.Player;
@@ -97,9 +113,24 @@ public class EnemyDefaultState : TroopDefaultState
 
             Vector3 currentPosition = _troopController.transform.position;
 
+            MonoBehaviour closestEnemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false);
+
+            if (closestEnemyInAttackRange != null) //
+            {
+                EnemyTroopController enemyTroopController = _troopController as EnemyTroopController;
+
+                IDamagable enemyDamagable = closestEnemyInAttackRange as IDamagable;
+
+                Vector3 targetPos = closestEnemyInAttackRange.transform.position;
+
+                enemyTroopController.StateController.ActivateAttackState(enemyDamagable);
+
+                yield break;
+            }
+
             MonoBehaviour closestEnemyInViewRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, visibleRange, targetTroopSide, targetPriorityEnemy, false);
 
-            if (closestEnemyInViewRange != null)
+            if (closestEnemyInViewRange != null) //
             {
                 EnemyTroopController enemyTroopController = _troopController as EnemyTroopController;
 
@@ -107,10 +138,12 @@ public class EnemyDefaultState : TroopDefaultState
 
                 Vector3 targetPos = closestEnemyInViewRange.transform.position;
 
-                enemyTroopController.MoveAndAttackEnemy(enemyDamagable, targetPos, attackRange);
+                enemyTroopController.MoveToEnemyTarget(enemyDamagable, targetPos, attackRange);
             }
 
             yield return new WaitForSeconds(delay);
         }
     }
+
+    #endregion
 }

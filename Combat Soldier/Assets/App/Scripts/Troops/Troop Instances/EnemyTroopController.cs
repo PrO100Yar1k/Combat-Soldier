@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class EnemyTroopController : TroopController, IReactableForDamage
 {
@@ -37,20 +36,18 @@ public class EnemyTroopController : TroopController, IReactableForDamage
         }
         else
         {
-            MoveAndAttackEnemy(target, targetPos, attackRange);
+            MoveToEnemyTarget(target, targetPos, attackRange);
         }
     }
 
-    public void MoveAndAttackEnemy(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange) //
+    public void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange) //
     {
-        Action finishAction = () => StateController.ActivateAttackState(targetDamagable);
-
         const float distanceDelta = 0.15f;
         const float distanceModifier = 1 - distanceDelta;
 
         Vector3 direction = (targetPos - transform.position).normalized;
         targetPos -= direction * troopAttackRange * distanceModifier;
 
-        StateController.ActivateMoveState(targetPos, finishAction);
+        StateController.ActivateMoveState(targetPos);
     }
 }

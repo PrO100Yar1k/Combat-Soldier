@@ -50,11 +50,11 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _troopDefenseState.ActivateDefenseUnderAttack(enemyIDamagable, enemyPosition);
     }
 
-    public void ActivateMoveState(Vector3 targetPoint, Action finishAction)
+    public void ActivateMoveState(Vector3 targetPoint)
     {
         SwitchState<TroopMoveState>();
 
-        _troopMoveState.ActivateTroopMovement(targetPoint, finishAction);
+        _troopMoveState.ActivateTroopMovement(targetPoint);
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState

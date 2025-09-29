@@ -4,7 +4,7 @@ public class PlayerTroopStateController : TroopStateController
 {
     public PlayerTroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController) : base(troopController, screenCanvasController)
     {
-        _troopDefaultState = new PlayerTroopDefaultState(_troopController, screenCanvasController, this);
+        _troopDefaultState = new PlayerDefaultState(_troopController, screenCanvasController, this);
         _troopDefenseState = new PlayerTroopDefenseState(_troopController, screenCanvasController, this);
         _troopAttackState = new PlayerAttackState(_troopController, screenCanvasController, this);
 

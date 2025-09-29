@@ -98,7 +98,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             case OrderMode.Move:
 
                 if (isShiftedMaskOverLayer(shiftedLayerMask, _terrainLayer))
-                    playerTroopStateController.ActivateMoveState(targetPoint, null);
+                    playerTroopStateController.ActivateMoveState(targetPoint);
 
                 break;
             case OrderMode.Attack:
@@ -159,8 +159,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
             targetPoint -= direction * troopAttackRange * distanceModifier;
 
-            Action finishAction = () => troopStateController.ActivateAttackState(target);
-            troopStateController.ActivateMoveState(targetPoint, finishAction);
+            troopStateController.ActivateMoveState(targetPoint);
         }
     }
 

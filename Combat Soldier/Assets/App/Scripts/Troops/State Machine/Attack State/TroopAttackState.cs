@@ -46,8 +46,8 @@ public class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
     }
 
-    public void ActivateAttack(IDamagable enemyHPController)
-        => OnActivateTroopAttack?.Invoke(enemyHPController);
+    public void ActivateAttack(IDamagable enemyDamagable)
+        => OnActivateTroopAttack?.Invoke(enemyDamagable);
 
     protected override void EnableStateIcon()
     {
@@ -73,9 +73,10 @@ public class TroopAttackState : TroopBaseState
         }
         else if (enemyTroop.TryGetComponent(out BuildingController buildingController))
         {
-            AttackEnemyCoroutineStarter(buildingController);
+            AttackEnemyCoroutineStarter(buildingController); //
         }
-        
+
+        else _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #region Coroutine Starter

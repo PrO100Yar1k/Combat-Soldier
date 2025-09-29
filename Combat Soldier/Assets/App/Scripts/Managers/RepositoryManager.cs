@@ -75,7 +75,7 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
         return enemyControllersList.ToArray();
     }
 
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float targetDistance, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes) // extended parameter : bool isBuildingIncludes
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float targetDistance, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes) // extended parameter : bool isBuildingIncludes // target priority enemy maybe remove ???
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 

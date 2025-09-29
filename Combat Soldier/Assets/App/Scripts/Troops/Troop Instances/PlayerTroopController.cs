@@ -32,6 +32,6 @@ public class PlayerTroopController : TroopController, IReactableForDamage
         if (StateController.CheckStateForActivity<TroopAttackState>())
             return;
 
-        StateController.ActivateDefenseUnderAttack(target, target.transform.position); // to do ???
+        StateController.ActivateDefenseUnderAttack(target, target.transform.position);
     }
 }
