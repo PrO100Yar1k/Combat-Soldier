@@ -196,8 +196,8 @@ public class TroopAttackState : TroopBaseState
         yield return new WaitForSeconds(initialDelay);
 
         int attackWavesCount = _troopScriptable.CountAttackWaves;
-        float timeToCompleteReload = _troopScriptable.TimeToReloadAttack; //
 
+        float timeToCompleteReload = _troopScriptable.TimeToReloadAttack;
         float timeToReloadAttack = timeToCompleteReload / attackWavesCount * _remainingAttackWaves;
 
         PlayerTroopController playerController = _troopController as PlayerTroopController;

@@ -123,7 +123,7 @@ public class EnemyDefaultState : TroopDefaultState
 
                 Vector3 targetPos = closestEnemyInAttackRange.transform.position;
 
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.25f); // reaction time
 
                 enemyTroopController.StateController.ActivateAttackState(enemyDamagable);
 

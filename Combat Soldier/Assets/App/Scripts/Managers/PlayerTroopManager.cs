@@ -130,7 +130,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     #region Activate Attack
 
-    private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable 
+    private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable // rename
     {
         if (_selectedController is not TroopController)
             return;
