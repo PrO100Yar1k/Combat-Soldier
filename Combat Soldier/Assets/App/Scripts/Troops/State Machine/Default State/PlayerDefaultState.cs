@@ -1,10 +1,8 @@
-using System.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerDefaultState : TroopDefaultState
 {
-    private const int _initialDelay = 1000; // in milliseconds
-
     public PlayerDefaultState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
     {
 
@@ -13,6 +11,7 @@ public class PlayerDefaultState : TroopDefaultState
     public override void Start()
     {
         CallCheckEnemyInAttackRange();
+
         EnableStateIcon();
     }
 
@@ -22,23 +21,25 @@ public class PlayerDefaultState : TroopDefaultState
     }
 
     private void CallCheckEnemyInAttackRange()
-        => Task.Delay(_initialDelay).ContinueWith(task => CheckEnemyInAttackRange());
+        => _troopController.StartCoroutine(CheckEnemyInAttackRange());
 
-    private void CheckEnemyInAttackRange()
+    private IEnumerator CheckEnemyInAttackRange()
     {
+        const float initialDelay = 0.2f;
+
+        yield return new WaitForSeconds(initialDelay);
+
         Vector3 currentPosition = _troopController.transform.position;
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        TroopSide targetTroopSide = TroopSide.Player;
+        TroopSide targetTroopSide = TroopSide.Enemy;
         IDamagable targetPriorityEnemy = null;
 
         MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false);
 
-        if (enemyInAttackRange != null)
-        {
-            IDamagable enemyDamagable = enemyInAttackRange as IDamagable;
+        if (enemyInAttackRange == null)
+            yield break;
 
-            _troopController.StateController.ActivateAttackState(enemyDamagable);
-        }
+        _troopController.StateController.ActivateAttackState(enemyInAttackRange as IDamagable);
     }
 }

@@ -9,8 +9,8 @@ public class EnemyDefaultState : TroopDefaultState
     private Coroutine _patrollingCoroutine = default;
     private Coroutine _findEnemyCoroutine = default;
 
-    private const float minWaitingTime = 5;
-    private const float maxWaitingTime = 10;
+    private const float minWaitingTime = 8;
+    private const float maxWaitingTime = 15;
 
     public EnemyDefaultState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, Transform[] targetPointsList) : base(troopController, screenCanvasController, switcherState)
     {
@@ -32,6 +32,27 @@ public class EnemyDefaultState : TroopDefaultState
         StopPatrolling();
     }
 
+    #region Start & Stop Finding Enemy Coroutine
+
+    private void StartFindingEnemy()
+    {
+        if (_findEnemyCoroutine != null)
+            return;
+
+        _findEnemyCoroutine = _troopController.StartCoroutine(FindingEnemyCoroutine());
+    }
+
+    private void StopFindingEnemy()
+    {
+        if (_findEnemyCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_findEnemyCoroutine);
+        _findEnemyCoroutine = null;
+    }
+
+    #endregion
+
     #region Start & Stop Patrolling Coroutine
 
     private void StartPatrolling()
@@ -49,27 +70,6 @@ public class EnemyDefaultState : TroopDefaultState
 
         _troopController.StopCoroutine(_patrollingCoroutine);
         _patrollingCoroutine = null;
-    }
-
-    #endregion
-
-    #region Start & Stop Finidng Enemy Coroutine
-
-    private void StartFindingEnemy()
-    {
-        if (_findEnemyCoroutine != null)
-            return;
-
-        _findEnemyCoroutine = _troopController.StartCoroutine(FindingEnemyCoroutine());
-    }
-
-    private void StopFindingEnemy()
-    {
-        if (_findEnemyCoroutine == null)
-            return;
-
-        _troopController.StopCoroutine(_findEnemyCoroutine);
-        _findEnemyCoroutine = null;
     }
 
     #endregion
@@ -123,9 +123,11 @@ public class EnemyDefaultState : TroopDefaultState
 
                 Vector3 targetPos = closestEnemyInAttackRange.transform.position;
 
+                yield return new WaitForSeconds(0.25f);
+
                 enemyTroopController.StateController.ActivateAttackState(enemyDamagable);
 
-                yield break;
+                yield break; //
             }
 
             MonoBehaviour closestEnemyInViewRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, visibleRange, targetTroopSide, targetPriorityEnemy, false);
@@ -139,6 +141,8 @@ public class EnemyDefaultState : TroopDefaultState
                 Vector3 targetPos = closestEnemyInViewRange.transform.position;
 
                 enemyTroopController.MoveToEnemyTarget(enemyDamagable, targetPos, attackRange);
+
+                yield break; //
             }
 
             yield return new WaitForSeconds(delay);

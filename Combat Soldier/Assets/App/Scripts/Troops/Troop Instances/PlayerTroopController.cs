@@ -24,6 +24,8 @@ public class PlayerTroopController : TroopController, IReactableForDamage
     {
         ActivateDefenseUnderAttack(target);
 
+        //ui visible image
+
         Debug.Log("Lord, Your Unit was Damaged!");
     }
 
@@ -32,6 +34,16 @@ public class PlayerTroopController : TroopController, IReactableForDamage
         if (StateController.CheckStateForActivity<TroopAttackState>())
             return;
 
-        StateController.ActivateDefenseUnderAttack(target, target.transform.position);
+        Vector3 currentPosition = transform.position;
+        Vector3 targetPos = target.transform.position;
+
+        float attackRange = _troopScriptable.AttackRangeRadius;
+
+        MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, TroopSide.Player, null, false);
+
+        if (enemyInAttackRange == null)
+            return;
+        
+        StateController.ActivateDefenseUnderAttack(target, targetPos);
     }
 }

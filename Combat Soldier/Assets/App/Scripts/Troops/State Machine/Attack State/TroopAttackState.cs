@@ -34,8 +34,9 @@ public class TroopAttackState : TroopBaseState
 
     public override void Start()
     {
-        EnableStateIcon();
         SubscribeToEvents();
+
+        EnableStateIcon();
     }
 
     public override void Stop()
@@ -68,7 +69,7 @@ public class TroopAttackState : TroopBaseState
 
         if (enemyTroop.TryGetComponent(out TroopController troopController)) //
         {
-            // troopController.StateController.SwitchState<TroopDefenseState>(); 
+            // _switcherState.SwitchState<TroopDefenseState>(); 
             AttackEnemyCoroutineStarter(troopController);
         }
         else if (enemyTroop.TryGetComponent(out BuildingController buildingController))
@@ -119,6 +120,14 @@ public class TroopAttackState : TroopBaseState
             if (isEnemyStillAlive(enemyTroop) == false)
                 break;
 
+            Vector3 currentPosition = _troopController.transform.position;
+            Vector3 enemyPosition = enemyTroop.transform.position;
+
+            float attackRange = _troopScriptable.AttackRangeRadius;
+
+            if (Vector3.Distance(currentPosition, enemyPosition) > attackRange)
+                break;
+
             IReactableForDamage enemyReactableForDamage = enemyTroop as IReactableForDamage;
 
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
@@ -153,14 +162,16 @@ public class TroopAttackState : TroopBaseState
     private bool isEnemyStillAlive<T>(T enemy) where T : MonoBehaviour, IDamagable
         => enemy != null;
 
+    //
+
     #endregion
 
     #region Extra Methods
 
     private void FinishAttackCoroutineAction<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
     {
-        if (isEnemyStillAlive(enemyTroop)) AttackEnemyCoroutineStarter(enemyTroop);
-        else _troopController.StateController.SwitchState<TroopDefaultState>();
+        if (isEnemyStillAlive(enemyTroop) && Vector3.Distance(_troopController.transform.position, enemyTroop.transform.position) <= _troopScriptable.AttackRangeRadius) AttackEnemyCoroutineStarter(enemyTroop);
+        else _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #endregion
@@ -180,8 +191,14 @@ public class TroopAttackState : TroopBaseState
 
     private IEnumerator ReloadAttack()
     {
+        const float initialDelay = 0.25f;
+
+        yield return new WaitForSeconds(initialDelay);
+
         int attackWavesCount = _troopScriptable.CountAttackWaves;
-        float timeToReloadAttack = _troopScriptable.TimeToReloadAttack;
+        float timeToCompleteReload = _troopScriptable.TimeToReloadAttack; //
+
+        float timeToReloadAttack = timeToCompleteReload / attackWavesCount * _remainingAttackWaves;
 
         PlayerTroopController playerController = _troopController as PlayerTroopController;
         playerController?.ScreenCanvasUpdateReloadingBar(timeToReloadAttack);

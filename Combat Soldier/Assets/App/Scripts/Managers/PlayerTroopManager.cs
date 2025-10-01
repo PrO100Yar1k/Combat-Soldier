@@ -75,7 +75,7 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         }
     }
 
-    private void SelectedOrderTroopAction()
+    private void SelectedOrderTroopAction() // to do !!!!
     {
         if (_selectedController is not PlayerTroopController)
             return;
@@ -144,12 +144,12 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         Vector3 _selectedTroopPosition = _selectedController.transform.position;
         Vector3 targetPoint = targetTransform.position;
 
-        if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) < troopAttackRange)
+        if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) <= troopAttackRange)
         {
-            Vector3 targetLookAtPosition = new Vector3(targetTransform.position.x, _selectedController.transform.position.y, targetTransform.position.z);
+            //Vector3 targetLookAtPosition = new Vector3(targetTransform.position.x, _selectedController.transform.position.y, targetTransform.position.z);
             //_selectedController.transform.LookAt(targetLookAtPosition);    // to do
 
-            troopStateController.ActivateAttackState(target);
+            //troopStateController.ActivateAttackState(target);
         }
         else
         {

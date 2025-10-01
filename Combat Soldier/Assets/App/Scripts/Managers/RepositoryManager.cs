@@ -79,12 +79,12 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 
-        enemyControllersList.AddRange(GetEnemyListInRange(troopPosition, targetDistance, enemyTroopSide));
+        enemyControllersList.AddRange(GetTroopControllersList(enemyTroopSide)); //GetEnemyListInRange(troopPosition, targetDistance, enemyTroopSide)
 
         if (isBuildingIncludes == true)
             enemyControllersList.AddRange(_buildingControllersEnemyList);
 
-        MonoBehaviour targetEnemy = default;
+        MonoBehaviour targetEnemy = null;
 
         float closestDistance = Mathf.Infinity;
 
@@ -94,10 +94,10 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
 
             float currentDistanceBetweenEnemy = Vector3.Distance(troopPosition, currentEnemyPosition);
 
-            if (currentDistanceBetweenEnemy <= targetDistance && enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
+            if (targetPriorityEnemy != null && currentDistanceBetweenEnemy <= targetDistance && enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
                 return enemy;
 
-            if (currentDistanceBetweenEnemy < closestDistance && isEnemyInAttackRange(troopPosition, currentEnemyPosition, targetDistance))
+            if (currentDistanceBetweenEnemy <= targetDistance && currentDistanceBetweenEnemy < closestDistance) // && isEnemyInAttackRange(troopPosition, currentEnemyPosition, targetDistance))
             {
                 targetEnemy = enemy;
                 closestDistance = currentDistanceBetweenEnemy;
@@ -139,28 +139,28 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
     {
         GetTroopControllersList(troopSide).Add(troopController);
 
-        Debug.Log("Troop successfully added!");
+        //Debug.Log("Troop successfully added!");
     }
 
     private void RemoveTroopFromList(TroopController troopController, TroopSide troopSide)
     {
         GetTroopControllersList(troopSide).Remove(troopController);
 
-        Debug.Log("Troop successfully removed!");
+        //Debug.Log("Troop successfully removed!");
     }
 
     private void AddBuildingToList(BuildingController buildingController)
     {
         _buildingControllersEnemyList.Add(buildingController);
 
-        Debug.Log("Building successfully added!");
+        //Debug.Log("Building successfully added!");
     }
 
     private void RemoveBuildingFromList(BuildingController buildingController)
     {
         _buildingControllersEnemyList.Remove(buildingController);
 
-        Debug.Log("Building successfully removed!");
+        //Debug.Log("Building successfully removed!");
     }
 
     #endregion

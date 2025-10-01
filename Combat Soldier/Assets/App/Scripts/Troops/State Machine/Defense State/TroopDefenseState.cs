@@ -22,12 +22,15 @@ public abstract class TroopDefenseState : TroopBaseState
 
     #endregion
 
-    public TroopDefenseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
+    public TroopDefenseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) 
+    {
+    
+    }
 
     public override void Start()
     {
-        EnableStateIcon();
         SubscribeToEvents();
+        EnableStateIcon();
     }
 
     public override void Stop()
@@ -35,8 +38,8 @@ public abstract class TroopDefenseState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition)
-        => OnActivateDefenseUnderAttack?.Invoke(enemyIDamagable, enemyPosition);
+    public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
+        => OnActivateDefenseUnderAttack?.Invoke(enemyDamagable, enemyPosition);
 
     protected override void EnableStateIcon()
     {
@@ -44,9 +47,9 @@ public abstract class TroopDefenseState : TroopBaseState
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
-    private void FightBackToEnemy(IDamagable enemyIDamagable, Vector3 enemyPosition)
+    private void FightBackToEnemy(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        if (_troopController == null)
+        if (_troopController == null || enemyDamagable == null)
             return;
 
         Vector3 troopPosition = _troopController.transform.position;
@@ -55,15 +58,14 @@ public abstract class TroopDefenseState : TroopBaseState
         if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
             return;
 
-        _troopController.StartCoroutine(FightBackCoroutine(enemyIDamagable, enemyPosition));
+        _troopController.StartCoroutine(FightBackCoroutine(enemyDamagable, enemyPosition));
     }
 
-    private IEnumerator FightBackCoroutine(IDamagable enemyIDamagable, Vector3 enemyPosition)
+    private IEnumerator FightBackCoroutine(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        if (enemyIDamagable as MonoBehaviour == null)
-            yield break;
+        //
 
-        string enemyName = (enemyIDamagable as UnityEngine.Object).name;
+        string enemyName = (enemyDamagable as UnityEngine.Object).name;
 
         yield return new WaitForSeconds(_reactionTime);
 
@@ -73,10 +75,19 @@ public abstract class TroopDefenseState : TroopBaseState
         yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
-        enemyIDamagable.TakeDamage(damageUnderAttack);
+        enemyDamagable.TakeDamage(damageUnderAttack);
+
+        if (isEnemyAlreadyDied(enemyDamagable))
+        {
+            _switcherState.SwitchState<TroopDefaultState>();
+            yield break;
+        }
 
         Debug.Log($"I fought back to {enemyName} with total damage of {damageUnderAttack}!");
     }
+
+    private bool isEnemyAlreadyDied(IDamagable enemyIDamagable)
+        => (enemyIDamagable as MonoBehaviour) == null;
 }
 
 public interface IReactableForDamage

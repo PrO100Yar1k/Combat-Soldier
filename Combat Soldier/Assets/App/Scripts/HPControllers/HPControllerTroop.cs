@@ -100,7 +100,7 @@ public class HPControllerTroop : HPController
 
     protected override void TroopDeath<T>(T controller, GameObject objectToDestroy)
     {
-        _troopController.StateController.SwitchState<TroopDeathState>();
+        _troopController.StateController.ActivateDeathState();
 
         base.TroopDeath(controller, objectToDestroy);
     }

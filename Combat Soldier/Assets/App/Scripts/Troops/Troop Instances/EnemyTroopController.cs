@@ -20,7 +20,7 @@ public class EnemyTroopController : TroopController, IReactableForDamage
 
     public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable // ?
     {
-        if (target == null || StateController.CheckStateForActivity<TroopAttackState>())
+        if (StateController.CheckStateForActivity<TroopAttackState>())
             return;
 
         Vector3 currentPosition = transform.position;
@@ -30,14 +30,10 @@ public class EnemyTroopController : TroopController, IReactableForDamage
 
         MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, TroopSide.Player, null, false);
 
-        if (enemyInAttackRange != null)
-        {
-            StateController.ActivateDefenseUnderAttack(target, targetPos);
-        }
-        else
-        {
-            MoveToEnemyTarget(target, targetPos, attackRange);
-        }
+        if (enemyInAttackRange == null)
+            return;
+        
+        StateController.ActivateDefenseUnderAttack(target, targetPos);
     }
 
     public void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange) //

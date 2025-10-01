@@ -5,8 +5,6 @@ using System;
 
 public abstract class TroopStateController : ISwitchableState, IDisposable
 {
-    protected readonly TroopController _troopController = default;
-
     protected TroopDefaultState _troopDefaultState = default;
     protected TroopMoveState _troopMoveState = default;
     protected TroopAttackState _troopAttackState = default;
@@ -17,13 +15,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
 
     protected TroopBaseState _currentState = default;
 
-    public TroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController) 
-    {
-        _troopController = troopController;
-
-        _troopMoveState = new TroopMoveState(_troopController, screenCanvasController, this);
-        _troopDeathState = new TroopDeathState(_troopController, screenCanvasController, this);
-    }
+    public TroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController) { }
 
     public void Dispose()
     {
@@ -36,18 +28,20 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
     }
 
-    public void ActivateAttackState(IDamagable enemy)
+    public void ActivateAttackState(IDamagable enemyDamagable)
     {
-        SwitchState<TroopAttackState>();
+        if (CheckStateForActivity<TroopAttackState>() == false)
+            SwitchState<TroopAttackState>();
 
-        _troopAttackState.ActivateAttack(enemy);
+        _troopAttackState.ActivateAttack(enemyDamagable);
     }
 
-    public void ActivateDefenseUnderAttack(IDamagable enemyIDamagable, Vector3 enemyPosition)
+    public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition) // activate just defense state
     {
-        SwitchState<TroopDefenseState>();
+        if (CheckStateForActivity<TroopDefenseState>() == false)
+            SwitchState<TroopDefenseState>();
 
-        _troopDefenseState.ActivateDefenseUnderAttack(enemyIDamagable, enemyPosition);
+        _troopDefenseState.ActivateDefenseUnderAttack(enemyDamagable, enemyPosition);
     }
 
     public void ActivateMoveState(Vector3 targetPoint)
@@ -57,11 +51,21 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _troopMoveState.ActivateTroopMovement(targetPoint);
     }
 
+    public void ActivateDefaultState()
+    {
+        if (CheckStateForActivity<TroopDefaultState>() == false)
+            SwitchState<TroopDefaultState>();
+    }
+
+    public void ActivateDeathState()
+    {
+        //if (!CheckStateForActivity<TroopDeathState>())
+        SwitchState<TroopDeathState>();
+    }
+
     public bool CheckStateForActivity<State>() where State : TroopBaseState
     {
-        TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
-
-        return _currentState == state;
+        return _currentState == _allStates.FirstOrDefault(s => s is State);
     }
 
     public void SwitchState<State>() where State : TroopBaseState

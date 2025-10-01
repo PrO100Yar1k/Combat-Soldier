@@ -23,7 +23,10 @@ public class TroopMoveState : TroopBaseState
 
     #endregion
 
-    public TroopMoveState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
+    public TroopMoveState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) 
+    {
+    
+    }
 
     public override void Start()
     {
