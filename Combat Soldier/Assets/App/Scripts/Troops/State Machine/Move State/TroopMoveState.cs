@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using System;
 
-public class TroopMoveState : TroopBaseState
+public abstract class TroopMoveState : TroopBaseState
 {
     private event Action<Vector3> OnActivateTroopMovement = default;
 
@@ -90,6 +90,6 @@ public class TroopMoveState : TroopBaseState
 
     private void ActionAfterFinish()
     {
-        _switcherState.SwitchState<TroopDefaultState>();
+        _switcherState.SwitchState<TroopDefaultState>(); //
     }
 }

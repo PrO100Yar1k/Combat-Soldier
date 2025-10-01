@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public class TroopAttackState : TroopBaseState
+public abstract class TroopAttackState : TroopBaseState
 {
     protected event Action<IDamagable> OnActivateTroopAttack = default;
 
