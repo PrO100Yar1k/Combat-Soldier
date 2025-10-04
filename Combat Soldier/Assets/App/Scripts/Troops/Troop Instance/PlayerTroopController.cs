@@ -1,8 +1,26 @@
 using UnityEngine;
 
-public class PlayerTroopController : TroopController, IReactableForDamage
+public class PlayerTroopController : TroopController
 {
-    public TroopVisionController VisionController { get; private set; }
+    public TroopVisionController VisionController { get; private set; } //
+
+    #region Events
+
+    protected override void OnEnable()
+    {
+        OnNotificationForGettingDamaged += NotifyForGettingDamaged;
+
+        base.OnEnable();
+    }
+
+    protected override void OnDisable()
+    {
+        OnNotificationForGettingDamaged -= NotifyForGettingDamaged;
+
+        base.OnDisable();
+    }
+
+    #endregion
 
     protected override void InitializeTroop()
     {
@@ -13,37 +31,14 @@ public class PlayerTroopController : TroopController, IReactableForDamage
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
     }
 
+    private void NotifyForGettingDamaged()
+    {
+        Debug.Log("Lord, your unit was damaged!");
+    }
+
     public void ScreenCanvasUpdateReloadingBar(float timeToReload)
         => (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
 
     public bool GetCanvasActivityStateAfterOrder()
         => (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
-
-
-    public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
-    {
-        ActivateDefenseUnderAttack(target);
-
-        //ui visible image
-
-        Debug.Log("Lord, Your Unit was Damaged!");
-    }
-
-    private void ActivateDefenseUnderAttack<T>(T target) where T : MonoBehaviour, IDamagable
-    {
-        if (StateController.CheckStateForActivity<TroopAttackState>())
-            return;
-
-        Vector3 currentPosition = transform.position;
-        Vector3 targetPos = target.transform.position;
-
-        float attackRange = _troopScriptable.AttackRangeRadius;
-
-        MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, TroopSide.Player, null, false);
-
-        if (enemyInAttackRange == null)
-            return;
-        
-        StateController.ActivateDefenseUnderAttack(target, targetPos);
-    }
 }

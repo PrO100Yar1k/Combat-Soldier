@@ -4,9 +4,13 @@ using System.Collections;
 
 public abstract class TroopDefenseState : TroopBaseState
 {
-    private event Action<IDamagable, Vector3> OnActivateDefenseUnderAttack = default;
+    protected event Action<IDamagable, Vector3> OnActivateDefenseUnderAttack = default;
 
-    private const float _reactionTime = 0.5f;
+    protected Coroutine _updatingStateCoroutine = default;
+
+    protected const float _waitingForAttackTime = 10f;
+
+    protected const float _reactionTime = 0.5f;
 
     #region Events
 
@@ -30,6 +34,8 @@ public abstract class TroopDefenseState : TroopBaseState
     public override void Start()
     {
         SubscribeToEvents();
+        UpdatingStateStarter();
+
         EnableStateIcon();
     }
 
@@ -38,18 +44,18 @@ public abstract class TroopDefenseState : TroopBaseState
         UnSubscribeFromEvents();
     }
 
-    public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
-        => OnActivateDefenseUnderAttack?.Invoke(enemyDamagable, enemyPosition);
-
     protected override void EnableStateIcon()
     {
         Sprite targetIcon = Resources.Load<Sprite>("State Icons/defense_icon");
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
+    public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
+        => OnActivateDefenseUnderAttack?.Invoke(enemyDamagable, enemyPosition);
+
     private void FightBackToEnemy(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        if (_troopController == null || enemyDamagable == null)
+        if (enemyDamagable == null)
             return;
 
         Vector3 troopPosition = _troopController.transform.position;
@@ -63,8 +69,6 @@ public abstract class TroopDefenseState : TroopBaseState
 
     private IEnumerator FightBackCoroutine(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        //
-
         string enemyName = (enemyDamagable as UnityEngine.Object).name;
 
         yield return new WaitForSeconds(_reactionTime);
@@ -78,16 +82,49 @@ public abstract class TroopDefenseState : TroopBaseState
         enemyDamagable.TakeDamage(damageUnderAttack);
 
         if (isEnemyAlreadyDied(enemyDamagable))
-        {
             _switcherState.SwitchState<TroopDefaultState>();
-            yield break;
-        }
+
+        UpdatingStateRestarter();
 
         Debug.Log($"I fought back to {enemyName} with total damage of {damageUnderAttack}!");
     }
 
+    #region Helper Methods
+
     private bool isEnemyAlreadyDied(IDamagable enemyIDamagable)
         => (enemyIDamagable as MonoBehaviour) == null;
+
+    #endregion
+
+    #region Updating State Coroutine
+
+    private void UpdatingStateStarter()
+    {
+        if (_updatingStateCoroutine != null)
+            return;
+
+        _updatingStateCoroutine = _troopController.StartCoroutine(UpdatingStateCoroutine());
+    }
+
+    private void UpdatingStateRestarter()
+    {
+        if (_updatingStateCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_updatingStateCoroutine);
+        _updatingStateCoroutine = null;
+
+        UpdatingStateStarter();
+    }
+
+    private IEnumerator UpdatingStateCoroutine()
+    {
+        yield return new WaitForSeconds(_waitingForAttackTime);
+
+        _switcherState.SwitchState<TroopDefaultState>();
+    }
+
+    #endregion
 }
 
 public interface IReactableForDamage

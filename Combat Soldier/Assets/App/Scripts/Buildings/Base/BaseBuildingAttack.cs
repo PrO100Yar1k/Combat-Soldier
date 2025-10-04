@@ -46,7 +46,7 @@ public abstract class BaseBuildingAttack
         int damage = _buildingScriptable.Damage;
 
         attackTarget.TakeDamage(damage);
-        enemyReactableForDamage?.ReactionForTakingDamage(_buildingController);
+        enemyReactableForDamage?.ReactionForTakingDamage(_buildingController); // ?
     }
 
     protected bool isTroopStillAlive(IDamagable troopIDamagable, out Transform troopTransform)

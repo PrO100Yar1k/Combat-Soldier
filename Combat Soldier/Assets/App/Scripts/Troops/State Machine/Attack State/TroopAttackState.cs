@@ -47,49 +47,42 @@ public abstract class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
     }
 
-    public void ActivateAttack(IDamagable enemyDamagable)
-        => OnActivateTroopAttack?.Invoke(enemyDamagable);
-
     protected override void EnableStateIcon()
     {
         Sprite targetIcon = Resources.Load<Sprite>("State Icons/attack_icon");
         _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
+    public void ActivateAttack(IDamagable enemyDamagable)
+        => OnActivateTroopAttack?.Invoke(enemyDamagable);
+
     private void TryToAttackEnemy(IDamagable enemyDamagable)
     {
         Vector3 troopPosition = _troopController.transform.position;
-
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyTroop = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
+        MonoBehaviour enemyMonoBehaviour = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
 
-        if (enemyTroop == null)
-            return;
+        if (enemyMonoBehaviour == null)
+            _switcherState.SwitchState<TroopDefaultState>();
 
-        if (enemyTroop.TryGetComponent(out TroopController troopController)) //
-        {
-            // _switcherState.SwitchState<TroopDefenseState>(); 
-            AttackEnemyCoroutineStarter(troopController);
-        }
-        else if (enemyTroop.TryGetComponent(out BuildingController buildingController))
-        {
-            AttackEnemyCoroutineStarter(buildingController); //
-        }
-
-        else _switcherState.SwitchState<TroopDefaultState>();
+        AttackEnemyCoroutineStarter(enemyMonoBehaviour);
     }
 
-    #region Coroutine Starter
+    #region Attack Coroutine Starter
 
-    private void AttackEnemyCoroutineStarter<T>(T targetEnemy) where T : MonoBehaviour, IDamagable
+    private void AttackEnemyCoroutineStarter(MonoBehaviour targetEnemy)
     {
         if (targetEnemy == null)
             return;
 
         DisableAttackCoroutine();
-
         EnableCoroutine(targetEnemy);
+    }
+
+    private void EnableCoroutine(MonoBehaviour enemyController)
+    {
+        _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(enemyController));
     }
 
     private void DisableAttackCoroutine()
@@ -98,79 +91,84 @@ public abstract class TroopAttackState : TroopBaseState
             return;
 
         _troopController.StopCoroutine(_attackCoroutine);
-
         _attackCoroutine = null;
-    }
-
-    private void EnableCoroutine<T>(T enemyController) where T : MonoBehaviour, IDamagable
-    {
-        _attackCoroutine = _troopController.StartCoroutine(AttackEnemy(enemyController));
     }
 
     #endregion
 
-    #region Attack Coroutine
+    #region Attack Coroutine Performance
 
-    private IEnumerator AttackEnemy<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
+    private IEnumerator AttackEnemyCoroutine(MonoBehaviour targetEnemy)
     {
         yield return new WaitUntil(()=> _remainingAttackWaves > 0);
 
+        float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
+
         for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
         {
-            if (isEnemyStillAlive(enemyTroop) == false)
+            if (isEnemyStillAlive(targetEnemy) == false)
                 break;
 
-            Vector3 currentPosition = _troopController.transform.position;
-            Vector3 enemyPosition = enemyTroop.transform.position;
-
-            float attackRange = _troopScriptable.AttackRangeRadius;
-
-            if (Vector3.Distance(currentPosition, enemyPosition) > attackRange)
+            if (isEnemyWithinAttackRange(targetEnemy) == false)
                 break;
 
-            IReactableForDamage enemyReactableForDamage = enemyTroop as IReactableForDamage;
-
-            BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-            bulletController.InitializeBullet(_troopController.transform.position, enemyTroop.transform.position);
-
-            float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
-
-            PlayerTroopController playerController = _troopController as PlayerTroopController;
-            playerController?.ScreenCanvasUpdateReloadingBar(timeBetweenAttackWaves);
-
-            yield return new WaitForSeconds(bulletController.GetBulletLifetime());
-
-            enemyTroop.TakeDamage(_troopScriptable.AttackDamage);
-
-            if (isEnemyStillAlive(enemyTroop) == false)
-                break;
-
-            enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
+            yield return _troopController.StartCoroutine(PerformAttackCoroutine(targetEnemy, timeBetweenAttackWaves));
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
 
         ReloadAttackStarter();
 
-        FinishAttackCoroutineAction(enemyTroop);
+        AttackActionCompletion(targetEnemy);
+    }
+
+    private IEnumerator PerformAttackCoroutine(MonoBehaviour targetEnemy, float timeBetweenAttackWaves)
+    {
+        BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
+        bulletController.InitializeBullet(_troopController.transform.position, targetEnemy.transform.position);
+
+        PlayerTroopController playerController = _troopController as PlayerTroopController;
+        playerController?.ScreenCanvasUpdateReloadingBar(timeBetweenAttackWaves);
+
+        yield return new WaitForSeconds(bulletController.GetBulletLifetime());
+
+        IDamagable targetDamagable = targetEnemy as IDamagable;
+
+        int attackDamage = _troopScriptable.AttackDamage;
+        targetDamagable.TakeDamage(attackDamage);
+
+        if (isEnemyStillAlive(targetEnemy) == false)
+            yield break;
+
+        IReactableForDamage enemyReactableForDamage = targetEnemy as IReactableForDamage;
+        enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
     }
 
     #endregion
 
     #region Helper Methods
 
-    private bool isEnemyStillAlive<T>(T enemy) where T : MonoBehaviour, IDamagable
-        => enemy != null;
+    private bool isEnemyStillAlive(MonoBehaviour targetEnemy)
+        => targetEnemy != null;
 
-    //
+    private bool isEnemyWithinAttackRange(MonoBehaviour targetEnemy)
+    {
+        Vector3 currentPosition = _troopController.transform.position;
+        Vector3 enemyPosition = targetEnemy.transform.position;
+
+        float attackRange = _troopScriptable.AttackRangeRadius;
+
+        return Vector3.Distance(currentPosition, enemyPosition) <= attackRange;
+    }
 
     #endregion
 
     #region Extra Methods
 
-    private void FinishAttackCoroutineAction<T>(T enemyTroop) where T : MonoBehaviour, IDamagable
+    private void AttackActionCompletion(MonoBehaviour targetEnemy)
     {
-        if (isEnemyStillAlive(enemyTroop) && Vector3.Distance(_troopController.transform.position, enemyTroop.transform.position) <= _troopScriptable.AttackRangeRadius) AttackEnemyCoroutineStarter(enemyTroop);
+        if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
+            AttackEnemyCoroutineStarter(targetEnemy);
         else _switcherState.SwitchState<TroopDefaultState>();
     }
 

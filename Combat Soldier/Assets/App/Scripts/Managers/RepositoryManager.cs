@@ -1,8 +1,11 @@
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class RepositoryManager : MonoBehaviour, IInitializeManager
 {
+    [SerializeField] private List<Transform> _enemyPatrollingPointList = new List<Transform>();
+
     private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
     private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
 
@@ -97,7 +100,7 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
             if (targetPriorityEnemy != null && currentDistanceBetweenEnemy <= targetDistance && enemy.GetComponent<IDamagable>().Equals(targetPriorityEnemy))
                 return enemy;
 
-            if (currentDistanceBetweenEnemy <= targetDistance && currentDistanceBetweenEnemy < closestDistance) // && isEnemyInAttackRange(troopPosition, currentEnemyPosition, targetDistance))
+            if (currentDistanceBetweenEnemy <= targetDistance && currentDistanceBetweenEnemy < closestDistance && enemy.GetComponent<IDamagable>() != null) // && isEnemyInAttackRange(troopPosition, currentEnemyPosition, targetDistance))
             {
                 targetEnemy = enemy;
                 closestDistance = currentDistanceBetweenEnemy;
@@ -107,7 +110,7 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
         return targetEnemy;
     }
 
-    private bool isEnemyInAttackRange(Vector3 startPoint, Vector3 finalPoint, float raycastDistance)
+    private bool isEnemyInAttackRange(Vector3 startPoint, Vector3 finalPoint, float raycastDistance) // to do
     {
         Vector3 direction = finalPoint - startPoint;
 
@@ -118,6 +121,17 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
         }
 
         return false;
+    }
+
+    public Transform[] GetRandomEnemyPatrollingPoints(int pointsCount)
+    {
+        if (pointsCount > _enemyPatrollingPointList.Count)
+            return null;
+
+        return _enemyPatrollingPointList
+            .OrderBy(x => Random.value)
+            .Take(pointsCount)
+            .ToArray();
     }
 
     #region Player & Enemy Lists

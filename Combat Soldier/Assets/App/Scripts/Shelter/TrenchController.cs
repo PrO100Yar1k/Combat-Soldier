@@ -30,7 +30,7 @@ public class TrenchController : MonoBehaviour
         GenerateTrench(startPosition, randomDirection);
     }
 
-    private void GenerateTrench(Vector3 startPosition, int directionIndex)
+    private void GenerateTrench(Vector3 startPosition, int directionIndex) // to do
     {
         Vector3 targetPosition = startPosition;
 

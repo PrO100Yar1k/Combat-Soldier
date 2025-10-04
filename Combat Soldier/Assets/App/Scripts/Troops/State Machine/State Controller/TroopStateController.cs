@@ -23,22 +23,22 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
             disposableState.Dispose();
     }
 
-    public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
-    {
-        (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
-    }
+    //public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
+    //{
+    //    (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
+    //}
 
     public void ActivateAttackState(IDamagable enemyDamagable)
     {
-        if (CheckStateForActivity<TroopAttackState>() == false)
+        if (CheckStateForActivity<TroopAttackState>() == false) // ?
             SwitchState<TroopAttackState>();
 
         _troopAttackState.ActivateAttack(enemyDamagable);
     }
 
-    public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition) // activate just defense state
+    public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        if (CheckStateForActivity<TroopDefenseState>() == false)
+        if (CheckStateForActivity<TroopDefenseState>() == false) // ?
             SwitchState<TroopDefenseState>();
 
         _troopDefenseState.ActivateDefenseUnderAttack(enemyDamagable, enemyPosition);
@@ -59,8 +59,8 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
 
     public void ActivateDeathState()
     {
-        //if (!CheckStateForActivity<TroopDeathState>())
-        SwitchState<TroopDeathState>();
+        if (!CheckStateForActivity<TroopDeathState>())
+            SwitchState<TroopDeathState>();
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState
@@ -76,7 +76,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _currentState = state;
         _currentState.Start();
 
-        Debug.Log(_currentState);
+        //Debug.Log(_currentState);
     }
 }
 

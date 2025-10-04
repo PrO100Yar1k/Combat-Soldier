@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable
+public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage
 {
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
@@ -15,6 +15,8 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable
     public TroopScriptable TroopScriptable => _troopScriptable;
 
     protected TroopSide _troopSide => _troopScriptable.TroopSide;
+
+    protected event Action OnNotificationForGettingDamaged = default;
 
     #region Events & Interface Implemention
 
@@ -34,11 +36,36 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable
     }
 
     public void TakeDamage(int attackDamage)
-        => HPController.TakeDamage(attackDamage);
+    {
+        HPController.TakeDamage(attackDamage);
+        OnNotificationForGettingDamaged?.Invoke();
+    }
 
     #endregion
 
     protected abstract void InitializeTroop();
+
+    public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
+    {
+        if (StateController.CheckStateForActivity<TroopAttackState>())
+            return;
+
+        Vector3 currentPos = transform.position;
+        Vector3 targetPos = target.transform.position;
+
+        float attackRange = _troopScriptable.AttackRangeRadius;
+
+        if (Vector3.Distance(currentPos, targetPos) > attackRange)
+            return;
+
+        Debug.Log("ja neviem");
+
+        StateController.ActivateDefenseUnderAttack(target, targetPos);
+    }
+
+
+    protected TroopSide GetEnemyTroopSide()
+        => _troopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
 }
 
 public enum TroopSide
