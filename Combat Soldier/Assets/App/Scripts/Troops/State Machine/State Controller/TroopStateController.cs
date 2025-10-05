@@ -59,7 +59,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
 
     public void ActivateDeathState()
     {
-        if (!CheckStateForActivity<TroopDeathState>())
+        if (CheckStateForActivity<TroopDeathState>() == false)
             SwitchState<TroopDeathState>();
     }
 
@@ -76,7 +76,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _currentState = state;
         _currentState.Start();
 
-        //Debug.Log(_currentState);
+        Debug.Log(_currentState);
     }
 }
 

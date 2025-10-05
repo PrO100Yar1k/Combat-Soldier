@@ -80,11 +80,6 @@ public abstract class TroopAttackState : TroopBaseState
         EnableCoroutine(targetEnemy);
     }
 
-    private void EnableCoroutine(MonoBehaviour enemyController)
-    {
-        _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(enemyController));
-    }
-
     private void DisableAttackCoroutine()
     {
         if (_attackCoroutine == null)
@@ -92,6 +87,11 @@ public abstract class TroopAttackState : TroopBaseState
 
         _troopController.StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
+    }
+
+    private void EnableCoroutine(MonoBehaviour enemyController)
+    {
+        _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(enemyController));
     }
 
     #endregion
@@ -112,7 +112,24 @@ public abstract class TroopAttackState : TroopBaseState
             if (isEnemyWithinAttackRange(targetEnemy) == false)
                 break;
 
-            yield return _troopController.StartCoroutine(PerformAttackCoroutine(targetEnemy, timeBetweenAttackWaves));
+            BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
+            bulletController.InitializeBullet(_troopController.transform.position, targetEnemy.transform.position);
+
+            PlayerTroopController playerController = _troopController as PlayerTroopController;
+            playerController?.ScreenCanvasUpdateReloadingBar(timeBetweenAttackWaves);
+
+            yield return new WaitForSeconds(bulletController.GetBulletLifetime());
+
+            IDamagable targetDamagable = targetEnemy as IDamagable;
+
+            int attackDamage = _troopScriptable.AttackDamage;
+            targetDamagable.TakeDamage(attackDamage);
+
+            if (isEnemyStillAlive(targetEnemy) == false)
+                break;
+
+            IReactableForDamage enemyReactableForDamage = targetEnemy as IReactableForDamage;
+            enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
 
             yield return new WaitForSeconds(timeBetweenAttackWaves);
         }
@@ -120,28 +137,6 @@ public abstract class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
 
         AttackActionCompletion(targetEnemy);
-    }
-
-    private IEnumerator PerformAttackCoroutine(MonoBehaviour targetEnemy, float timeBetweenAttackWaves)
-    {
-        BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-        bulletController.InitializeBullet(_troopController.transform.position, targetEnemy.transform.position);
-
-        PlayerTroopController playerController = _troopController as PlayerTroopController;
-        playerController?.ScreenCanvasUpdateReloadingBar(timeBetweenAttackWaves);
-
-        yield return new WaitForSeconds(bulletController.GetBulletLifetime());
-
-        IDamagable targetDamagable = targetEnemy as IDamagable;
-
-        int attackDamage = _troopScriptable.AttackDamage;
-        targetDamagable.TakeDamage(attackDamage);
-
-        if (isEnemyStillAlive(targetEnemy) == false)
-            yield break;
-
-        IReactableForDamage enemyReactableForDamage = targetEnemy as IReactableForDamage;
-        enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
     }
 
     #endregion
@@ -167,9 +162,10 @@ public abstract class TroopAttackState : TroopBaseState
 
     private void AttackActionCompletion(MonoBehaviour targetEnemy)
     {
-        if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
-            AttackEnemyCoroutineStarter(targetEnemy);
-        else _switcherState.SwitchState<TroopDefaultState>();
+        //if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
+        //    AttackEnemyCoroutineStarter(targetEnemy);
+        //else 
+        _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #endregion

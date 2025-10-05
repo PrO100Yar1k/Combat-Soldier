@@ -38,7 +38,7 @@ public class HPControllerTroop : HPController
     
     public override void TakeDamage(int attackDamage) // to do
     {
-        if (_troopController == null || attackDamage <= 0)
+        if (attackDamage <= 0)
             return;
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
