@@ -162,10 +162,9 @@ public abstract class TroopAttackState : TroopBaseState
 
     private void AttackActionCompletion(MonoBehaviour targetEnemy)
     {
-        //if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
-        //    AttackEnemyCoroutineStarter(targetEnemy);
-        //else 
-        _switcherState.SwitchState<TroopDefaultState>();
+        if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
+            AttackEnemyCoroutineStarter(targetEnemy);
+        else _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #endregion
