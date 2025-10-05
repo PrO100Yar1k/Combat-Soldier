@@ -48,3 +48,19 @@ public class TroopScriptable : ScriptableObject
     
     // maybe create additional parameters like: MaxSpeed; MinSpeed; TimeToGetMaxSpeed; SpeedUnderAttack
 }
+
+public enum TroopType
+{
+    Soldier_Type_1,
+    Soldier_Type_2,
+    AntiTank_Soldier,
+    etc_1,
+    etc_2
+}
+
+public enum AttackType
+{
+    Land,
+    Air,
+    Both
+}

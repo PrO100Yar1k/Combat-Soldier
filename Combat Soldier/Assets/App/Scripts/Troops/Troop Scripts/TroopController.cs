@@ -58,8 +58,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         if (Vector3.Distance(currentPos, targetPos) > attackRange)
             return;
 
-        Debug.Log("ja neviem");
-
         StateController.ActivateDefenseUnderAttack(target, targetPos);
     }
 

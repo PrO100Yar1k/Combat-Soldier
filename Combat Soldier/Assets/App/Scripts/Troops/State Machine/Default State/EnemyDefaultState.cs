@@ -31,7 +31,7 @@ public class EnemyDefaultState : TroopDefaultState
 
     public override void Stop()
     {
-        StopFindingEnemyCoroutine();
+        StopFindingEnemyCoroutine(); // ??
         StopPatrollingCoroutine();
     }
 
@@ -40,7 +40,7 @@ public class EnemyDefaultState : TroopDefaultState
     private void StartFindingEnemyCoroutine()
     {
         if (_findEnemyCoroutine != null)
-            return;
+            StopFindingEnemyCoroutine();
 
         _findEnemyCoroutine = _troopController.StartCoroutine(FindingEnemyCoroutine());
     }
@@ -142,7 +142,7 @@ public class EnemyDefaultState : TroopDefaultState
         }
     }
 
-    private void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange)
+    private void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange) // to do extension method
     {
         const float distanceDelta = 0.15f;
         const float distanceModifier = 1 - distanceDelta;

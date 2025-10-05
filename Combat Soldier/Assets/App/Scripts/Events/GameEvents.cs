@@ -55,4 +55,7 @@ public class GameEvents : MonoBehaviour, IInitializeManager
 
     public event Action OnDisableActiveCanvases = default;
     public void DisableActiveCanvases() => OnDisableActiveCanvases?.Invoke();
+
+    public event Action<MonoBehaviour> OnOpenTroopMenu = default;
+    public void OpenTroopMenu(MonoBehaviour controller) => OnOpenTroopMenu?.Invoke(controller);
 }

@@ -120,10 +120,10 @@ public abstract class TroopAttackState : TroopBaseState
 
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
-            IDamagable targetDamagable = targetEnemy as IDamagable;
-
             int attackDamage = _troopScriptable.AttackDamage;
-            targetDamagable.TakeDamage(attackDamage);
+
+            IDamagable targetDamagable = targetEnemy as IDamagable;
+            targetDamagable?.TakeDamage(attackDamage);
 
             if (isEnemyStillAlive(targetEnemy) == false)
                 break;

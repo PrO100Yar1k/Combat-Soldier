@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 {
@@ -28,6 +28,11 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         GameEvents.instance.OnTroopDiedUI -= DisableObject;
     }
 
+    private void SubscribeToBasicEvent()
+    {
+        GameEvents.instance.OnOpenTroopMenu += OpenTroopGeneralMenu;
+    }
+
     #endregion
 
     public UICanvasController(T controller, CanvasController screenCanvasController, CanvasController worldCanvasController) 
@@ -40,19 +45,25 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         _screenCanvasController.InitializeCanvas(controller);
         _worldCanvasController.InitializeCanvas(controller);
 
+        SubscribeToBasicEvent();
         DisableAllCanvases();
     }
 
     public void Dispose()
         => UnSubscribeFromEvents();
 
-    public void OpenTroopGeneralMenu()
-        => EnableAllCanvases();
-
-    public void OpenAttackMenu() // to do
+    private void OpenTroopGeneralMenu(MonoBehaviour controller)
     {
-        Debug.Log("Attack menu opened");
+        if (_currentController != controller)
+            return;
+
+        EnableAllCanvases();
     }
+
+    //private void OpenAttackMenu()
+    //{
+    //    Debug.Log("Attack menu opened");
+    //}
 
     private void EnableAllCanvases()
     {

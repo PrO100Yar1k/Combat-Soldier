@@ -1,13 +1,11 @@
 using UnityEngine;
-using System;
 
-public class PlayerTroopManager : MonoBehaviour, IInitializeManager
+public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
 {
-    [Header("Raycast Layers")] [Space(3)]
+    [Header("Raycast Layers")]
 
     [SerializeField] private LayerMask _terrainLayer = default;
-    [SerializeField] private LayerMask _troopsLayer = default;
-    [SerializeField] private LayerMask _buildingsLayer = default;
+    [SerializeField] private LayerMask _attackTargetLayers = default;
 
     private MonoBehaviour _selectedController = default;
     private OrderMode _selectedOrderMode = default;
@@ -59,23 +57,19 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
             return;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
-        int shiftedMask = (1 << hitLayer);
 
         CancelEnteringModeAndDisableMenu();
 
-        if (isShiftedMaskOverLayer(shiftedMask, _troopsLayer) && isComponentExists(hit, out TroopController troopController))
+        if (isLayerInMask(hitLayer, _attackTargetLayers) && isComponentExists(hit, out IDamagable enemyDamagable))
         {
-            troopController.UIController.OpenTroopGeneralMenu();
-            _selectedController = troopController;
-        }
-        else if (isShiftedMaskOverLayer(shiftedMask, _buildingsLayer) && isComponentExists(hit, out BuildingController buildingController))
-        {
-            buildingController.UIController.OpenTroopGeneralMenu();
-            _selectedController = buildingController;
+            MonoBehaviour currentController = enemyDamagable as MonoBehaviour;
+            GameEvents.instance.OpenTroopMenu(currentController);
+
+            _selectedController = currentController;
         }
     }
 
-    private void SelectedOrderTroopAction() // to do !!!!
+    private void SelectedOrderTroopAction()
     {
         if (_selectedController is not PlayerTroopController)
             return;
@@ -89,7 +83,6 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         TroopStateController playerTroopStateController = playerTroopController.StateController;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
-        int shiftedLayerMask = (1 << hitLayer);
 
         Vector3 targetPoint = hit.point;
 
@@ -97,17 +90,14 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
         {
             case OrderMode.Move:
 
-                if (isShiftedMaskOverLayer(shiftedLayerMask, _terrainLayer))
+                if (isLayerInMask(hitLayer, _terrainLayer))
                     playerTroopStateController.ActivateMoveState(targetPoint);
 
                 break;
             case OrderMode.Attack:
 
-                if (isShiftedMaskOverLayer(shiftedLayerMask, _troopsLayer) && isComponentExists(hit, out EnemyTroopController enemy))
-                    ActivateAttackState(enemy, playerTroopStateController); // instead - enemy.UIController.OpenAttackMenu();
-
-                else if (isShiftedMaskOverLayer(shiftedLayerMask, _buildingsLayer) && isComponentExists(hit, out BuildingController building))
-                    ActivateAttackState(building, playerTroopStateController); // instead - building.UIController.OpenAttackMenu();
+                if (isLayerInMask(hitLayer, _attackTargetLayers) && isComponentExists(hit, out IDamagable enemyDamagable))
+                    ActivateAttackState(enemyDamagable, playerTroopStateController);
 
                 break;
         }
@@ -120,43 +110,44 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
 
     #region Helper Methods
 
-    private bool isShiftedMaskOverLayer(int shiftedMask, int layer)
-        => (shiftedMask & layer) != 0;
+    private bool isLayerInMask(int layer, int mask)
+        => ((1 << layer) & mask) != 0;
 
-    private bool isComponentExists<T>(RaycastHit hit, out T component) where T : MonoBehaviour
+    private bool isComponentExists<T>(RaycastHit hit, out T component)
         => hit.collider.TryGetComponent(out component);
 
     #endregion
 
     #region Activate Attack
 
-    private void ActivateAttackState<Target>(Target target, TroopStateController troopStateController) where Target : MonoBehaviour, IDamagable // rename
+    private void ActivateAttackState(IDamagable enemyDamagable, TroopStateController troopStateController)
     {
-        if (_selectedController is not TroopController)
+        if (_selectedController is not PlayerTroopController)
             return;
 
-        TroopController troopController = _selectedController as TroopController;
+        PlayerTroopController troopController = _selectedController as PlayerTroopController;
+        MonoBehaviour enemyMonoBehaviour = enemyDamagable as MonoBehaviour;
+
+        Vector3 targetPosition = enemyMonoBehaviour.transform.position;
+        Vector3 troopPosition = _selectedController.transform.position;
+
+        Vector3 targetPoint = targetPosition;
 
         float troopAttackRange = troopController.TroopScriptable.AttackRangeRadius;
 
-        Transform targetTransform = target.transform;
-
-        Vector3 _selectedTroopPosition = _selectedController.transform.position;
-        Vector3 targetPoint = targetTransform.position;
-
-        if (Vector3.Distance(targetTransform.position, _selectedTroopPosition) <= troopAttackRange)
+        if (Vector3.Distance(targetPosition, troopPosition) <= troopAttackRange)
         {
-            //Vector3 targetLookAtPosition = new Vector3(targetTransform.position.x, _selectedController.transform.position.y, targetTransform.position.z);
-            //_selectedController.transform.LookAt(targetLookAtPosition);    // to do
+            Vector3 targetLookAtPosition = new Vector3(targetPosition.x, troopPosition.y, targetPosition.z);
+            _selectedController.transform.LookAt(targetLookAtPosition);
 
-            //troopStateController.ActivateAttackState(target);
+            troopStateController.ActivateAttackState(enemyDamagable);
         }
         else
         {
             const float distanceDelta = 0.15f;
             const float distanceModifier = 1 - distanceDelta;
 
-            Vector3 direction = (targetPoint - _selectedTroopPosition).normalized;
+            Vector3 direction = (targetPoint - troopPosition).normalized;
             targetPoint -= direction * troopAttackRange * distanceModifier;
 
             troopStateController.ActivateMoveState(targetPoint);
@@ -194,27 +185,10 @@ public class PlayerTroopManager : MonoBehaviour, IInitializeManager
     private void CancelEnteringModeAndDisableMenu()
     {
         GameEvents.instance.DisableActiveCanvases();
-
         AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
     #endregion
-}
-
-public enum TroopType
-{
-    Soldier_Type_1,
-    Soldier_Type_2,
-    AntiTank_Soldier,
-    etc_1,
-    etc_2
-}
-
-public enum AttackType
-{
-    Land,
-    Air,
-    Both
 }
 
 public enum OrderMode
