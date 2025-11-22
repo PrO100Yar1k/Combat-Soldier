@@ -33,7 +33,7 @@ public abstract class HPController
 
         controller.StopAllCoroutines();
 
-        Object.DestroyImmediate(objectToDestroy);
+        Object.Destroy(objectToDestroy);
 
         Debug.Log($"The {HPControllerName} was died");
     }

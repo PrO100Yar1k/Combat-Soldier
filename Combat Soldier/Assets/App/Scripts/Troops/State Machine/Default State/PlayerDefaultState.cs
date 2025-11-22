@@ -21,9 +21,9 @@ public class PlayerDefaultState : TroopDefaultState
     }
 
     private void CallCheckEnemyInAttackRange()
-        => _troopController.StartCoroutine(CheckEnemyInAttackRange());
+        => _troopController.StartCoroutine(CheckEnemyOnceInAttackRange());
 
-    private IEnumerator CheckEnemyInAttackRange()
+    private IEnumerator CheckEnemyOnceInAttackRange()
     {
         const float initialDelay = 0.2f;
 
@@ -35,7 +35,7 @@ public class PlayerDefaultState : TroopDefaultState
         TroopSide targetTroopSide = TroopSide.Enemy;
         IDamagable targetPriorityEnemy = null;
 
-        MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false);
+        MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);
 
         if (enemyInAttackRange == null)
             yield break;
