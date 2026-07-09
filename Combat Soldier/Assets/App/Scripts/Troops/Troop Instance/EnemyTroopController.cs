@@ -9,12 +9,12 @@ public class EnemyTroopController : TroopController
     protected override void InitializeTroop()
     {
         const int defaultPointsCount = 4;
-        Transform[] transforms = RepositoryManager.instance.GetRandomEnemyPatrollingPoints(defaultPointsCount);
+        Transform[] transforms = _repositoryManager.GetRandomEnemyPatrollingPoints(defaultPointsCount);
 
-        StateController = new EnemyTroopStateController(this, _screenCanvasController, transforms);
+        StateController = new EnemyTroopStateController(_repositoryManager, this, _screenCanvasController, transforms);
         TroopModelController = new TroopModelController(this, gameObject, _enemyMeshRendererModel);
 
-        UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController);
+        UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEvents);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
     }
 }

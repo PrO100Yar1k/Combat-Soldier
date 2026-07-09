@@ -1,20 +1,12 @@
-using System.Collections.Generic;
+using Assets.App.Scripts;
 using UnityEngine;
 
-public class EnemyFactory : MonoBehaviour, IInitializeManager
+public class EnemyFactory : MonoBehaviour
 {
-    public void InitializeManager()
-        => CreateEnemies();
-
-    private void CreateEnemies()
+    public void CreateEnemies()
     {
-        IEnemyFactory enemyFactory = new EasyEnemyFactory(); // controll user input
+        IEnemyFactory enemyFactory = new EasyEnemyFactory(); // control user input
 
         enemyFactory.CreateEnemies();
     }
-}
-
-public interface IEnemyFactory
-{
-    public void CreateEnemies();
 }

@@ -12,16 +12,17 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
     protected TroopDeathState _troopDeathState = default;
 
     protected List<TroopBaseState> _allStates = default;
-
     protected TroopBaseState _currentState = default;
 
-    public TroopStateController(TroopController troopController, TroopScreenCanvasController screenCanvasController) { }
+    #region Disposable
 
     public void Dispose()
     {
         foreach (IDisposable disposableState in _allStates)
             disposableState.Dispose();
     }
+
+    #endregion
 
     //public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     //{

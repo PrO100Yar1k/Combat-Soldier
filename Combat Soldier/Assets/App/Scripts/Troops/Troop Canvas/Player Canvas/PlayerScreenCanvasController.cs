@@ -1,6 +1,8 @@
+using Assets.App.Scripts;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Threading.Tasks;
+using Zenject;
 
 public class PlayerScreenCanvasController : TroopScreenCanvasController
 {
@@ -16,6 +18,14 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 
     public bool DisableCanvasAfterOrder => _disableCanvasToggle.isOn;
 
+    private GameEvents _gameEvents = default;
+
+    [Inject]
+    public void Construct(GameEvents gameEvents)
+    {
+        _gameEvents = gameEvents;
+    }
+
     protected override void AssignDefaultCanvasValues()
     {
         base.AssignDefaultCanvasValues();
@@ -30,13 +40,13 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 
     private void AddEventOnActionButtons(OrderMode orderMode)
     {
-        GameEvents.instance.TroopEnterAnyMode(_troopController, orderMode);
+        _gameEvents.TroopEnterAnyMode(_troopController, orderMode);
         _cancelButton.gameObject.SetActive(true);
     }
 
     private void AddEventOnCancelButton()
     {
-        GameEvents.instance.TroopCancelEnteringMode();
+        _gameEvents.TroopCancelEnteringMode();
         _cancelButton.gameObject.SetActive(false);
     }
 
@@ -78,7 +88,6 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
     public override void EnableCanvas()
     {
         _cancelButton.gameObject.SetActive(false);
-
         base.EnableCanvas();
     }
 

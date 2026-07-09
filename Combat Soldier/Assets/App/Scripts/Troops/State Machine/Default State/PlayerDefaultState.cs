@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class PlayerDefaultState : TroopDefaultState
 {
-    public PlayerDefaultState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public PlayerDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState)
     {
 
     }
 
     public override void Start()
     {
-        CallCheckEnemyInAttackRange();
-
+        CheckEnemyInAttackRangeStarter();
         EnableStateIcon();
     }
 
@@ -20,7 +20,7 @@ public class PlayerDefaultState : TroopDefaultState
 
     }
 
-    private void CallCheckEnemyInAttackRange()
+    private void CheckEnemyInAttackRangeStarter()
         => _troopController.StartCoroutine(CheckEnemyOnceInAttackRange());
 
     private IEnumerator CheckEnemyOnceInAttackRange()
@@ -35,7 +35,7 @@ public class PlayerDefaultState : TroopDefaultState
         TroopSide targetTroopSide = TroopSide.Enemy;
         IDamagable targetPriorityEnemy = null;
 
-        MonoBehaviour enemyInAttackRange = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);
+        MonoBehaviour enemyInAttackRange = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);
 
         if (enemyInAttackRange == null)
             yield break;

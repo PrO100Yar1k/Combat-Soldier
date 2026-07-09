@@ -1,7 +1,8 @@
 
 public class PlayerDefenseState : TroopDefenseState
 {
-    public PlayerDefenseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public PlayerDefenseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState)
     {
 
     }

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public abstract class TroopDefaultState : TroopBaseState
+public abstract class TroopDefaultState : TroopBaseState // remove this class
 {
-    public TroopDefaultState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) 
+    public TroopDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState) 
     {
 
     }

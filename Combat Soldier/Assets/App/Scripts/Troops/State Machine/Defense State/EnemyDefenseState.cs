@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class EnemyDefenseState : TroopDefenseState
 {
-    public EnemyDefenseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public EnemyDefenseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState)
     {
 
     }

@@ -3,10 +3,14 @@ using UnityEngine;
 public abstract class CanvasController : MonoBehaviour
 {
     public virtual void EnableCanvas()
-        => gameObject.SetActive(true);
+    {
+        gameObject.SetActive(true);
+    }
 
     public virtual void DisableCanvas()
-        => gameObject.SetActive(false);
+    {
+        gameObject.SetActive(false);
+    }
 
     public abstract void InitializeCanvas<T>(T controller);
 

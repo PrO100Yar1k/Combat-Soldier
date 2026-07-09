@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 {
@@ -8,35 +9,44 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 
     private readonly MonoBehaviour _currentController = default;
 
+    private GameEvents _gameEventBus = default;
+
     #region Events
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnDisableActiveCanvases += DisableAllCanvases;
+        _gameEventBus.OnDisableActiveCanvases += DisableAllCanvases;
 
-        GameEvents.instance.OnBuildingDestroyed += DisableObject;
-        GameEvents.instance.OnTroopDisableUI += DisableObject;
-        GameEvents.instance.OnTroopDiedUI += DisableObject;
+        _gameEventBus.OnBuildingDestroyed += DisableObject;
+        _gameEventBus.OnTroopDisableUI += DisableObject;
+        _gameEventBus.OnTroopDiedUI += DisableObject;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnDisableActiveCanvases -= DisableAllCanvases;
+        _gameEventBus.OnDisableActiveCanvases -= DisableAllCanvases;
 
-        GameEvents.instance.OnBuildingDestroyed -= DisableObject;
-        GameEvents.instance.OnTroopDisableUI -= DisableObject;
-        GameEvents.instance.OnTroopDiedUI -= DisableObject;
+        _gameEventBus.OnBuildingDestroyed -= DisableObject;
+        _gameEventBus.OnTroopDisableUI -= DisableObject;
+        _gameEventBus.OnTroopDiedUI -= DisableObject;
     }
 
     private void SubscribeToBasicEvent()
     {
-        GameEvents.instance.OnOpenTroopMenu += OpenTroopGeneralMenu;
+        _gameEventBus.OnOpenTroopMenu += OpenTroopGeneralMenu;
+    }
+
+    public void Dispose()
+    {
+        UnSubscribeFromEvents();
     }
 
     #endregion
 
-    public UICanvasController(T controller, CanvasController screenCanvasController, CanvasController worldCanvasController) 
+    public UICanvasController(T controller, CanvasController screenCanvasController, CanvasController worldCanvasController, GameEvents gameEventBus) 
     {
+        _gameEventBus = gameEventBus;
+
         _currentController = controller;
 
         _screenCanvasController = screenCanvasController;
@@ -49,9 +59,6 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         DisableAllCanvases();
     }
 
-    public void Dispose()
-        => UnSubscribeFromEvents();
-
     private void OpenTroopGeneralMenu(MonoBehaviour controller)
     {
         if (_currentController != controller)
@@ -59,11 +66,6 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 
         EnableAllCanvases();
     }
-
-    //private void OpenAttackMenu()
-    //{
-    //    Debug.Log("Attack menu opened");
-    //}
 
     private void EnableAllCanvases()
     {

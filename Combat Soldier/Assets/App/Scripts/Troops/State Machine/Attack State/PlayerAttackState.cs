@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerAttackState : TroopAttackState
 {
-    public PlayerAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public PlayerAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState)
     {
         _enemyTroopSide = TroopSide.Enemy;
     }

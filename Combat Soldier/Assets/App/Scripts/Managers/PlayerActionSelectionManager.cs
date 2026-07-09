@@ -1,6 +1,8 @@
+using Assets.App.Scripts;
 using UnityEngine;
+using Zenject;
 
-public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
+public class PlayerActionSelectionManager : MonoBehaviour
 {
     [Header("Raycast Layers")]
 
@@ -10,9 +12,11 @@ public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
     private MonoBehaviour _selectedController = default;
     private OrderMode _selectedOrderMode = default;
 
+    private GameEvents _gameEvents = default;
+
     #region Events & Initialization
 
-    public void InitializeManager()
+    public void OnEnable()
         => SubscribeToEvents();
 
     private void OnDisable()
@@ -20,26 +24,31 @@ public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopEnterAnyMode += AssignControllerAndChangeMode;
-        GameEvents.instance.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
+        _gameEvents.OnTroopEnterAnyMode += AssignControllerAndChangeMode;
+        _gameEvents.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
 
-
-        GameEvents.instance.OnTroopDiedUI += UpdateTroopStatus;
-        GameEvents.instance.OnTroopDisableUI += UpdateTroopStatus;
-        GameEvents.instance.OnBuildingDestroyed += UpdateTroopStatus;
+        _gameEvents.OnTroopDiedUI += UpdateTroopStatus;
+        _gameEvents.OnTroopDisableUI += UpdateTroopStatus;
+        _gameEvents.OnBuildingDestroyed += UpdateTroopStatus;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopEnterAnyMode -= AssignControllerAndChangeMode;
-        GameEvents.instance.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
+        _gameEvents.OnTroopEnterAnyMode -= AssignControllerAndChangeMode;
+        _gameEvents.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
 
-        GameEvents.instance.OnTroopDiedUI -= UpdateTroopStatus;
-        GameEvents.instance.OnTroopDisableUI -= UpdateTroopStatus;
-        GameEvents.instance.OnBuildingDestroyed -= UpdateTroopStatus;
+        _gameEvents.OnTroopDiedUI -= UpdateTroopStatus;
+        _gameEvents.OnTroopDisableUI -= UpdateTroopStatus;
+        _gameEvents.OnBuildingDestroyed -= UpdateTroopStatus;
     }
 
     #endregion
+
+    [Inject]
+    public void Construct(GameEvents gameEvents)
+    {
+        _gameEvents = gameEvents;
+    }
 
     public void ChangeTroopControllerAndState()
     {
@@ -63,7 +72,7 @@ public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
         if (isLayerInMask(hitLayer, _attackTargetLayers) && isComponentExists(hit, out IDamagable enemyDamagable))
         {
             MonoBehaviour currentController = enemyDamagable as MonoBehaviour;
-            GameEvents.instance.OpenTroopMenu(currentController);
+            _gameEvents.OpenTroopMenu(currentController);
 
             _selectedController = currentController;
         }
@@ -103,7 +112,7 @@ public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
         }
 
         if (playerTroopController.GetCanvasActivityStateAfterOrder())
-            GameEvents.instance.DisableActiveCanvases();
+            _gameEvents.DisableActiveCanvases();
 
         AssignControllerAndChangeMode(null, OrderMode.None);
     }
@@ -184,17 +193,9 @@ public class PlayerActionSelectionManager : MonoBehaviour, IInitializeManager
 
     private void CancelEnteringModeAndDisableMenu()
     {
-        GameEvents.instance.DisableActiveCanvases();
+        _gameEvents.DisableActiveCanvases();
         AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
     #endregion
-}
-
-public enum OrderMode
-{
-    None,
-    Move,
-    Attack,
-    etc
 }

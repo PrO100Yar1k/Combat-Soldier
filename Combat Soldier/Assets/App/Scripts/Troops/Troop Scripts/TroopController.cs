@@ -1,5 +1,6 @@
-using UnityEngine;
 using System;
+using UnityEngine;
+using Zenject;
 
 public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage
 {
@@ -18,13 +19,16 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 
     protected event Action OnNotificationForGettingDamaged = default;
 
+    protected RepositoryManager _repositoryManager = default;
+    protected GameEvents _gameEvents = default;
+
     #region Events & Interface Implemention
 
     protected virtual void OnEnable() 
-        => GameEvents.instance.TroopSpawned(this, _troopSide);
+        => _gameEvents.TroopSpawned(this, _troopSide);
 
     protected virtual void OnDisable()
-        => GameEvents.instance.TroopDied(this, _troopSide);
+        => _gameEvents.TroopDied(this, _troopSide);
 
     protected virtual void Awake()
         => InitializeTroop();
@@ -42,6 +46,13 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     }
 
     #endregion
+
+    [Inject]
+    public void Construct(GameEvents gameEvents, RepositoryManager repositoryManager)
+    {
+        _gameEvents = gameEvents;
+        _repositoryManager = repositoryManager;
+    }
 
     protected abstract void InitializeTroop();
 

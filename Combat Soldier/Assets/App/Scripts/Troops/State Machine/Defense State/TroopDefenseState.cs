@@ -26,7 +26,8 @@ public abstract class TroopDefenseState : TroopBaseState
 
     #endregion
 
-    public TroopDefenseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) 
+    public TroopDefenseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState) 
     {
     
     }

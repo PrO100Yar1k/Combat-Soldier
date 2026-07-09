@@ -2,80 +2,58 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RepositoryManager : MonoBehaviour, IInitializeManager
+public class RepositoryManager : System.IDisposable
 {
-    [SerializeField] private List<Transform> _enemyPatrollingPointList = new List<Transform>();
-
     private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
     private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
 
     private List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
-    #region Initialization & Singleton
+    private readonly GameEvents _gameEventBus = default;
+    private readonly List<Transform> _enemyPatrollingPointList = default;
 
-    [HideInInspector] public static RepositoryManager instance;
+    #region Events & Interfaces
 
-    public void InitializeManager()
+    public void Dispose()
     {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Initialize();
-
-        instance = this;
+        UnSubscribeFromEvents();
     }
-
-    #endregion
-
-    #region Events
-
-    private void Initialize()
-        => SubscribeToEvents();
-
-    private void OnDisable()
-        => UnSubscribeFromEvents();
 
     private void SubscribeToEvents()
     {
-        GameEvents.instance.OnTroopSpawned += AddTroopToList;
-        GameEvents.instance.OnTroopDied += RemoveTroopFromList;
+        _gameEventBus.OnTroopSpawned += AddTroopToList;
+        _gameEventBus.OnTroopDied += RemoveTroopFromList;
 
-        GameEvents.instance.OnBuildingSpawned += AddBuildingToList;
-        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
+        _gameEventBus.OnBuildingSpawned += AddBuildingToList;
+        _gameEventBus.OnBuildingDestroyed += RemoveBuildingFromList;
     }
 
     private void UnSubscribeFromEvents()
     {
-        GameEvents.instance.OnTroopSpawned -= AddTroopToList;
-        GameEvents.instance.OnTroopDied -= RemoveTroopFromList;
+        _gameEventBus.OnTroopSpawned -= AddTroopToList;
+        _gameEventBus.OnTroopDied -= RemoveTroopFromList;
 
-        GameEvents.instance.OnBuildingSpawned -= AddBuildingToList;
-        GameEvents.instance.OnBuildingDestroyed += RemoveBuildingFromList;
+        _gameEventBus.OnBuildingSpawned -= AddBuildingToList;
+        _gameEventBus.OnBuildingDestroyed -= RemoveBuildingFromList;
     }
 
     #endregion
 
+    public RepositoryManager(GameEvents gameEvents, List<Transform> enemyPatrollingPointList)
+    {
+        _gameEventBus = gameEvents;
+        _enemyPatrollingPointList = new List<Transform>(enemyPatrollingPointList);
+
+        SubscribeToEvents();
+    }
+
     // make extension methods
 
-    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide) // linq remake
+    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
     {
-        List<TroopController> enemyControllersList = new List<TroopController>();
-        List<TroopController> troopControllersList = new List<TroopController>(GetTroopControllersList(enemyTroopSide));
-
-        foreach (TroopController troopController in troopControllersList)
-        {
-            Vector3 currentEnemyPosition = troopController.transform.position;
-
-            if (Vector3.Distance(troopPosition, currentEnemyPosition) <= troopRange)
-            {
-                enemyControllersList.Add(troopController);
-            }
-        }
-
-        return enemyControllersList.ToArray();
+        return GetTroopControllersList(enemyTroopSide)
+            .Where(troop => Vector3.Distance(troopPosition, troop.transform.position) <= troopRange)
+            .ToArray();
     }
 
     public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float targetDistance, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes) // extended parameter : bool isBuildingIncludes // target priority enemy maybe remove ???
@@ -152,29 +130,21 @@ public class RepositoryManager : MonoBehaviour, IInitializeManager
     private void AddTroopToList(TroopController troopController, TroopSide troopSide)
     {
         GetTroopControllersList(troopSide).Add(troopController);
-
-        //Debug.Log("Troop successfully added!");
     }
 
     private void RemoveTroopFromList(TroopController troopController, TroopSide troopSide)
     {
         GetTroopControllersList(troopSide).Remove(troopController);
-
-        //Debug.Log("Troop successfully removed!");
     }
 
     private void AddBuildingToList(BuildingController buildingController)
     {
         _buildingControllersEnemyList.Add(buildingController);
-
-        //Debug.Log("Building successfully added!");
     }
 
     private void RemoveBuildingFromList(BuildingController buildingController)
     {
         _buildingControllersEnemyList.Remove(buildingController);
-
-        //Debug.Log("Building successfully removed!");
     }
 
     #endregion

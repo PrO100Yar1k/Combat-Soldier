@@ -1,3 +1,4 @@
+using Assets.App.Scripts;
 
 public class MiddleEnemyFactory : IEnemyFactory
 {

@@ -2130,7 +2130,6 @@ GameObject:
   - component: {fileID: 1317245962920727786}
   - component: {fileID: 7227305365118012153}
   - component: {fileID: 2857650101268458491}
-  - component: {fileID: 7702349771524592745}
   m_Layer: 5
   m_Name: Base - Screen Canvas
   m_TagString: Untagged
@@ -2248,18 +2247,6 @@ MonoBehaviour:
   _attackButton: {fileID: 6067982280041228871}
   _moveButton: {fileID: 7454949919931806754}
   _cancelButton: {fileID: 3100423363959558836}
---- !u!114 &7702349771524592745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7430802114628971994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57aabc2c02ee34544ba859d2b97d3a88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7481340996954376178
 GameObject:
   m_ObjectHideFlags: 0

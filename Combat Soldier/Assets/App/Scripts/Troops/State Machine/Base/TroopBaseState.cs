@@ -1,22 +1,25 @@
 using System;
+using Zenject;
 
 public abstract class TroopBaseState : IDisposable
 {
-    protected TroopScreenCanvasController _screenCanvasController = default;
+    protected readonly RepositoryManager _repositoryManager;
 
-    protected TroopController _troopController = default;
+    protected readonly TroopController _troopController = default;
+    protected readonly TroopScriptable _troopScriptable = default;
+    protected readonly ISwitchableState _switcherState = default;
 
-    protected ISwitchableState _switcherState = default;
+    protected readonly TroopScreenCanvasController _screenCanvasController;
 
-    protected TroopScriptable _troopScriptable = default;
-
-    public TroopBaseState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+    public TroopBaseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
     {
+        _repositoryManager = repositoryManager;
+
         _troopController = troopController;
         _switcherState = switcherState;
 
-        _screenCanvasController = screenCanvasController;
         _troopScriptable = troopController.TroopScriptable;
+        _screenCanvasController = screenCanvasController;
     }
 
     public void Dispose()

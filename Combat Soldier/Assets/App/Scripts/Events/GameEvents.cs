@@ -1,25 +1,9 @@
-using UnityEngine;
+using Assets.App.Scripts;
 using System;
+using UnityEngine;
 
-public class GameEvents : MonoBehaviour, IInitializeManager
+public class GameEvents
 {
-    #region Singleton Activation
-
-    [HideInInspector] public static GameEvents instance;
-
-    public void InitializeManager()
-    {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        instance = this;
-    }
-
-    #endregion
-
     public event Action<TroopController, TroopSide> OnTroopSpawned = default;
     public void TroopSpawned(TroopController troopController, TroopSide troopSide) => OnTroopSpawned?.Invoke(troopController, troopSide);
 
@@ -35,7 +19,6 @@ public class GameEvents : MonoBehaviour, IInitializeManager
     public event Action<TroopController> OnTroopDisableUI = default;
     public void TroopDisableUI(TroopController troopController) => OnTroopDisableUI?.Invoke(troopController);
 
-    //
 
     public event Action<BuildingController> OnBuildingSpawned = default;
     public void BuildingSpawned(BuildingController buildingController) => OnBuildingSpawned?.Invoke(buildingController);
@@ -43,7 +26,6 @@ public class GameEvents : MonoBehaviour, IInitializeManager
     public event Action<BuildingController> OnBuildingDestroyed = default;
     public void BuildingDestroyed(BuildingController buildingController) => OnBuildingDestroyed?.Invoke(buildingController);
 
-    //
 
     public event Action<TroopController, OrderMode> OnTroopEnterAnyMode = default;
     public void TroopEnterAnyMode(TroopController troopController, OrderMode orderMode) => OnTroopEnterAnyMode?.Invoke(troopController, orderMode);
@@ -51,7 +33,6 @@ public class GameEvents : MonoBehaviour, IInitializeManager
     public event Action OnTroopCancelEnteringMode = default;
     public void TroopCancelEnteringMode() => OnTroopCancelEnteringMode?.Invoke();
 
-    //
 
     public event Action OnDisableActiveCanvases = default;
     public void DisableActiveCanvases() => OnDisableActiveCanvases?.Invoke();

@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using Zenject;
 
 public abstract class BaseBuildingAttack
 {
@@ -9,10 +10,18 @@ public abstract class BaseBuildingAttack
     protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
+    protected RepositoryManager _repositoryManager = default;
+
     public BaseBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
+    }
+
+    [Inject]
+    public void Construct(RepositoryManager repositoryManager)
+    {
+        _repositoryManager = repositoryManager;
     }
 
     public virtual IEnumerator CheckAttackTargetCoroutine()

@@ -1,7 +1,8 @@
 
 public abstract class TroopDeathState : TroopBaseState
 {
-    public TroopDeathState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState) { }
+    public TroopDeathState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState) { }
 
     public override void Start()
     {

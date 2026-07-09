@@ -5,10 +5,10 @@ public class SecondBuildingAttack : BaseBuildingAttack
 {
     private int _remainingAttackWaves = default;
 
-    // Large amount of damage in a short period of time,- Waves
-
     public SecondBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
     {
+        // Large amount of damage in a short period of time,- Waves
+
         _remainingAttackWaves = _buildingScriptable.AttackWave;
     }
 
@@ -56,7 +56,7 @@ public class SecondBuildingAttack : BaseBuildingAttack
 
     protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
     {
-        IDamagable IDamagableTroop = RepositoryManager.instance.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
+        IDamagable IDamagableTroop = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
 
         return new IDamagable[] { IDamagableTroop };
     }

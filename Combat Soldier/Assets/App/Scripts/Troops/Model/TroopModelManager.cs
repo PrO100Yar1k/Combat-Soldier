@@ -2,12 +2,27 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TroopModelManager : MonoBehaviour
+public class TroopModelManager : System.IDisposable
 {
+    private readonly RepositoryManager _repositoryManager;
+    private readonly CoroutineStarter _coroutineStarter;
+
     private Coroutine _visionCoroutine = default;
 
-    private void Start()
+    #region Disposable
+
+    public void Dispose()
     {
+        StopperCoroutine();
+    }
+
+    #endregion
+
+    public TroopModelManager(RepositoryManager repositoryManager, CoroutineStarter coroutineStarter)
+    {
+        _repositoryManager = repositoryManager;
+        _coroutineStarter = coroutineStarter;
+
         ProvideEnemyVisionCoroutineStarter();
     }
 
@@ -15,24 +30,22 @@ public class TroopModelManager : MonoBehaviour
 
     private void ProvideEnemyVisionCoroutineStarter()
     {
-        CoroutineStopper();
-
-        CoroutineStarter();
+        StopperCoroutine();
+        StarterCoroutine();
     }
 
-    private void CoroutineStopper()
+    private void StopperCoroutine()
     {
         if (_visionCoroutine == null)
             return;
 
-        StopCoroutine(_visionCoroutine);
-
+        _coroutineStarter.StopCoroutine(_visionCoroutine);
         _visionCoroutine = null;
     }
 
-    private void CoroutineStarter()
+    private void StarterCoroutine()
     {
-        _visionCoroutine = StartCoroutine(ProvideTroopDeploymentData());
+        _visionCoroutine = _coroutineStarter.StartCoroutine(ProvideTroopDeploymentData());
     }
 
     #endregion
@@ -57,10 +70,9 @@ public class TroopModelManager : MonoBehaviour
 
     #region Enable & Disable Enemies
 
-
     private void DisableAllEnemies()
     {
-        List<TroopController> enemyControllersList = new List<TroopController>(RepositoryManager.instance.GetEnemyTroopControllersList());
+        List<TroopController> enemyControllersList = new List<TroopController>(_repositoryManager.GetEnemyTroopControllersList());
 
         foreach (EnemyTroopController troopController in enemyControllersList)
         {
@@ -81,7 +93,7 @@ public class TroopModelManager : MonoBehaviour
     private EnemyTroopController[] GetVisibleEnemies()
     {
         List<EnemyTroopController> targetList = new List<EnemyTroopController>();
-        List<TroopController> playerControllersList = new List<TroopController>(RepositoryManager.instance.GetPlayerTroopControllersList());
+        List<TroopController> playerControllersList = new List<TroopController>(_repositoryManager.GetPlayerTroopControllersList());
 
         foreach (PlayerTroopController playerController in playerControllersList)
         {

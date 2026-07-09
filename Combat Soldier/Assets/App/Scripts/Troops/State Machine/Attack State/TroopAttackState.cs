@@ -9,9 +9,9 @@ public abstract class TroopAttackState : TroopBaseState
     protected Coroutine _reloadAttackCoroutine = default;
     protected Coroutine _attackCoroutine = default;
 
-    protected int _remainingAttackWaves = default;
-
     protected TroopSide _enemyTroopSide = default;
+
+    protected int _remainingAttackWaves = default;
 
     #region Events
 
@@ -27,7 +27,8 @@ public abstract class TroopAttackState : TroopBaseState
 
     #endregion
 
-    public TroopAttackState(TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState) : base(troopController, screenCanvasController, switcherState)
+    public TroopAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState)
     {
         _remainingAttackWaves = _troopScriptable.CountAttackWaves;
     }
@@ -35,15 +36,14 @@ public abstract class TroopAttackState : TroopBaseState
     public override void Start()
     {
         SubscribeToEvents();
-
         EnableStateIcon();
     }
 
     public override void Stop()
     {
         UnSubscribeFromEvents();
-
         DisableAttackCoroutine();
+
         ReloadAttackStarter();
     }
 
@@ -61,7 +61,7 @@ public abstract class TroopAttackState : TroopBaseState
         Vector3 troopPosition = _troopController.transform.position;
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyMonoBehaviour = RepositoryManager.instance.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
+        MonoBehaviour enemyMonoBehaviour = _repositoryManager.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
 
         if (enemyMonoBehaviour == null)
             _switcherState.SwitchState<TroopDefaultState>();

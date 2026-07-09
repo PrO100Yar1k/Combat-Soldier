@@ -1,16 +1,26 @@
 using UnityEngine;
+using Zenject;
 
 public class TroopVisionController
 {
-    public bool IsTroopVisible { get; private set; } = true;
-
     private TroopController _troopController = default;
     private TroopScriptable _troopScriptable = default;
+
+    private RepositoryManager _repositoryManager = default;
+
+
+    public bool IsTroopVisible { get; private set; } = true;
 
     public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable)
     {
         _troopController = troopController;
         _troopScriptable = troopScriptable;
+    }
+
+    [Inject]
+    public void Construct(RepositoryManager repositoryManager)
+    {
+        _repositoryManager = repositoryManager;
     }
 
     public TroopController[] GetEnemiesInVisionRange()
@@ -20,7 +30,7 @@ public class TroopVisionController
 
         TroopSide enemyTroopSide = GetEnemyTroopSide();
 
-        return RepositoryManager.instance.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
+        return _repositoryManager.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
     }
 
     private TroopSide GetEnemyTroopSide()

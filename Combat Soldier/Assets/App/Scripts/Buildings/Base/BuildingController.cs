@@ -1,7 +1,9 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using Zenject;
+using System;
 
-public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDisposable
+public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposable
 {
     [SerializeField] protected BuildingScriptable _buildingScriptable = default;
 
@@ -15,16 +17,18 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
     protected BaseBuildingAttack _buildingAttack = default;
 
+    private GameEvents _gameEvents = default;
+
     #region Events & Interface Implemention
 
     protected virtual void OnEnable()
-        => GameEvents.instance.BuildingSpawned(this);
+        => _gameEvents.BuildingSpawned(this);
 
     protected virtual void OnDisable()
-        => GameEvents.instance.BuildingDestroyed(this);
+        => _gameEvents.BuildingDestroyed(this);
 
-    private void Awake()
-        => InitializeBuilding();
+    private void Awake() //
+        => InitializeBuilding(); //
 
     public void Dispose()
         => UIController.Dispose();
@@ -34,9 +38,15 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, System.IDi
 
     #endregion
 
+    [Inject]
+    public void Construct(GameEvents gameEvents)
+    {
+        _gameEvents = gameEvents;
+    }
+
     protected virtual void InitializeBuilding()
     {
-        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController);
+        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
         HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
 
         InitializeBuildingBehaviour();
@@ -53,7 +63,6 @@ public interface IDamagable
 
 public interface IAttackable
 {
+    public void Attack(IDamagable attackTarget);
     public IEnumerator CheckAttackTargetCoroutine();
-
-    public void Attack(IDamagable attackTarget); //
 }

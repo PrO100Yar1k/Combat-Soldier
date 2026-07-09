@@ -24,10 +24,10 @@ public class PlayerTroopController : TroopController
 
     protected override void InitializeTroop()
     {
-        StateController = new PlayerTroopStateController(this, _screenCanvasController);
+        StateController = new PlayerTroopStateController(_repositoryManager, this, _screenCanvasController);
         VisionController = new TroopVisionController(this, _troopScriptable);
 
-        UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController);
+        UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEvents);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
     }
 

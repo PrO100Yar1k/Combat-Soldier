@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -8,11 +8,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        // check with new input system
         if (Input.GetButtonDown("Fire1") && !isPointerOverUI())
-        {
             _troopManager.ChangeTroopControllerAndState();
-        }
     }
 
     private bool isPointerOverUI()

@@ -51,7 +51,7 @@ public class ThirdBuildingAttack : BaseBuildingAttack
 
     protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
     {
-        return RepositoryManager.instance.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
+        return _repositoryManager.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
             ?.Take(_maxAttackUnitCount).ToArray();
     }
 }
