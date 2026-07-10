@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private PlayerActionSelectionManager _troopManager = default;
+    [SerializeField] private PlayerActionSelectionManager _troopManager = default; //
 
     private void Update()
     {

@@ -33,7 +33,7 @@ public class EnemyDefaultState : TroopDefaultState
 
     public override void Stop()
     {
-        StopFindingEnemyCoroutine(); // ??
+        StopFindingEnemyCoroutine();
         StopPatrollingCoroutine();
     }
 

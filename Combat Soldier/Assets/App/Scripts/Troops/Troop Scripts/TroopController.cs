@@ -20,15 +20,15 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     protected event Action OnNotificationForGettingDamaged = default;
 
     protected RepositoryManager _repositoryManager = default;
-    protected GameEvents _gameEvents = default;
+    protected GameEvents _gameEventBus = default;
 
     #region Events & Interface Implemention
 
     protected virtual void OnEnable() 
-        => _gameEvents.TroopSpawned(this, _troopSide);
+        => _gameEventBus.TroopSpawned(this, _troopSide);
 
     protected virtual void OnDisable()
-        => _gameEvents.TroopDied(this, _troopSide);
+        => _gameEventBus.TroopDied(this, _troopSide);
 
     public void Dispose()
     {
@@ -45,9 +45,9 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     #endregion
 
     [Inject]
-    public void Construct(GameEvents gameEvents, RepositoryManager repositoryManager)
+    public void Construct(GameEvents gameEventBus, RepositoryManager repositoryManager)
     {
-        _gameEvents = gameEvents;
+        _gameEventBus = gameEventBus;
         _repositoryManager = repositoryManager;
     }
 
@@ -69,8 +69,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         StateController.ActivateDefenseUnderAttack(target, targetPos);
     }
 
-
-    protected TroopSide GetEnemyTroopSide()
+    protected TroopSide GetEnemyTroopSide() //
         => _troopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
 }
 

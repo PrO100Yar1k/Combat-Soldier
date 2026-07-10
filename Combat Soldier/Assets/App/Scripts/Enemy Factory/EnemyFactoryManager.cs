@@ -1,7 +1,7 @@
 using Assets.App.Scripts;
 using UnityEngine;
 
-public class EnemyFactory : MonoBehaviour
+public class EnemyFactoryManager : MonoBehaviour
 {
     public void CreateEnemies()
     {

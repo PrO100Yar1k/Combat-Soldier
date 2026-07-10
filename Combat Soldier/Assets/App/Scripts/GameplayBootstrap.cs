@@ -13,16 +13,11 @@ public class GameplayBootstrap : MonoBehaviour
         _poolConfigurator = poolConfigurator;
     }
 
-    private void Awake()
-    {
-        _poolConfigurator.InitializeManager();
-        _repositoryManager.InitializeManager();
-
-        Debug.Log("All managers were successfully initialized!");
-    }
-
     private void Start()
     {
+        _poolConfigurator.InitializeBulletPool();
+
         _repositoryManager.InitializeAllTroops();
+        _repositoryManager.InitializeAllBuildings();
     }
 }

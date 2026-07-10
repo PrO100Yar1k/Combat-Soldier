@@ -1,16 +1,11 @@
 using UnityEngine;
 
-public class ObjectPoolConfigurator : MonoBehaviour, IInitializableManager
+public class ObjectPoolConfigurator : MonoBehaviour
 {
     [SerializeField] private Transform _poolParent = default;
     [SerializeField] private BulletController _bulletPrefab = default;
 
-    public void InitializeManager()
-    {
-        SetupPool();
-    }
-
-    private void SetupPool()
+    public void InitializeBulletPool()
     {
         if (_poolParent == null || _bulletPrefab == null)
             return;

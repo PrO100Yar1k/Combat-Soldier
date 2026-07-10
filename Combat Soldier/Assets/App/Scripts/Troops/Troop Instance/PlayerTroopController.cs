@@ -21,7 +21,7 @@ public class PlayerTroopController : TroopController
         StateController = new PlayerTroopStateController(_repositoryManager, this, _screenCanvasController);
         VisionController = new TroopVisionController(this, _troopScriptable);
 
-        UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEvents);
+        UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEventBus);
         HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
     }
 

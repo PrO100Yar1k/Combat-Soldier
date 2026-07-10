@@ -11,7 +11,7 @@ public class RepositoryManager : System.IDisposable
     private List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
     private readonly GameEvents _gameEventBus;
-    private readonly List<Transform> _enemyPatrollingPointList;
+    private readonly List<Transform> _enemyPatrollingPoins;
 
     #region Events & Interfaces
 
@@ -40,14 +40,11 @@ public class RepositoryManager : System.IDisposable
 
     #endregion
 
-    public RepositoryManager(GameEvents gameEvents, [Inject(Id = "Enemy Points")] List<Transform> enemyPatrollingPointList)
+    public RepositoryManager(GameEvents gameEvents, [Inject(Id = "Enemy Points")] List<Transform> enemyPatrollingPoints)
     {
         _gameEventBus = gameEvents;
-        _enemyPatrollingPointList = new List<Transform>(enemyPatrollingPointList);
-    }
+        _enemyPatrollingPoins = new List<Transform>(enemyPatrollingPoints);
 
-    public void InitializeManager()
-    {
         SubscribeToEvents();
     }
 
@@ -58,6 +55,12 @@ public class RepositoryManager : System.IDisposable
 
         foreach (TroopController controller in _troopControllersEnemyList)
             controller.InitializeTroop();
+    }
+
+    public void InitializeAllBuildings()
+    {
+        foreach (BuildingController controller in _buildingControllersEnemyList)
+            controller.InitializeBuilding();
     }
 
     // make extension methods
@@ -115,10 +118,10 @@ public class RepositoryManager : System.IDisposable
 
     public Transform[] GetRandomEnemyPatrollingPoints(int pointsCount)
     {
-        if (pointsCount > _enemyPatrollingPointList.Count)
+        if (pointsCount > _enemyPatrollingPoins.Count)
             return null;
 
-        return _enemyPatrollingPointList
+        return _enemyPatrollingPoins
             .OrderBy(x => Random.value)
             .Take(pointsCount)
             .ToArray();
@@ -151,6 +154,8 @@ public class RepositoryManager : System.IDisposable
 
     private void AddBuildingToList(BuildingController buildingController)
     {
+        Debug.Log("pupuou");
+
         _buildingControllersEnemyList.Add(buildingController);
     }
 

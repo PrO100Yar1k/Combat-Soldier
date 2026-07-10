@@ -23,19 +23,24 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     #region Events & Interface Implemention
 
     protected virtual void OnEnable()
-        => _gameEvents.BuildingSpawned(this);
+    {
+        _gameEvents.BuildingSpawned(this);
+    }
 
     protected virtual void OnDisable()
-        => _gameEvents.BuildingDestroyed(this);
-
-    private void Awake() //
-        => InitializeBuilding(); //
+    {
+        _gameEvents.BuildingDestroyed(this);
+    }
 
     public void Dispose()
-        => UIController.Dispose();
+    {
+        UIController.Dispose();
+    }
 
     public void TakeDamage(int attackDamage)
-        => HPController.TakeDamage(attackDamage);
+    {
+        HPController.TakeDamage(attackDamage);
+    }
 
     #endregion
 
@@ -46,7 +51,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
         _repositoryManager = repositoryManager;
     }
 
-    protected virtual void InitializeBuilding()
+    public virtual void InitializeBuilding()
     {
         UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
         HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);

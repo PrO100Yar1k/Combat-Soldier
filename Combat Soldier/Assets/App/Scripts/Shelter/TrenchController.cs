@@ -22,7 +22,7 @@ public class TrenchController : MonoBehaviour
         new Vector3(-1, 0, 0) // left
     };
 
-    private void Start()
+    private void Start() //
     {
         Vector3 startPosition = Vector3.zero;
         int randomDirection = GetRandomDirection();
