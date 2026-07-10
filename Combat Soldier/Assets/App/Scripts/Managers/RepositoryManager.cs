@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class RepositoryManager : System.IDisposable
 {
@@ -9,8 +10,8 @@ public class RepositoryManager : System.IDisposable
 
     private List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
-    private readonly GameEvents _gameEventBus = default;
-    private readonly List<Transform> _enemyPatrollingPointList = default;
+    private readonly GameEvents _gameEventBus;
+    private readonly List<Transform> _enemyPatrollingPointList;
 
     #region Events & Interfaces
 
@@ -39,16 +40,27 @@ public class RepositoryManager : System.IDisposable
 
     #endregion
 
-    public RepositoryManager(GameEvents gameEvents, List<Transform> enemyPatrollingPointList)
+    public RepositoryManager(GameEvents gameEvents, [Inject(Id = "Enemy Points")] List<Transform> enemyPatrollingPointList)
     {
         _gameEventBus = gameEvents;
         _enemyPatrollingPointList = new List<Transform>(enemyPatrollingPointList);
+    }
 
+    public void InitializeManager()
+    {
         SubscribeToEvents();
     }
 
-    // make extension methods
+    public void InitializeAllTroops()
+    {
+        foreach (TroopController controller in _troopControllersPlayerList)
+            controller.InitializeTroop();
 
+        foreach (TroopController controller in _troopControllersEnemyList)
+            controller.InitializeTroop();
+    }
+
+    // make extension methods
     public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
     {
         return GetTroopControllersList(enemyTroopSide)

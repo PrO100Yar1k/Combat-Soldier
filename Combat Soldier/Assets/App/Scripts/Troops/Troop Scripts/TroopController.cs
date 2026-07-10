@@ -30,9 +30,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     protected virtual void OnDisable()
         => _gameEvents.TroopDied(this, _troopSide);
 
-    protected virtual void Awake()
-        => InitializeTroop();
-
     public void Dispose()
     {
         UIController.Dispose();
@@ -54,7 +51,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         _repositoryManager = repositoryManager;
     }
 
-    protected abstract void InitializeTroop();
+    public abstract void InitializeTroop();
 
     public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     {

@@ -24,10 +24,10 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
 
     #endregion
 
-    //public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
-    //{
-    //    (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
-    //}
+    public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
+    {
+        (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
+    }
 
     public void ActivateAttackState(IDamagable enemyDamagable)
     {
@@ -77,7 +77,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _currentState = state;
         _currentState.Start();
 
-        Debug.Log(_currentState);
+        //Debug.Log(_currentState);
     }
 }
 

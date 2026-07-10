@@ -5,7 +5,7 @@ using Zenject;
 
 public class EnemyDefaultState : TroopDefaultState
 {
-    private readonly Queue<Vector3> _targetPointsQueue = new Queue<Vector3>();
+    private readonly Queue<Vector3> _patrollingPointsQueue = new Queue<Vector3>();
 
     private Coroutine _patrollingCoroutine = default;
     private Coroutine _findEnemyCoroutine = default;
@@ -16,12 +16,11 @@ public class EnemyDefaultState : TroopDefaultState
     private const float _enemyFindingDelay = 1.0f;
     private const float _reactionTime = 0.5f;
 
-
-    public EnemyDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, Transform[] targetPointsList)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState)
+    public EnemyDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
+        [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList) : base(repositoryManager, troopController, screenCanvasController, switcherState)
     {
-        foreach (Transform targetPoint in targetPointsList)
-            _targetPointsQueue.Enqueue(targetPoint.position);
+        foreach (Transform targetPoint in patrollingPointsList)
+            _patrollingPointsQueue.Enqueue(targetPoint.position);
     }
 
     public override void Start()
@@ -95,8 +94,8 @@ public class EnemyDefaultState : TroopDefaultState
 
     private Vector3 GetTargetPosition()
     {
-        Vector3 targetPoint = _targetPointsQueue.Dequeue();
-        _targetPointsQueue.Enqueue(targetPoint);
+        Vector3 targetPoint = _patrollingPointsQueue.Dequeue();
+        _patrollingPointsQueue.Enqueue(targetPoint);
 
         return targetPoint;
     }

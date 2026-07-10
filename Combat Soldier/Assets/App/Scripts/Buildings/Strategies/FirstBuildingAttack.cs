@@ -3,7 +3,8 @@ using System.Collections;
 
 public class FirstBuildingAttack : BaseBuildingAttack
 {
-    public FirstBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
+    public FirstBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
+        : base(buildingController, buildingScriptable, repositoryManager)
     {
         // Default attack without waves, just usual attack with fixed reloading time
     }

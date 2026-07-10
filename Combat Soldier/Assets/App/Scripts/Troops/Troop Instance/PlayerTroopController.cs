@@ -2,27 +2,21 @@ using UnityEngine;
 
 public class PlayerTroopController : TroopController
 {
-    public TroopVisionController VisionController { get; private set; } //
-
-    #region Events
+    public TroopVisionController VisionController { get; private set; }
 
     protected override void OnEnable()
     {
         OnNotificationForGettingDamaged += NotifyForGettingDamaged;
-
         base.OnEnable();
     }
 
     protected override void OnDisable()
     {
         OnNotificationForGettingDamaged -= NotifyForGettingDamaged;
-
         base.OnDisable();
     }
 
-    #endregion
-
-    protected override void InitializeTroop()
+    public override void InitializeTroop()
     {
         StateController = new PlayerTroopStateController(_repositoryManager, this, _screenCanvasController);
         VisionController = new TroopVisionController(this, _troopScriptable);

@@ -6,7 +6,8 @@ public class ThirdBuildingAttack : BaseBuildingAttack
 {
     private const int _maxAttackUnitCount = 10;
 
-    public ThirdBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
+    public ThirdBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
+        : base(buildingController, buildingScriptable, repositoryManager)
     {
         // damage all enemies (above _maxAttackUnitCount, but could make infinite enemy count too) in the attack range based on usual reload
     }

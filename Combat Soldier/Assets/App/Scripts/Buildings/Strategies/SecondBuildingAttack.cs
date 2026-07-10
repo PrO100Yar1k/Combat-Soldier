@@ -5,10 +5,10 @@ public class SecondBuildingAttack : BaseBuildingAttack
 {
     private int _remainingAttackWaves = default;
 
-    public SecondBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable) : base(buildingController, buildingScriptable)
+    public SecondBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
+        : base(buildingController, buildingScriptable, repositoryManager)
     {
         // Large amount of damage in a short period of time,- Waves
-
         _remainingAttackWaves = _buildingScriptable.AttackWave;
     }
 

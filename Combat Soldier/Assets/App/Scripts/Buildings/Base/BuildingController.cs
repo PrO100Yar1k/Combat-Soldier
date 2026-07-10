@@ -17,7 +17,8 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
 
     protected BaseBuildingAttack _buildingAttack = default;
 
-    private GameEvents _gameEvents = default;
+    protected GameEvents _gameEvents = default;
+    protected RepositoryManager _repositoryManager = default;
 
     #region Events & Interface Implemention
 
@@ -39,9 +40,10 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     #endregion
 
     [Inject]
-    public void Construct(GameEvents gameEvents)
+    public void Construct(GameEvents gameEvents, RepositoryManager repositoryManager)
     {
         _gameEvents = gameEvents;
+        _repositoryManager = repositoryManager;
     }
 
     protected virtual void InitializeBuilding()

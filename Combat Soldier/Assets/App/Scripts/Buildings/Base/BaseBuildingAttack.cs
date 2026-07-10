@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using Zenject;
 
 public abstract class BaseBuildingAttack
 {
@@ -12,15 +11,11 @@ public abstract class BaseBuildingAttack
 
     protected RepositoryManager _repositoryManager = default;
 
-    public BaseBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable)
+    public BaseBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
-    }
 
-    [Inject]
-    public void Construct(RepositoryManager repositoryManager)
-    {
         _repositoryManager = repositoryManager;
     }
 

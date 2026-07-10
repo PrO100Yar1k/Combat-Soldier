@@ -127,6 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 66447505}
+  - component: {fileID: 66447506}
   m_Layer: 0
   m_Name: Coroutine Starter
   m_TagString: Untagged
@@ -149,6 +150,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &66447506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66447504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9698e191abecb9d46960d94f34432ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &125552396
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,6 +489,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 730042953}
   - {fileID: 1067341749}
   - {fileID: 1411919298}
   - {fileID: 125552397}
@@ -1230,6 +1244,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8122735462976974634, guid: a8ccb1acab7e7e749a4b9e27ff03ad13, type: 3}
   m_PrefabInstance: {fileID: 1349918862297966125}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &730042952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 730042953}
+  - component: {fileID: 730042954}
+  m_Layer: 0
+  m_Name: Gameplay Bootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &730042953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730042952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 324527132}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &730042954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730042952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd505bdbe6b08d49aab49ef4f8ed370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,7 +1621,7 @@ GameObject:
   - component: {fileID: 1969066863}
   - component: {fileID: 1969066862}
   m_Layer: 0
-  m_Name: SceneContext
+  m_Name: '[Zenject] SceneContext'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1581,7 +1639,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7252e4c09e53094ebc664b9fb7bff85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _managersOnScene: []
+  _enemyPatrollingPoints:
+  - {fileID: 722102065}
+  - {fileID: 1728999708}
+  - {fileID: 604769489}
+  - {fileID: 2026576245}
+  _poolConfigurator: {fileID: 520543260}
 --- !u!114 &1969066863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2462,5 +2525,5 @@ SceneRoots:
   - {fileID: 1923998821}
   - {fileID: 1024412859}
   - {fileID: 1039295178}
-  - {fileID: 1969066864}
   - {fileID: 66447505}
+  - {fileID: 1969066864}
