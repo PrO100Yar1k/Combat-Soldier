@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-public class PlayerTroopStateController : TroopStateController
+public class PlayerStateController : TroopStateController
 {
-    public PlayerTroopStateController(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController)
+    public PlayerStateController(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController)
     {
         _troopDefaultState = new PlayerDefaultState(repositoryManager, troopController, screenCanvasController, this);
         _troopDefenseState = new PlayerDefenseState(repositoryManager, troopController, screenCanvasController, this);
@@ -11,8 +11,15 @@ public class PlayerTroopStateController : TroopStateController
         _troopDeathState = new PlayerDeathState(repositoryManager, troopController, screenCanvasController, this);
 
         _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState, _troopDeathState };
-        _currentState = _allStates[0];
 
-        SwitchState<TroopDefaultState>();
+        ActivateDefaultState();
+    }
+
+    public void SwitchToOppositeState()
+    {
+        if (CheckStateForActivity<TroopAttackState>())
+            SwitchState<TroopDefenseState>();
+        else if (CheckStateForActivity<TroopDefenseState>())
+            SwitchState<TroopAttackState>();
     }
 }

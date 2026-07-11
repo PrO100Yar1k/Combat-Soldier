@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerTroopController : TroopController
 {
+    [SerializeField] private ChangeTroopState _changeStateButton = default;
+
     public TroopVisionController VisionController { get; private set; }
 
     protected override void OnEnable()
@@ -18,11 +20,13 @@ public class PlayerTroopController : TroopController
 
     public override void InitializeTroop()
     {
-        StateController = new PlayerTroopStateController(_repositoryManager, this, _screenCanvasController);
+        StateController = new PlayerStateController(_repositoryManager, this, _screenCanvasController);
         VisionController = new TroopVisionController(this, _troopScriptable);
 
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEventBus);
-        HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
+        HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
+
+        _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
     }
 
     private void NotifyForGettingDamaged()

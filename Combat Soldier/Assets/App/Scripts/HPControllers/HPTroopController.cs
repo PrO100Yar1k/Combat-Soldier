@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HPControllerTroop : HPController
+public class HPTroopController : HPController
 {
     protected readonly TroopScreenCanvasController _troopCanvasController = default;
     protected readonly TroopController _troopController = default;
@@ -8,7 +8,7 @@ public class HPControllerTroop : HPController
     private int _currentDefensePoint = default;
     private float _currentBlockRate = default;
 
-    public HPControllerTroop(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable)
+    public HPTroopController(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable)
     {
         _troopCanvasController = troopCanvasController;
         _troopController = troopController;
@@ -56,12 +56,10 @@ public class HPControllerTroop : HPController
         int blockedHP = (int) (attackDamage * _currentBlockRate);
         int takenDamage = attackDamage - blockedHP;
 
-        if (_currentDefensePoint >= blockedHP)
-        {
+        if (_currentDefensePoint >= blockedHP) {
             _currentDefensePoint -= blockedHP;
         }
-        else
-        {
+        else {
             _currentHealPoint -= blockedHP - _currentDefensePoint;
             _currentDefensePoint = 0;
         }
@@ -94,14 +92,17 @@ public class HPControllerTroop : HPController
 
     protected override void CheckHealPointsForDeath()
     {
-        if (_currentHealPoint <= 0)
+        if (_troopController == null)
+            return;
+
+        if (_currentHealPoint <= 0) {
             TroopDeath(_troopController, _troopController.gameObject);
+        }
     }
 
     protected override void TroopDeath<T>(T controller, GameObject objectToDestroy)
     {
         _troopController.StateController.ActivateDeathState();
-
         base.TroopDeath(controller, objectToDestroy);
     }
 

@@ -24,6 +24,6 @@ public class GameplaySceneInstaller : MonoInstaller
 
         Container.Bind<ObjectPoolConfigurator>().FromInstance(_poolConfigurator).AsSingle();
 
-        Container.Bind<GameplayBootstrap>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesTo<GameplayBootstrap>().AsSingle();
     }
 }

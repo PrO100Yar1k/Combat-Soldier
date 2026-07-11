@@ -1,23 +1,24 @@
 using UnityEngine;
 using Zenject;
 
-public class GameplayBootstrap : MonoBehaviour
+public class GameplayBootstrap : IInitializable
 {
-    private RepositoryManager _repositoryManager;
-    private ObjectPoolConfigurator _poolConfigurator;
+    private readonly RepositoryManager _repositoryManager;
+    private readonly ObjectPoolConfigurator _poolConfigurator;
 
-    [Inject]
-    public void Construct(RepositoryManager repositoryManager, ObjectPoolConfigurator poolConfigurator)
+    public GameplayBootstrap(RepositoryManager repositoryManager, ObjectPoolConfigurator poolConfigurator)
     {
         _repositoryManager = repositoryManager;
         _poolConfigurator = poolConfigurator;
     }
 
-    private void Start()
+    public void Initialize()
     {
         _poolConfigurator.InitializeBulletPool();
 
         _repositoryManager.InitializeAllTroops();
         _repositoryManager.InitializeAllBuildings();
+
+        Debug.Log("Managers were succefully initialized!");
     }
 }

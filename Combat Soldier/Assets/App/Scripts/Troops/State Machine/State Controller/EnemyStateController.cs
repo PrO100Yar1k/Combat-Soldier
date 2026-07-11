@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTroopStateController : TroopStateController
+public class EnemyStateController : TroopStateController
 {
-    public EnemyTroopStateController(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, Transform[] targetPointsList)
+    public EnemyStateController(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, Transform[] targetPointsList)
     {
         _troopDefaultState = new EnemyDefaultState(repositoryManager, troopController, screenCanvasController, this, targetPointsList);
         _troopDefenseState = new EnemyDefenseState(repositoryManager, troopController, screenCanvasController, this);
@@ -12,9 +12,7 @@ public class EnemyTroopStateController : TroopStateController
         _troopDeathState = new EnemyDeathState(repositoryManager, troopController, screenCanvasController, this);
 
         _allStates = new List<TroopBaseState>() { _troopDefaultState, _troopMoveState, _troopAttackState, _troopDefenseState, _troopDeathState };
-        _currentState = _allStates[0];
 
-        //ActivateDefaultState();
-        SwitchState<TroopDefaultState>();
+        ActivateDefaultState();
     }
 }

@@ -425,6 +425,7 @@ MonoBehaviour:
   _troopScriptable: {fileID: 11400000, guid: 0f607a16f14f517449142260da9de9a5, type: 2}
   _screenCanvasController: {fileID: 1220415503652729485}
   _worldCanvasController: {fileID: 7827163840812583108}
+  _changeStateButton: {fileID: 3734683614480311022}
 --- !u!1 &8448568534995631449
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,7 +594,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5573699621289156310, guid: 55a41ba94a7227143b62a23201622e53, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3734683614480311022}
   m_SourcePrefab: {fileID: 100100000, guid: 55a41ba94a7227143b62a23201622e53, type: 3}
 --- !u!114 &1220415503652729485 stripped
 MonoBehaviour:
@@ -611,3 +615,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7562971640737263444, guid: 55a41ba94a7227143b62a23201622e53, type: 3}
   m_PrefabInstance: {fileID: 3983329207826422134}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8799579062684469152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5573699621289156310, guid: 55a41ba94a7227143b62a23201622e53, type: 3}
+  m_PrefabInstance: {fileID: 3983329207826422134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3734683614480311022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8799579062684469152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da82997761438044abbccb86716f166b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

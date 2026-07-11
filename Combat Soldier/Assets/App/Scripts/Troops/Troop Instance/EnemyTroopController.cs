@@ -12,10 +12,10 @@ public class EnemyTroopController : TroopController
     {
         Transform[] transforms = _repositoryManager.GetRandomEnemyPatrollingPoints(_patrollingPointsCount);
 
-        StateController = new EnemyTroopStateController(_repositoryManager, this, _screenCanvasController, transforms);
+        StateController = new EnemyStateController(_repositoryManager, this, _screenCanvasController, transforms);
         TroopModelController = new TroopModelController(this, gameObject, _enemyMeshRendererModel);
 
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEventBus);
-        HPController = new HPControllerTroop(this, _screenCanvasController, _troopScriptable);
+        HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
     }
 }

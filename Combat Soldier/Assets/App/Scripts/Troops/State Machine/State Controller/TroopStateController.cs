@@ -39,7 +39,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
 
     public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        if (CheckStateForActivity<TroopDefenseState>() == false) // ?
+        if (CheckStateForActivity<TroopDefenseState>() == false)
             SwitchState<TroopDefenseState>();
 
         _troopDefenseState.ActivateDefenseUnderAttack(enemyDamagable, enemyPosition);
@@ -48,20 +48,20 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
     public void ActivateMoveState(Vector3 targetPoint)
     {
         SwitchState<TroopMoveState>();
-
         _troopMoveState.ActivateTroopMovement(targetPoint);
     }
 
     public void ActivateDefaultState()
     {
-        if (CheckStateForActivity<TroopDefaultState>() == false)
-            SwitchState<TroopDefaultState>();
+        if (CheckStateForActivity<TroopDefaultState>())
+            Debug.LogError("Changed Default State for a 2 time in a row!");
+
+        SwitchState<TroopDefaultState>();
     }
 
     public void ActivateDeathState()
     {
-        if (CheckStateForActivity<TroopDeathState>() == false)
-            SwitchState<TroopDeathState>();
+        SwitchState<TroopDeathState>();
     }
 
     public bool CheckStateForActivity<State>() where State : TroopBaseState
@@ -73,7 +73,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
     {
         TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
 
-        _currentState.Stop();
+        _currentState?.Stop();
         _currentState = state;
         _currentState.Start();
 

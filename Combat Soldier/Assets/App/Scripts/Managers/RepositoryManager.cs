@@ -5,10 +5,12 @@ using Zenject;
 
 public class RepositoryManager : System.IDisposable
 {
-    private List<TroopController> _troopControllersPlayerList = new List<TroopController>();
-    private List<TroopController> _troopControllersEnemyList = new List<TroopController>();
-
-    private List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
+    private readonly Dictionary<TroopSide, List<TroopController>> _troopsBySide = new()
+    {
+        { TroopSide.Player, new List<TroopController>() },
+        { TroopSide.Enemy, new List<TroopController>() }
+    };
+    private readonly List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
     private readonly GameEvents _gameEventBus;
     private readonly List<Transform> _enemyPatrollingPoins;
@@ -50,10 +52,9 @@ public class RepositoryManager : System.IDisposable
 
     public void InitializeAllTroops()
     {
-        foreach (TroopController controller in _troopControllersPlayerList)
-            controller.InitializeTroop();
+        var allTroops = _troopsBySide.Values.SelectMany(list => list);
 
-        foreach (TroopController controller in _troopControllersEnemyList)
+        foreach (TroopController controller in allTroops)
             controller.InitializeTroop();
     }
 
@@ -129,14 +130,14 @@ public class RepositoryManager : System.IDisposable
 
     #region Player & Enemy Lists
 
-    public List<TroopController> GetTroopControllersList(TroopSide troopSide)
-        => troopSide == TroopSide.Player ? _troopControllersPlayerList : _troopControllersEnemyList;
+    private List<TroopController> GetTroopControllersList(TroopSide troopSide)
+            => _troopsBySide[troopSide];
 
     public List<TroopController> GetPlayerTroopControllersList()
-        => _troopControllersPlayerList;
+        => _troopsBySide[TroopSide.Player];
 
     public List<TroopController> GetEnemyTroopControllersList()
-        => _troopControllersEnemyList;
+        => _troopsBySide[TroopSide.Enemy];
 
     #endregion
 
@@ -144,18 +145,16 @@ public class RepositoryManager : System.IDisposable
 
     private void AddTroopToList(TroopController troopController, TroopSide troopSide)
     {
-        GetTroopControllersList(troopSide).Add(troopController);
+        _troopsBySide[troopSide].Add(troopController);
     }
 
     private void RemoveTroopFromList(TroopController troopController, TroopSide troopSide)
     {
-        GetTroopControllersList(troopSide).Remove(troopController);
+        _troopsBySide[troopSide].Remove(troopController);
     }
 
     private void AddBuildingToList(BuildingController buildingController)
     {
-        Debug.Log("pupuou");
-
         _buildingControllersEnemyList.Add(buildingController);
     }
 
