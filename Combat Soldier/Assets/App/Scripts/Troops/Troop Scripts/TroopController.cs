@@ -9,9 +9,9 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
-    public UICanvasController<TroopController> UIController { get; protected set; } //
-    public TroopStateController StateController { get; protected set; } //
-    public HPTroopController HPController { get; protected set; } //
+    public UICanvasController<TroopController> UIController { get; protected set; }
+    public TroopStateController StateController { get; protected set; }
+    public HPTroopController HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable;
 
@@ -68,9 +68,6 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 
         StateController.ActivateDefenseUnderAttack(target, targetPos);
     }
-
-    protected TroopSide GetEnemyTroopSide() //
-        => _troopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
 }
 
 public enum TroopSide

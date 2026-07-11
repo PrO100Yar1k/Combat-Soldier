@@ -6,6 +6,8 @@ public class PlayerTroopController : TroopController
 
     public TroopVisionController VisionController { get; private set; }
 
+    #region Events
+
     protected override void OnEnable()
     {
         OnNotificationForGettingDamaged += NotifyForGettingDamaged;
@@ -18,10 +20,12 @@ public class PlayerTroopController : TroopController
         base.OnDisable();
     }
 
+    #endregion
+
     public override void InitializeTroop()
     {
         StateController = new PlayerStateController(_repositoryManager, this, _screenCanvasController);
-        VisionController = new TroopVisionController(this, _troopScriptable);
+        VisionController = new TroopVisionController(this, _troopScriptable, _repositoryManager);
 
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEventBus);
         HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
@@ -29,14 +33,16 @@ public class PlayerTroopController : TroopController
         _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
     }
 
-    private void NotifyForGettingDamaged()
+    private void NotifyForGettingDamaged() //
+        => Debug.Log("Lord, your unit was damaged!");
+
+    public void UpdateReloadingBar(float timeToReload)
     {
-        Debug.Log("Lord, your unit was damaged!");
+        (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
     }
 
-    public void ScreenCanvasUpdateReloadingBar(float timeToReload)
-        => (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
-
-    public bool GetCanvasActivityStateAfterOrder()
-        => (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+    public bool GetCanvasActivityState()
+    {
+        return (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+    }
 }

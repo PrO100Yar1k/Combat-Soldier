@@ -1,38 +1,31 @@
 using UnityEngine;
-using Zenject;
 
 public class TroopVisionController
 {
-    private TroopController _troopController = default;
-    private TroopScriptable _troopScriptable = default;
+    private readonly TroopController _troopController;
+    private readonly TroopScriptable _troopScriptable;
+    private readonly RepositoryManager _repositoryManager;
 
-    private RepositoryManager _repositoryManager = default;
-
-
-    public bool IsTroopVisible { get; private set; } = true;
-
-    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable)
+    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable, RepositoryManager repositoryManager)
     {
         _troopController = troopController;
         _troopScriptable = troopScriptable;
-    }
 
-    [Inject]
-    public void Construct(RepositoryManager repositoryManager)
-    {
         _repositoryManager = repositoryManager;
     }
 
     public TroopController[] GetEnemiesInVisionRange()
     {
-        Vector3 currentPosition = _troopController.transform.position;
-        float viewRange = _troopScriptable.ViewRangeRadius;
-
         TroopSide enemyTroopSide = GetEnemyTroopSide();
+
+        float viewRange = _troopScriptable.ViewRangeRadius;
+        Vector3 currentPosition = _troopController.transform.position;
 
         return _repositoryManager.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
     }
 
     private TroopSide GetEnemyTroopSide()
-        => _troopScriptable.TroopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
+    {
+        return _troopScriptable.TroopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
+    }
 }

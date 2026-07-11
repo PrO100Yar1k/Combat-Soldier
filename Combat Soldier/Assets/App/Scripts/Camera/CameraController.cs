@@ -1,10 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using Zenject;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private PlayerActionSelectionManager _troopManager = default; //
+    private TroopActionController _troopManager = default;
+
+    [Inject]
+    public void Construct(TroopActionController troopManager)
+    {
+        _troopManager = troopManager;
+    }
 
     private void Update()
     {

@@ -116,7 +116,7 @@ public abstract class TroopAttackState : TroopBaseState
             bulletController.InitializeBullet(_troopController.transform.position, targetEnemy.transform.position);
 
             PlayerTroopController playerController = _troopController as PlayerTroopController;
-            playerController?.ScreenCanvasUpdateReloadingBar(timeBetweenAttackWaves);
+            playerController?.UpdateReloadingBar(timeBetweenAttackWaves);
 
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
@@ -194,7 +194,7 @@ public abstract class TroopAttackState : TroopBaseState
         float timeToReloadAttack = timeToCompleteReload / attackWavesCount * _remainingAttackWaves;
 
         PlayerTroopController playerController = _troopController as PlayerTroopController;
-        playerController?.ScreenCanvasUpdateReloadingBar(timeToReloadAttack);
+        playerController?.UpdateReloadingBar(timeToReloadAttack);
 
         for ( ; _remainingAttackWaves < attackWavesCount + 1; _remainingAttackWaves++)
         {

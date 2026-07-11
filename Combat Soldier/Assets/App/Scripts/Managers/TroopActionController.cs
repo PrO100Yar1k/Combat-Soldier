@@ -2,10 +2,8 @@ using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
 
-public class PlayerActionSelectionManager : MonoBehaviour
+public class TroopActionController : MonoBehaviour
 {
-    [Header("Raycast Layers")]
-
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _attackTargetLayers = default;
 
@@ -92,7 +90,6 @@ public class PlayerActionSelectionManager : MonoBehaviour
         TroopStateController playerTroopStateController = playerTroopController.StateController;
 
         LayerMask hitLayer = hit.collider.gameObject.layer;
-
         Vector3 targetPoint = hit.point;
 
         switch (_selectedOrderMode)
@@ -103,6 +100,7 @@ public class PlayerActionSelectionManager : MonoBehaviour
                     playerTroopStateController.ActivateMoveState(targetPoint);
 
                 break;
+
             case OrderMode.Attack:
 
                 if (isLayerInMask(hitLayer, _attackTargetLayers) && isComponentExists(hit, out IDamagable enemyDamagable))
@@ -111,7 +109,7 @@ public class PlayerActionSelectionManager : MonoBehaviour
                 break;
         }
 
-        if (playerTroopController.GetCanvasActivityStateAfterOrder())
+        if (playerTroopController.GetCanvasActivityState())
             _gameEvents.DisableActiveCanvases();
 
         AssignControllerAndChangeMode(null, OrderMode.None);

@@ -22,13 +22,11 @@ public class TroopModelManager : System.IDisposable
     {
         _repositoryManager = repositoryManager;
         _coroutineStarter = coroutineStarter;
-
-        ProvideEnemyVisionCoroutineStarter();
     }
 
     #region Coroutine Starter & Stopper
 
-    private void ProvideEnemyVisionCoroutineStarter()
+    public void ProvideEnemyVisionStarter()
     {
         StopperCoroutine();
         StarterCoroutine();
