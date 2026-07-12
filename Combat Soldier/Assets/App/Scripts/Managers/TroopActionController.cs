@@ -1,8 +1,9 @@
+using Assets.App.Scripts.Infrastructure.Interfaces;
 using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
 
-public class TroopActionController : MonoBehaviour
+public class TroopActionController : MonoBehaviour, ITroopSelection
 {
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _attackTargetLayers = default;
@@ -10,7 +11,7 @@ public class TroopActionController : MonoBehaviour
     private MonoBehaviour _selectedController = default;
     private OrderMode _selectedOrderMode = default;
 
-    private GameEvents _gameEvents = default;
+    private GameEventBus _gameEventBus = default;
 
     #region Events & Initialization
 
@@ -22,39 +23,41 @@ public class TroopActionController : MonoBehaviour
 
     private void SubscribeToEvents()
     {
-        _gameEvents.OnTroopEnterAnyMode += AssignControllerAndChangeMode;
-        _gameEvents.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
+        _gameEventBus.OnTroopEnterAnyMode += AssignControllerAndChangeMode;
+        _gameEventBus.OnTroopCancelEnteringMode += CancelEnteringModeAndDisableMenu;
 
-        _gameEvents.OnTroopDiedUI += UpdateTroopStatus;
-        _gameEvents.OnTroopDisableUI += UpdateTroopStatus;
-        _gameEvents.OnBuildingDestroyed += UpdateTroopStatus;
+        _gameEventBus.OnTroopDiedUI += UpdateTroopStatus;
+        _gameEventBus.OnTroopDisableUI += UpdateTroopStatus;
+        _gameEventBus.OnBuildingDestroyed += UpdateTroopStatus;
     }
 
     private void UnSubscribeFromEvents()
     {
-        _gameEvents.OnTroopEnterAnyMode -= AssignControllerAndChangeMode;
-        _gameEvents.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
+        _gameEventBus.OnTroopEnterAnyMode -= AssignControllerAndChangeMode;
+        _gameEventBus.OnTroopCancelEnteringMode -= CancelEnteringModeAndDisableMenu;
 
-        _gameEvents.OnTroopDiedUI -= UpdateTroopStatus;
-        _gameEvents.OnTroopDisableUI -= UpdateTroopStatus;
-        _gameEvents.OnBuildingDestroyed -= UpdateTroopStatus;
+        _gameEventBus.OnTroopDiedUI -= UpdateTroopStatus;
+        _gameEventBus.OnTroopDisableUI -= UpdateTroopStatus;
+        _gameEventBus.OnBuildingDestroyed -= UpdateTroopStatus;
     }
 
     #endregion
 
     [Inject]
-    public void Construct(GameEvents gameEvents)
+    public void Construct(GameEventBus gameEvents)
     {
-        _gameEvents = gameEvents;
+        _gameEventBus = gameEvents;
     }
 
-    public void ChangeTroopControllerAndState()
+    public void SelectTroopOrderState()
     {
         if (_selectedOrderMode == OrderMode.None) 
             NoSelectedController();
 
         else SelectedOrderTroopAction();
     }
+
+    #region Troop Controller Selection 
 
     private void NoSelectedController()
     {
@@ -70,7 +73,7 @@ public class TroopActionController : MonoBehaviour
         if (isLayerInMask(hitLayer, _attackTargetLayers) && isComponentExists(hit, out IDamagable enemyDamagable))
         {
             MonoBehaviour currentController = enemyDamagable as MonoBehaviour;
-            _gameEvents.OpenTroopMenu(currentController);
+            _gameEventBus.OpenTroopMenu(currentController);
 
             _selectedController = currentController;
         }
@@ -110,18 +113,34 @@ public class TroopActionController : MonoBehaviour
         }
 
         if (playerTroopController.GetCanvasActivityState())
-            _gameEvents.DisableActiveCanvases();
+            _gameEventBus.DisableActiveCanvases();
 
         AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
-    #region Helper Methods
+    #endregion
 
-    private bool isLayerInMask(int layer, int mask)
-        => ((1 << layer) & mask) != 0;
+    #region Assigning & Updating Order Mode
 
-    private bool isComponentExists<T>(RaycastHit hit, out T component)
-        => hit.collider.TryGetComponent(out component);
+    private void AssignControllerAndChangeMode(MonoBehaviour troopController, OrderMode orderMode)
+    {
+        _selectedController = troopController;
+        _selectedOrderMode = orderMode;
+    }
+
+    private void UpdateTroopStatus(MonoBehaviour controller)
+    {
+        if (_selectedController != controller)
+            return;
+
+        AssignControllerAndChangeMode(null, OrderMode.None);
+    }
+
+    private void CancelEnteringModeAndDisableMenu()
+    {
+        _gameEventBus.DisableActiveCanvases();
+        AssignControllerAndChangeMode(null, OrderMode.None);
+    }
 
     #endregion
 
@@ -163,36 +182,18 @@ public class TroopActionController : MonoBehaviour
 
     #endregion
 
-    #region Raycast
+    #region Helper Methods
+
+    private bool isLayerInMask(int layer, int mask)
+        => ((1 << layer) & mask) != 0;
+
+    private bool isComponentExists<T>(RaycastHit hit, out T component)
+        => hit.collider.TryGetComponent(out component);
 
     private RaycastHit GetRaycastHit()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         return Physics.Raycast(ray, out RaycastHit hit) ? hit : default;
-    }
-
-    #endregion
-
-    #region Assigning & Updating Order Mode
-
-    private void AssignControllerAndChangeMode(MonoBehaviour troopController, OrderMode orderMode)
-    {
-        _selectedController = troopController;
-        _selectedOrderMode = orderMode;
-    }
-
-    private void UpdateTroopStatus(MonoBehaviour controller)
-    {
-        if (_selectedController != controller)
-            return;
-
-        AssignControllerAndChangeMode(null, OrderMode.None);
-    }
-
-    private void CancelEnteringModeAndDisableMenu()
-    {
-        _gameEvents.DisableActiveCanvases();
-        AssignControllerAndChangeMode(null, OrderMode.None);
     }
 
     #endregion

@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 520543258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 443dc4d3e5b8b5c438bf4e30d57f480d, type: 3}
+  m_Script: {fileID: 11500000, guid: bbf959bbadaf45b4f82ceac4c896f995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _poolParent: {fileID: 473226402}
@@ -1307,7 +1307,7 @@ GameObject:
   - component: {fileID: 1067341749}
   - component: {fileID: 1067341750}
   m_Layer: 0
-  m_Name: Trench Controller
+  m_Name: 1 Unit - Trench Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1067341748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86005fce4cbeac1419f0dbdd279b3f3c, type: 3}
+  m_Script: {fileID: 11500000, guid: 05dde05355dc3f84bb61d906d88bf395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _trenchParent: {fileID: 1252957773}

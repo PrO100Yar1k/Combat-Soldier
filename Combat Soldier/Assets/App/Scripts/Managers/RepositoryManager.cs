@@ -12,7 +12,7 @@ public class RepositoryManager : System.IDisposable
     };
     private readonly List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
-    private readonly GameEvents _gameEventBus;
+    private readonly GameEventBus _gameEventBus;
     private readonly List<Transform> _enemyPatrollingPoins;
 
     #region Events & Interfaces
@@ -42,7 +42,7 @@ public class RepositoryManager : System.IDisposable
 
     #endregion
 
-    public RepositoryManager(GameEvents gameEvents, [Inject(Id = "Enemy Points")] List<Transform> enemyPatrollingPoints)
+    public RepositoryManager(GameEventBus gameEvents, [Inject(Id = "Enemy Points")] List<Transform> enemyPatrollingPoints)
     {
         _gameEventBus = gameEvents;
         _enemyPatrollingPoins = new List<Transform>(enemyPatrollingPoints);
