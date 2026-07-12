@@ -107,7 +107,7 @@ public class EnemyDefaultState : TroopDefaultState
     private IEnumerator FindingEnemyCoroutine() // finding player's unit in visible range while default state
     {
         IDamagable targetPriorityEnemy = null;
-        TroopSide targetTroopSide = TroopSide.Player;
+        Faction targetTroopSide = Faction.Allies;
 
         float visibleRange = _troopScriptable.ViewRangeRadius;
         float attackRange = _troopScriptable.AttackRangeRadius;

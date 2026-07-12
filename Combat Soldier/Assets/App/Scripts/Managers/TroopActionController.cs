@@ -151,6 +151,9 @@ public class TroopActionController : MonoBehaviour, ITroopSelection
         if (_selectedController is not PlayerTroopController)
             return;
 
+        if (enemyDamagable.GetFaction() == Faction.Allies)
+            return;
+
         PlayerTroopController troopController = _selectedController as PlayerTroopController;
         MonoBehaviour enemyMonoBehaviour = enemyDamagable as MonoBehaviour;
 

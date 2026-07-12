@@ -32,7 +32,7 @@ public class PlayerDefaultState : TroopDefaultState
         Vector3 currentPosition = _troopController.transform.position;
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        TroopSide targetTroopSide = TroopSide.Enemy;
+        Faction targetTroopSide = Faction.Enemies;
         IDamagable targetPriorityEnemy = null;
 
         MonoBehaviour enemyInAttackRange = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);

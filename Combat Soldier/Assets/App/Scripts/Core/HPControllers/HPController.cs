@@ -30,11 +30,9 @@ public abstract class HPController
             return;
 
         controller.Dispose();
-
         controller.StopAllCoroutines();
 
         Object.Destroy(objectToDestroy);
-
         Debug.Log($"The {HPControllerName} was died");
     }
 }

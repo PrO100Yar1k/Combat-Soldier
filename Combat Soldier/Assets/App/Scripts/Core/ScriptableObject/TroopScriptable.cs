@@ -1,3 +1,4 @@
+using Assets.App.Scripts.Infrastructure.Enums;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TroopScriptable", menuName = "Scriptable Objects/TroopScriptable")]
@@ -7,11 +8,10 @@ public class TroopScriptable : ScriptableObject
 
     [field: SerializeField] public string Name { get; private set; } = default;
 
-    [field: SerializeField] public TroopType TroopType { get; private set; } = default;
     [field: SerializeField] public AttackType AttackType { get; private set; } = default;
-    [field: SerializeField] public TroopSide TroopSide { get; private set; } = default;
+    [field: SerializeField] public Faction TroopSide { get; private set; } = default;
 
-    [field: Space(5)]
+    [field: Space(8)]
 
     [Header("Heal & Defense Parameters")]
 
@@ -20,7 +20,7 @@ public class TroopScriptable : ScriptableObject
 
     [field: SerializeField, Range(0, 1)] public float BlockRate { get; private set; } = 0.2f;
 
-    [field: Space(5)]
+    [field: Space(8)]
 
     [Header("Attack Parameters")]
 
@@ -33,34 +33,11 @@ public class TroopScriptable : ScriptableObject
     [field: SerializeField] public float AttackRangeRadius { get; private set; } = 3;
     [field: SerializeField] public int CountAttackWaves { get; private set; } = 5;
 
-    [field: Space(5)]
+    [field: Space(8)]
 
     [Header("Others Parameters")]
 
     [field: SerializeField] public float ViewRangeRadius { get; private set; } = 7;
 
     [field: SerializeField] public float Speed { get; private set; } = 7f;
-
-    //
-
-    [field: SerializeField] public int TroopsPerUnit { get; private set; } = 50;
-
-    
-    // maybe create additional parameters like: MaxSpeed; MinSpeed; TimeToGetMaxSpeed; SpeedUnderAttack
-}
-
-public enum TroopType
-{
-    Soldier_Type_1,
-    Soldier_Type_2,
-    AntiTank_Soldier,
-    etc_1,
-    etc_2
-}
-
-public enum AttackType
-{
-    Land,
-    Air,
-    Both
 }

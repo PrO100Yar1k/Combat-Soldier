@@ -24,7 +24,7 @@ public abstract class BaseBuildingAttack
         Vector3 currentPosition = _buildingController.transform.position;
         float attackRange = _buildingScriptable.AttackRange;
 
-        TroopSide targetTroopSide = TroopSide.Player;
+        Faction targetTroopSide = Faction.Allies;
         IDamagable targetPriorityEnemy = null;
 
         while (true)
@@ -71,6 +71,6 @@ public abstract class BaseBuildingAttack
 
     protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);
 
-    protected abstract IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy);
+    protected abstract IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy);
 }
 

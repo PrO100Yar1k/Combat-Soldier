@@ -17,7 +17,7 @@ public class ThirdBuildingAttack : BaseBuildingAttack
         float attackRange = _buildingScriptable.AttackRange;
         float reloadingTime = _buildingScriptable.ReloadingTime;
 
-        TroopSide targetTroopSide = TroopSide.Player;
+        Faction targetTroopSide = Faction.Allies;
         IDamagable targetPriorityEnemy = null;
 
         Vector3 buildingPosition = _buildingController.transform.position;
@@ -50,7 +50,7 @@ public class ThirdBuildingAttack : BaseBuildingAttack
         }
     }
 
-    protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
+    protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
     {
         return _repositoryManager.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
             ?.Take(_maxAttackUnitCount).ToArray();

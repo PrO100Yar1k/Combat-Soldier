@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class GameEventBus
 {
-    public event Action<TroopController, TroopSide> OnTroopSpawned = default;
-    public void TroopSpawned(TroopController troopController, TroopSide troopSide) => OnTroopSpawned?.Invoke(troopController, troopSide);
+    public event Action<TroopController, Faction> OnTroopSpawned = default;
+    public void TroopSpawned(TroopController troopController, Faction troopSide) => OnTroopSpawned?.Invoke(troopController, troopSide);
 
-    public event Action<TroopController, TroopSide> OnTroopDied = default;
+    public event Action<TroopController, Faction> OnTroopDied = default;
     public event Action<TroopController> OnTroopDiedUI = default;
 
-    public void TroopDied(TroopController troopController, TroopSide troopSide)
+    public void TroopDied(TroopController troopController, Faction troopSide)
     {
         OnTroopDied?.Invoke(troopController, troopSide);
         OnTroopDiedUI?.Invoke(troopController);

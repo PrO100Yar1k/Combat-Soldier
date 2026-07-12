@@ -14,7 +14,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public HPTroopController HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable;
-    protected TroopSide _troopSide => _troopScriptable.TroopSide;
+    protected Faction _troopSide => _troopScriptable.TroopSide;
 
     protected event Action OnNotificationForGettingDamaged = default;
 
@@ -39,6 +39,11 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     {
         HPController.TakeDamage(attackDamage);
         OnNotificationForGettingDamaged?.Invoke();
+    }
+
+    public Faction GetFaction()
+    {
+        return _troopSide;
     }
 
     #endregion
@@ -69,8 +74,9 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     public abstract void InitializeTroop();
 }
 
-public enum TroopSide
+public enum Faction
 {
-    Player,
-    Enemy
+    None,
+    Allies,
+    Enemies
 }

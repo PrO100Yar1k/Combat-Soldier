@@ -16,7 +16,7 @@ public class TroopVisionController
 
     public TroopController[] GetEnemiesInVisionRange()
     {
-        TroopSide enemyTroopSide = GetEnemyTroopSide();
+        Faction enemyTroopSide = GetEnemyTroopSide();
 
         float viewRange = _troopScriptable.ViewRangeRadius;
         Vector3 currentPosition = _troopController.transform.position;
@@ -24,8 +24,8 @@ public class TroopVisionController
         return _repositoryManager.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
     }
 
-    private TroopSide GetEnemyTroopSide()
+    private Faction GetEnemyTroopSide()
     {
-        return _troopScriptable.TroopSide == TroopSide.Player ? TroopSide.Enemy : TroopSide.Player;
+        return _troopScriptable.TroopSide == Faction.Allies ? Faction.Enemies : Faction.Allies;
     }
 }

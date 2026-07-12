@@ -42,6 +42,11 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
         HPController.TakeDamage(attackDamage);
     }
 
+    public Faction GetFaction()
+    {
+        return Faction.Enemies;
+    }
+
     #endregion
 
     [Inject]
@@ -66,6 +71,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
 public interface IDamagable
 {
     public void TakeDamage(int attackDamage);
+    public Faction GetFaction();
 }
 
 public interface IAttackable

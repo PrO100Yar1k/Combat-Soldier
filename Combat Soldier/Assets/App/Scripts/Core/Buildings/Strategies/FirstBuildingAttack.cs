@@ -35,7 +35,7 @@ public class FirstBuildingAttack : BaseBuildingAttack
         }
     }
 
-    protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, TroopSide targetTroopSide, IDamagable targetPriorityEnemy)
+    protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
     {
         IDamagable IDamagableTroop = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
 

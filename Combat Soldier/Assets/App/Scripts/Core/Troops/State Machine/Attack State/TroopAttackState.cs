@@ -9,7 +9,7 @@ public abstract class TroopAttackState : TroopBaseState
     protected Coroutine _reloadAttackCoroutine = default;
     protected Coroutine _attackCoroutine = default;
 
-    protected TroopSide _enemyTroopSide = default;
+    protected Faction _enemyTroopSide = default;
 
     protected int _remainingAttackWaves = default;
 

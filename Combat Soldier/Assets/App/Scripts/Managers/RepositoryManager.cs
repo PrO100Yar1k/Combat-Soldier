@@ -5,10 +5,11 @@ using Zenject;
 
 public class RepositoryManager : System.IDisposable
 {
-    private readonly Dictionary<TroopSide, List<TroopController>> _troopsBySide = new()
+    private readonly Dictionary<Faction, List<TroopController>> _troopsBySide = new()
     {
-        { TroopSide.Player, new List<TroopController>() },
-        { TroopSide.Enemy, new List<TroopController>() }
+        { Faction.None, new List<TroopController>() },
+        { Faction.Allies, new List<TroopController>() },
+        { Faction.Enemies, new List<TroopController>() }
     };
     private readonly List<BuildingController> _buildingControllersEnemyList = new List<BuildingController>();
 
@@ -65,14 +66,14 @@ public class RepositoryManager : System.IDisposable
     }
 
     // make extension methods
-    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, TroopSide enemyTroopSide)
+    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, Faction enemyTroopSide)
     {
         return GetTroopControllersList(enemyTroopSide)
             .Where(troop => Vector3.Distance(troopPosition, troop.transform.position) <= troopRange)
             .ToArray();
     }
 
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float targetDistance, TroopSide enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes) // extended parameter : bool isBuildingIncludes // target priority enemy maybe remove ???
+    public MonoBehaviour GetClosestEnemyInRange(Vector3 troopPosition, float targetDistance, Faction enemyTroopSide, IDamagable targetPriorityEnemy, bool isBuildingIncludes) // extended parameter : bool isBuildingIncludes // target priority enemy maybe remove ???
     {
         List<MonoBehaviour> enemyControllersList = new List<MonoBehaviour>();
 
@@ -130,25 +131,25 @@ public class RepositoryManager : System.IDisposable
 
     #region Player & Enemy Lists
 
-    private List<TroopController> GetTroopControllersList(TroopSide troopSide)
+    private List<TroopController> GetTroopControllersList(Faction troopSide)
             => _troopsBySide[troopSide];
 
     public List<TroopController> GetPlayerTroopControllersList()
-        => _troopsBySide[TroopSide.Player];
+        => _troopsBySide[Faction.Allies];
 
     public List<TroopController> GetEnemyTroopControllersList()
-        => _troopsBySide[TroopSide.Enemy];
+        => _troopsBySide[Faction.Enemies];
 
     #endregion
 
     #region Lists Operations
 
-    private void AddTroopToList(TroopController troopController, TroopSide troopSide)
+    private void AddTroopToList(TroopController troopController, Faction troopSide)
     {
         _troopsBySide[troopSide].Add(troopController);
     }
 
-    private void RemoveTroopFromList(TroopController troopController, TroopSide troopSide)
+    private void RemoveTroopFromList(TroopController troopController, Faction troopSide)
     {
         _troopsBySide[troopSide].Remove(troopController);
     }

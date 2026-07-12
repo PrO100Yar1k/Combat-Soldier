@@ -15,7 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Enemy Troop Test
   <TroopType>k__BackingField: 0
   <AttackType>k__BackingField: 0
-  <TroopSide>k__BackingField: 1
+  <TroopSide>k__BackingField: 2
   <MaxHealPoint>k__BackingField: 100
   <MaxDefencePoint>k__BackingField: 100
   <BlockRate>k__BackingField: 0.4
