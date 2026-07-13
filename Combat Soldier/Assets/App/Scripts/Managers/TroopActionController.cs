@@ -3,7 +3,7 @@ using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
 
-public class TroopActionController : MonoBehaviour, ITroopSelection
+public class TroopActionController : MonoBehaviour, ITroopSelection // to do
 {
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _attackTargetLayers = default;

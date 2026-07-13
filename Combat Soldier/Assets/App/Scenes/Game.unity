@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585550}
   - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Player - Main Camera
@@ -576,6 +577,23 @@ MonoBehaviour:
   _attackTargetLayers:
     serializedVersion: 2
     m_Bits: 320
+--- !u!114 &330585550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29af84a949016aa4f8e6a0d1f212c84a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementSpeed: 0.75
+  _smoothing: 10
+  _zoomSpeed: 12
+  _minHeight: 7
+  _maxHeight: 20
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
