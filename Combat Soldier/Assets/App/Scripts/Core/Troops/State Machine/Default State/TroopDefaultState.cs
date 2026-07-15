@@ -1,11 +1,17 @@
+using Assets.App.Scripts;
 using UnityEngine;
 
-public abstract class TroopDefaultState : TroopBaseState // remove this class
+public abstract class TroopDefaultState : TroopBaseState
 {
-    public TroopDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState) 
+    protected TroopDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
 
+    }
+
+    protected override void PlayStateAnimation()
+    {
+        _animatorController.PlayIdle();
     }
 
     protected override void EnableStateIcon()

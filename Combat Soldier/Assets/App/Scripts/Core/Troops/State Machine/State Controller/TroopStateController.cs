@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using Assets.App.Scripts;
 using System.Linq;
 using UnityEngine;
 using System;
 
 public abstract class TroopStateController : ISwitchableState, IDisposable
 {
+    protected ITroopAnimator _troopAnimationController;
+
     protected TroopDefaultState _troopDefaultState = default;
     protected TroopMoveState _troopMoveState = default;
     protected TroopAttackState _troopAttackState = default;
@@ -73,7 +76,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
     {
         TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
 
-        _currentState?.Stop();
+        _currentState?.OnStop();
         _currentState = state;
         _currentState.Start();
 

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using Zenject;
 
-public class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour // to do
 {
     private ITroopSelection _troopManager = default;
 

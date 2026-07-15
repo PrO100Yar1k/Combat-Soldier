@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public class RepositoryManager : System.IDisposable
+public class RepositoryManager : System.IDisposable // to do
 {
     private readonly Dictionary<Faction, List<TroopController>> _troopsBySide = new()
     {

@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 1095471726244663735}
   - component: {fileID: 4486675145118019578}
   - component: {fileID: 4729615120402154312}
+  - component: {fileID: 2549679644895787196}
   m_Layer: 6
   m_Name: Enemy - Troop Unit
   m_TagString: Untagged
@@ -462,7 +463,20 @@ MonoBehaviour:
   _troopScriptable: {fileID: 11400000, guid: 8c64ba56a28385f49b26d7d338b6d625, type: 2}
   _screenCanvasController: {fileID: 7521971610982963199}
   _worldCanvasController: {fileID: 4819097315702761292}
+  _animationController: {fileID: 2549679644895787196}
   _enemyMeshRendererModel: {fileID: 4645623495915320619}
+--- !u!114 &2549679644895787196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555289593626844165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f35351a95b57146967d9a24038e033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4855764308175686026
 PrefabInstance:
   m_ObjectHideFlags: 0

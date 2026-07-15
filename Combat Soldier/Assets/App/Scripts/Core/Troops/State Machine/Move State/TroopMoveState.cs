@@ -1,5 +1,6 @@
-using DG.Tweening;
+using Assets.App.Scripts;
 using UnityEngine;
+using DG.Tweening;
 using System;
 
 public abstract class TroopMoveState : TroopBaseState
@@ -8,6 +9,12 @@ public abstract class TroopMoveState : TroopBaseState
 
     private Tween _movementTweenerController = default;
     private Tween _rotationTweenerController = default;
+
+    protected TroopMoveState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    {
+
+    }
 
     #region Events
 
@@ -23,25 +30,26 @@ public abstract class TroopMoveState : TroopBaseState
 
     #endregion
 
-    public TroopMoveState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState) 
-    {
-    
-    }
-
-    public override void Start()
+    public override void OnStart()
     {
         EnableStateIcon();
         SubscribeToEvents();
     }
 
-    public override void Stop()
+    public override void OnStop()
     {
         UnSubscribeFromEvents();
     }
 
+    protected override void PlayStateAnimation()
+    {
+        _animatorController.PlayRunning();
+    }
+
     public void ActivateTroopMovement(Vector3 point)
-        => OnActivateTroopMovement?.Invoke(point);
+    {
+        OnActivateTroopMovement?.Invoke(point);
+    }
 
     protected override void EnableStateIcon()
     {

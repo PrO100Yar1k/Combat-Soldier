@@ -1,15 +1,19 @@
+using Assets.App.Scripts;
 
-public abstract class TroopDeathState : TroopBaseState
+public abstract class TroopDeathState : TroopBaseState // maybe remove this class
 {
-    public TroopDeathState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState) { }
-
-    public override void Start()
+    protected TroopDeathState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
-        // maybe remove this class ?
+
     }
 
-    public override void Stop()
+    public override void OnStart()
+    {
+        
+    }
+
+    public override void OnStop()
     {
 
     }
@@ -17,5 +21,10 @@ public abstract class TroopDeathState : TroopBaseState
     protected override void EnableStateIcon()
     {
 
+    }
+
+    protected override void PlayStateAnimation()
+    {
+        //_animatorController.PlayDeath();
     }
 }

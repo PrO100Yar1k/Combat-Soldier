@@ -1,21 +1,22 @@
+using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerDefaultState : TroopDefaultState
 {
-    public PlayerDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState)
+    public PlayerDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
 
     }
 
-    public override void Start()
+    public override void OnStart()
     {
         CheckEnemyInAttackRangeStarter();
         EnableStateIcon();
     }
 
-    public override void Stop()
+    public override void OnStop()
     {
 
     }

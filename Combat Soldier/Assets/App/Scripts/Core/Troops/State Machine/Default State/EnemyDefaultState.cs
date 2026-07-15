@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using Assets.App.Scripts;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -17,13 +18,13 @@ public class EnemyDefaultState : TroopDefaultState
     private const float _reactionTime = 0.5f;
 
     public EnemyDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
-        [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList) : base(repositoryManager, troopController, screenCanvasController, switcherState)
+        [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
         foreach (Transform targetPoint in patrollingPointsList)
             _patrollingPointsQueue.Enqueue(targetPoint.position);
     }
 
-    public override void Start()
+    public override void OnStart()
     {
         StartFindingEnemyCoroutine();
         StartPatrollingCoroutine();
@@ -31,7 +32,7 @@ public class EnemyDefaultState : TroopDefaultState
         EnableStateIcon();
     }
 
-    public override void Stop()
+    public override void OnStop()
     {
         StopFindingEnemyCoroutine();
         StopPatrollingCoroutine();

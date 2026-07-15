@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Assets.App.Scripts;
 
 public abstract class TroopDefenseState : TroopBaseState
 {
@@ -9,6 +10,12 @@ public abstract class TroopDefenseState : TroopBaseState
 
     protected const float _waitingForAttackCooldownTime = 10f;
     protected const float _reactionTime = 0.5f;
+
+    protected TroopDefenseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    {
+
+    }
 
     #region Events
 
@@ -24,13 +31,7 @@ public abstract class TroopDefenseState : TroopBaseState
 
     #endregion
 
-    public TroopDefenseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState) 
-    {
-        
-    }
-
-    public override void Start()
+    public override void OnStart()
     {
         SubscribeToEvents();
         UpdatingStateRestarter();
@@ -38,9 +39,14 @@ public abstract class TroopDefenseState : TroopBaseState
         EnableStateIcon();
     }
 
-    public override void Stop()
+    public override void OnStop()
     {
         UnSubscribeFromEvents();
+    }
+
+    protected override void PlayStateAnimation()
+    {
+        _animatorController.PlayDefense();
     }
 
     protected override void EnableStateIcon()

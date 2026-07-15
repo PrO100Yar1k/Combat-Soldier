@@ -14,7 +14,7 @@ public class TroopModelManager : IEnemyTroopProvider, System.IDisposable
 
     public void Dispose()
     {
-        StopperCoroutine();
+        //StopperCoroutine(); // to do reload scene domains
     }
 
     #endregion

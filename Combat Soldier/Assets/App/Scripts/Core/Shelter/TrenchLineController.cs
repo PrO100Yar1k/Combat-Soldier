@@ -25,9 +25,9 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory
     private const int _branchingChance = 20;
     private const int _maxBranchingAttempts = 15;
 
-    public void CreateTrench() // to do
+    public void CreateTrench()
     {
-        Vector3 startPosition = transform.position;
+        Vector3 startPosition = transform.position; // to do
         GenerateTrench(startPosition, _targetDirection);
     }
 

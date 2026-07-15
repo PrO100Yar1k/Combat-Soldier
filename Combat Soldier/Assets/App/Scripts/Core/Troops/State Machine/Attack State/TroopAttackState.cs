@@ -1,6 +1,7 @@
-using System;
-using UnityEngine;
+using Assets.App.Scripts;
 using System.Collections;
+using UnityEngine;
+using System;
 
 public abstract class TroopAttackState : TroopBaseState
 {
@@ -12,6 +13,12 @@ public abstract class TroopAttackState : TroopBaseState
     protected Faction _enemyTroopSide = default;
 
     protected int _remainingAttackWaves = default;
+
+    protected TroopAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    {
+        _remainingAttackWaves = _troopScriptable.CountAttackWaves;
+    }
 
     #region Events
 
@@ -27,19 +34,13 @@ public abstract class TroopAttackState : TroopBaseState
 
     #endregion
 
-    public TroopAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState)
-    {
-        _remainingAttackWaves = _troopScriptable.CountAttackWaves;
-    }
-
-    public override void Start()
+    public override void OnStart()
     {
         SubscribeToEvents();
         EnableStateIcon();
     }
 
-    public override void Stop()
+    public override void OnStop()
     {
         UnSubscribeFromEvents();
         DisableAttackCoroutine();
@@ -47,7 +48,12 @@ public abstract class TroopAttackState : TroopBaseState
         ReloadAttackStarter();
     }
 
-    protected override void EnableStateIcon()
+    protected override void PlayStateAnimation()
+    {
+        _animatorController.PlayAttack();
+    }
+
+    protected override void EnableStateIcon() // to do
     {
         Sprite targetIcon = Resources.Load<Sprite>("State Icons/attack_icon");
         _screenCanvasController.ChangeStateIcon(targetIcon);
