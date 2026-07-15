@@ -94,11 +94,16 @@ public abstract class TroopDefenseState : TroopBaseState
     {
         yield return new WaitForSeconds(_reactionTime);
 
-        if (isEnemyAlreadyDied(enemyDamagable))
+        MonoBehaviour enemyMono = enemyDamagable as MonoBehaviour;
+
+        if (enemyMono == null)
         {
             _switcherState.SwitchState<TroopDefaultState>();
             yield break;
         }
+
+        Vector3 targetLookAtPosition = new Vector3(enemyMono.transform.position.x, _troopController.transform.position.y, enemyMono.transform.position.z);
+        _troopController.transform.LookAt(targetLookAtPosition);
 
         BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
         bulletController.InitializeBullet(_troopController.transform.position, enemyPosition);
@@ -108,7 +113,7 @@ public abstract class TroopDefenseState : TroopBaseState
         int damageUnderAttack = _troopScriptable.DamageUnderAttack;
         enemyDamagable.TakeDamage(damageUnderAttack);
 
-        if (isEnemyAlreadyDied(enemyDamagable))
+        if (enemyMono == null)
         {
             _switcherState.SwitchState<TroopDefaultState>();
             yield break;

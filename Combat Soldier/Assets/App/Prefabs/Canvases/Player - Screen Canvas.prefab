@@ -1804,7 +1804,7 @@ GameObject:
   - component: {fileID: 7227305365118012153}
   - component: {fileID: 2857650101268458491}
   m_Layer: 5
-  m_Name: Base - Screen Canvas
+  m_Name: Player - Screen Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

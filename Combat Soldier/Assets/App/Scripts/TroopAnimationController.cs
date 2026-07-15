@@ -1,5 +1,5 @@
-using Assets.App.Scripts;
 using UnityEngine;
+using Assets.App.Scripts;
 
 public class TroopAnimationController : MonoBehaviour, ITroopAnimator
 {

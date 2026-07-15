@@ -70,8 +70,8 @@ public class TroopModelManager : IEnemyTroopProvider, System.IDisposable
         {
             if (visibleEnemies.Contains(enemy))
                 enemy.TroopModelController.AppearTroopModel();
-            else
-                enemy.TroopModelController.DisappearTroopModel();
+
+            else enemy.TroopModelController.DisappearTroopModel();
         }
     }
 

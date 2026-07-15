@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class WorldCanvasController : TroopCanvasController
 {
-    [SerializeField] private RectTransform _attackCircleRange = default;
-    [SerializeField] private RectTransform _viewCircleRange = default;
+    [SerializeField] protected Image _unitCircleRange = default;
+
+    [SerializeField] protected RectTransform _attackCircleRange = default;
+    [SerializeField] protected RectTransform _viewCircleRange = default;
 
     protected override void AssignDefaultCanvasValues()
     {
@@ -14,18 +17,14 @@ public abstract class WorldCanvasController : TroopCanvasController
     public override void EnableCanvas()
     {
         ChangeCirclesState(true);
-
-        base.EnableCanvas();
     }
 
     public override void DisableCanvas()
     {
         ChangeCirclesState(false);
-
-        base.DisableCanvas();
     }
 
-    public void SetupCircleRanges()
+    private void SetupCircleRanges()
     {
         float attackRangeRadius = _troopScriptable.AttackRangeRadius;
         float viewRangeRadius = _troopScriptable.ViewRangeRadius;
@@ -34,9 +33,11 @@ public abstract class WorldCanvasController : TroopCanvasController
         _viewCircleRange.localScale = new Vector2(viewRangeRadius * 2, viewRangeRadius * 2);
     }
 
-    public void ChangeCirclesState(bool state)
+    private void ChangeCirclesState(bool state)
     {
         _attackCircleRange.gameObject.SetActive(state);
         _viewCircleRange.gameObject.SetActive(state);
+
+        _unitCircleRange.gameObject.SetActive(!state);
     }
 }
