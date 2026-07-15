@@ -173,7 +173,7 @@ public class TroopActionController : MonoBehaviour, ITroopSelection // to do
         }
         else
         {
-            const float distanceDelta = 0.15f;
+            const float distanceDelta = 0.1f;
             const float distanceModifier = 1 - distanceDelta;
 
             Vector3 direction = (targetPoint - troopPosition).normalized;

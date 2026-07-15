@@ -46,6 +46,8 @@ public class HPTroopController : HPController
         else 
             TakeDamageWithoutDefenseState(attackDamage);
 
+        (_troopController as EnemyTroopController)?.TroopModelController.ChangeMaterialToDamaged(); // to do
+
         ChangeSliderAndTextValues();
         CheckHealPointsForDeath();
     }

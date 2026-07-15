@@ -1,3 +1,4 @@
+using Assets.App.Scripts;
 using System;
 using UnityEngine;
 
@@ -56,6 +57,17 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 
         SubscribeToBasicEvent();
         DisableAllCanvases();
+    }
+
+    public void ChangeUnitCircle(bool isTroopInsideViewRange)
+    {
+        if (_worldCanvasController is IViewRangeVisualizer visualizer)
+        {
+            if (isTroopInsideViewRange)
+                visualizer.InsideViewRange();
+            else
+                visualizer.OutsideViewRange();
+        }
     }
 
     private void OpenTroopGeneralMenu(MonoBehaviour controller)

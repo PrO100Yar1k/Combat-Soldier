@@ -14,8 +14,8 @@ public class EnemyDefaultState : TroopDefaultState
     private const float minWaitingTime = 8.0f;
     private const float maxWaitingTime = 15.0f;
 
-    private const float _enemyFindingDelay = 1.0f;
-    private const float _reactionTime = 0.5f;
+    private const float _enemyFindingDelay = 0.5f;
+    private const float _reactionTime = 0.3f;
 
     public EnemyDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
         [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
@@ -123,6 +123,9 @@ public class EnemyDefaultState : TroopDefaultState
             {
                 yield return new WaitForSeconds(_reactionTime);
 
+                Vector3 targetLookAtPosition = new Vector3(closestEnemyInAttackRange.transform.position.x, _troopController.transform.position.y, closestEnemyInAttackRange.transform.position.z);
+                _troopController.transform.LookAt(targetLookAtPosition);
+
                 IDamagable enemyDamagable = closestEnemyInAttackRange as IDamagable;
                 _troopController.StateController.ActivateAttackState(enemyDamagable);
 
@@ -147,7 +150,7 @@ public class EnemyDefaultState : TroopDefaultState
 
     private void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange) // to do extension method
     {
-        const float distanceDelta = 0.15f;
+        const float distanceDelta = 0.1f;
         const float distanceModifier = 1 - distanceDelta;
 
         Vector3 currentPosition = _troopController.transform.position;

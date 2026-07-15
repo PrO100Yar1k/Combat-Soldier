@@ -1,57 +1,84 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class TroopModelController
+public class TroopModelController : MonoBehaviour
 {
-    private readonly TroopController _troopController;
-    private readonly GameObject _troopGameObject;
-    private readonly MeshRenderer _meshRenderer;
-    private readonly GameEventBus _gameEventBus;
+    [SerializeField] private SkinnedMeshRenderer _meshRenderer = default;
+    [SerializeField] private Material _transparentBase = default;
 
-    private readonly Material[] _defaultMaterials;
-    private readonly LayerMask _defaultLayer;
+    [SerializeField] private List<Material> _damagedUnitMaterial = default;
 
-    private Material[] _disappearMaterials;
+    [SerializeField] private LayerMask _ignoreRaycastMask = default;
 
-    public TroopModelController(TroopController troopController, GameObject troopGameObject, MeshRenderer meshRenderer, GameEventBus gameEventBus)
+    private EnemyTroopController _troopController = default;
+    private GameEventBus _gameEventBus = default;
+
+    private Material[] _defaultMaterials = default;
+    private Material[] _disappearMaterials = default;
+
+    private LayerMask _defaultLayer = default;
+
+    private Coroutine _damagedMaterialCoroutine = default;
+
+    public void Initialize(EnemyTroopController troopController)
     {
         _troopController = troopController;
-        _troopGameObject = troopGameObject;
-        _meshRenderer = meshRenderer;
-        _gameEventBus = gameEventBus;
 
         _defaultMaterials = _meshRenderer.sharedMaterials;
-        _defaultLayer = _troopGameObject.layer;
+        _defaultLayer = _troopController.gameObject.layer;
 
         PrepareDisappearMaterials();
     }
 
+    [Inject]
+    public void Construct(GameEventBus gameEventBus)
+    {
+        _gameEventBus = gameEventBus;
+    }
+
     private void PrepareDisappearMaterials()
     {
-        Material transparentBase = Resources.Load<Material>("Half-Invisible-Material");
-
-        if (transparentBase == null)
-            return;
-
         _disappearMaterials = new Material[_defaultMaterials.Length];
 
         for (int i = 0; i < _disappearMaterials.Length; i++)
-            _disappearMaterials[i] = transparentBase;
+            _disappearMaterials[i] = _transparentBase;
     }
 
     public void AppearTroopModel()
     {
+        if (_damagedMaterialCoroutine != null)
+            return;
+
+        _troopController.UIController.ChangeUnitCircle(true);
+
         _meshRenderer.materials = _defaultMaterials;
-        _troopGameObject.layer = _defaultLayer;
+        _troopController.gameObject.layer = _defaultLayer;
     }
 
     public void DisappearTroopModel()
     {
-        int layerIgnoreRaycast = LayerMask.NameToLayer("Ignore Raycast");
-        _troopGameObject.layer = layerIgnoreRaycast;
+        _troopController.UIController.ChangeUnitCircle(false);
+        _troopController.gameObject.layer = _ignoreRaycastMask;
 
         if (_disappearMaterials != null)
             _meshRenderer.materials = _disappearMaterials;
 
         _gameEventBus.TroopDisableUI(_troopController);
+    }
+
+    public void ChangeMaterialToDamaged()
+    {
+        _damagedMaterialCoroutine = _troopController.StartCoroutine(ChangeMaterialToDamagedCoroutine());
+    }
+
+    private IEnumerator ChangeMaterialToDamagedCoroutine()
+    {
+        _meshRenderer.materials = _damagedUnitMaterial.ToArray();
+
+        yield return new WaitForSeconds(0.25f);
+
+        _meshRenderer.materials = _defaultMaterials;
     }
 }
