@@ -79,7 +79,8 @@ public abstract class TroopAttackState : TroopBaseState
             return;
 
         DisableAttackCoroutine();
-        EnableCoroutine(targetEnemy);
+
+        _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(targetEnemy));
     }
 
     private void DisableAttackCoroutine()
@@ -89,11 +90,6 @@ public abstract class TroopAttackState : TroopBaseState
 
         _troopController.StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
-    }
-
-    private void EnableCoroutine(MonoBehaviour enemyController)
-    {
-        _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(enemyController));
     }
 
     #endregion
@@ -114,8 +110,13 @@ public abstract class TroopAttackState : TroopBaseState
             if (isEnemyWithinAttackRange(targetEnemy) == false)
                 break;
 
+            PlayStateAnimation();
+
+            Vector3 initialBulletPosition = _troopController.BulletInitialPoint.position;
+            Vector3 targetBulletPosition = new Vector3(targetEnemy.transform.position.x, _troopController.BulletInitialPoint.position.y, targetEnemy.transform.position.z);
+
             BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
-            bulletController.InitializeBullet(_troopController.transform.position, targetEnemy.transform.position);
+            bulletController.InitializeBullet(initialBulletPosition, targetBulletPosition);
 
             PlayerTroopController playerController = _troopController as PlayerTroopController;
             playerController?.UpdateReloadingBar(timeBetweenAttackWaves);
@@ -137,8 +138,15 @@ public abstract class TroopAttackState : TroopBaseState
         }
 
         ReloadAttackStarter();
-
         AttackActionCompletion(targetEnemy);
+    }
+
+    private void AttackActionCompletion(MonoBehaviour targetEnemy)
+    {
+        if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
+            AttackEnemyCoroutineStarter(targetEnemy);
+
+        else _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #endregion
@@ -156,17 +164,6 @@ public abstract class TroopAttackState : TroopBaseState
         float attackRange = _troopScriptable.AttackRangeRadius;
 
         return Vector3.Distance(currentPosition, enemyPosition) <= attackRange;
-    }
-
-    #endregion
-
-    #region Extra Methods
-
-    private void AttackActionCompletion(MonoBehaviour targetEnemy)
-    {
-        if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
-            AttackEnemyCoroutineStarter(targetEnemy);
-        else _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #endregion

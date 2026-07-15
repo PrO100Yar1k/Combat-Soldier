@@ -26,6 +26,8 @@ public class EnemyDefaultState : TroopDefaultState
 
     public override void OnStart()
     {
+        PlayStateAnimation();
+
         StartFindingEnemyCoroutine();
         StartPatrollingCoroutine();
     }

@@ -36,18 +36,17 @@ public class HPTroopController : HPController
 
     #region Take Damage
     
-    public override void TakeDamage(int attackDamage) // to do
+    public override void TakeDamage(int attackDamage)
     {
         if (attackDamage <= 0)
             return;
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
             TakeDamageWithDefenseState(attackDamage);
-
-        else TakeDamageWithoutDefenseState(attackDamage);
+        else 
+            TakeDamageWithoutDefenseState(attackDamage);
 
         ChangeSliderAndTextValues();
-
         CheckHealPointsForDeath();
     }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Assets.App.Scripts;
 using Assets.App.Scripts.Infrastructure.Interfaces;
 
-public class TrenchLineController : MonoBehaviour, ITrenchFactory
+public class TrenchLineController : MonoBehaviour, ITrenchFactory //
 {
     [SerializeField] private Transform _trenchParent = default;
     [SerializeField] private TrenchUnit _trenchUnitPrefab = default;
@@ -25,9 +25,9 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory
     private const int _branchingChance = 20;
     private const int _maxBranchingAttempts = 15;
 
-    public void CreateTrench()
+    public void CreateTrench() // to do
     {
-        Vector3 startPosition = transform.position; // to do
+        Vector3 startPosition = transform.position;  // to do
         GenerateTrench(startPosition, _targetDirection);
     }
 

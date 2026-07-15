@@ -40,7 +40,6 @@ public abstract class TroopBaseState : IDisposable
     public void Start()
     {
         SubscribeToEvents();
-        PlayStateAnimation();
         EnableStateIcon();
 
         OnStart();

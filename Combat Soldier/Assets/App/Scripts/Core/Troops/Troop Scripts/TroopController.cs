@@ -4,6 +4,8 @@ using Zenject;
 
 public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage
 {
+    [field: SerializeField] public Transform BulletInitialPoint { get; private set; }
+
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
@@ -59,7 +61,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 
     public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
     {
-        if (StateController.CheckStateForActivity<TroopAttackState>())
+        if (StateController.CheckStateForActivity<TroopAttackState>() || StateController.CheckStateForActivity<TroopDeathState>())
             return;
 
         Vector3 currentPos = transform.position;

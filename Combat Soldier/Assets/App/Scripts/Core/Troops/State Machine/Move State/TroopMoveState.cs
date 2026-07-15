@@ -37,7 +37,7 @@ public abstract class TroopMoveState : TroopBaseState
 
     public override void OnStart()
     {
-
+        PlayStateAnimation();
     }
 
     public override void OnStop()

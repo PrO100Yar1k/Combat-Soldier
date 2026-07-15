@@ -13,7 +13,7 @@ public abstract class TroopDeathState : TroopBaseState // maybe remove this clas
 
     public override void OnStart()
     {
-        
+        PlayStateAnimation();
     }
 
     public override void OnStop()

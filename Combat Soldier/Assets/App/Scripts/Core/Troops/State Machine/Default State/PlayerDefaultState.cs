@@ -1,6 +1,6 @@
+using UnityEngine;
 using Assets.App.Scripts;
 using System.Collections;
-using UnityEngine;
 
 public class PlayerDefaultState : TroopDefaultState
 {
@@ -12,6 +12,7 @@ public class PlayerDefaultState : TroopDefaultState
 
     public override void OnStart()
     {
+        PlayStateAnimation();
         CheckEnemyInAttackRangeStarter();
     }
 
@@ -21,7 +22,9 @@ public class PlayerDefaultState : TroopDefaultState
     }
 
     private void CheckEnemyInAttackRangeStarter()
-        => _troopController.StartCoroutine(CheckEnemyOnceInAttackRange());
+    {
+        _troopController.StartCoroutine(CheckEnemyOnceInAttackRange());
+    }
 
     private IEnumerator CheckEnemyOnceInAttackRange()
     {
@@ -39,6 +42,11 @@ public class PlayerDefaultState : TroopDefaultState
 
         if (enemyInAttackRange == null)
             yield break;
+
+        yield return new WaitForSeconds(0.1f);
+
+        Vector3 targetLookAtPosition = new Vector3(enemyInAttackRange.transform.position.x, _troopController.transform.position.y, enemyInAttackRange.transform.position.z);
+        _troopController.transform.LookAt(targetLookAtPosition);
 
         _troopController.StateController.ActivateAttackState(enemyInAttackRange as IDamagable);
     }

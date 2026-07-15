@@ -33,8 +33,10 @@ public class PlayerTroopController : TroopController
         _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
     }
 
-    private void NotifyForGettingDamaged() //
-        => Debug.Log("Lord, your unit was damaged!");
+    private void NotifyForGettingDamaged()
+    {
+        Debug.Log("Lord, your unit was damaged!");
+    }
 
     public void UpdateReloadingBar(float timeToReload)
     {

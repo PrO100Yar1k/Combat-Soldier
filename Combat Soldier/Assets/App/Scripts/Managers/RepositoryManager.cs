@@ -118,14 +118,11 @@ public class RepositoryManager : System.IDisposable // to do
         return false;
     }
 
-    public Transform[] GetRandomEnemyPatrollingPoints(int pointsCount)
+    public Transform[] GetRandomEnemyPatrollingPoints()
     {
-        if (pointsCount > _enemyPatrollingPoins.Count)
-            return null;
-
         return _enemyPatrollingPoins
             .OrderBy(x => Random.value)
-            .Take(pointsCount)
+            .Take(_enemyPatrollingPoins.Count)
             .ToArray();
     }
 

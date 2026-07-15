@@ -6,9 +6,11 @@ using Assets.App.Scripts;
 public abstract class TroopDefenseState : TroopBaseState
 {
     protected event Action<IDamagable, Vector3> OnActivateDefenseUnderAttack = default;
-    protected Coroutine _updatingStateCoroutine = default;
 
-    protected const float _waitingForAttackCooldownTime = 10f;
+    protected Coroutine _defenseCoroutine = default;
+    protected Coroutine _autoChangeStateCoroutine = default;
+
+    protected const float _waitingForAutoChangeStateTime = 10f;
     protected const float _reactionTime = 0.5f;
 
     protected override string StateIconLocation
@@ -36,12 +38,14 @@ public abstract class TroopDefenseState : TroopBaseState
 
     public override void OnStart()
     {
-        UpdatingStateRestarter();
+        PlayStateAnimation();
+        StartAutoChangeState();
     }
 
     public override void OnStop()
     {
-        // stop coroutine
+        StopAutoChangeState();
+        StopFightBackCoroutine();
     }
 
     protected override void PlayStateAnimation()
@@ -50,7 +54,9 @@ public abstract class TroopDefenseState : TroopBaseState
     }
 
     public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
-        => OnActivateDefenseUnderAttack?.Invoke(enemyDamagable, enemyPosition);
+    {
+        OnActivateDefenseUnderAttack?.Invoke(enemyDamagable, enemyPosition);
+    }
 
     private void FightBackToEnemy(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
@@ -63,13 +69,29 @@ public abstract class TroopDefenseState : TroopBaseState
         if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
             return;
 
-        _troopController.StartCoroutine(FightBackCoroutine(enemyDamagable, enemyPosition));
+        StartFightBackCoroutine(enemyDamagable, enemyPosition);
+    }
+
+    #region Fight Back Coroutine
+
+    private void StartFightBackCoroutine(IDamagable enemyDamagable, Vector3 enemyPosition)
+    {
+        StopFightBackCoroutine();
+
+        _defenseCoroutine = _troopController.StartCoroutine(FightBackCoroutine(enemyDamagable, enemyPosition));
+    }
+
+    private void StopFightBackCoroutine()
+    {
+        if (_defenseCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_defenseCoroutine);
+        _defenseCoroutine = null;
     }
 
     private IEnumerator FightBackCoroutine(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        string enemyName = (enemyDamagable as UnityEngine.Object).name;
-
         yield return new WaitForSeconds(_reactionTime);
 
         if (isEnemyAlreadyDied(enemyDamagable))
@@ -92,10 +114,13 @@ public abstract class TroopDefenseState : TroopBaseState
             yield break;
         }
 
-        UpdatingStateRestarter();
-
+        string enemyName = (enemyDamagable as MonoBehaviour).name;
         Debug.Log($"I fought back to {enemyName} with total damage of {damageUnderAttack}!");
+
+        StartAutoChangeState();
     }
+
+    #endregion
 
     #region Helper Methods
 
@@ -104,22 +129,27 @@ public abstract class TroopDefenseState : TroopBaseState
 
     #endregion
 
-    #region Updating State Coroutine
+    #region Auto Change State Coroutine
 
-    private void UpdatingStateRestarter()
+    private void StartAutoChangeState()
     {
-        if (_updatingStateCoroutine != null)
-        {
-            _troopController.StopCoroutine(_updatingStateCoroutine);
-            _updatingStateCoroutine = null;
-        }
+        StopAutoChangeState();
 
-        _updatingStateCoroutine = _troopController.StartCoroutine(UpdatingStateCoroutine());
+        _autoChangeStateCoroutine = _troopController.StartCoroutine(UpdatingStateCoroutine());
+    }
+
+    private void StopAutoChangeState()
+    {
+        if (_autoChangeStateCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_autoChangeStateCoroutine);
+        _autoChangeStateCoroutine = null;
     }
 
     private IEnumerator UpdatingStateCoroutine()
     {
-        yield return new WaitForSeconds(_waitingForAttackCooldownTime);
+        yield return new WaitForSeconds(_waitingForAutoChangeStateTime);
         _switcherState.SwitchState<TroopDefaultState>();
     }
 

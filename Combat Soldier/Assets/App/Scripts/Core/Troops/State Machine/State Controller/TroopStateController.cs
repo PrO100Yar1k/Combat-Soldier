@@ -1,57 +1,61 @@
 using System.Collections.Generic;
 using Assets.App.Scripts;
-using System.Linq;
 using UnityEngine;
 using System;
 
 public abstract class TroopStateController : ISwitchableState, IDisposable
 {
-    protected ITroopAnimator _troopAnimationController;
+    protected ITroopAnimator _troopAnimationController = default;
 
-    protected TroopDefaultState _troopDefaultState = default;
-    protected TroopMoveState _troopMoveState = default;
-    protected TroopAttackState _troopAttackState = default;
-    protected TroopDefenseState _troopDefenseState = default;
-    protected TroopDeathState _troopDeathState = default;
-
-    protected List<TroopBaseState> _allStates = default;
-    protected TroopBaseState _currentState = default;
+    protected Dictionary<Type, TroopBaseState> _states = new();
+    protected TroopBaseState _currentState;
 
     #region Disposable
 
     public void Dispose()
     {
-        foreach (IDisposable disposableState in _allStates)
-            disposableState.Dispose();
+        foreach (var state in _states.Values)
+            state.Dispose();
+
+        _states.Clear();
     }
 
     #endregion
 
-    public void NotifyActiveStateForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable
+    public TGet GetState<TGet>() where TGet : TroopBaseState
+    {
+        if (_states.TryGetValue(typeof(TGet), out var state))
+            return (TGet) state;
+
+        Debug.LogError($"[StateController] State {typeof(TGet).Name} is not registered!");
+        return null;
+    }
+
+    public void NotifyActiveStateForTakingDamage<TState>(TState target) where TState : MonoBehaviour, IDamagable
     {
         (_currentState as IReactableForDamage)?.ReactionForTakingDamage(target); // future feature
     }
 
     public void ActivateAttackState(IDamagable enemyDamagable)
     {
-        if (CheckStateForActivity<TroopAttackState>() == false) // ?
+        if (!CheckStateForActivity<TroopAttackState>())
             SwitchState<TroopAttackState>();
 
-        _troopAttackState.ActivateAttack(enemyDamagable);
+        GetState<TroopAttackState>()?.ActivateAttack(enemyDamagable);
     }
 
     public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)
     {
-        if (CheckStateForActivity<TroopDefenseState>() == false)
+        if (!CheckStateForActivity<TroopDefenseState>())
             SwitchState<TroopDefenseState>();
 
-        _troopDefenseState.ActivateDefenseUnderAttack(enemyDamagable, enemyPosition);
+        GetState<TroopDefenseState>()?.ActivateDefenseUnderAttack(enemyDamagable, enemyPosition);
     }
 
     public void ActivateMoveState(Vector3 targetPoint)
     {
         SwitchState<TroopMoveState>();
-        _troopMoveState.ActivateTroopMovement(targetPoint);
+        GetState<TroopMoveState>()?.ActivateTroopMovement(targetPoint);
     }
 
     public void ActivateDefaultState()
@@ -67,20 +71,27 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         SwitchState<TroopDeathState>();
     }
 
-    public bool CheckStateForActivity<State>() where State : TroopBaseState
+    public bool CheckStateForActivity<TCheck>() where TCheck : TroopBaseState
     {
-        return _currentState == _allStates.FirstOrDefault(s => s is State);
+        return _currentState is TCheck;
     }
 
-    public void SwitchState<State>() where State : TroopBaseState
+    public void SwitchState<TSwitch>() where TSwitch : TroopBaseState
     {
-        TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
+        Type targetType = typeof(TSwitch);
+
+        if (!_states.TryGetValue(targetType, out var nextState))
+        {
+            Debug.LogError($"[StateController] State {typeof(TSwitch).Name} was not found!");
+            return;
+        }
 
         _currentState?.Stop();
-        _currentState = state;
+        _currentState = nextState;
         _currentState.Start();
 
-        //Debug.Log(_currentState);
+        if (this is EnemyStateController)
+            Debug.Log(_currentState);
     }
 }
 
