@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Enemy - Troop Config
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Enemy Troop Test
-  <TroopType>k__BackingField: 0
   <AttackType>k__BackingField: 0
   <TroopSide>k__BackingField: 2
   <MaxHealPoint>k__BackingField: 100
@@ -27,4 +26,3 @@ MonoBehaviour:
   <CountAttackWaves>k__BackingField: 5
   <ViewRangeRadius>k__BackingField: 6
   <Speed>k__BackingField: 7
-  <TroopsPerUnit>k__BackingField: 50

@@ -89,9 +89,6 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         _currentState?.Stop();
         _currentState = nextState;
         _currentState.Start();
-
-        if (this is EnemyStateController)
-            Debug.Log(_currentState);
     }
 }
 

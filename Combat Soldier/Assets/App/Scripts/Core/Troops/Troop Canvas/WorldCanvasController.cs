@@ -5,8 +5,8 @@ public abstract class WorldCanvasController : TroopCanvasController
 {
     [SerializeField] protected Image _unitCircleRange = default;
 
-    [SerializeField] protected RectTransform _attackCircleRange = default;
     [SerializeField] protected RectTransform _viewCircleRange = default;
+    [SerializeField] protected RectTransform _attackCircleRange = default;
 
     protected override void AssignDefaultCanvasValues()
     {
@@ -29,8 +29,8 @@ public abstract class WorldCanvasController : TroopCanvasController
         float attackRangeRadius = _troopScriptable.AttackRangeRadius;
         float viewRangeRadius = _troopScriptable.ViewRangeRadius;
 
-        _attackCircleRange.localScale = new Vector2(attackRangeRadius * 2, attackRangeRadius * 2);
-        _viewCircleRange.localScale = new Vector2(viewRangeRadius * 2, viewRangeRadius * 2);
+        _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius * 2, attackRangeRadius * 2);
+        _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius * 2, viewRangeRadius * 2);
     }
 
     private void ChangeCirclesState(bool state)
