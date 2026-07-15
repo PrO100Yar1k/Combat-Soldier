@@ -28,8 +28,6 @@ public class EnemyDefaultState : TroopDefaultState
     {
         StartFindingEnemyCoroutine();
         StartPatrollingCoroutine();
-
-        EnableStateIcon();
     }
 
     public override void OnStop()

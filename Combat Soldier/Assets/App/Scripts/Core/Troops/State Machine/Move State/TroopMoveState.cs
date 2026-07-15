@@ -10,6 +10,11 @@ public abstract class TroopMoveState : TroopBaseState
     private Tween _movementTweenerController = default;
     private Tween _rotationTweenerController = default;
 
+    private const float rotationSpeed = 270f;
+
+    protected override string StateIconLocation
+        => "State Icons/Move-State-Icon";
+
     protected TroopMoveState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
@@ -32,13 +37,12 @@ public abstract class TroopMoveState : TroopBaseState
 
     public override void OnStart()
     {
-        EnableStateIcon();
-        SubscribeToEvents();
+
     }
 
     public override void OnStop()
     {
-        UnSubscribeFromEvents();
+
     }
 
     protected override void PlayStateAnimation()
@@ -51,12 +55,6 @@ public abstract class TroopMoveState : TroopBaseState
         OnActivateTroopMovement?.Invoke(point);
     }
 
-    protected override void EnableStateIcon()
-    {
-        Sprite targetIcon = Resources.Load<Sprite>("State Icons/movement_icon");
-        _screenCanvasController.ChangeStateIcon(targetIcon);
-    }
-
     private void SetWaypoint(Vector3 point)
     {
         Transform troopTransform = _troopController.transform;
@@ -67,10 +65,11 @@ public abstract class TroopMoveState : TroopBaseState
         Vector3 offset = (pointPos - currentPos).normalized * 0.1f;
         Vector3 finalPos = new Vector3(pointPos.x - offset.x, currentPos.y, pointPos.z - offset.z);
 
-        SmoothlyRotateTroop(finalPos.normalized);
+        Vector3 moveDirection = (finalPos - currentPos).normalized;
+
+        SmoothlyRotateTroop(moveDirection);
 
         float distance = Vector3.Distance(finalPos, currentPos);
-
         float timeToArrive = distance / _troopScriptable.Speed;
 
         _movementTweenerController?.Kill();
@@ -83,8 +82,6 @@ public abstract class TroopMoveState : TroopBaseState
     {
         if (moveDirection == Vector3.zero)
             return;
-
-        const float rotationSpeed = 270f;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
         float angle = Quaternion.Angle(_troopController.transform.rotation, targetRotation);
@@ -99,6 +96,6 @@ public abstract class TroopMoveState : TroopBaseState
 
     private void ActionAfterFinish()
     {
-        _switcherState.SwitchState<TroopDefaultState>(); //
+        _switcherState.SwitchState<TroopDefaultState>();
     }
 }

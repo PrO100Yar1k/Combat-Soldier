@@ -76,7 +76,7 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
     {
         TroopBaseState state = _allStates.FirstOrDefault(s => s is State);
 
-        _currentState?.OnStop();
+        _currentState?.Stop();
         _currentState = state;
         _currentState.Start();
 

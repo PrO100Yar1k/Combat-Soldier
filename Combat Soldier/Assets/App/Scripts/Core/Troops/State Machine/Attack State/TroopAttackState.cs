@@ -14,6 +14,9 @@ public abstract class TroopAttackState : TroopBaseState
 
     protected int _remainingAttackWaves = default;
 
+    protected override string StateIconLocation
+        => "State Icons/Attack-State-Icon";
+
     protected TroopAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
@@ -36,15 +39,12 @@ public abstract class TroopAttackState : TroopBaseState
 
     public override void OnStart()
     {
-        SubscribeToEvents();
-        EnableStateIcon();
+
     }
 
     public override void OnStop()
     {
-        UnSubscribeFromEvents();
         DisableAttackCoroutine();
-
         ReloadAttackStarter();
     }
 
@@ -53,14 +53,10 @@ public abstract class TroopAttackState : TroopBaseState
         _animatorController.PlayAttack();
     }
 
-    protected override void EnableStateIcon() // to do
-    {
-        Sprite targetIcon = Resources.Load<Sprite>("State Icons/attack_icon");
-        _screenCanvasController.ChangeStateIcon(targetIcon);
-    }
-
     public void ActivateAttack(IDamagable enemyDamagable)
-        => OnActivateTroopAttack?.Invoke(enemyDamagable);
+    {
+        OnActivateTroopAttack?.Invoke(enemyDamagable);
+    }
 
     private void TryToAttackEnemy(IDamagable enemyDamagable)
     {

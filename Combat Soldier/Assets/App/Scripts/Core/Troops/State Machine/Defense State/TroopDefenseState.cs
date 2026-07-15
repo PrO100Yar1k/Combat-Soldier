@@ -11,6 +11,9 @@ public abstract class TroopDefenseState : TroopBaseState
     protected const float _waitingForAttackCooldownTime = 10f;
     protected const float _reactionTime = 0.5f;
 
+    protected override string StateIconLocation
+        => "State Icons/Defense-State-Icon";
+
     protected TroopDefenseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
     {
@@ -33,26 +36,17 @@ public abstract class TroopDefenseState : TroopBaseState
 
     public override void OnStart()
     {
-        SubscribeToEvents();
         UpdatingStateRestarter();
-
-        EnableStateIcon();
     }
 
     public override void OnStop()
     {
-        UnSubscribeFromEvents();
+        // stop coroutine
     }
 
     protected override void PlayStateAnimation()
     {
         _animatorController.PlayDefense();
-    }
-
-    protected override void EnableStateIcon()
-    {
-        Sprite targetIcon = Resources.Load<Sprite>("State Icons/defense_icon");
-        _screenCanvasController.ChangeStateIcon(targetIcon);
     }
 
     public void ActivateDefenseUnderAttack(IDamagable enemyDamagable, Vector3 enemyPosition)

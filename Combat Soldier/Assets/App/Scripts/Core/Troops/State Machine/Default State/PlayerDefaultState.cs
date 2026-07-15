@@ -13,7 +13,6 @@ public class PlayerDefaultState : TroopDefaultState
     public override void OnStart()
     {
         CheckEnemyInAttackRangeStarter();
-        EnableStateIcon();
     }
 
     public override void OnStop()
