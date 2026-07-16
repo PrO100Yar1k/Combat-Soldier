@@ -30,12 +30,11 @@ public class GameEventBus
     public event Action<TroopController, OrderMode> OnTroopEnterAnyMode = default;
     public void TroopEnterAnyMode(TroopController troopController, OrderMode orderMode) => OnTroopEnterAnyMode?.Invoke(troopController, orderMode);
 
-    public event Action OnTroopCancelEnteringMode = default;
-    public void TroopCancelEnteringMode() => OnTroopCancelEnteringMode?.Invoke();
-
+    public event Action OnDeselectController = default;
+    public void DeselectController() => OnDeselectController?.Invoke();
 
     public event Action OnDisableActiveCanvases = default;
-    public void DisableActiveCanvases() => OnDisableActiveCanvases?.Invoke();
+    public void DisableActiveCanvas() => OnDisableActiveCanvases?.Invoke();
 
     public event Action<MonoBehaviour> OnOpenTroopMenu = default;
     public void OpenTroopMenu(MonoBehaviour controller) => OnOpenTroopMenu?.Invoke(controller);

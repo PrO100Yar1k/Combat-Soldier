@@ -4,6 +4,8 @@
     {
         None,
         Move,
-        Attack
+        Attack,
+        Unite,
+        Split
     }
 }

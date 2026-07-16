@@ -825,10 +825,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bd1ad53c63dad44aa2906e05c466e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8484599590281261160}
-  _transparentBase: {fileID: 2100000, guid: effc92988d0ff784099f7417b3cce3ae, type: 2}
   _damagedUnitMaterial:
   - {fileID: 2100000, guid: 90bba92c97b8264479999fe199ebd3e0, type: 2}
+  _meshRenderer: {fileID: 8484599590281261160}
+  _transparentBase: {fileID: 2100000, guid: effc92988d0ff784099f7417b3cce3ae, type: 2}
   _ignoreRaycastMask:
     serializedVersion: 2
     m_Bits: 4
@@ -1085,12 +1085,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491c7ec97e66ca94383ac8893d63a8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <BulletInitialPoint>k__BackingField: {fileID: 8968174148499474036}
+  _bulletInitialPoint: {fileID: 8968174148499474036}
   _troopScriptable: {fileID: 11400000, guid: 8c64ba56a28385f49b26d7d338b6d625, type: 2}
+  _troopModelController: {fileID: 6985094625357622038}
   _screenCanvasController: {fileID: 3580209084801587064}
   _worldCanvasController: {fileID: 2233568999809666094}
   _animationController: {fileID: 4268166416854095039}
-  <TroopModelController>k__BackingField: {fileID: 6985094625357622038}
 --- !u!114 &4268166416854095039
 MonoBehaviour:
   m_ObjectHideFlags: 0

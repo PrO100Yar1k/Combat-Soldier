@@ -2,6 +2,6 @@
 {
     public interface ITroopSelection
     {
-        public void SelectTroopOrderState();
+        public void HandleSelection();
     }
 }

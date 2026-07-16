@@ -8,7 +8,8 @@ public class GameplayInstaller : MonoInstaller
     [SerializeField] private List<Transform> _enemyPatrollingPoints = new List<Transform>();
 
     [SerializeField, Space(3)] private BulletPoolConfigurator _poolConfigurator = default;
-    [SerializeField] private TroopActionController _troopActionController = default;
+    [SerializeField] private PlayerSelectionController _troopSelectionController = default;
+    [SerializeField] private PlayerCommandController _troopCommandController = default;
     [SerializeField] private TrenchLineController _trenchController = default;
 
     public override void InstallBindings()
@@ -17,12 +18,16 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<List<Transform>>().WithId("Enemy Points").FromInstance(_enemyPatrollingPoints).AsSingle();
 
-        Container.BindInterfacesTo<TroopModelManager>().AsSingle();
+        Container.BindInterfacesTo<EnemyModelManager>().AsSingle();
         Container.BindInterfacesTo<EnemyFactoryManager>().AsSingle();
 
         Container.BindInterfacesTo<TrenchLineController>().FromInstance(_trenchController).AsSingle();
 
-        Container.Bind<ITroopSelection>().To<TroopActionController>().FromInstance(_troopActionController).AsSingle();
+        //Container.Bind<ITroopSelection>().To<PlayerSelectionController>().FromInstance(_troopActionController).AsSingle();
+        Container.Bind<PlayerSelectionController>().FromInstance(_troopSelectionController).AsSingle();
+        Container.Bind<PlayerCommandController>().FromInstance(_troopCommandController).AsSingle();
+
+
         Container.Bind<IObjectPool>().To<BulletPoolConfigurator>().FromInstance(_poolConfigurator).AsSingle();
 
         Container.Bind<RepositoryManager>().AsSingle();

@@ -1,23 +1,34 @@
-using Assets.App.Scripts.Infrastructure.Interfaces;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using Zenject;
 
-public class CameraController : MonoBehaviour // to do
+public class PlayerInputController : MonoBehaviour
 {
-    private ITroopSelection _troopManager = default;
+    private PlayerSelectionController _selectionController;
+    private PlayerCommandController _commandController;
 
     [Inject]
-    public void Construct(ITroopSelection troopManager)
+    public void Construct(PlayerSelectionController selectionController, PlayerCommandController commandController)
     {
-        _troopManager = troopManager;
+        _selectionController = selectionController;
+        _commandController = commandController;
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !isPointerOverUI())
-            _troopManager.SelectTroopOrderState();
+        if (isPointerOverUI())
+            return;
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            _selectionController.SelectObject();
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            _commandController.ExecuteCommand();
+        }
     }
 
     private bool isPointerOverUI()

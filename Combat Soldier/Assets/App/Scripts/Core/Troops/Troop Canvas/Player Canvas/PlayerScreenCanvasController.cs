@@ -8,9 +8,8 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 {
     [SerializeField, Space(3)] private Slider _reloadingSlider = default;
 
-    [SerializeField] private Button _attackButton = default;
-    [SerializeField] private Button _moveButton = default;    
-    [SerializeField] private Button _cancelButton = default;
+    [SerializeField] private Button _uniteArmyButton = default;
+    [SerializeField] private Button _splitArmyButton = default;
 
     public bool DisableCanvasAfterOrder => true;
 
@@ -26,10 +25,8 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
     {
         base.AssignDefaultCanvasValues();
 
-        _attackButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Attack); });
-        _moveButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Move); });
-
-        _cancelButton.onClick.AddListener(AddEventOnCancelButton);
+        _uniteArmyButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Unite); });
+        _splitArmyButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Split); });
     }
 
     #region Button Events
@@ -37,13 +34,6 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
     private void AddEventOnActionButtons(OrderMode orderMode)
     {
         _gameEvents.TroopEnterAnyMode(_troopController, orderMode);
-        _cancelButton.gameObject.SetActive(true);
-    }
-
-    private void AddEventOnCancelButton()
-    {
-        _gameEvents.TroopCancelEnteringMode();
-        _cancelButton.gameObject.SetActive(false);
     }
 
     #endregion
@@ -77,17 +67,4 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
     }
 
     #endregion 
-
-    #region Extra Methods
-
-    public void ChangeCancelButtonState(bool state)
-        => _cancelButton.gameObject.SetActive(state);
-
-    public override void EnableCanvas()
-    {
-        _cancelButton.gameObject.SetActive(false);
-        base.EnableCanvas();
-    }
-
-    #endregion
 }

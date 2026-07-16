@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 
 [RequireComponent(typeof(Button))]
-public class ChangeTroopState : MonoBehaviour
+public class ChangePlayerTroopState : MonoBehaviour
 {
     [SerializeField] private Image _cooldownImage = default;
 

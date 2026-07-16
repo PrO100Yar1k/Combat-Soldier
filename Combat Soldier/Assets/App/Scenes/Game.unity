@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 727976983087545205, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_Name
-      value: Player - Troop Animated_1
+      value: Player - Troop Animated
       objectReference: {fileID: 0}
     - target: {fileID: 727976983087545205, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_IsActive
@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 330585548}
   - component: {fileID: 330585550}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585551}
   m_Layer: 0
   m_Name: Player - Main Camera
   m_TagString: MainCamera
@@ -484,10 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c617b1f1f96110643a93c46380eb4093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _terrainLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _attackTargetLayers:
+  _selectableLayers:
     serializedVersion: 2
     m_Bits: 320
 --- !u!114 &330585550
@@ -507,6 +505,24 @@ MonoBehaviour:
   _zoomSpeed: 12
   _minHeight: 7
   _maxHeight: 20
+--- !u!114 &330585551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cea212175a69948b59a0c56aaab8ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _terrainLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _attackTargetLayers:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,7 +746,7 @@ Transform:
   m_GameObject: {fileID: 431947510}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.010000229, z: 0}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0}
   m_LocalScale: {x: 100, y: 0.01, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1037,8 +1053,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 270018125}
   - {fileID: 237501584}
+  - {fileID: 270018125}
   - {fileID: 1306027521}
   - {fileID: 4062874455266643470}
   m_Father: {fileID: 0}
@@ -1393,7 +1409,8 @@ MonoBehaviour:
   _enemyPatrollingPoints:
   - {fileID: 2026576245}
   _poolConfigurator: {fileID: 520543260}
-  _troopActionController: {fileID: 330585549}
+  _troopSelectionController: {fileID: 330585549}
+  _troopCommandController: {fileID: 330585551}
   _trenchController: {fileID: 1067341750}
 --- !u!114 &1969066863
 MonoBehaviour:
@@ -1773,7 +1790,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 252490018493127655, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 580129127444906365, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1781,11 +1798,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 580129127444906365, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 727976983087545205, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_Name
-      value: Player - Troop Animated
+      value: Player - Troop Animated_1
       objectReference: {fileID: 0}
     - target: {fileID: 727976983087545205, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_IsActive
@@ -1797,7 +1814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 994921353169838527, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 1962667261968240092, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_Name
@@ -1857,7 +1874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7824000450012230777, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 8200870372521976698, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1865,7 +1882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8200870372521976698, guid: a50b1de05b7e7384cae0701ab4e0e4b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2053,7 +2070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4063874360897101073, guid: 37359fea2f995344bb3f960c5dfbdabc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.39
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4063874360897101073, guid: 37359fea2f995344bb3f960c5dfbdabc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2061,7 +2078,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4063874360897101073, guid: 37359fea2f995344bb3f960c5dfbdabc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.52
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4063874360897101073, guid: 37359fea2f995344bb3f960c5dfbdabc, type: 3}
       propertyPath: m_LocalRotation.w

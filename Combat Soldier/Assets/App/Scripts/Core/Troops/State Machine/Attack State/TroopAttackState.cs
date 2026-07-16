@@ -10,9 +10,13 @@ public abstract class TroopAttackState : TroopBaseState
     protected Coroutine _reloadAttackCoroutine = default;
     protected Coroutine _attackCoroutine = default;
 
-    protected Faction _enemyTroopSide = default;
+    protected MonoBehaviour _currentTargetEnemy = default;
 
+    protected Faction _enemyTroopSide = default;
     protected int _remainingAttackWaves = default;
+    protected float _lastAttackTime = default;
+
+    protected bool _isReloading = false;
 
     protected override string StateIconLocation
         => "State Icons/Attack-State-Icon";
@@ -39,13 +43,19 @@ public abstract class TroopAttackState : TroopBaseState
 
     public override void OnStart()
     {
+        float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
+        if (Time.time - _lastAttackTime > timeBetweenAttackWaves)
+        {
+            _lastAttackTime = Time.time - timeBetweenAttackWaves;
+        }
     }
 
     public override void OnStop()
     {
         DisableAttackCoroutine();
         ReloadAttackStarter();
+        _isReloading = false;
     }
 
     protected override void PlayStateAnimation()
@@ -78,8 +88,12 @@ public abstract class TroopAttackState : TroopBaseState
         if (targetEnemy == null)
             return;
 
+        if (_currentTargetEnemy == targetEnemy) //_attackCoroutine != null &&
+            return;
+
         DisableAttackCoroutine();
 
+        _currentTargetEnemy = targetEnemy;
         _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(targetEnemy));
     }
 
@@ -89,6 +103,7 @@ public abstract class TroopAttackState : TroopBaseState
             return;
 
         _troopController.StopCoroutine(_attackCoroutine);
+        _currentTargetEnemy = null;
         _attackCoroutine = null;
     }
 
@@ -98,17 +113,27 @@ public abstract class TroopAttackState : TroopBaseState
 
     private IEnumerator AttackEnemyCoroutine(MonoBehaviour targetEnemy)
     {
-        yield return new WaitUntil(()=> _remainingAttackWaves > 0);
+        yield return new WaitUntil(()=> !_isReloading && _remainingAttackWaves > 0);
 
         float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
-        for ( ; _remainingAttackWaves > 0; _remainingAttackWaves--)
+        while (_remainingAttackWaves > 0 && !_isReloading)
         {
+            float timeSinceLastAttack = Time.time - _lastAttackTime;
+
+            //if (timeSinceLastAttack < timeBetweenAttackWaves)
+            //{
+            //    yield return new WaitForSeconds(timeBetweenAttackWaves - timeSinceLastAttack);
+            //}
+
             if (isEnemyStillAlive(targetEnemy) == false)
                 break;
 
             if (isEnemyWithinAttackRange(targetEnemy) == false)
                 break;
+
+            _lastAttackTime = Time.time;
+            _remainingAttackWaves--;
 
             PlayStateAnimation();
 
@@ -121,7 +146,8 @@ public abstract class TroopAttackState : TroopBaseState
             PlayerTroopController playerController = _troopController as PlayerTroopController;
             playerController?.UpdateReloadingBar(timeBetweenAttackWaves);
 
-            yield return new WaitForSeconds(bulletController.GetBulletLifetime());
+            float bulletLifetime = bulletController.GetBulletLifetime();
+            yield return new WaitForSeconds(bulletLifetime);
 
             int attackDamage = _troopScriptable.AttackDamage;
 
@@ -134,19 +160,20 @@ public abstract class TroopAttackState : TroopBaseState
             IReactableForDamage enemyReactableForDamage = targetEnemy as IReactableForDamage;
             enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
 
-            yield return new WaitForSeconds(timeBetweenAttackWaves);
+            yield return new WaitForSeconds(timeBetweenAttackWaves - bulletLifetime);
         }
 
-        ReloadAttackStarter();
-        AttackActionCompletion(targetEnemy);
+        if (_remainingAttackWaves <= 0)
+        {
+            ReloadAttackStarter();
+        }
+        CheckForAttackStateCompletion();
     }
 
-    private void AttackActionCompletion(MonoBehaviour targetEnemy)
+    private void CheckForAttackStateCompletion()
     {
-        if (isEnemyStillAlive(targetEnemy) && isEnemyWithinAttackRange(targetEnemy))
-            AttackEnemyCoroutineStarter(targetEnemy);
-
-        else _switcherState.SwitchState<TroopDefaultState>();
+        if (!isEnemyStillAlive(_currentTargetEnemy) || !isEnemyWithinAttackRange(_currentTargetEnemy))
+            _switcherState.SwitchState<TroopDefaultState>();
     }
 
     #endregion
@@ -183,6 +210,8 @@ public abstract class TroopAttackState : TroopBaseState
 
     private IEnumerator ReloadAttack()
     {
+        _isReloading = true;
+
         const float initialDelay = 0.25f;
 
         yield return new WaitForSeconds(initialDelay);
@@ -190,14 +219,29 @@ public abstract class TroopAttackState : TroopBaseState
         int attackWavesCount = _troopScriptable.CountAttackWaves;
 
         float timeToCompleteReload = _troopScriptable.TimeToReloadAttack;
-        float timeToReloadAttack = timeToCompleteReload / attackWavesCount * _remainingAttackWaves;
+        float timeToReloadAttack = timeToCompleteReload / attackWavesCount;
 
         PlayerTroopController playerController = _troopController as PlayerTroopController;
-        playerController?.UpdateReloadingBar(timeToReloadAttack);
+        playerController?.UpdateReloadingBar(timeToCompleteReload);
 
-        for ( ; _remainingAttackWaves < attackWavesCount + 1; _remainingAttackWaves++)
+        for ( ; _remainingAttackWaves < attackWavesCount; _remainingAttackWaves++)
         {
-            yield return new WaitForSeconds(timeToReloadAttack / attackWavesCount);
+            yield return new WaitForSeconds(timeToReloadAttack);
+        }
+
+        _isReloading = false;
+
+        CheckEnemies();
+    }
+
+    private void CheckEnemies()
+    {
+        MonoBehaviour unit = _currentTargetEnemy;
+
+        if (isEnemyStillAlive(_currentTargetEnemy) && isEnemyWithinAttackRange(_currentTargetEnemy))
+        {
+            _currentTargetEnemy = null;
+            AttackEnemyCoroutineStarter(unit);
         }
     }
 

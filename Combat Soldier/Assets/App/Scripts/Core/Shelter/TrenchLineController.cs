@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 using Assets.App.Scripts;
+using System.Collections.Generic;
 using Assets.App.Scripts.Infrastructure.Interfaces;
 
-public class TrenchLineController : MonoBehaviour, ITrenchFactory //
+public class TrenchLineController : MonoBehaviour, ITrenchFactory
 {
     [SerializeField] private Transform _trenchParent = default;
     [SerializeField] private TrenchUnit _trenchUnitPrefab = default;
@@ -19,7 +19,6 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory //
         { Direction.Left,  new Vector3(-1, 0, 0) }
     };
 
-    private const int _unitCount = 30;
     private const float _unitSpacing = 1f;
 
     private const int _branchingChance = 20;
@@ -27,18 +26,20 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory //
 
     public void CreateTrench() // to do
     {
-        Vector3 startPosition = transform.position;  // to do
-        GenerateTrench(startPosition, _targetDirection);
+        const int unitCount = 20;
+        Vector3 startPosition = transform.position;
+
+        GenerateTrench(startPosition, _targetDirection, unitCount);
     }
 
-    private void GenerateTrench(Vector3 startPosition, Direction baseDirection)
+    private void GenerateTrench(Vector3 startPosition, Direction baseDirection, int unitCount)
     {
         Vector3 currentPosition = startPosition;
         Direction currentDirection = baseDirection;
 
         _occupiedPositions.Add(Vector3Int.RoundToInt(currentPosition));
 
-        for (int i = 0; i < _unitCount; i++)
+        for (int i = 0; i < unitCount; i++)
         {
             int randomBranchingNumber = UnityEngine.Random.Range(0, 100);
             bool shouldBranchChance = randomBranchingNumber < _branchingChance;

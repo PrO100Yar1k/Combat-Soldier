@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerTroopController : TroopController
 {
-    [SerializeField] private ChangeTroopState _changeStateButton = default;
+    [SerializeField] private ChangePlayerTroopState _changeStateButton = default;
 
     public TroopVisionController VisionController { get; private set; }
 
@@ -31,6 +31,8 @@ public class PlayerTroopController : TroopController
         HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
 
         _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
+
+        _troopModelController.Initialize(this);
     }
 
     private void NotifyForGettingDamaged()

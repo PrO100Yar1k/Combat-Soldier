@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class EnemyTroopController : TroopController
 {
-    [field: SerializeField] public TroopModelController TroopModelController { get; private set; }
-
     public override void InitializeTroop()
     {
         Transform[] transforms = _repositoryManager.GetRandomEnemyPatrollingPoints();
@@ -12,6 +10,6 @@ public class EnemyTroopController : TroopController
         UIController = new UICanvasController<TroopController>(this, _screenCanvasController, _worldCanvasController, _gameEventBus);
         HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
 
-        TroopModelController.Initialize(this);
+        _troopModelController.Initialize(this);
     }
 }

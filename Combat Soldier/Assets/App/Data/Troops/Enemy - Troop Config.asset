@@ -15,14 +15,14 @@ MonoBehaviour:
   <Name>k__BackingField: Enemy Troop Test
   <AttackType>k__BackingField: 0
   <TroopSide>k__BackingField: 2
-  <MaxHealPoint>k__BackingField: 100
+  <MaxHealPoint>k__BackingField: 130
   <MaxDefencePoint>k__BackingField: 100
-  <BlockRate>k__BackingField: 0.4
-  <TimeToReloadAttack>k__BackingField: 8
-  <TimeBetweenAttackWaves>k__BackingField: 3
-  <AttackDamage>k__BackingField: 25
-  <DamageUnderAttack>k__BackingField: 15
+  <BlockRate>k__BackingField: 0.5
+  <TimeToReloadAttack>k__BackingField: 6
+  <TimeBetweenAttackWaves>k__BackingField: 2
+  <AttackDamage>k__BackingField: 1
+  <DamageUnderAttack>k__BackingField: 1
   <AttackRangeRadius>k__BackingField: 4
-  <CountAttackWaves>k__BackingField: 5
+  <CountAttackWaves>k__BackingField: 4
   <ViewRangeRadius>k__BackingField: 6
   <Speed>k__BackingField: 7

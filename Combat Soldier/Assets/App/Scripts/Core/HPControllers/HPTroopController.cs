@@ -1,3 +1,4 @@
+using Assets.App.Scripts;
 using UnityEngine;
 
 public class HPTroopController : HPController
@@ -46,7 +47,7 @@ public class HPTroopController : HPController
         else 
             TakeDamageWithoutDefenseState(attackDamage);
 
-        (_troopController as EnemyTroopController)?.TroopModelController.ChangeMaterialToDamaged(); // to do
+        _troopController.TroopModelController.ChangeMaterialToDamaged();
 
         ChangeSliderAndTextValues();
         CheckHealPointsForDeath();

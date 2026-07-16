@@ -1,24 +1,28 @@
+using Assets.App.Scripts;
 using System;
 using UnityEngine;
 using Zenject;
 
 public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage
 {
-    [field: SerializeField] public Transform BulletInitialPoint { get; private set; }
-
+    [SerializeField] protected Transform _bulletInitialPoint = default;
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
+    [SerializeField] protected BaseTroopModelController _troopModelController = default;
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected WorldCanvasController _worldCanvasController = default;
 
     [SerializeField] protected TroopAnimationController _animationController = default;
+
+    public Transform BulletInitialPoint => _bulletInitialPoint;
+    public BaseTroopModelController TroopModelController => _troopModelController;
 
     public UICanvasController<TroopController> UIController { get; protected set; }
     public TroopStateController StateController { get; protected set; }
     public HPTroopController HPController { get; protected set; }
 
     public TroopScriptable TroopScriptable => _troopScriptable;
-    protected Faction _troopSide => _troopScriptable.TroopSide;
+    public Faction _troopSide => _troopScriptable.TroopSide;
 
     protected event Action OnNotificationForGettingDamaged = default;
 

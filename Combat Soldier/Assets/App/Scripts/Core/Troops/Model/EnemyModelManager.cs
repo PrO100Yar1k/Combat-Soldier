@@ -1,9 +1,10 @@
 using Assets.App.Scripts.Infrastructure.Interfaces;
 using System.Collections.Generic;
+using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 
-public class TroopModelManager : IEnemyTroopProvider, System.IDisposable
+public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 {
     private readonly RepositoryManager _repositoryManager;
     private readonly CoroutineStarter _coroutineStarter;
@@ -14,12 +15,12 @@ public class TroopModelManager : IEnemyTroopProvider, System.IDisposable
 
     public void Dispose()
     {
-        //StopperCoroutine(); // to do reload scene domains
+        //StopperCoroutine();
     }
 
     #endregion
 
-    public TroopModelManager(RepositoryManager repositoryManager, CoroutineStarter coroutineStarter)
+    public EnemyModelManager(RepositoryManager repositoryManager, CoroutineStarter coroutineStarter)
     {
         _repositoryManager = repositoryManager;
         _coroutineStarter = coroutineStarter;
@@ -63,32 +64,46 @@ public class TroopModelManager : IEnemyTroopProvider, System.IDisposable
 
     private void UpdateTroopDeploymentData()
     {
-        HashSet<EnemyTroopController> visibleEnemies = GetVisibleEnemies();
+        HashSet<TroopController> visibleEnemies = GetVisibleEnemies();
         List<TroopController> allEnemies = _repositoryManager.GetEnemyTroopControllersList();
 
-        foreach (EnemyTroopController enemy in allEnemies)
+        foreach (TroopController enemy in allEnemies)
         {
-            if (visibleEnemies.Contains(enemy))
-                enemy.TroopModelController.AppearTroopModel();
+            if (enemy == null) continue;
 
-            else enemy.TroopModelController.DisappearTroopModel();
+            if (enemy.TroopModelController is IVisableModel visable)
+            {
+                if (visibleEnemies.Contains(enemy))
+                    visable.AppearTroopModel();
+                else
+                    visable.DisappearTroopModel();
+            }
         }
     }
 
     #region Vision Logic
 
-    private HashSet<EnemyTroopController> GetVisibleEnemies()
+    private HashSet<TroopController> GetVisibleEnemies()
     {
-        HashSet<EnemyTroopController> visibleEnemiesSet = new HashSet<EnemyTroopController>();
+        HashSet<TroopController> visibleEnemiesSet = new HashSet<TroopController>();
         List<TroopController> playerControllersList = _repositoryManager.GetPlayerTroopControllersList();
 
         foreach (PlayerTroopController playerController in playerControllersList)
         {
+            if (playerController == null || playerController.VisionController == null)
+                continue;
+
             TroopController[] enemiesInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
 
-            foreach (EnemyTroopController unit in enemiesInVisionRange)
+            if (enemiesInVisionRange == null)
+                continue;
+
+            foreach (TroopController unit in enemiesInVisionRange)
             {
-                visibleEnemiesSet.Add(unit);
+                if (unit != null)
+                {
+                    visibleEnemiesSet.Add(unit);
+                }
             }
         }
 

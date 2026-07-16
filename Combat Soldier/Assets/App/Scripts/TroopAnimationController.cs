@@ -17,21 +17,33 @@ public class TroopAnimationController : MonoBehaviour, ITroopAnimator
 
     public void PlayIdle()
     {
+        if (IsAlreadyPlayingOrTransitioning(IdleHash))
+            return;
+
         CrossFade(IdleHash, 0.15f);
     }
 
     public void PlayRunning()
     {
+        if (IsAlreadyPlayingOrTransitioning(RunningHash))
+            return;
+
         CrossFade(RunningHash, 0.15f);
     }
 
     public void PlayAttack()
     {
-        CrossFade(AttackHash, 0.15f);
+        if (IsAlreadyPlayingOrTransitioning(AttackHash))
+            return;
+
+        CrossFade(AttackHash, 0.1f);
     }
 
     public void PlayDefense()
     {
+        if (IsAlreadyPlayingOrTransitioning(DefenseHash))
+            return;
+
         CrossFade(DefenseHash, 0.15f);
     }
 
@@ -41,5 +53,21 @@ public class TroopAnimationController : MonoBehaviour, ITroopAnimator
             return;
 
         _animator.CrossFadeInFixedTime(stateHash, duration);
+    }
+
+    private bool IsAlreadyPlayingOrTransitioning(int stateHash)
+    {
+        if (_animator == null)
+            return false;
+
+        if (_animator.IsInTransition(0))
+        {
+            AnimatorStateInfo nextState = _animator.GetNextAnimatorStateInfo(0);
+            return nextState.shortNameHash == stateHash;
+        }
+
+        AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(0);
+
+        return currentState.shortNameHash == stateHash;
     }
 }
