@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 8484599590294953158}
   - component: {fileID: 6985094625357622038}
   m_Layer: 0
-  m_Name: Troop - Model
+  m_Name: Player - Troop Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,9 +829,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 90bba92c97b8264479999fe199ebd3e0, type: 2}
   _meshRenderer: {fileID: 8484599590281261160}
   _transparentBase: {fileID: 2100000, guid: effc92988d0ff784099f7417b3cce3ae, type: 2}
-  _ignoreRaycastMask:
-    serializedVersion: 2
-    m_Bits: 4
 --- !u!1 &8484599590294894176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,7 +1229,8 @@ PrefabInstance:
       value: Enemy - Screen Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8761560847658167244, guid: be4048fca4f4f394ab5d20bee7671701, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be4048fca4f4f394ab5d20bee7671701, type: 3}

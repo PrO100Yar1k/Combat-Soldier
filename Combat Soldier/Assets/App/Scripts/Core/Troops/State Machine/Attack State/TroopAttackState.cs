@@ -54,7 +54,6 @@ public abstract class TroopAttackState : TroopBaseState
     public override void OnStop()
     {
         DisableAttackCoroutine();
-        ReloadAttackStarter();
         _isReloading = false;
     }
 
@@ -165,7 +164,7 @@ public abstract class TroopAttackState : TroopBaseState
 
         if (_remainingAttackWaves <= 0)
         {
-            ReloadAttackStarter();
+            StartReloadAttackCoroutine();
         }
         CheckForAttackStateCompletion();
     }
@@ -197,15 +196,20 @@ public abstract class TroopAttackState : TroopBaseState
 
     #region Reload Attack
 
-    private void ReloadAttackStarter()
+    private void StartReloadAttackCoroutine()
+    {
+        StopReloadAttackCoroutine();
+
+        _reloadAttackCoroutine = _troopController.StartCoroutine(ReloadAttack());
+    }
+
+    private void StopReloadAttackCoroutine()
     {
         if (_reloadAttackCoroutine != null)
         {
             _troopController.StopCoroutine(_reloadAttackCoroutine);
             _reloadAttackCoroutine = null;
         }
-
-        _reloadAttackCoroutine = _troopController.StartCoroutine(ReloadAttack());
     }
 
     private IEnumerator ReloadAttack()
@@ -226,6 +230,8 @@ public abstract class TroopAttackState : TroopBaseState
 
         for ( ; _remainingAttackWaves < attackWavesCount; _remainingAttackWaves++)
         {
+            _troopController.ChangeUnitCircleToReloading(timeToReloadAttack);
+
             yield return new WaitForSeconds(timeToReloadAttack);
         }
 

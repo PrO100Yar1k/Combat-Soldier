@@ -15,29 +15,29 @@ public class TroopScriptable : ScriptableObject
 
     [Header("Heal & Defense Parameters")]
 
-    [field: SerializeField] public int MaxHealPoint { get; private set; } = 100;
-    [field: SerializeField] public int MaxDefencePoint { get; private set; } = 100;
+    [field: SerializeField] public int MaxHealPoint { get; private set; }
+    [field: SerializeField] public int MaxDefencePoint { get; private set; }
 
-    [field: SerializeField, Range(0, 1)] public float BlockRate { get; private set; } = 0.2f;
+    [field: SerializeField, Range(0, 1)] public float BlockRate { get; private set; }
 
     [field: Space(8)]
 
     [Header("Attack Parameters")]
 
-    [field: SerializeField] public float TimeToReloadAttack { get; private set; } = 5;
-    [field: SerializeField] public float TimeBetweenAttackWaves { get; private set; } = 5;
+    [field: SerializeField] public float TimeToReloadAttack { get; private set; }
+    [field: SerializeField] public float TimeBetweenAttackWaves { get; private set; }
 
-    [field: SerializeField] public int AttackDamage { get; private set; } = 25;
-    [field: SerializeField] public int DamageUnderAttack { get; private set; } = 10;
+    [field: SerializeField] public int AttackDamage { get; private set; }
+    [field: SerializeField] public int DamageUnderAttack { get; private set; }
 
-    [field: SerializeField] public float AttackRangeRadius { get; private set; } = 3;
-    [field: SerializeField] public int CountAttackWaves { get; private set; } = 5;
+    [field: SerializeField] public float AttackRangeRadius { get; private set; }
+    [field: SerializeField] public int CountAttackWaves { get; private set; }
 
     [field: Space(8)]
 
     [Header("Others Parameters")]
 
-    [field: SerializeField] public float ViewRangeRadius { get; private set; } = 7;
+    [field: SerializeField] public float ViewRangeRadius { get; private set; }
 
-    [field: SerializeField] public float Speed { get; private set; } = 7f;
+    [field: SerializeField] public float Speed { get; private set; }
 }

@@ -160,6 +160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player - World Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5544676304110575236, guid: 66e5f2e20f32c244e928c8137ecc9b19, type: 3}
+      propertyPath: m_Color.a
+      value: 0.8627451
+      objectReference: {fileID: 0}
     - target: {fileID: 8561354390505761356, guid: 66e5f2e20f32c244e928c8137ecc9b19, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -271,7 +275,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111614, guid: 2599104a4a2a5214f8407d03827b5eff, type: 3}
       propertyPath: m_Name
-      value: Troop - Model
+      value: Player - Troop Model
       objectReference: {fileID: 0}
     - target: {fileID: 432436, guid: 2599104a4a2a5214f8407d03827b5eff, type: 3}
       propertyPath: m_LocalPosition.x

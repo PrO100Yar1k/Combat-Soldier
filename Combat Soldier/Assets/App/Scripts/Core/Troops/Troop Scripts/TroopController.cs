@@ -47,11 +47,18 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     {
         HPController.TakeDamage(attackDamage);
         OnNotificationForGettingDamaged?.Invoke();
+
+        _worldCanvasController.ChangeUnitCircleUnderAttack();
     }
 
     public Faction GetFaction()
     {
         return _troopSide;
+    }
+
+    public void ChangeUnitCircleToReloading(float reloadingTime)
+    {
+        _worldCanvasController.ChangeUnitCircleToReloading(reloadingTime);
     }
 
     #endregion
