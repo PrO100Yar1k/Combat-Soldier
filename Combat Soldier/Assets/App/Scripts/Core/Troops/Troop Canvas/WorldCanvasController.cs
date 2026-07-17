@@ -14,7 +14,6 @@ public abstract class WorldCanvasController : TroopCanvasController
 
     protected override void AssignDefaultCanvasValues()
     {
-        ChangeCirclesState(false);
         SetupCircleRanges();
     }
 
@@ -26,6 +25,7 @@ public abstract class WorldCanvasController : TroopCanvasController
     public override void DisableCanvas()
     {
         ChangeCirclesState(false);
+        ChangeReloadingCirclesState(false);
     }
 
     public void ChangeUnitCircleToReloading(float reloadingTime)
@@ -45,15 +45,12 @@ public abstract class WorldCanvasController : TroopCanvasController
 
         _attackCircleRange.sizeDelta = new Vector2(attackRangeRadius * 2, attackRangeRadius * 2);
         _viewCircleRange.sizeDelta = new Vector2(viewRangeRadius * 2, viewRangeRadius * 2);
-
-        _unitCircleLining.gameObject.SetActive(false);
     }
 
     private void ChangeCirclesState(bool state)
     {
         _attackCircleRange.gameObject.SetActive(state);
         _viewCircleRange.gameObject.SetActive(state);
-        _unitReloadingCircleRange.gameObject.SetActive(state);
 
         _unitCircleRange.gameObject.SetActive(!state);
     }
@@ -81,6 +78,11 @@ public abstract class WorldCanvasController : TroopCanvasController
     {
         _unitReloadingCircleRange.fillAmount = condition ? 0f : 1f;
 
+        ChangeReloadingCirclesState(condition);
+    }
+
+    private void ChangeReloadingCirclesState(bool condition)
+    {
         _unitCircleLining.gameObject.SetActive(condition);
         _unitReloadingCircleRange.gameObject.SetActive(condition);
     }
@@ -90,11 +92,9 @@ public abstract class WorldCanvasController : TroopCanvasController
         float loopDelay = 0.7f;
 
         SetupUnitRange(140);
-
         yield return new WaitForSeconds(loopDelay / 2);
 
         SetupUnitRange(220);
-
         yield return new WaitForSeconds(loopDelay / 2);
     }
 

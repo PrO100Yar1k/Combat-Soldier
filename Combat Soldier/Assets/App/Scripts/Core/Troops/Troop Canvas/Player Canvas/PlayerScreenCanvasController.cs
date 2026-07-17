@@ -8,9 +8,6 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
 {
     [SerializeField, Space(3)] private Slider _reloadingSlider = default;
 
-    [SerializeField] private Button _uniteArmyButton = default;
-    [SerializeField] private Button _splitArmyButton = default;
-
     public bool DisableCanvasAfterOrder => true;
 
     private GameEventBus _gameEvents = default;
@@ -25,8 +22,8 @@ public class PlayerScreenCanvasController : TroopScreenCanvasController
     {
         base.AssignDefaultCanvasValues();
 
-        _uniteArmyButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Unite); });
-        _splitArmyButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Split); });
+        //_uniteArmyButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Unite); });
+        //_splitArmyButton.onClick.AddListener(delegate { AddEventOnActionButtons(OrderMode.Split); });
     }
 
     #region Button Events
