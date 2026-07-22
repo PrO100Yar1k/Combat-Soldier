@@ -6,8 +6,8 @@ public class ThirdBuildingAttack : BaseBuildingAttack
 {
     private const int _maxAttackUnitCount = 10;
 
-    public ThirdBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
-        : base(buildingController, buildingScriptable, repositoryManager)
+    public ThirdBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, TargetSearchService targetSearchService)
+        : base(buildingController, buildingScriptable, targetSearchService)
     {
         // damage all enemies (above _maxAttackUnitCount, but could make infinite enemy count too) in the attack range based on usual reload
     }
@@ -52,7 +52,7 @@ public class ThirdBuildingAttack : BaseBuildingAttack
 
     protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
     {
-        return _repositoryManager.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
+        return _targetSearchService.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
             ?.Take(_maxAttackUnitCount).ToArray();
     }
 }

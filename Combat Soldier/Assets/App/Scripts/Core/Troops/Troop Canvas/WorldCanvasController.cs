@@ -12,6 +12,8 @@ public abstract class WorldCanvasController : TroopCanvasController
 
     [SerializeField] protected RectTransform _unitCircleLining = default;
 
+    private bool _isReloading = false;
+
     protected override void AssignDefaultCanvasValues()
     {
         SetupCircleRanges();
@@ -20,12 +22,13 @@ public abstract class WorldCanvasController : TroopCanvasController
     public override void EnableCanvas()
     {
         ChangeCirclesState(true);
+        ChangeReloadingCirclesState(_isReloading);
     }
 
     public override void DisableCanvas()
     {
         ChangeCirclesState(false);
-        ChangeReloadingCirclesState(false);
+        ChangeReloadingCirclesState(_isReloading);
     }
 
     public void ChangeUnitCircleToReloading(float reloadingTime)
@@ -52,7 +55,7 @@ public abstract class WorldCanvasController : TroopCanvasController
         _attackCircleRange.gameObject.SetActive(state);
         _viewCircleRange.gameObject.SetActive(state);
 
-        _unitCircleRange.gameObject.SetActive(!state);
+        //_unitCircleRange.gameObject.SetActive(!state);
     }
 
     private IEnumerator ChangeUnitCircleToReloadingCoroutine(float reloadingTime)
@@ -74,17 +77,18 @@ public abstract class WorldCanvasController : TroopCanvasController
         SetupReloadingBars(false);
     }
 
-    private void SetupReloadingBars(bool condition)
+    private void SetupReloadingBars(bool isReloading)
     {
-        _unitReloadingCircleRange.fillAmount = condition ? 0f : 1f;
+        _isReloading = isReloading;
+        _unitReloadingCircleRange.fillAmount = isReloading ? 0f : 1f;
 
-        ChangeReloadingCirclesState(condition);
+        ChangeReloadingCirclesState(isReloading);
     }
 
-    private void ChangeReloadingCirclesState(bool condition)
+    private void ChangeReloadingCirclesState(bool isReloading)
     {
-        _unitCircleLining.gameObject.SetActive(condition);
-        _unitReloadingCircleRange.gameObject.SetActive(condition);
+        _unitCircleLining.gameObject.SetActive(isReloading);
+        _unitReloadingCircleRange.gameObject.SetActive(isReloading);
     }
 
     private IEnumerator ChangeUnitCircleUnderAttackCoroutine()

@@ -26,7 +26,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 
     protected event Action OnNotificationForGettingDamaged = default;
 
-    protected RepositoryManager _repositoryManager = default;
+    protected TargetSearchService _targetSearchService = default;
     protected GameEventBus _gameEventBus = default;
 
     #region Events & Interface Implemention
@@ -64,10 +64,10 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
     #endregion
 
     [Inject]
-    public void Construct(GameEventBus gameEventBus, RepositoryManager repositoryManager)
+    public void Construct(GameEventBus gameEventBus, TargetSearchService targetSearchService)
     {
         _gameEventBus = gameEventBus;
-        _repositoryManager = repositoryManager;
+        _targetSearchService = targetSearchService;
     }
 
     public void ReactionForTakingDamage<T>(T target) where T : MonoBehaviour, IDamagable

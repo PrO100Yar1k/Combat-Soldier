@@ -4,8 +4,8 @@ using System.Collections;
 
 public class PlayerDefaultState : TroopDefaultState
 {
-    public PlayerDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    public PlayerDefaultState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
 
     }
@@ -38,7 +38,7 @@ public class PlayerDefaultState : TroopDefaultState
         Faction targetTroopSide = Faction.Enemies;
         IDamagable targetPriorityEnemy = null;
 
-        MonoBehaviour enemyInAttackRange = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);
+        MonoBehaviour enemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);
 
         if (enemyInAttackRange == null)
             yield break;

@@ -21,8 +21,8 @@ public abstract class TroopAttackState : TroopBaseState
     protected override string StateIconLocation
         => "State Icons/Attack-State-Icon";
 
-    protected TroopAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
         _remainingAttackWaves = _troopScriptable.CountAttackWaves;
     }
@@ -72,7 +72,7 @@ public abstract class TroopAttackState : TroopBaseState
         Vector3 troopPosition = _troopController.transform.position;
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        MonoBehaviour enemyMonoBehaviour = _repositoryManager.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
+        MonoBehaviour enemyMonoBehaviour = _targetSearchService.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
 
         if (enemyMonoBehaviour == null)
             _switcherState.SwitchState<TroopDefaultState>();

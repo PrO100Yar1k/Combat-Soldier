@@ -3,8 +3,8 @@ using System.Collections;
 
 public class FirstBuildingAttack : BaseBuildingAttack
 {
-    public FirstBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
-        : base(buildingController, buildingScriptable, repositoryManager)
+    public FirstBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, TargetSearchService targetSearchService)
+        : base(buildingController, buildingScriptable, targetSearchService)
     {
         // Default attack without waves, just usual attack with fixed reloading time
     }
@@ -37,7 +37,7 @@ public class FirstBuildingAttack : BaseBuildingAttack
 
     protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
     {
-        IDamagable IDamagableTroop = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
+        IDamagable IDamagableTroop = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
 
         return new IDamagable[] { IDamagableTroop };
     }

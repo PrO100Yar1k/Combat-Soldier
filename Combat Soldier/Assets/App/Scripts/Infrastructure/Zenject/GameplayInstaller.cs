@@ -1,4 +1,6 @@
+using Assets.App.Scripts;
 using Assets.App.Scripts.Infrastructure.Interfaces;
+using Assets.App.Scripts.Managers;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -30,8 +32,13 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<IObjectPool>().To<BulletPoolConfigurator>().FromInstance(_poolConfigurator).AsSingle();
 
-        Container.Bind<RepositoryManager>().AsSingle();
         Container.Bind<GameEventBus>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<TroopRepository>().AsSingle();
+        Container.BindInterfacesAndSelfTo<BuildingRepository>().AsSingle();
+
+        Container.Bind<TargetSearchService>().AsSingle();
+        Container.Bind<PatrolPointProvider>().AsSingle();
 
         Container.BindInterfacesTo<GameplayBootstrap>().AsSingle();
     }

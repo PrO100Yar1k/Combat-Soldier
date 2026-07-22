@@ -5,8 +5,8 @@ public abstract class TroopDeathState : TroopBaseState // maybe remove this clas
     protected override string StateIconLocation
         => "State Icons/Death-State-Icon";
 
-    protected TroopDeathState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    protected TroopDeathState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
 
     }

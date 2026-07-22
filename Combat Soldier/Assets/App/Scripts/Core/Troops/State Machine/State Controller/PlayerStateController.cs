@@ -4,16 +4,16 @@ using System;
 
 public class PlayerStateController : TroopStateController
 {
-    public PlayerStateController(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ITroopAnimator animationController)
+    public PlayerStateController(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ITroopAnimator animationController)
     {
         _states = new Dictionary<Type, TroopBaseState>
         {
-            { typeof(TroopDefaultState), new PlayerDefaultState(repositoryManager, troopController, screenCanvasController, this, animationController) },
-            { typeof(TroopDefenseState), new PlayerDefenseState(repositoryManager, troopController, screenCanvasController, this, animationController) },
-            { typeof(TroopAttackState),  new PlayerAttackState(repositoryManager, troopController, screenCanvasController, this, animationController) },
-            { typeof(TroopMoveState),    new PlayerMoveState(repositoryManager, troopController, screenCanvasController, this, animationController) },
+            { typeof(TroopDefaultState), new PlayerDefaultState(targetSearchService, troopController, screenCanvasController, this, animationController) },
+            { typeof(TroopDefenseState), new PlayerDefenseState(targetSearchService, troopController, screenCanvasController, this, animationController) },
+            { typeof(TroopAttackState),  new PlayerAttackState(targetSearchService, troopController, screenCanvasController, this, animationController) },
+            { typeof(TroopMoveState),    new PlayerMoveState(targetSearchService, troopController, screenCanvasController, this, animationController) },
 
-            { typeof(TroopDeathState),   new PlayerDeathState(repositoryManager, troopController, screenCanvasController, this, animationController) }
+            { typeof(TroopDeathState),   new PlayerDeathState(targetSearchService, troopController, screenCanvasController, this, animationController) }
         };
 
         ActivateDefaultState();

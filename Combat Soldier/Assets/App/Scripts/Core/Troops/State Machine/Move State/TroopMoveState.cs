@@ -15,8 +15,8 @@ public abstract class TroopMoveState : TroopBaseState
     protected override string StateIconLocation
         => "State Icons/Move-State-Icon";
 
-    protected TroopMoveState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    protected TroopMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
 
     }

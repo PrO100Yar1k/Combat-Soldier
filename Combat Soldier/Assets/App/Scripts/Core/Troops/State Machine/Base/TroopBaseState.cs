@@ -4,7 +4,7 @@ using Assets.App.Scripts;
 
 public abstract class TroopBaseState : IDisposable
 {
-    protected readonly RepositoryManager _repositoryManager;
+    protected readonly TargetSearchService _targetSearchService;
 
     protected readonly TroopController _troopController;
     protected readonly TroopScriptable _troopScriptable;
@@ -24,9 +24,9 @@ public abstract class TroopBaseState : IDisposable
 
     #endregion
 
-    public TroopBaseState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+    public TroopBaseState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
     {
-        _repositoryManager = repositoryManager;
+        _targetSearchService = targetSearchService;
 
         _troopController = troopController;
         _switcherState = switcherState;

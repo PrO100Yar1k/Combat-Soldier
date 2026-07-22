@@ -2,8 +2,8 @@ using Assets.App.Scripts;
 
 public class EnemyMoveState : TroopMoveState
 {
-    public EnemyMoveState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    public EnemyMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
 
     }

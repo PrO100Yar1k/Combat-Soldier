@@ -2,9 +2,9 @@ using Assets.App.Scripts;
 
 public class PlayerAttackState : TroopAttackState
 {
-    public PlayerAttackState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    public PlayerAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
-        _enemyTroopSide = Faction.Enemies;
+        _enemyTroopSide = Faction.Enemies; //extension methods
     }
 }

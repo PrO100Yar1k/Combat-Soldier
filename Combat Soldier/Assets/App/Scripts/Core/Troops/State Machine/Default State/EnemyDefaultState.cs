@@ -17,8 +17,8 @@ public class EnemyDefaultState : TroopDefaultState
     private const float _enemyFindingDelay = 0.5f;
     private const float _reactionTime = 0.3f;
 
-    public EnemyDefaultState(RepositoryManager repositoryManager, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
-        [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(repositoryManager, troopController, screenCanvasController, switcherState, animatorController)
+    public EnemyDefaultState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
+        [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
         foreach (Transform targetPoint in patrollingPointsList)
             _patrollingPointsQueue.Enqueue(targetPoint.position);
@@ -117,7 +117,7 @@ public class EnemyDefaultState : TroopDefaultState
         {
             Vector3 currentPosition = _troopController.transform.position;
 
-            MonoBehaviour closestEnemyInAttackRange = _repositoryManager.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false);
+            MonoBehaviour closestEnemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false);
 
             if (closestEnemyInAttackRange != null)
             {
@@ -132,7 +132,7 @@ public class EnemyDefaultState : TroopDefaultState
                 yield break;
             }
 
-            MonoBehaviour closestEnemyInViewRange = _repositoryManager.GetClosestEnemyInRange(currentPosition, visibleRange, targetTroopSide, targetPriorityEnemy, false);
+            MonoBehaviour closestEnemyInViewRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, visibleRange, targetTroopSide, targetPriorityEnemy, false);
 
             if (closestEnemyInViewRange != null)
             {

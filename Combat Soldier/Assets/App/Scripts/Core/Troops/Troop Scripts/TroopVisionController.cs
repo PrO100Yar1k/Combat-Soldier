@@ -4,14 +4,14 @@ public class TroopVisionController
 {
     private readonly TroopController _troopController;
     private readonly TroopScriptable _troopScriptable;
-    private readonly RepositoryManager _repositoryManager;
+    private readonly TargetSearchService _targetSearchService;
 
-    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable, RepositoryManager repositoryManager)
+    public TroopVisionController(TroopController troopController, TroopScriptable troopScriptable, TargetSearchService targetSearchService)
     {
         _troopController = troopController;
         _troopScriptable = troopScriptable;
 
-        _repositoryManager = repositoryManager;
+        _targetSearchService = targetSearchService;
     }
 
     public TroopController[] GetEnemiesInVisionRange()
@@ -21,7 +21,7 @@ public class TroopVisionController
         float viewRange = _troopScriptable.ViewRangeRadius;
         Vector3 currentPosition = _troopController.transform.position;
 
-        return _repositoryManager.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
+        return _targetSearchService.GetEnemyListInRange(currentPosition, viewRange, enemyTroopSide);
     }
 
     private Faction GetEnemyTroopSide()

@@ -9,17 +9,17 @@ public abstract class BaseBuildingAttack
     protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
-    protected RepositoryManager _repositoryManager = default;
+    protected TargetSearchService _targetSearchService = default;
 
-    public BaseBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, RepositoryManager repositoryManager)
+    public BaseBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, TargetSearchService targetSearchService)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
 
-        _repositoryManager = repositoryManager;
+        _targetSearchService = targetSearchService;
     }
 
-    public virtual IEnumerator CheckAttackTargetCoroutine()
+    public virtual IEnumerator CheckAttackTargetCoroutine() // to do
     {
         Vector3 currentPosition = _buildingController.transform.position;
         float attackRange = _buildingScriptable.AttackRange;

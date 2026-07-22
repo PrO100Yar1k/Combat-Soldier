@@ -1,12 +1,13 @@
-using Assets.App.Scripts.Infrastructure.Interfaces;
-using System.Collections.Generic;
 using Assets.App.Scripts;
+using Assets.App.Scripts.Infrastructure.Interfaces;
+using Assets.App.Scripts.Managers;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 {
-    private readonly RepositoryManager _repositoryManager;
+    private readonly TroopRepository _troopRepository;
     private readonly CoroutineStarter _coroutineStarter;
 
     private Coroutine _visionCoroutine = default;
@@ -20,9 +21,9 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 
     #endregion
 
-    public EnemyModelManager(RepositoryManager repositoryManager, CoroutineStarter coroutineStarter)
+    public EnemyModelManager(TroopRepository troopRepository, CoroutineStarter coroutineStarter)
     {
-        _repositoryManager = repositoryManager;
+        _troopRepository = troopRepository;
         _coroutineStarter = coroutineStarter;
     }
 
@@ -64,8 +65,8 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 
     private void UpdateTroopDeploymentData()
     {
-        HashSet<TroopController> visibleEnemies = GetVisibleEnemies();
-        List<TroopController> allEnemies = _repositoryManager.GetEnemyTroopControllersList();
+        var visibleEnemies = GetVisibleEnemies();
+        var allEnemies = _troopRepository.GetEnemyTroops();
 
         foreach (TroopController enemy in allEnemies)
         {
@@ -85,8 +86,8 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 
     private HashSet<TroopController> GetVisibleEnemies()
     {
-        HashSet<TroopController> visibleEnemiesSet = new HashSet<TroopController>();
-        List<TroopController> playerControllersList = _repositoryManager.GetPlayerTroopControllersList();
+        var visibleEnemiesSet = new HashSet<TroopController>();
+        var playerControllersList = _troopRepository.GetPlayerTroops();
 
         foreach (PlayerTroopController playerController in playerControllersList)
         {
