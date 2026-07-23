@@ -24,6 +24,11 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory
     private const int _branchingChance = 20;
     private const int _maxBranchingAttempts = 15;
 
+    private void Awake() // to do
+    {
+        CreateTrench();
+    }
+
     public void CreateTrench() // to do
     {
         const int unitCount = 20;

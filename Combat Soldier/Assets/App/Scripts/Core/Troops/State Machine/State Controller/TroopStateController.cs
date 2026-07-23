@@ -27,7 +27,6 @@ public abstract class TroopStateController : ISwitchableState, IDisposable
         if (_states.TryGetValue(typeof(TGet), out var state))
             return (TGet) state;
 
-        Debug.LogError($"[StateController] State {typeof(TGet).Name} is not registered!");
         return null;
     }
 

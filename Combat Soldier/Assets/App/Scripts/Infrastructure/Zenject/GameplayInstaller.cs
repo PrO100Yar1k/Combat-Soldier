@@ -12,7 +12,6 @@ public class GameplayInstaller : MonoInstaller
     [SerializeField, Space(3)] private BulletPoolConfigurator _poolConfigurator = default;
     [SerializeField] private PlayerSelectionController _troopSelectionController = default;
     [SerializeField] private PlayerCommandController _troopCommandController = default;
-    [SerializeField] private TrenchLineController _trenchController = default;
 
     public override void InstallBindings()
     {
@@ -22,8 +21,6 @@ public class GameplayInstaller : MonoInstaller
 
         Container.BindInterfacesTo<EnemyModelManager>().AsSingle();
         Container.BindInterfacesTo<EnemyFactoryManager>().AsSingle();
-
-        Container.BindInterfacesTo<TrenchLineController>().FromInstance(_trenchController).AsSingle();
 
         //Container.Bind<ITroopSelection>().To<PlayerSelectionController>().FromInstance(_troopActionController).AsSingle();
         Container.Bind<PlayerSelectionController>().FromInstance(_troopSelectionController).AsSingle();

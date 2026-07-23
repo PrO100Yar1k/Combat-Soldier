@@ -8,14 +8,13 @@ public class GameplayBootstrap : IInitializable
 {
     private readonly IEnemyTroopProvider _troopModelManager;
     private readonly IEnemyFactory _enemyFactoryManager;
-    private readonly ITrenchFactory _trenchController;
+    //private readonly ITrenchFactory _trenchController;
     private readonly IObjectPool _poolConfigurator;
 
     private readonly TroopRepository _troopRepository;
     private readonly BuildingRepository _buildingRepository;
 
-    public GameplayBootstrap(TroopRepository troopRepository, BuildingRepository buildingRepository, IObjectPool poolConfigurator, IEnemyTroopProvider troopModelManager, IEnemyFactory enemyFactoryManager,
-        ITrenchFactory trenchController)
+    public GameplayBootstrap(TroopRepository troopRepository, BuildingRepository buildingRepository, IObjectPool poolConfigurator, IEnemyTroopProvider troopModelManager, IEnemyFactory enemyFactoryManager)
     {
         _troopRepository = troopRepository;
         _buildingRepository = buildingRepository;
@@ -23,7 +22,6 @@ public class GameplayBootstrap : IInitializable
         _poolConfigurator = poolConfigurator;
         _troopModelManager = troopModelManager;
         _enemyFactoryManager = enemyFactoryManager;
-        _trenchController = trenchController;
     }
 
     public void Initialize()
@@ -35,7 +33,7 @@ public class GameplayBootstrap : IInitializable
 
         _troopModelManager.ProvideEnemyVisionStarter();
 
-        _trenchController.CreateTrench();
+        //_trenchController.CreateTrench();
         _enemyFactoryManager.CreateEnemies();
 
         Debug.Log("Managers were succefully initialized!");

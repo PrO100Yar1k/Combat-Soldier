@@ -31,7 +31,9 @@ public class TargetSearchService
         var candidates = new List<MonoBehaviour>(_troopRepository.GetTroops(enemyFaction));
 
         if (includeBuildings)
+        {
             candidates.AddRange(_buildingRepository.GetEnemyBuildings());
+        }
 
         foreach (var enemy in candidates)
         {

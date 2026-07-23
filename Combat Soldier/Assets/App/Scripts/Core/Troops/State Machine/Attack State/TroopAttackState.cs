@@ -24,7 +24,7 @@ public abstract class TroopAttackState : TroopBaseState
     protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
-        _remainingAttackWaves = _troopScriptable.CountAttackWaves;
+        _remainingAttackWaves = _troopScriptable?.CountAttackWaves ?? 1;
     }
 
     #region Events

@@ -17,7 +17,7 @@ public abstract class TroopBaseState : IDisposable
 
     #region Disposable
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         UnSubscribeFromEvents();
     }
@@ -31,7 +31,7 @@ public abstract class TroopBaseState : IDisposable
         _troopController = troopController;
         _switcherState = switcherState;
 
-        _troopScriptable = troopController.TroopScriptable;
+        _troopScriptable = troopController?.TroopScriptable;
         _screenCanvasController = screenCanvasController;
 
         _animatorController = animatorController;
