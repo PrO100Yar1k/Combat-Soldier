@@ -15,7 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Test Attack 2 Building
   <MaxHealPoint>k__BackingField: 130
   <Damage>k__BackingField: 15
-  <AttackRange>k__BackingField: 5
+  <AttackRange>k__BackingField: 12
   <AttackWave>k__BackingField: 4
   <ReloadingTime>k__BackingField: 15
   <TimeBetweenWaves>k__BackingField: 1

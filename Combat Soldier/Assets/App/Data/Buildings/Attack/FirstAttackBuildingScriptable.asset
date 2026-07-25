@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Test Attack 1 Building
   <MaxHealPoint>k__BackingField: 120
-  <Damage>k__BackingField: 1
-  <AttackRange>k__BackingField: 10
+  <Damage>k__BackingField: 20
+  <AttackRange>k__BackingField: 12
   <AttackWave>k__BackingField: 0
   <ReloadingTime>k__BackingField: 3
   <TimeBetweenWaves>k__BackingField: 0

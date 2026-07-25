@@ -12,7 +12,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
     public UICanvasController<BuildingController, BuildingScriptable> UIController { get; protected set; }
-    public HPControllerBuilding HPController { get; protected set; }
+    public HPBuildingController HPController { get; protected set; }
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
@@ -60,7 +60,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     public virtual void InitializeBuilding()
     {
         UIController = new UICanvasController<BuildingController, BuildingScriptable>(this, _buildingScriptable, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
-        HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
+        HPController = new HPBuildingController(this, _buildingScreenCanvasController, _buildingScriptable);
 
         InitializeBuildingBehaviour();
     }

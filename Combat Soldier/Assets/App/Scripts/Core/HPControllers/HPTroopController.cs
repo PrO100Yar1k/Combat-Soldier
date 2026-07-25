@@ -1,7 +1,8 @@
 using Assets.App.Scripts.Core.Canvases;
+using Assets.App.Scripts.Core.Health;
 using UnityEngine;
 
-public class HPTroopController : HPController
+public class HPTroopController : HPController<TroopScriptable>
 {
     protected readonly TroopScreenCanvasController _troopCanvasController = default;
     protected readonly TroopController _troopController = default;
@@ -9,24 +10,22 @@ public class HPTroopController : HPController
     private int _currentDefensePoint = default;
     private float _currentBlockRate = default;
 
-    public HPTroopController(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable)
+    public HPTroopController(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable) : base(troopScriptable)
     {
         _troopCanvasController = troopCanvasController;
         _troopController = troopController;
 
-        AssignBasicParameters(troopScriptable);
         ChangeSliderAndTextValues();
     }
 
-    protected override void AssignBasicParameters<T>(T scriptableObject)
+    protected override void InitializeData(TroopScriptable troopScriptable)
     {
-        TroopScriptable troopScriptable = scriptableObject as TroopScriptable;
-
-        HPControllerName = troopScriptable.Name;
-        _currentBlockRate = troopScriptable.BlockRate;
+        _unitName = troopScriptable.Name;
 
         _currentHealPoint = troopScriptable.MaxHealPoint;
         _currentDefensePoint = troopScriptable.MaxDefencePoint;
+
+        _currentBlockRate = troopScriptable.BlockRate;
     }
 
     protected override void ChangeSliderAndTextValues()
@@ -44,7 +43,7 @@ public class HPTroopController : HPController
 
         if (_troopController.StateController.CheckStateForActivity<TroopDefenseState>())
             TakeDamageWithDefenseState(attackDamage);
-        else 
+        else
             TakeDamageWithoutDefenseState(attackDamage);
 
         _troopController.TroopModelController.ChangeMaterialToDamaged();
@@ -55,6 +54,7 @@ public class HPTroopController : HPController
 
     private void TakeDamageWithDefenseState(int attackDamage)
     {
+
         int blockedHP = (int) (attackDamage * _currentBlockRate);
         int takenDamage = attackDamage - blockedHP;
 
@@ -76,36 +76,20 @@ public class HPTroopController : HPController
 
     #endregion
 
-    #region Defense Points
-
-    public void IncreaseDefensePoints(int defensePoint)
-    {
-        if (defensePoint <= 0)
-            return;
-
-        _currentDefensePoint += defensePoint;
-
-        ChangeSliderAndTextValues();
-    }
-
-    #endregion
-
     #region Death
 
-    protected override void CheckHealPointsForDeath()
+    protected override void HandleDeath()
     {
         if (_troopController == null)
             return;
 
-        if (_currentHealPoint <= 0) {
-            TroopDeath(_troopController, _troopController.gameObject);
-        }
-    }
-
-    protected override void TroopDeath<T>(T controller, GameObject objectToDestroy)
-    {
         _troopController.StateController.ActivateDeathState();
-        base.TroopDeath(controller, objectToDestroy);
+
+        _troopController.Dispose();
+        _troopController.StopAllCoroutines();
+
+        UnityEngine.Object.Destroy(_troopController.gameObject);
+        Debug.Log($"The {_unitName} was died");
     }
 
     #endregion

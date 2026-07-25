@@ -58,6 +58,7 @@ namespace Assets.App.Scripts.Core.Canvases
         private IEnumerator ReloadingCoroutine(float reloadingTime)
         {
             float elapsedTime = 0f;
+
             SetReloadingUIState(true);
 
             while (elapsedTime < reloadingTime)

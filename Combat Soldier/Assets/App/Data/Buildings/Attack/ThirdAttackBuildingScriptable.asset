@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ThirdAttackBuildingScriptable
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Test Attack 3 Building
-  <MaxHealPoint>k__BackingField: 130
+  <MaxHealPoint>k__BackingField: 160
   <Damage>k__BackingField: 40
-  <AttackRange>k__BackingField: 5
+  <AttackRange>k__BackingField: 12
   <AttackWave>k__BackingField: 0
   <ReloadingTime>k__BackingField: 7
   <TimeBetweenWaves>k__BackingField: 0

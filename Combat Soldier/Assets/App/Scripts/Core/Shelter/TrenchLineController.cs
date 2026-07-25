@@ -22,7 +22,7 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory
     private const float _unitSpacing = 1f;
 
     private const int _branchingChance = 20;
-    private const int _maxBranchingAttempts = 15;
+    private const int _maxBranchingAttempts = 25;
 
     private void Awake() // to do
     {

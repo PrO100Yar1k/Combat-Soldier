@@ -1,38 +1,32 @@
 using UnityEngine;
 
-public abstract class HPController
+namespace Assets.App.Scripts.Core.Health 
 {
-    public string HPControllerName { get; protected set; }
-
-    protected int _currentHealPoint = default;
-
-    public void IncreaseHealPoints(int healPoint)
+    public abstract class HPController<TData> where TData : ScriptableObject
     {
-        if (healPoint <= 0)
-            return;
+        protected string _unitName = default;
 
-        _currentHealPoint += healPoint;
+        protected int _currentHealPoint = default;
 
-        ChangeSliderAndTextValues();
-    }
+        protected HPController(TData config)
+        {
+            InitializeData(config);
+        }
 
-    public abstract void TakeDamage(int attackDamage);
+        protected abstract void InitializeData(TData config);
 
-    protected abstract void ChangeSliderAndTextValues();
+        public abstract void TakeDamage(int attackDamage);
 
-    protected abstract void CheckHealPointsForDeath();
+        protected abstract void ChangeSliderAndTextValues();
 
-    protected abstract void AssignBasicParameters<T>(T scriptableObject) where T : ScriptableObject;
+        protected void CheckHealPointsForDeath()
+        {
+            if (_currentHealPoint > 0)
+                return;
 
-    protected virtual void TroopDeath<T>(T controller, GameObject objectToDestroy) where T : MonoBehaviour, System.IDisposable
-    {
-        if (controller == null || objectToDestroy == null)
-            return;
+            HandleDeath();
+        }
 
-        controller.Dispose();
-        controller.StopAllCoroutines();
-
-        Object.Destroy(objectToDestroy);
-        Debug.Log($"The {HPControllerName} was died");
+        protected abstract void HandleDeath();
     }
 }
