@@ -30,11 +30,11 @@ Core gameplay configuration is completely separated from source code using Scrip
 
 # Design Patterns & Technologies
 
-## Dependency Injection (Zenject)
+## Dependency Injection
 
 Dependency Injection using **Zenject** serves as the foundation of the project's architecture. Services, managers, repositories, factories, and the event bus are injected through DI containers, eliminating hard dependencies and making systems easier to maintain, extend, and unit test.
 
-## Finite State Machine (FSM)
+## Finite State Machine
 
 Unit behavior is implemented using a Finite State Machine. Each state is encapsulated within its own class and follows a clearly defined lifecycle (`Start`, `Stop`) with event-driven control model. States manage their own subscriptions and internal logic, preventing large monolithic controller classes and keeping behavior isolated.
 
@@ -48,7 +48,7 @@ Animation handling, target searching, and distance evaluation are abstracted beh
 
 ## Observer & Event Bus
 
-Communication between loosely coupled systems—such as combat, UI, visual effects, and gameplay flow—is implemented through a centralized Event Bus. Systems publish events without knowledge of their subscribers, allowing independent modules to react without introducing unnecessary dependencies.
+Communication between loosely coupled systems — such as combat, UI, models, and gameplay flow—is implemented through a centralized Event Bus. Systems publish events without knowledge of their subscribers, allowing independent modules to react without introducing unnecessary dependencies.
 
 ## Object Pool
 
