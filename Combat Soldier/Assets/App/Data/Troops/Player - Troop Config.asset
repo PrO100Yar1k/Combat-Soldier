@@ -20,8 +20,8 @@ MonoBehaviour:
   <BlockRate>k__BackingField: 0.4
   <TimeToReloadAttack>k__BackingField: 15
   <TimeBetweenAttackWaves>k__BackingField: 1
-  <AttackDamage>k__BackingField: 1
-  <DamageUnderAttack>k__BackingField: 1
+  <AttackDamage>k__BackingField: 25
+  <DamageUnderAttack>k__BackingField: 15
   <AttackRangeRadius>k__BackingField: 6
   <CountAttackWaves>k__BackingField: 5
   <ViewRangeRadius>k__BackingField: 10

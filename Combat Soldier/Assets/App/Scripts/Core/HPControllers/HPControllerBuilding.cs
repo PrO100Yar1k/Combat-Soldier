@@ -1,3 +1,4 @@
+using Assets.App.Scripts.Core.Canvases;
 
 public class HPControllerBuilding : HPController
 {
@@ -24,7 +25,7 @@ public class HPControllerBuilding : HPController
 
     protected override void ChangeSliderAndTextValues()
     {
-        _buildingCanvasController.ChangeHealPointSlider(_currentHealPoint);
+        _buildingCanvasController.UpdateHealth(_currentHealPoint);
     }
 
     public override void TakeDamage(int attackDamage)
@@ -38,6 +39,8 @@ public class HPControllerBuilding : HPController
     protected override void CheckHealPointsForDeath()
     {
         if (_currentHealPoint <= 0)
+        {
             base.TroopDeath(_buildingController, _buildingController.gameObject);
+        }
     }
 }

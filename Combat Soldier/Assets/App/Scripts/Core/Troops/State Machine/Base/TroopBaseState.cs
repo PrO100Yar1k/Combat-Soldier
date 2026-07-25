@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Assets.App.Scripts;
+using Assets.App.Scripts.Core.Canvases;
 
 public abstract class TroopBaseState : IDisposable
 {

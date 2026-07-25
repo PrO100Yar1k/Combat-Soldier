@@ -235,6 +235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7215191999358518135}
   - component: {fileID: 8840080751908055627}
+  - component: {fileID: 6302346622159895778}
   m_Layer: 5
   m_Name: Slider - Defense Point
   m_TagString: Untagged
@@ -315,6 +316,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6302346622159895778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321547751141249830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a6f94c2c42e5545b07f0af2b5dec77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 8840080751908055627}
+  _valueText: {fileID: 8158966568704401310}
 --- !u!1 &1270139057596709147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,7 +1319,7 @@ GameObject:
   - component: {fileID: 1721170313035103452}
   - component: {fileID: 1317245962920727786}
   - component: {fileID: 7227305365118012153}
-  - component: {fileID: 2857650101268458491}
+  - component: {fileID: 8839046023454386109}
   m_Layer: 5
   m_Name: Player - Screen Canvas
   m_TagString: Untagged
@@ -1398,7 +1413,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2857650101268458491
+--- !u!114 &8839046023454386109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1407,13 +1422,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7430802114628971994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23b04e8e59dd9c14a957bebe8a9ff48b, type: 3}
+  m_Script: {fileID: 11500000, guid: b066b15e27e029746bd2029583a7440c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healPointSlider: {fileID: 627571019849622967}
-  _defensePointSlider: {fileID: 8840080751908055627}
-  _healPointText: {fileID: 8873507987315707335}
-  _defensePointText: {fileID: 8158966568704401310}
+  _healthBar: {fileID: 7524917454487982368}
+  _defenseBar: {fileID: 6302346622159895778}
   _stateIcon: {fileID: 3141245122770379269}
   _reloadingSlider: {fileID: 687549993485676115}
   _uniteArmyButton: {fileID: 0}
@@ -1428,6 +1441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5056394882095436128}
   - component: {fileID: 627571019849622967}
+  - component: {fileID: 7524917454487982368}
   m_Layer: 5
   m_Name: Slider - Heal Point
   m_TagString: Untagged
@@ -1508,6 +1522,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7524917454487982368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7481340996954376178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a6f94c2c42e5545b07f0af2b5dec77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 627571019849622967}
+  _valueText: {fileID: 8873507987315707335}
 --- !u!1 &7656939657135832379
 GameObject:
   m_ObjectHideFlags: 0

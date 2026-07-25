@@ -235,6 +235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7811665697368573282}
   - component: {fileID: 8279684221132090462}
+  - component: {fileID: 501386821552176736}
   m_Layer: 5
   m_Name: Slider - Defense Point
   m_TagString: Untagged
@@ -315,6 +316,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &501386821552176736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882498323831510323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a6f94c2c42e5545b07f0af2b5dec77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 8279684221132090462}
+  _valueText: {fileID: 8751451375372245387}
 --- !u!1 &2287926075787958589
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +377,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5341486522058754632}
   - component: {fileID: 8697960022175955818}
-  - component: {fileID: 1945236591350728836}
   m_Layer: 5
   m_Name: Button - Change Troop State
   m_TagString: Untagged
@@ -436,19 +450,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1945236591350728836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4009469635631771169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da82997761438044abbccb86716f166b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cooldownImage: {fileID: 5966006322042390867}
 --- !u!1 &4221183273309549461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,7 +1007,7 @@ GameObject:
   - component: {fileID: 2282143254275488457}
   - component: {fileID: 1877669320573997823}
   - component: {fileID: 7783791929793252588}
-  - component: {fileID: 3450170548229008878}
+  - component: {fileID: 1491642433623491895}
   m_Layer: 5
   m_Name: Enemy - Screen Canvas
   m_TagString: Untagged
@@ -1099,7 +1100,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3450170548229008878
+--- !u!114 &1491642433623491895
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1108,13 +1109,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8022772762415016911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81b982bc6275e9148ab51f2db2ee4955, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ac6aa62ae07bb747a56828450e74493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healPointSlider: {fileID: 71084463478809506}
-  _defensePointSlider: {fileID: 8279684221132090462}
-  _healPointText: {fileID: 8317047854313507794}
-  _defensePointText: {fileID: 8751451375372245387}
+  _healthBar: {fileID: 3178792157056213500}
+  _defenseBar: {fileID: 501386821552176736}
   _stateIcon: {fileID: 2584766838985155600}
 --- !u!1 &8041759371858477543
 GameObject:
@@ -1126,6 +1125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5648343170256574325}
   - component: {fileID: 71084463478809506}
+  - component: {fileID: 3178792157056213500}
   m_Layer: 5
   m_Name: Slider - Heal Point
   m_TagString: Untagged
@@ -1206,6 +1206,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3178792157056213500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8041759371858477543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a6f94c2c42e5545b07f0af2b5dec77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 71084463478809506}
+  _valueText: {fileID: 8317047854313507794}
 --- !u!1 &8459624657282503690
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,39 +1,47 @@
 using Assets.App.Scripts;
-using System;
 using UnityEngine;
+using System;
 
-public class UICanvasController<T> : IDisposable where T : MonoBehaviour
+public class UICanvasController<TTarget, TData> : IDisposable where TTarget : MonoBehaviour
 {
-    private readonly CanvasController _screenCanvasController = default;
-    private readonly CanvasController _worldCanvasController = default;
+    private readonly IInitializableCanvas<TData> _screenCanvasController = default;
+    private readonly IInitializableCanvas<TData> _worldCanvasController = default;
 
     private readonly MonoBehaviour _currentController = default;
+    private readonly GameEventBus _gameEventBus = default;
 
-    private GameEventBus _gameEventBus = default;
+    private bool _isSubscribedToActiveEvents = false;
 
     #region Events
 
+    private void SubscribeToBasicEvent()
+    {
+        _gameEventBus.OnOpenTroopMenu += OpeningTroopMenu;
+    }
+
     private void SubscribeToEvents()
     {
+        if (_isSubscribedToActiveEvents)
+            Debug.LogError("Already have subsciption!");
+
         _gameEventBus.OnDisableActiveCanvases += DisableAllCanvases;
 
-        _gameEventBus.OnBuildingDestroyed += DisableObject;
-        _gameEventBus.OnTroopDisableUI += DisableObject;
-        _gameEventBus.OnTroopDiedUI += DisableObject;
+        _gameEventBus.OnBuildingDestroyed += ClosingTroopMenu;
+        _gameEventBus.OnTroopDisableUI += ClosingTroopMenu;
+        _gameEventBus.OnTroopDiedUI += ClosingTroopMenu;
+
+        _isSubscribedToActiveEvents = true;
     }
 
     private void UnSubscribeFromEvents()
     {
         _gameEventBus.OnDisableActiveCanvases -= DisableAllCanvases;
 
-        _gameEventBus.OnBuildingDestroyed -= DisableObject;
-        _gameEventBus.OnTroopDisableUI -= DisableObject;
-        _gameEventBus.OnTroopDiedUI -= DisableObject;
-    }
+        _gameEventBus.OnBuildingDestroyed -= ClosingTroopMenu;
+        _gameEventBus.OnTroopDisableUI -= ClosingTroopMenu;
+        _gameEventBus.OnTroopDiedUI -= ClosingTroopMenu;
 
-    private void SubscribeToBasicEvent()
-    {
-        _gameEventBus.OnOpenTroopMenu += OpenTroopGeneralMenu;
+        _isSubscribedToActiveEvents = false;
     }
 
     public void Dispose()
@@ -43,17 +51,18 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
 
     #endregion
 
-    public UICanvasController(T controller, CanvasController screenCanvasController, CanvasController worldCanvasController, GameEventBus gameEventBus) 
+    public UICanvasController(TTarget controller, TData data, IInitializableCanvas<TData> screenCanvasController, IInitializableCanvas<TData> worldCanvasController, GameEventBus gameEventBus) 
     {
-        _gameEventBus = gameEventBus;
-
         _currentController = controller;
+        _gameEventBus = gameEventBus;
 
         _screenCanvasController = screenCanvasController;
         _worldCanvasController = worldCanvasController;
 
-        _screenCanvasController.InitializeCanvas(controller);
-        _worldCanvasController.InitializeCanvas(controller);
+        _screenCanvasController?.Initialize(data);
+        _worldCanvasController?.Initialize(data);
+
+        SetupCoroutineRunner();
 
         SubscribeToBasicEvent();
         DisableAllCanvases();
@@ -70,7 +79,35 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         }
     }
 
-    private void OpenTroopGeneralMenu(MonoBehaviour controller)
+    private void SetupCoroutineRunner()
+    {
+        if (_currentController is not ICoroutineRunner runner)
+            return;
+
+        if (_screenCanvasController is ICoroutineCanvas screenCanvas)
+            screenCanvas.SetupCoroutineRunner(runner);
+
+        if (_worldCanvasController is ICoroutineCanvas worldCanvas)
+            worldCanvas.SetupCoroutineRunner(runner);
+    }
+
+    private void EnableAllCanvases()
+    {
+        _screenCanvasController?.EnableCanvas();
+        _worldCanvasController?.EnableCanvas();
+
+        SubscribeToEvents();
+    }
+
+    private void DisableAllCanvases()
+    {
+        _screenCanvasController?.DisableCanvas();
+        _worldCanvasController?.DisableCanvas();
+
+        UnSubscribeFromEvents();
+    }
+
+    private void OpeningTroopMenu(MonoBehaviour controller)
     {
         if (_currentController != controller)
             return;
@@ -78,23 +115,7 @@ public class UICanvasController<T> : IDisposable where T : MonoBehaviour
         EnableAllCanvases();
     }
 
-    private void EnableAllCanvases()
-    {
-        _screenCanvasController.EnableCanvas();
-        _worldCanvasController.EnableCanvas();
-
-        SubscribeToEvents();
-    }
-
-    private void DisableAllCanvases()
-    {
-        _screenCanvasController.DisableCanvas();
-        _worldCanvasController.DisableCanvas();
-
-        UnSubscribeFromEvents();
-    }
-
-    private void DisableObject(MonoBehaviour controller)
+    private void ClosingTroopMenu(MonoBehaviour controller)
     {
         if (_currentController != controller)
             return;

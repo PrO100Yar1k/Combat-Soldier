@@ -1,23 +1,24 @@
 using Assets.App.Scripts;
+using Assets.App.Scripts.Core.Canvases;
 using System;
 using UnityEngine;
 using Zenject;
 
-public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage
+public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage, ICoroutineRunner
 {
     [SerializeField] protected Transform _bulletInitialPoint = default;
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
-    [SerializeField] protected BaseTroopModelController _troopModelController = default;
+    [SerializeField] protected BaseTroopModelController _troopModelController = default; //
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
-    [SerializeField] protected WorldCanvasController _worldCanvasController = default;
+    [SerializeField] protected TroopWorldCanvasController _worldCanvasController = default;
 
     [SerializeField] protected TroopAnimationController _animationController = default;
 
     public Transform BulletInitialPoint => _bulletInitialPoint;
     public BaseTroopModelController TroopModelController => _troopModelController;
 
-    public UICanvasController<TroopController> UIController { get; protected set; }
+    public UICanvasController<TroopController, TroopScriptable> UIController { get; protected set; }
     public TroopStateController StateController { get; protected set; }
     public HPTroopController HPController { get; protected set; }
 
@@ -48,7 +49,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
         HPController.TakeDamage(attackDamage);
         OnNotificationForGettingDamaged?.Invoke();
 
-        _worldCanvasController.ChangeUnitCircleUnderAttack();
+        _worldCanvasController.StartTakingDamage();
     }
 
     public Faction GetFaction()
@@ -58,7 +59,7 @@ public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, 
 
     public void ChangeUnitCircleToReloading(float reloadingTime)
     {
-        _worldCanvasController.ChangeUnitCircleToReloading(reloadingTime);
+        _worldCanvasController.StartReloading(reloadingTime);
     }
 
     #endregion

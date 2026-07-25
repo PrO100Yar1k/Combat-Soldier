@@ -387,7 +387,8 @@ GameObject:
   - component: {fileID: 6624510132507153072}
   - component: {fileID: 1691424272528128118}
   - component: {fileID: 2496992804103163987}
-  - component: {fileID: 9098031634342614461}
+  - component: {fileID: 7938417556411833142}
+  - component: {fileID: 3847880484879323824}
   m_Layer: 5
   m_Name: Enemy - World Canvas
   m_TagString: Untagged
@@ -482,7 +483,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9098031634342614461
+--- !u!114 &7938417556411833142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -491,11 +492,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6317213189312985295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d303191c33410d469f38a08dcd5ca13, type: 3}
+  m_Script: {fileID: 11500000, guid: 13ee7e8ba0ec73941a1fb75383704d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rangeView: {fileID: 3847880484879323824}
   _unitCircleRange: {fileID: 1503751102444909742}
   _unitReloadingCircleRange: {fileID: 4341659241595939478}
+  _unitCircleLining: {fileID: 1899265452467269037}
+--- !u!114 &3847880484879323824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317213189312985295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f785eda358f4346905f486cf8a5249, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _viewCircleRange: {fileID: 1884667114254048776}
   _attackCircleRange: {fileID: 6048688371806975234}
-  _unitCircleLining: {fileID: 1899265452467269037}

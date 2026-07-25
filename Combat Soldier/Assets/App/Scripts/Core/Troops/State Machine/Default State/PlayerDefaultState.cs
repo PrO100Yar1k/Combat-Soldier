@@ -1,6 +1,7 @@
 using UnityEngine;
 using Assets.App.Scripts;
 using System.Collections;
+using Assets.App.Scripts.Core.Canvases;
 
 public class PlayerDefaultState : TroopDefaultState
 {

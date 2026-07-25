@@ -1,3 +1,4 @@
+using Assets.App.Scripts.Core.Canvases;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -10,7 +11,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
-    public UICanvasController<BuildingController> UIController { get; protected set; }
+    public UICanvasController<BuildingController, BuildingScriptable> UIController { get; protected set; }
     public HPControllerBuilding HPController { get; protected set; }
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
@@ -58,7 +59,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
 
     public virtual void InitializeBuilding()
     {
-        UIController = new UICanvasController<BuildingController>(this, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
+        UIController = new UICanvasController<BuildingController, BuildingScriptable>(this, _buildingScriptable, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
         HPController = new HPControllerBuilding(this, _buildingScreenCanvasController, _buildingScriptable);
 
         InitializeBuildingBehaviour();

@@ -1,4 +1,4 @@
-using Assets.App.Scripts;
+using Assets.App.Scripts.Core.Canvases;
 using UnityEngine;
 
 public class HPTroopController : HPController
@@ -14,7 +14,7 @@ public class HPTroopController : HPController
         _troopCanvasController = troopCanvasController;
         _troopController = troopController;
 
-        AssignBasicParameters(troopScriptable); // think about updating values
+        AssignBasicParameters(troopScriptable);
         ChangeSliderAndTextValues();
     }
 
@@ -31,8 +31,8 @@ public class HPTroopController : HPController
 
     protected override void ChangeSliderAndTextValues()
     {
-        _troopCanvasController.ChangeHealPointSlider(_currentHealPoint);
-        _troopCanvasController.ChangeDefensePointSlider(_currentDefensePoint);
+        _troopCanvasController.UpdateHealth(_currentHealPoint);
+        _troopCanvasController.UpdateDefense(_currentDefensePoint);
     }
 
     #region Take Damage

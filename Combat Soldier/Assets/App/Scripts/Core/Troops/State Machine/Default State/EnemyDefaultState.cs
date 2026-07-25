@@ -3,6 +3,7 @@ using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 using Zenject;
+using Assets.App.Scripts.Core.Canvases;
 
 public class EnemyDefaultState : TroopDefaultState
 {
