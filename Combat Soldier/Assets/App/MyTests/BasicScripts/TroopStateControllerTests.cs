@@ -34,13 +34,13 @@ public class TroopStateControllerTests
 
         _stateController.SwitchState<MockTroopState>();
 
-        Assert.IsTrue(stateA.IsStarted, "Перший стан мав запустити Start()");
-        Assert.IsFalse(stateA.IsStopped, "Перший стан ще не мав запустити Stop()");
+        Assert.IsTrue(stateA.IsStarted, "First state must launch Start()");
+        Assert.IsFalse(stateA.IsStopped, "First state don't have launch Stop()");
 
         _stateController.SwitchState<AnotherMockTroopState>();
 
-        Assert.IsTrue(stateA.IsStopped, "State A мав запустити Stop() при переключенні!");
-        Assert.IsTrue(stateB.IsStarted, "State B мав запустити Start() при переході!");
+        Assert.IsTrue(stateA.IsStopped, "State A must launch Stop() after switching!");
+        Assert.IsTrue(stateB.IsStarted, "State B must launch Start() after switching!");
         Assert.IsTrue(_stateController.CheckStateForActivity<AnotherMockTroopState>());
     }
 
@@ -79,9 +79,9 @@ public class TroopStateControllerTests
 
         _stateController.Dispose();
 
-        Assert.IsTrue(stateA.IsDisposed, "State A має бути Disposed!");
-        Assert.IsTrue(stateB.IsDisposed, "State B має бути Disposed!");
-        Assert.IsNull(_stateController.GetState<MockTroopState>(), "Після Dispose словник має бути порожнім!");
+        Assert.IsTrue(stateA.IsDisposed, "State A must be disposed!");
+        Assert.IsTrue(stateB.IsDisposed, "State B must be disposed!");
+        Assert.IsNull(_stateController.GetState<MockTroopState>(), "Dictionary must be empty!");
     }
 
     private class TestableStateController : TroopStateController
@@ -125,6 +125,7 @@ public class TroopStateControllerTests
 
         public override void OnStart() => IsStarted = true;
         public override void OnStop() => IsStopped = true;
+
         protected override void PlayStateAnimation() { }
 
         public override void Dispose()
@@ -138,6 +139,7 @@ public class TroopStateControllerTests
     {
         protected override void OnEnable() { }
         protected override void OnDisable() { }
+
         public override void InitializeTroop() { }
     }
 }
