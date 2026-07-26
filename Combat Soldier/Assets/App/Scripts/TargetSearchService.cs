@@ -16,7 +16,7 @@ public class TargetSearchService
 
     public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, Faction enemyTroopSide)
     {
-        return _troopRepository.GetEnemyTroops().ToArray()
+        return _troopRepository.GetTroops(enemyTroopSide).ToArray()
             .Where(troop => Vector3.Distance(troopPosition, troop.transform.position) <= troopRange)
             .ToArray();
     }

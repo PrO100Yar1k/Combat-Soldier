@@ -13,7 +13,7 @@ public class HPBuildingController : HPController<BuildingScriptable>
         _buildingController = buildingController;
         _buildingCanvasController = buildingCanvasController;
 
-        ChangeSliderAndTextValues();
+        UpdateSliderAndTextValues();
     }
 
     protected override void InitializeData(BuildingScriptable buildingScriptable)
@@ -22,7 +22,7 @@ public class HPBuildingController : HPController<BuildingScriptable>
         _currentHealPoint = buildingScriptable.MaxHealPoint;
     }
 
-    protected override void ChangeSliderAndTextValues()
+    protected override void UpdateSliderAndTextValues()
     {
         _buildingCanvasController.UpdateHealth(_currentHealPoint);
     }
@@ -31,7 +31,7 @@ public class HPBuildingController : HPController<BuildingScriptable>
     {
         _currentHealPoint -= attackDamage;
 
-        ChangeSliderAndTextValues();
+        UpdateSliderAndTextValues();
         CheckHealPointsForDeath();
     }
 

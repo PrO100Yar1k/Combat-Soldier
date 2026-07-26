@@ -11,6 +11,8 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
 
+    [SerializeField] protected Transform _bulletInitialPoint = default;
+
     public UICanvasController<BuildingController, BuildingScriptable> UIController { get; protected set; }
     public HPBuildingController HPController { get; protected set; }
 

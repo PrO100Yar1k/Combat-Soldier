@@ -17,7 +17,7 @@ namespace Assets.App.Scripts.Core.Health
 
         public abstract void TakeDamage(int attackDamage);
 
-        protected abstract void ChangeSliderAndTextValues();
+        protected abstract void UpdateSliderAndTextValues();
 
         protected void CheckHealPointsForDeath()
         {

@@ -1,9 +1,10 @@
+using Assets.App.Scripts.Core.Buildings.Strategies;
 
 public class ThirdAttackBuildingController : BuildingController
 {
     protected override void InitializeBuildingBehaviour()
     {
-        _buildingAttack = new ThirdBuildingAttack(this, _buildingScriptable, _targetSearchService);
+        _buildingAttack = new ThirdBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPoint);
         StartCoroutine(_buildingAttack.CheckAttackTargetCoroutine());
     }
 }

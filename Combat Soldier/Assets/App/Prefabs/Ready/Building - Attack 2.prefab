@@ -458,6 +458,7 @@ MonoBehaviour:
   _buildingScriptable: {fileID: 11400000, guid: 31aaa4a3740a88b4f8e4c08d1591aefa, type: 2}
   _buildingScreenCanvasController: {fileID: 791136839377421167}
   _buildingWorldCanvasController: {fileID: 7907188704752480062}
+  _bulletInitialPoint: {fileID: 7102794144659219152}
 --- !u!1 &4295097418610928451
 GameObject:
   m_ObjectHideFlags: 0

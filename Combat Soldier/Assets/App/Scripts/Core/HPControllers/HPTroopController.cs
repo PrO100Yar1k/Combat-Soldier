@@ -15,7 +15,7 @@ public class HPTroopController : HPController<TroopScriptable>
         _troopCanvasController = troopCanvasController;
         _troopController = troopController;
 
-        ChangeSliderAndTextValues();
+        UpdateSliderAndTextValues();
     }
 
     protected override void InitializeData(TroopScriptable troopScriptable)
@@ -28,7 +28,7 @@ public class HPTroopController : HPController<TroopScriptable>
         _currentBlockRate = troopScriptable.BlockRate;
     }
 
-    protected override void ChangeSliderAndTextValues()
+    protected override void UpdateSliderAndTextValues()
     {
         _troopCanvasController.UpdateHealth(_currentHealPoint);
         _troopCanvasController.UpdateDefense(_currentDefensePoint);
@@ -48,7 +48,7 @@ public class HPTroopController : HPController<TroopScriptable>
 
         _troopController.TroopModelController.ChangeMaterialToDamaged();
 
-        ChangeSliderAndTextValues();
+        UpdateSliderAndTextValues();
         CheckHealPointsForDeath();
     }
 

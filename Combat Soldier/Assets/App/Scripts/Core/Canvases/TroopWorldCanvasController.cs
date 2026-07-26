@@ -39,9 +39,7 @@ namespace Assets.App.Scripts.Core.Canvases
 
         private void SetupCanvasActivity(bool activity)
         {
-            this.gameObject.SetActive(activity);
             _rangeView.SetCirclesActive(activity);
-
             SetReloadingUIState(_isReloading);
         }
 
@@ -52,7 +50,7 @@ namespace Assets.App.Scripts.Core.Canvases
 
         public void StartTakingDamage()
         {
-            _coroutineRunner.StartCoroutine(StartTakingDamageCoroutine());
+            _coroutineRunner.StartCoroutine(TakingDamageCoroutine());
         }
 
         private IEnumerator ReloadingCoroutine(float reloadingTime)
@@ -84,7 +82,7 @@ namespace Assets.App.Scripts.Core.Canvases
             _unitReloadingCircleRange.gameObject.SetActive(isReloading);
         }
 
-        private IEnumerator StartTakingDamageCoroutine()
+        private IEnumerator TakingDamageCoroutine()
         {
             float loopDelay = 0.7f;
 

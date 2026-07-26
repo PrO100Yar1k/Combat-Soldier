@@ -34,6 +34,7 @@ Transform:
   - {fileID: 9123584807081992191}
   - {fileID: 1808007327993277440}
   - {fileID: 4311300170877022547}
+  - {fileID: 2884347533618733034}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8011908832422746422
@@ -72,6 +73,38 @@ MonoBehaviour:
   _buildingScriptable: {fileID: 11400000, guid: 50f4f1dae76bd3548925b745827940fc, type: 2}
   _buildingScreenCanvasController: {fileID: 6428819905256363530}
   _buildingWorldCanvasController: {fileID: 5062057379234225952}
+  _bulletInitialPoint: {fileID: 2884347533618733034}
+--- !u!1 &3481750025043802170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2884347533618733034}
+  m_Layer: 0
+  m_Name: Point - Observe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2884347533618733034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481750025043802170}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.0127344, y: -5.2295885, z: 12.794162}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2667703447886333945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6605095737307833953
 GameObject:
   m_ObjectHideFlags: 0

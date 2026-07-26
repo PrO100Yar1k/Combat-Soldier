@@ -3,25 +3,27 @@ using UnityEngine;
 
 public abstract class BaseBuildingAttack
 {
-    protected readonly BuildingController _buildingController = default;
-    protected readonly BuildingScriptable _buildingScriptable = default;
+    protected readonly BuildingController _buildingController;
+    protected readonly BuildingScriptable _buildingScriptable;
+
+    protected readonly TargetSearchService _targetSearchService;
+    protected readonly Transform _bulletInitialPoint;
 
     protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
-    protected TargetSearchService _targetSearchService = default;
-
-    public BaseBuildingAttack(BuildingController buildingController, BuildingScriptable buildingScriptable, TargetSearchService targetSearchService)
+    public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, Transform bulletInitialPoint)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
 
         _targetSearchService = targetSearchService;
+        _bulletInitialPoint = bulletInitialPoint;
     }
 
     public virtual IEnumerator CheckAttackTargetCoroutine() // to do
     {
-        Vector3 currentPosition = _buildingController.transform.position;
+        Vector3 currentPosition = _bulletInitialPoint.position;
         float attackRange = _buildingScriptable.AttackRange;
 
         Faction targetTroopSide = Faction.Allies;
@@ -40,7 +42,7 @@ public abstract class BaseBuildingAttack
         }
     }
 
-    protected void Attack(IDamagable attackTarget)
+    protected virtual void Attack(IDamagable attackTarget)
     {
         if (isTroopStillAlive(attackTarget, out Transform troopTransform) == false)
             return;
@@ -50,7 +52,7 @@ public abstract class BaseBuildingAttack
         int damage = _buildingScriptable.Damage;
 
         attackTarget.TakeDamage(damage);
-        enemyReactableForDamage?.ReactionForTakingDamage(_buildingController); // ?
+        enemyReactableForDamage?.ReactionForTakingDamage(_buildingController);
     }
 
     protected bool isTroopStillAlive(IDamagable troopIDamagable, out Transform troopTransform)
