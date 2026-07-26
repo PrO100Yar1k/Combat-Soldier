@@ -1,7 +1,7 @@
-using Assets.App.Scripts;
 using Assets.App.Scripts.Infrastructure.Interfaces;
 using Assets.App.Scripts.Managers;
 using System.Collections.Generic;
+using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
 

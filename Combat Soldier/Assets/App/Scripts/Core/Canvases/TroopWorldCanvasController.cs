@@ -47,10 +47,17 @@ namespace Assets.App.Scripts.Core.Canvases
 
         public void StartReloading(float reloadingTime)
         {
-            if (_reloadingCoroutine != null)
-                _coroutineRunner.StopCoroutine(_reloadingCoroutine);
+            StopReloading();
 
             _reloadingCoroutine = _coroutineRunner.StartCoroutine(ReloadingCoroutine(reloadingTime));
+        }
+
+        protected void StopReloading()
+        {
+            if (_reloadingCoroutine == null)
+                return;
+
+            _coroutineRunner.StopCoroutine(_reloadingCoroutine);
         }
 
         public void StartTakingDamage()

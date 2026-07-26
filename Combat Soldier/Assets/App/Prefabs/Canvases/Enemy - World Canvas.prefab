@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 1691424272528128118}
   - component: {fileID: 2496992804103163987}
   - component: {fileID: 7938417556411833142}
-  - component: {fileID: 3847880484879323824}
+  - component: {fileID: 4158988535839888262}
   m_Layer: 5
   m_Name: Enemy - World Canvas
   m_TagString: Untagged
@@ -495,11 +495,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ee7e8ba0ec73941a1fb75383704d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rangeView: {fileID: 3847880484879323824}
+  _rangeView: {fileID: 4158988535839888262}
+  _unitCircleLining: {fileID: 1899265452467269037}
   _unitCircleRange: {fileID: 1503751102444909742}
   _unitReloadingCircleRange: {fileID: 4341659241595939478}
-  _unitCircleLining: {fileID: 1899265452467269037}
---- !u!114 &3847880484879323824
+--- !u!114 &4158988535839888262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6317213189312985295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98f785eda358f4346905f486cf8a5249, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f681c302de04024cbe1f53c0d6a8534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _viewCircleRange: {fileID: 1884667114254048776}

@@ -10,6 +10,8 @@
 
         public void OutsideViewRange()
         {
+            StopReloading();
+
             const byte alphaColor = 85;
             SetupUnitRange(alphaColor);
         }
