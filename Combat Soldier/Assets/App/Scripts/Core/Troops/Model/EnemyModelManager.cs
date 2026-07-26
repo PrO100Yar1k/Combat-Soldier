@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 {
     private readonly TroopRepository _troopRepository;
-    private readonly CoroutineStarter _coroutineStarter;
+    private readonly ICoroutineRunner _coroutineRunner;
 
     private Coroutine _visionCoroutine = default;
 
@@ -21,10 +21,10 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 
     #endregion
 
-    public EnemyModelManager(TroopRepository troopRepository, CoroutineStarter coroutineStarter)
+    public EnemyModelManager(TroopRepository troopRepository, ICoroutineRunner coroutineRunner)
     {
         _troopRepository = troopRepository;
-        _coroutineStarter = coroutineStarter;
+        _coroutineRunner = coroutineRunner;
     }
 
     #region Coroutine Starter & Stopper
@@ -40,13 +40,13 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
         if (_visionCoroutine == null)
             return;
 
-        _coroutineStarter.StopCoroutine(_visionCoroutine);
+        _coroutineRunner.StopCoroutine(_visionCoroutine);
         _visionCoroutine = null;
     }
 
     private void StarterCoroutine()
     {
-        _visionCoroutine = _coroutineStarter.StartCoroutine(ProvideTroopDeploymentData());
+        _visionCoroutine = _coroutineRunner.StartCoroutine(ProvideTroopDeploymentData());
     }
 
     #endregion

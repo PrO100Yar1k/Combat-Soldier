@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 
@@ -7,31 +9,36 @@ public abstract class BaseBuildingAttack
     protected readonly BuildingScriptable _buildingScriptable;
 
     protected readonly TargetSearchService _targetSearchService;
-    protected readonly Transform _bulletInitialPoint;
+    protected readonly ICoroutineRunner _coroutineRunner;
+
+    protected readonly List<Transform> _bulletInitialPointList;
 
     protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
-    public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, Transform bulletInitialPoint)
+    public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
 
         _targetSearchService = targetSearchService;
-        _bulletInitialPoint = bulletInitialPoint;
+        _coroutineRunner = coroutineRunner;
+
+        _bulletInitialPointList = bulletInitialPointList;
     }
 
     public virtual IEnumerator CheckAttackTargetCoroutine() // to do
     {
-        Vector3 currentPosition = _bulletInitialPoint.position;
-        float attackRange = _buildingScriptable.AttackRange;
-
         Faction targetTroopSide = Faction.Allies;
         IDamagable targetPriorityEnemy = null;
 
+        float attackRange = _buildingScriptable.AttackRange;
+
         while (true)
         {
-            IDamagable[] playerTroopController = GetEnemyTargets(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy);
+            Vector3 buildingCenter = _buildingController.transform.position;
+
+            IDamagable[] playerTroopController = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
 
             if (playerTroopController != null && playerTroopController.Length > 0)
             {
@@ -42,17 +49,28 @@ public abstract class BaseBuildingAttack
         }
     }
 
-    protected virtual void Attack(IDamagable attackTarget)
+    protected IEnumerator Attack(IDamagable attackTarget, Vector3 initialBulletPosition)
     {
         if (isTroopStillAlive(attackTarget, out Transform troopTransform) == false)
-            return;
+            yield break;
 
-        IReactableForDamage enemyReactableForDamage = troopTransform as IReactableForDamage;
+        Vector3 targetBulletPosition = new Vector3(troopTransform.position.x, initialBulletPosition.y, troopTransform.transform.position.z);
+
+        yield return InitializeBullet(initialBulletPosition, targetBulletPosition);
 
         int damage = _buildingScriptable.Damage;
-
         attackTarget.TakeDamage(damage);
+
+        IReactableForDamage enemyReactableForDamage = troopTransform.gameObject.GetComponent<IReactableForDamage>();
         enemyReactableForDamage?.ReactionForTakingDamage(_buildingController);
+    }
+
+    private IEnumerator InitializeBullet(Vector3 initialBulletPosition, Vector3 targetBulletPosition)
+    {
+        BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
+        bulletController.InitializeBullet(initialBulletPosition, targetBulletPosition);
+
+        yield return new WaitForSeconds(bulletController.GetBulletLifetime());
     }
 
     protected bool isTroopStillAlive(IDamagable troopIDamagable, out Transform troopTransform)

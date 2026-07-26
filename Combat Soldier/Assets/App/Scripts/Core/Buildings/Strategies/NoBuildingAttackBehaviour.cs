@@ -1,12 +1,13 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
     public class NoBuildingAttackBehaviour : BaseBuildingAttack
     {
-        public NoBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, Transform bulletInitialPoint)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPoint)
+        public NoBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {
             // peace building strategy
         }

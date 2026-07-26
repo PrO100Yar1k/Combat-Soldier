@@ -4,6 +4,6 @@ public class PeaceBuildingController : BuildingController
 {
     protected override void InitializeBuildingBehaviour()
     {
-        _buildingAttack = new NoBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPoint);
+        _buildingAttack = new NoBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _coroutineRunner);
     }
 }

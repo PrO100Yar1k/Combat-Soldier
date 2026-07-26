@@ -67,13 +67,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1329192586142900465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bcb33d9b23f3014ea20c13c73fc3b8e, type: 3}
+  m_Script: {fileID: 11500000, guid: a2baf467a9afb594ba3f5e1b709b0e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletInitialPointList:
+  - {fileID: 2884347533618733034}
   _buildingScriptable: {fileID: 11400000, guid: 50f4f1dae76bd3548925b745827940fc, type: 2}
   _buildingScreenCanvasController: {fileID: 6428819905256363530}
   _buildingWorldCanvasController: {fileID: 5062057379234225952}
-  _bulletInitialPoint: {fileID: 2884347533618733034}
 --- !u!1 &3481750025043802170
 GameObject:
   m_ObjectHideFlags: 0

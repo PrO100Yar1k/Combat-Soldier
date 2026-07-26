@@ -100,13 +100,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3369770492529468642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcd2a3261fc189546be4bc6278ae19c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d097bb449eb2cb429da22f235c3fe31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingScriptable: {fileID: 11400000, guid: f717b9ee8230bc14c8032ce9ce61f1a5, type: 2}
   _buildingScreenCanvasController: {fileID: 1972604399633539832}
   _buildingWorldCanvasController: {fileID: 3791099713167001685}
-  _bulletInitialPoint: {fileID: 326729801817674275}
+  _bulletInitialPointList:
+  - {fileID: 326729801817674275}
 --- !u!1 &9118525498486568516
 GameObject:
   m_ObjectHideFlags: 0

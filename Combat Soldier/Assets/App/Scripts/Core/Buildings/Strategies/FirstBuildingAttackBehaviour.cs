@@ -1,12 +1,14 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
     public class FirstBuildingAttackBehaviour : BaseBuildingAttack
     {
-        public FirstBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, Transform bulletInitialPoint)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPoint)
+        public FirstBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {
             // Default attack without waves, just usual attack with fixed reloading time
         }
@@ -25,13 +27,14 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
                 if (isTroopStillAlive(troopIDamagable, out Transform troopTransform) == false)
                     yield break;
 
-                Vector3 buildingPosition = _bulletInitialPoint.position;
                 Vector3 troopPosition = troopTransform.position;
+                Vector3 buildingPosition = _buildingController.transform.position;
 
                 if (Vector3.Distance(buildingPosition, troopPosition) > attackRange)
                     yield break;
 
-                Attack(troopIDamagable);
+                Vector3 initialBulletPoint = _bulletInitialPointList[0].position;
+                _coroutineRunner.StartCoroutine(Attack(troopIDamagable, initialBulletPoint));
 
                 yield return new WaitForSeconds(reloadingTime);
             }

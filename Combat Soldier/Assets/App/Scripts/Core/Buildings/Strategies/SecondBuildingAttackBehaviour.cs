@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 { 
@@ -7,8 +8,8 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
     {
         private int _remainingAttackWaves = default;
 
-        public SecondBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, Transform bulletInitialPoint)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPoint)
+        public SecondBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {
             // Large amount of damage in a short period of time,- Waves
             _remainingAttackWaves = _buildingScriptable.AttackWave;
@@ -30,13 +31,14 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
                 if (isTroopStillAlive(troopIDamagable, out Transform troopTransform) == false)
                     break;
 
-                Vector3 buildingPosition = _bulletInitialPoint.position;
+                Vector3 buildingPosition = _buildingController.transform.position;
                 Vector3 troopPosition = troopTransform.position;
 
                 if (Vector3.Distance(buildingPosition, troopPosition) > attackRange)
                     break;
 
-                Attack(troopIDamagable);
+                Vector3 initialBulletPoint = _bulletInitialPointList[0].position;
+                _coroutineRunner.StartCoroutine(Attack(troopIDamagable, initialBulletPoint));
 
                 yield return new WaitForSeconds(timeBetweenWaves);
             }

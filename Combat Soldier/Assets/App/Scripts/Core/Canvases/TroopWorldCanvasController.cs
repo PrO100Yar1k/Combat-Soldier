@@ -8,10 +8,12 @@ namespace Assets.App.Scripts.Core.Canvases
     {
         [SerializeField] private WorldRangeView _rangeView = default;
 
+        [SerializeField] private RectTransform _unitCircleLining = default;
+
         [SerializeField] private Image _unitCircleRange = default;
         [SerializeField] private Image _unitReloadingCircleRange = default;
 
-        [SerializeField] private RectTransform _unitCircleLining = default;
+        private Coroutine _reloadingCoroutine = default;
 
         private ICoroutineRunner _coroutineRunner = default;
 
@@ -45,7 +47,10 @@ namespace Assets.App.Scripts.Core.Canvases
 
         public void StartReloading(float reloadingTime)
         {
-            _coroutineRunner.StartCoroutine(ReloadingCoroutine(reloadingTime));
+            if (_reloadingCoroutine != null)
+                _coroutineRunner.StopCoroutine(_reloadingCoroutine);
+
+            _reloadingCoroutine = _coroutineRunner.StartCoroutine(ReloadingCoroutine(reloadingTime));
         }
 
         public void StartTakingDamage()
@@ -84,7 +89,7 @@ namespace Assets.App.Scripts.Core.Canvases
 
         private IEnumerator TakingDamageCoroutine()
         {
-            float loopDelay = 0.7f;
+            float loopDelay = 1f;
 
             SetupUnitRange(140);
             yield return new WaitForSeconds(loopDelay / 2);

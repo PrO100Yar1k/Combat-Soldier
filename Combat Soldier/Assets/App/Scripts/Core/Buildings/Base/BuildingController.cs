@@ -1,17 +1,19 @@
 using Assets.App.Scripts.Core.Canvases;
+using System.Collections.Generic;
 using System.Collections;
+using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
 using System;
 
 public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposable
 {
+    [SerializeField, Space(3)] protected List<Transform> _bulletInitialPointList = default;
+
     [SerializeField] protected BuildingScriptable _buildingScriptable = default;
 
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
-
-    [SerializeField] protected Transform _bulletInitialPoint = default;
 
     public UICanvasController<BuildingController, BuildingScriptable> UIController { get; protected set; }
     public HPBuildingController HPController { get; protected set; }
@@ -21,6 +23,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     protected BaseBuildingAttack _buildingAttack = default;
 
     protected GameEventBus _gameEvents = default;
+    protected ICoroutineRunner _coroutineRunner = default;
     protected TargetSearchService _targetSearchService = default;
 
     #region Events & Interface Implemention
@@ -53,9 +56,10 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     #endregion
 
     [Inject]
-    public void Construct(GameEventBus gameEvents, TargetSearchService targetSearchService)
+    public void Construct(GameEventBus gameEvents, TargetSearchService targetSearchService, ICoroutineRunner coroutineRunner)
     {
         _gameEvents = gameEvents;
+        _coroutineRunner = coroutineRunner;
         _targetSearchService = targetSearchService;
     }
 

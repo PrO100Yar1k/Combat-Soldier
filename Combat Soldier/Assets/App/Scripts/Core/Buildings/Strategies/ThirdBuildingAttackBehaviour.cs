@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -6,12 +7,17 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 { 
     public class ThirdBuildingAttackBehaviour : BaseBuildingAttack
     {
-        private const int _maxAttackUnitCount = 10;
+        private readonly Queue<Transform> _bulletPointQueue = new Queue<Transform>();
 
-        public ThirdBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, Transform bulletInitialPoint)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPoint)
+        private const int _attackCannonCount = 2;
+
+        public ThirdBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {
-            // damage all enemies (above _maxAttackUnitCount, but could make infinite enemy count too) in the attack range based on usual reload
+            foreach (Transform targetPoint in bulletInitialPointList)
+                _bulletPointQueue.Enqueue(targetPoint);
+
+            // damage all enemies (above _maxAttackUnitCount, but could make infinite enemy count too) in the attack range based on usual reload  // to do (edit this strategy)
         }
 
         protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
@@ -22,40 +28,56 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
             Faction targetTroopSide = Faction.Allies;
             IDamagable targetPriorityEnemy = null;
 
-            Vector3 buildingPosition = _bulletInitialPoint.position;
-
             yield return new WaitForSeconds(_reactionTime);
+
+            Vector3 buildingCenter = _buildingController.transform.position;
 
             while (true)
             {
-                IDamagableTroopList = GetEnemyTargets(buildingPosition, attackRange, targetTroopSide, targetPriorityEnemy);
+                IDamagableTroopList = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
 
                 if (IDamagableTroopList == null || IDamagableTroopList.Length == 0)
                     yield break;
 
-                for (int i = 0; i < IDamagableTroopList.Length; i++)
+                IDamagable troopIDamagable = IDamagableTroopList[0];
+
+                if (isTroopStillAlive(troopIDamagable, out Transform troopTransform) == false)
+                    yield break;
+
+                Vector3 troopPosition = troopTransform.position;
+
+                if (Vector3.Distance(buildingCenter, troopPosition) > attackRange)
+                    yield break;
+
+                float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
+
+                for (int j = 0; j < _attackCannonCount; j++)
                 {
-                    IDamagable troopIDamagable = IDamagableTroopList[i];
+                    Vector3 initialBulletPoint = GetNextBulletPointTransform().position;
+                    _coroutineRunner.StartCoroutine(Attack(troopIDamagable, initialBulletPoint));
 
-                    if (isTroopStillAlive(troopIDamagable, out Transform troopTransform) == false)
-                        yield break;
-
-                    Vector3 troopPosition = troopTransform.position;
-
-                    if (Vector3.Distance(buildingPosition, troopPosition) > attackRange)
-                        yield break;
-
-                    Attack(troopIDamagable);
+                    yield return new WaitForSeconds(timeBetweenWaves);
                 }
 
                 yield return new WaitForSeconds(reloadingTime);
             }
         }
 
+        private Transform GetNextBulletPointTransform()
+        {
+            if (_bulletPointQueue.Count == 0)
+                return _buildingController.transform;
+
+            Transform targetPoint = _bulletPointQueue.Dequeue();
+            _bulletPointQueue.Enqueue(targetPoint);
+
+            return targetPoint;
+        }
+
         protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
         {
             return _targetSearchService.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
-                ?.Take(_maxAttackUnitCount).ToArray();
+                ?.Take(_attackCannonCount).ToArray();
         }
     }
 }

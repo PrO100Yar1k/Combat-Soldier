@@ -15,7 +15,7 @@ public class GameplayInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.Bind<CoroutineStarter>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+        Container.Bind<ICoroutineRunner>().To<CoroutineStarter>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
 
         Container.Bind<List<Transform>>().WithId("Enemy Points").FromInstance(_enemyPatrollingPoints).AsSingle();
 
