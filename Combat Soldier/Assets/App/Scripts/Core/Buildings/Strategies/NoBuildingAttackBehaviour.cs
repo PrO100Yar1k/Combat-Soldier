@@ -12,6 +12,8 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
             // peace building strategy
         }
 
+        protected override int _maxRotateAngle => 0;
+
         protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
         {
             yield return null;

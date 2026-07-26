@@ -8,6 +8,8 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
     {
         private int _remainingAttackWaves = default;
 
+        protected override int _maxRotateAngle => 90;
+
         public SecondBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {

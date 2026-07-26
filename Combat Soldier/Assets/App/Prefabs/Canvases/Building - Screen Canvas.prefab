@@ -1062,7 +1062,7 @@ GameObject:
   - component: {fileID: 1361674313109924334}
   - component: {fileID: 1675546785115947480}
   - component: {fileID: 7010973381767274443}
-  - component: {fileID: 3301972813710852204}
+  - component: {fileID: 7613028868109674151}
   m_Layer: 5
   m_Name: Building - Screen Canvas
   m_TagString: Untagged
@@ -1156,7 +1156,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3301972813710852204
+--- !u!114 &7613028868109674151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1165,7 +1165,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7068667836410444008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 379298aaa3b40f34c9a2f640a70984a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 95f9bb6b209608d4bb5800cbf4bfb218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 1521898153533880134}

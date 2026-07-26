@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3081982642779821229}
   - component: {fileID: 61507164160707491}
   - component: {fileID: 8547798472474098548}
-  - component: {fileID: 4291767460140158481}
+  - component: {fileID: 5834504967257309284}
   m_Layer: 5
   m_Name: Building - World Canvas
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &8547798472474098548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4291767460140158481
+--- !u!114 &5834504967257309284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,6 +111,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3596639066243229299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 594671e31029cad4eab3fbccd8830401, type: 3}
+  m_Script: {fileID: 11500000, guid: 9123f9a1ee57cdb409a9737e1cbec158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

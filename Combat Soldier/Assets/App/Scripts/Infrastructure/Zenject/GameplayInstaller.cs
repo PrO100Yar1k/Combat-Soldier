@@ -1,7 +1,8 @@
+using Assets.App.Scripts;
+using Assets.App.Scripts.Core.Audio;
 using Assets.App.Scripts.Infrastructure.Interfaces;
 using Assets.App.Scripts.Managers;
 using System.Collections.Generic;
-using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
 
@@ -13,9 +14,13 @@ public class GameplayInstaller : MonoInstaller
     [SerializeField] private PlayerSelectionController _troopSelectionController = default;
     [SerializeField] private PlayerCommandController _troopCommandController = default;
 
+    [SerializeField] private AudioController _audioControllerPrefab = default;
+
     public override void InstallBindings()
     {
         Container.Bind<ICoroutineRunner>().To<CoroutineStarter>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+
+        Container.Bind<AudioController>().FromComponentInNewPrefab(_audioControllerPrefab).AsSingle().NonLazy();
 
         Container.Bind<List<Transform>>().WithId("Enemy Points").FromInstance(_enemyPatrollingPoints).AsSingle();
 

@@ -1319,7 +1319,7 @@ GameObject:
   - component: {fileID: 1721170313035103452}
   - component: {fileID: 1317245962920727786}
   - component: {fileID: 7227305365118012153}
-  - component: {fileID: 8839046023454386109}
+  - component: {fileID: 7626070199664475996}
   m_Layer: 5
   m_Name: Player - Screen Canvas
   m_TagString: Untagged
@@ -1413,7 +1413,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8839046023454386109
+--- !u!114 &7626070199664475996
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1422,7 +1422,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7430802114628971994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b066b15e27e029746bd2029583a7440c, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cb34ba931d1cb498b6e3d302b3ce75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 7524917454487982368}

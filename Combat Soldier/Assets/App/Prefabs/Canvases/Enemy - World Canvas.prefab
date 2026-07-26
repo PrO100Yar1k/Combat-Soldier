@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 6624510132507153072}
   - component: {fileID: 1691424272528128118}
   - component: {fileID: 2496992804103163987}
-  - component: {fileID: 7938417556411833142}
+  - component: {fileID: 4069915837942131740}
   - component: {fileID: 4158988535839888262}
   m_Layer: 5
   m_Name: Enemy - World Canvas
@@ -435,7 +435,7 @@ Canvas:
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
+  m_OverridePixelPerfect: 1
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2496992804103163987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7938417556411833142
+--- !u!114 &4069915837942131740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -492,7 +492,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6317213189312985295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13ee7e8ba0ec73941a1fb75383704d71, type: 3}
+  m_Script: {fileID: 11500000, guid: d9713eaad3d77744f9ac105e4ab18709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeView: {fileID: 4158988535839888262}

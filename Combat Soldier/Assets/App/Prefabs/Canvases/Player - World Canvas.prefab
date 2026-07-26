@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 5171245507660997114}
   - component: {fileID: 816327804137524028}
   - component: {fileID: 4506433085044286233}
-  - component: {fileID: 3003624003088872283}
+  - component: {fileID: 9026973823260282654}
   - component: {fileID: 2344884058811798928}
   m_Layer: 5
   m_Name: Player - World Canvas
@@ -390,7 +390,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &4506433085044286233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +408,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3003624003088872283
+--- !u!114 &9026973823260282654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -417,7 +417,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5442098046358702981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d85b1a62f62007940817f2c5a22066fc, type: 3}
+  m_Script: {fileID: 11500000, guid: f83bb3961073fbf41b88a7667166d3aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeView: {fileID: 2344884058811798928}

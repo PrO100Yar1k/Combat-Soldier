@@ -16,6 +16,8 @@ public abstract class BaseBuildingAttack
     protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
+    protected abstract int _maxRotateAngle { get; }
+
     public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
     {
         _buildingController = buildingController;
@@ -38,11 +40,11 @@ public abstract class BaseBuildingAttack
         {
             Vector3 buildingCenter = _buildingController.transform.position;
 
-            IDamagable[] playerTroopController = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
+            IDamagable[] enemiesDamagableArray = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
 
-            if (playerTroopController != null && playerTroopController.Length > 0)
+            if (enemiesDamagableArray != null && enemiesDamagableArray.Length > 0 && isTargetWithinAngle(enemiesDamagableArray))
             {
-                yield return _buildingController.StartCoroutine(AttackCoroutine(playerTroopController));
+                yield return _buildingController.StartCoroutine(AttackCoroutine(enemiesDamagableArray));
             }
 
             yield return new WaitForSeconds(_checkTargetDelay);
@@ -87,6 +89,36 @@ public abstract class BaseBuildingAttack
             return false;
 
         return true;
+    }
+
+    protected bool isTargetWithinAngle(IDamagable[] enemiesDamagableArray)
+    {
+        if (enemiesDamagableArray == null || enemiesDamagableArray.Length == 0)
+            return false;
+
+        Vector3 attackerPosition = _buildingController.transform.position;
+        Vector3 attackerForward = _buildingController.transform.forward;
+
+        foreach (IDamagable damagable in enemiesDamagableArray)
+        {
+            if (damagable is MonoBehaviour enemyMono && enemyMono != null)
+            {
+                Vector3 directionToEnemy = enemyMono.transform.position - attackerPosition;
+
+                directionToEnemy.y = 0f;
+
+                Vector3 forwardFlat = new Vector3(attackerForward.x, 0f, attackerForward.z);
+
+                float angleToEnemy = Vector3.Angle(forwardFlat, directionToEnemy);
+
+                if (angleToEnemy <= _maxRotateAngle)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);

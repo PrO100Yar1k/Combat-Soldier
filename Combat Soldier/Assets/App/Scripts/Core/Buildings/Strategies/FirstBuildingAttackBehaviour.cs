@@ -1,12 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
     public class FirstBuildingAttackBehaviour : BaseBuildingAttack
     {
+        protected override int _maxRotateAngle => 90;
+
         public FirstBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {

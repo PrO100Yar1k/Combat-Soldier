@@ -11,6 +11,8 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
         private const int _attackCannonCount = 2;
 
+        protected override int _maxRotateAngle => 90;
+
         public ThirdBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
         {
