@@ -1,6 +1,7 @@
+using Assets.App.Scripts.Infrastructure.Interfaces;
 using Assets.App.Scripts;
-using System;
 using UnityEngine;
+using System;
 
 public class GameEventBus
 {
@@ -38,4 +39,8 @@ public class GameEventBus
 
     public event Action<MonoBehaviour> OnOpenTroopMenu = default;
     public void OpenTroopMenu(MonoBehaviour controller) => OnOpenTroopMenu?.Invoke(controller);
+
+
+    public event Action<ITrenchFactory> OnTrenchSpawned = default;
+    public void TrenchSpawned(ITrenchFactory trenchController) => OnTrenchSpawned?.Invoke(trenchController);
 }

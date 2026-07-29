@@ -803,6 +803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4785597721972706397}
   - component: {fileID: 8141455874055732607}
+  - component: {fileID: 6383912104583338268}
   m_Layer: 5
   m_Name: Button - Change Troop State
   m_TagString: Untagged
@@ -876,6 +877,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6383912104583338268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4606444744850581556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c0f911ce1f2494ab87400f4d09a72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cooldownImage: {fileID: 6521948182120828742}
 --- !u!1 &5189440453448828550
 GameObject:
   m_ObjectHideFlags: 0

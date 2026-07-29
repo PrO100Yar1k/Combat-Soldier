@@ -13,7 +13,7 @@ public class EnemyFactoryManager : IEnemyFactory, System.IDisposable
 
     public void CreateEnemies()
     {
-        IEnemyFactory enemyFactory = new EasyEnemyFactory(); // control user input
+        IEnemyFactory enemyFactory = new EasyEnemyFactory(); // control user input to do
         enemyFactory.CreateEnemies();
     }
 }

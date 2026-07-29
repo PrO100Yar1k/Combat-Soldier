@@ -1,5 +1,5 @@
-using Assets.App.Scripts;
 using Assets.App.Scripts.Core.Canvases;
+using Assets.App.Scripts;
 
 public abstract class TroopDefaultState : TroopBaseState
 {

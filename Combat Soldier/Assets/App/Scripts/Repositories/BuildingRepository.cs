@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.App.Scripts.Managers
+namespace Assets.App.Scripts.Repositories
 {
     public class BuildingRepository : IDisposable
     {

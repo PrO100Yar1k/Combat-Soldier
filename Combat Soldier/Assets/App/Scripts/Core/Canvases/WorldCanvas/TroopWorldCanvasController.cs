@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Assets.App.Views;
 using UnityEngine.UI;
 using UnityEngine;
 

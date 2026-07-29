@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Assets.App.Views;
 
 namespace Assets.App.Scripts.Core.Canvases
 {

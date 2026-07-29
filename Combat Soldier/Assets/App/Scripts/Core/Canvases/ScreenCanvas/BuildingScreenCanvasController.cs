@@ -1,3 +1,4 @@
+using Assets.App.Views;
 using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Canvases

@@ -58,5 +58,4 @@ public class AppManager : MonoBehaviour // to do
     }
 
     #endregion
-
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Assets.App.Scripts.Managers
+namespace Assets.App.Scripts.Repositories
 {
     public class TroopRepository : IDisposable
     {

@@ -3,13 +3,17 @@ using UnityEngine;
 using Assets.App.Scripts;
 using System.Collections.Generic;
 using Assets.App.Scripts.Infrastructure.Interfaces;
+using Zenject;
 
 public class TrenchLineController : MonoBehaviour, ITrenchFactory
 {
     [SerializeField] private Transform _trenchParent = default;
     [SerializeField] private TrenchUnit _trenchUnitPrefab = default;
 
-    [SerializeField, Space(3)] private Direction _targetDirection = default;
+    [Space(3)]
+
+    [SerializeField] private Direction _targetDirection = default;
+    [SerializeField] private int _unitCount = 20;
 
     private readonly HashSet<Vector3Int> _occupiedPositions = new HashSet<Vector3Int>();
     private readonly Dictionary<Direction, Vector3> _directionVectors = new() {
@@ -24,27 +28,33 @@ public class TrenchLineController : MonoBehaviour, ITrenchFactory
     private const int _branchingChance = 20;
     private const int _maxBranchingAttempts = 25;
 
-    private void Awake() // to do
+    private GameEventBus _gameEventBus = default;
+
+    private void Awake()
     {
-        CreateTrench();
+        _gameEventBus.TrenchSpawned(this);
     }
 
-    public void CreateTrench() // to do
+    [Inject]
+    public void Construct(GameEventBus gameEventBus)
     {
-        const int unitCount = 20;
+        _gameEventBus = gameEventBus;
+    }
+
+    public void CreateTrench()
+    {
         Vector3 startPosition = transform.position;
-
-        GenerateTrench(startPosition, _targetDirection, unitCount);
+        GenerateTrench(startPosition, _targetDirection);
     }
 
-    private void GenerateTrench(Vector3 startPosition, Direction baseDirection, int unitCount)
+    private void GenerateTrench(Vector3 startPosition, Direction baseDirection)
     {
         Vector3 currentPosition = startPosition;
         Direction currentDirection = baseDirection;
 
         _occupiedPositions.Add(Vector3Int.RoundToInt(currentPosition));
 
-        for (int i = 0; i < unitCount; i++)
+        for (int i = 0; i < _unitCount; i++)
         {
             int randomBranchingNumber = UnityEngine.Random.Range(0, 100);
             bool shouldBranchChance = randomBranchingNumber < _branchingChance;

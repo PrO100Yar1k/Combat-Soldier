@@ -1,9 +1,10 @@
 using Assets.App.Scripts.Core.Canvases;
+using Assets.App.Views;
 using UnityEngine;
 
 public class PlayerTroopController : TroopController
 {
-    [SerializeField] private ChangePlayerTroopState _changeStateButton = default;
+    [SerializeField] private ChangePlayerStateView _changeStateButton = default;
 
     public TroopVisionController VisionController { get; private set; }
 

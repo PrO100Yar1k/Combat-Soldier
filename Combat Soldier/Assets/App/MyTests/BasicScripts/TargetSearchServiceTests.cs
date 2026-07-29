@@ -1,4 +1,4 @@
-﻿using Assets.App.Scripts.Managers;
+﻿using Assets.App.Scripts.Repositories;
 using NUnit.Framework;
 using UnityEngine;
 

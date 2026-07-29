@@ -2,19 +2,20 @@ using Assets.App.Scripts;
 using Assets.App.Scripts.Core.Audio;
 using Assets.App.Scripts.Infrastructure.Interfaces;
 using Assets.App.Scripts.Managers;
+using Assets.App.Scripts.Repositories;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class GameplayInstaller : MonoInstaller
 {
-    [SerializeField] private List<Transform> _enemyPatrollingPoints = new List<Transform>();
-
-    [SerializeField, Space(3)] private BulletPoolConfigurator _poolConfigurator = default;
+    [SerializeField] private BulletPoolConfigurator _poolConfigurator = default;
     [SerializeField] private PlayerSelectionController _troopSelectionController = default;
     [SerializeField] private PlayerCommandController _troopCommandController = default;
 
     [SerializeField] private AudioController _audioControllerPrefab = default;
+
+    [SerializeField, Space(3)] private List<Transform> _enemyPatrollingPoints = new List<Transform>();
 
     public override void InstallBindings()
     {
@@ -38,6 +39,7 @@ public class GameplayInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<TroopRepository>().AsSingle();
         Container.BindInterfacesAndSelfTo<BuildingRepository>().AsSingle();
+        Container.BindInterfacesAndSelfTo<TrenchRepository>().AsSingle();
 
         Container.Bind<TargetSearchService>().AsSingle();
         Container.Bind<PatrolPointProvider>().AsSingle();

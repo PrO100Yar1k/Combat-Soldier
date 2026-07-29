@@ -46,7 +46,7 @@ public abstract class TroopAttackState : TroopBaseState
     {
         float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
-        if (Time.time - _lastAttackTime > timeBetweenAttackWaves)
+        if (Time.time - _lastAttackTime > timeBetweenAttackWaves) // to do
         {
             _lastAttackTime = Time.time - timeBetweenAttackWaves;
         }

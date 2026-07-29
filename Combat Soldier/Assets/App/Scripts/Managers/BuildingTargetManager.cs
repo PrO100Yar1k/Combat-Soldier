@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.App.Scripts.Repositories;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.App.Scripts.Managers
@@ -37,7 +38,7 @@ namespace Assets.App.Scripts.Managers
             _coroutineRunner.StopCoroutine(_searchCoroutine);
         }
 
-        public IEnumerator ProcessTargetSearch(Faction targetTroopSide = Faction.Allies, IDamagable targetPriorityEnemy = null)
+        public IEnumerator ProcessTargetSearch(Faction targetFaction = Faction.Allies, IDamagable targetPriorityEnemy = null)
         {
             WaitForSeconds waitingTime = new WaitForSeconds(_searchInterval);
 

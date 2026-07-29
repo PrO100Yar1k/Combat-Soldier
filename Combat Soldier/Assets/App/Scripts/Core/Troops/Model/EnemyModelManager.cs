@@ -1,8 +1,8 @@
-using Assets.App.Scripts;
 using Assets.App.Scripts.Infrastructure.Interfaces;
-using Assets.App.Scripts.Managers;
-using System.Collections;
+using Assets.App.Scripts.Repositories;
 using System.Collections.Generic;
+using System.Collections;
+using Assets.App.Scripts;
 using UnityEngine;
 
 public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
@@ -16,7 +16,7 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 
     public void Dispose()
     {
-        //StopperCoroutine();
+        StopperCoroutine();
     }
 
     #endregion

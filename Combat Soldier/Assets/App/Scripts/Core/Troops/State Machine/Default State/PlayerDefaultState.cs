@@ -14,7 +14,7 @@ public class PlayerDefaultState : TroopDefaultState
     public override void OnStart()
     {
         PlayStateAnimation();
-        CheckEnemyInAttackRangeStarter();
+        CheckEnemyInAttackRange();
     }
 
     public override void OnStop()
@@ -22,29 +22,24 @@ public class PlayerDefaultState : TroopDefaultState
 
     }
 
-    private void CheckEnemyInAttackRangeStarter()
+    private void CheckEnemyInAttackRange()
     {
         _troopController.StartCoroutine(CheckEnemyOnceInAttackRange());
     }
 
-    private IEnumerator CheckEnemyOnceInAttackRange()
+    private IEnumerator CheckEnemyOnceInAttackRange(Faction targetFaction = Faction.Enemies, IDamagable targetPriorityEnemy = null)
     {
-        const float initialDelay = 0.2f;
+        const float initialDelay = 0.25f;
 
         yield return new WaitForSeconds(initialDelay);
 
         Vector3 currentPosition = _troopController.transform.position;
         float attackRange = _troopScriptable.AttackRangeRadius;
 
-        Faction targetTroopSide = Faction.Enemies;
-        IDamagable targetPriorityEnemy = null;
-
-        MonoBehaviour enemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, true);
+        MonoBehaviour enemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, true);
 
         if (enemyInAttackRange == null)
             yield break;
-
-        yield return new WaitForSeconds(0.1f);
 
         Vector3 targetLookAtPosition = new Vector3(enemyInAttackRange.transform.position.x, _troopController.transform.position.y, enemyInAttackRange.transform.position.z);
         _troopController.transform.LookAt(targetLookAtPosition);

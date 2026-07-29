@@ -1,5 +1,6 @@
 ﻿using Assets.App.Scripts;
 using Assets.App.Scripts.Infrastructure.Interfaces;
+using Assets.App.Scripts.Infrastructure.Others;
 using UnityEngine;
 using Zenject;
 
@@ -97,10 +98,7 @@ public class PlayerCommandController : MonoBehaviour
         }
         else
         {
-            const float delta = 0.1f;
-            Vector3 direction = (targetPos - troopPos).normalized;
-            Vector3 targetPoint = targetPos - (direction * attackRange * (1f - delta));
-
+            Vector3 targetPoint = CombatMath.GetAttackDestination(troopPos, targetPos, attackRange);
             stateController.ActivateMoveState(targetPoint);
         }
     }
@@ -110,7 +108,7 @@ public class PlayerCommandController : MonoBehaviour
         if (_controlledTroop.GetCanvasActivityState())
             _gameEventBus.DisableActiveCanvas();
 
-        //make unit circle active
+        // make unit circle active (check out canvas ui layouts)
     }
 
     private void HandleTroopRemoval(MonoBehaviour controller)

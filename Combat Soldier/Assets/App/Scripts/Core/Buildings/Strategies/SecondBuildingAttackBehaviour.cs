@@ -21,9 +21,10 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
         {
             IDamagable troopIDamagable = IDamagableTroopList[0];
 
+            const float fixedTimeDelay = 0.3f;
             float attackRange = _buildingScriptable.AttackRange;
+            float reloadingTime = _buildingScriptable.ReloadingTime - fixedTimeDelay;
 
-            float reloadingTime = _buildingScriptable.ReloadingTime;
             float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
 
             yield return new WaitForSeconds(_reactionTime);
@@ -38,6 +39,8 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
                 if (Vector3.Distance(buildingPosition, troopPosition) > attackRange || !isTargetWithinAngle(new[] { troopIDamagable }))
                     break;
+
+                yield return new WaitForSeconds(fixedTimeDelay);
 
                 Vector3 initialBulletPoint = _bulletInitialPointList[0].position;
                 _coroutineRunner.StartCoroutine(Attack(troopIDamagable, initialBulletPoint));
@@ -60,9 +63,9 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
             }
         }
 
-        protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
+        protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFaction, IDamagable targetPriorityEnemy)
         {
-            IDamagable IDamagableTroop = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false) as IDamagable;
+            IDamagable IDamagableTroop = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, false) as IDamagable;
 
             return new IDamagable[] { IDamagableTroop };
         }

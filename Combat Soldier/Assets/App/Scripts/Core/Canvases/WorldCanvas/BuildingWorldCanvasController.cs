@@ -6,7 +6,7 @@ namespace Assets.App.Scripts.Core.Canvases
     {
         public void Initialize(BuildingScriptable data)
         {
-            // to do
+
         }
 
         public void EnableCanvas()

@@ -3,6 +3,7 @@ using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using Assets.App.Scripts.Infrastructure.Others;
 
 public abstract class BaseBuildingBehaviour
 {
@@ -27,6 +28,8 @@ public abstract class BaseBuildingBehaviour
 
     protected abstract int _maxRotateAngleFromCenter { get; }
 
+    protected Faction _buildingSide = Faction.Enemies;
+
     public BaseBuildingBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
     {
         _buildingController = buildingController;
@@ -43,13 +46,14 @@ public abstract class BaseBuildingBehaviour
         SetupRotatingObjectDictionary();
     }
 
-    public void CheckAndTryToAttackEnemy(Faction targetTroopSide = Faction.Allies, IDamagable targetPriorityEnemy = null)
+    public void CheckAndTryToAttackEnemy(IDamagable targetPriorityEnemy = null)
     {
+        Vector3 buildingCenter = _buildingController.transform.position;
+        Faction targetFaction = _buildingSide.GetOpposite();
+
         float attackRange = _buildingScriptable.AttackRange;
 
-        Vector3 buildingCenter = _buildingController.transform.position;
-
-        IDamagable[] enemiesDamagableArray = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
+        IDamagable[] enemiesDamagableArray = GetEnemyTargets(buildingCenter, attackRange, targetFaction, targetPriorityEnemy);
 
         if (enemiesDamagableArray != null && enemiesDamagableArray.Length > 0 && isTargetWithinAngle(enemiesDamagableArray))
         {
@@ -96,7 +100,6 @@ public abstract class BaseBuildingBehaviour
 
         return true;
     }
-
 
     private void SetupRotatingObjectDictionary()
     {
@@ -187,6 +190,6 @@ public abstract class BaseBuildingBehaviour
 
     protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);
 
-    protected abstract IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy);
+    protected abstract IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFactionSide, IDamagable targetPriorityEnemy);
 }
 

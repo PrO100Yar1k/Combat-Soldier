@@ -1,9 +1,10 @@
-using System.Collections.Generic;
 using Assets.App.Scripts;
+using Assets.App.Scripts.Core.Canvases;
+using Assets.App.Scripts.Infrastructure.Others;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using Assets.App.Scripts.Core.Canvases;
 
 public class EnemyDefaultState : TroopDefaultState
 {
@@ -106,11 +107,8 @@ public class EnemyDefaultState : TroopDefaultState
 
     #region Finding Enemy Cycle
 
-    private IEnumerator FindingEnemyCoroutine() // finding player's unit in visible range while default state
+    private IEnumerator FindingEnemyCoroutine(IDamagable targetPriorityEnemy = null, Faction targetFaction = Faction.Allies)
     {
-        IDamagable targetPriorityEnemy = null;
-        Faction targetTroopSide = Faction.Allies;
-
         float visibleRange = _troopScriptable.ViewRangeRadius;
         float attackRange = _troopScriptable.AttackRangeRadius;
 
@@ -118,7 +116,7 @@ public class EnemyDefaultState : TroopDefaultState
         {
             Vector3 currentPosition = _troopController.transform.position;
 
-            MonoBehaviour closestEnemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetTroopSide, targetPriorityEnemy, false);
+            MonoBehaviour closestEnemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, false);
 
             if (closestEnemyInAttackRange != null)
             {
@@ -133,7 +131,7 @@ public class EnemyDefaultState : TroopDefaultState
                 yield break;
             }
 
-            MonoBehaviour closestEnemyInViewRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, visibleRange, targetTroopSide, targetPriorityEnemy, false);
+            MonoBehaviour closestEnemyInViewRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, visibleRange, targetFaction, targetPriorityEnemy, false);
 
             if (closestEnemyInViewRange != null)
             {
@@ -149,17 +147,12 @@ public class EnemyDefaultState : TroopDefaultState
         }
     }
 
-    private void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange) // to do extension method
+    protected void MoveToEnemyTarget(IDamagable targetDamagable, Vector3 targetPos, float troopAttackRange)
     {
-        const float distanceDelta = 0.1f;
-        const float distanceModifier = 1 - distanceDelta;
-
         Vector3 currentPosition = _troopController.transform.position;
+        Vector3 destination = CombatMath.GetAttackDestination(currentPosition, targetPos, troopAttackRange);
 
-        Vector3 direction = (targetPos - currentPosition).normalized;
-        targetPos -= direction * troopAttackRange * distanceModifier;
-
-        _troopController.StateController.ActivateMoveState(targetPos);
+        _troopController.StateController.ActivateMoveState(destination);
     }
 
     #endregion

@@ -1,3 +1,4 @@
+using Assets.App.Scripts.Infrastructure.Others;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -24,11 +25,14 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
         protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
         {
-            float attackRange = _buildingScriptable.AttackRange;
-            float reloadingTime = _buildingScriptable.ReloadingTime;
-
-            Faction targetTroopSide = Faction.Allies;
+            Faction targetFaction = _buildingSide.GetOpposite();
             IDamagable targetPriorityEnemy = null;
+
+            const float fixedTimeDelay = 0.3f;
+            float attackRange = _buildingScriptable.AttackRange;
+            float reloadingTime = _buildingScriptable.ReloadingTime - fixedTimeDelay;
+
+            float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
 
             yield return new WaitForSeconds(_reactionTime);
 
@@ -36,7 +40,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
             while (true)
             {
-                IDamagableTroopList = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
+                IDamagableTroopList = GetEnemyTargets(buildingCenter, attackRange, targetFaction, targetPriorityEnemy);
 
                 if (IDamagableTroopList == null || IDamagableTroopList.Length == 0)
                     yield break;
@@ -51,7 +55,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
                 if (Vector3.Distance(buildingCenter, troopPosition) > attackRange || !isTargetWithinAngle(new[] { troopIDamagable }))
                     yield break;
 
-                float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
+                yield return new WaitForSeconds(fixedTimeDelay);
 
                 for (int j = 0; j < _attackCannonCount; j++)
                 {
@@ -76,9 +80,9 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
             return targetPoint;
         }
 
-        protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetTroopSide, IDamagable targetPriorityEnemy)
+        protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFaction, IDamagable targetPriorityEnemy)
         {
-            return _targetSearchService.GetEnemyListInRange(currentPosition, attackRange, targetTroopSide)
+            return _targetSearchService.GetEnemyListInRange(currentPosition, attackRange, targetFaction)
                 ?.Take(_attackCannonCount).ToArray();
         }
     }
