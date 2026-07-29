@@ -4,7 +4,7 @@ public class FirstAttackBuildingController : BuildingController
 {
     protected override void InitializeBuildingBehaviour()
     {
-        _buildingAttack = new FirstBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _coroutineRunner);
+        _buildingAttack = new FirstBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _rotatingObjectList, _observePoint, _coroutineRunner);
         StartCoroutine(_buildingAttack.CheckAttackTargetCoroutine());
     }
 }

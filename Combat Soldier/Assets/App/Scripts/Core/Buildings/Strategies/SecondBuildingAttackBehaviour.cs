@@ -8,10 +8,10 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
     {
         private int _remainingAttackWaves = default;
 
-        protected override int _maxRotateAngle => 90;
+        protected override int _maxRotateAngleFromCenter => 45;
 
-        public SecondBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
+        public SecondBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
             // Large amount of damage in a short period of time,- Waves
             _remainingAttackWaves = _buildingScriptable.AttackWave;
@@ -36,7 +36,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
                 Vector3 buildingPosition = _buildingController.transform.position;
                 Vector3 troopPosition = troopTransform.position;
 
-                if (Vector3.Distance(buildingPosition, troopPosition) > attackRange)
+                if (Vector3.Distance(buildingPosition, troopPosition) > attackRange || !isTargetWithinAngle(new[] { troopIDamagable }))
                     break;
 
                 Vector3 initialBulletPoint = _bulletInitialPointList[0].position;

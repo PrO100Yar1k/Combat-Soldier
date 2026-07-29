@@ -8,12 +8,15 @@ using System;
 
 public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposable
 {
-    [SerializeField, Space(3)] protected List<Transform> _bulletInitialPointList = default;
-
     [SerializeField] protected BuildingScriptable _buildingScriptable = default;
 
     [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
     [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
+
+    [SerializeField] protected Transform _observePoint = default;
+
+    [SerializeField, Space(2)] protected List<GameObject> _rotatingObjectList = default;
+    [SerializeField, Space(2)] protected List<Transform> _bulletInitialPointList = default;
 
     public UICanvasController<BuildingController, BuildingScriptable> UIController { get; protected set; }
     public HPBuildingController HPController { get; protected set; }

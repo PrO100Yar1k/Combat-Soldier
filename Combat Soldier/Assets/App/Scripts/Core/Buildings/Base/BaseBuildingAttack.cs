@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public abstract class BaseBuildingAttack
 {
+    private readonly Dictionary<Transform, Quaternion> _initialLocalRotations = new Dictionary<Transform, Quaternion>();
+
     protected readonly BuildingController _buildingController;
     protected readonly BuildingScriptable _buildingScriptable;
 
@@ -12,13 +15,18 @@ public abstract class BaseBuildingAttack
     protected readonly ICoroutineRunner _coroutineRunner;
 
     protected readonly List<Transform> _bulletInitialPointList;
+    protected readonly List<GameObject> _rotatingObjectList;
+
+    protected readonly Transform _observePoint;
 
     protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
-    protected abstract int _maxRotateAngle { get; }
+    private const float _rotationSpeed = 120f;
 
-    public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
+    protected abstract int _maxRotateAngleFromCenter { get; }
+
+    public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
@@ -27,6 +35,19 @@ public abstract class BaseBuildingAttack
         _coroutineRunner = coroutineRunner;
 
         _bulletInitialPointList = bulletInitialPointList;
+        _rotatingObjectList = rotatingObjectList;
+
+        _observePoint = observePoint;
+
+        SetupRotatingObjectDictionary();
+    }
+
+    private void SetupRotatingObjectDictionary()
+    {
+        foreach (GameObject obj in _rotatingObjectList)
+        {
+            _initialLocalRotations[obj.transform] = obj.transform.localRotation;
+        }
     }
 
     public virtual IEnumerator CheckAttackTargetCoroutine() // to do
@@ -97,28 +118,70 @@ public abstract class BaseBuildingAttack
             return false;
 
         Vector3 attackerPosition = _buildingController.transform.position;
-        Vector3 attackerForward = _buildingController.transform.forward;
+        Vector3 baseForward = Vector3.ProjectOnPlane(_observePoint.forward, Vector3.up).normalized;
+
+        if (baseForward == Vector3.zero)
+            baseForward = Vector3.forward;
+
+        float debugDuration = 2.0f;
+
+        Debug.DrawRay(attackerPosition, baseForward * 5f, Color.green, debugDuration);
+
+        Quaternion leftBoundary = Quaternion.Euler(0, -_maxRotateAngleFromCenter, 0);
+        Quaternion rightBoundary = Quaternion.Euler(0, _maxRotateAngleFromCenter, 0);
+        Debug.DrawRay(attackerPosition, (leftBoundary * baseForward) * 4f, Color.red, debugDuration);
+        Debug.DrawRay(attackerPosition, (rightBoundary * baseForward) * 4f, Color.red, debugDuration);
 
         foreach (IDamagable damagable in enemiesDamagableArray)
         {
             if (damagable is MonoBehaviour enemyMono && enemyMono != null)
             {
-                Vector3 directionToEnemy = enemyMono.transform.position - attackerPosition;
+                Vector3 enemyPosition = enemyMono.transform.position;
+                Vector3 directionToEnemy = Vector3.ProjectOnPlane(enemyPosition - attackerPosition, Vector3.up).normalized;
 
-                directionToEnemy.y = 0f;
+                if (directionToEnemy == Vector3.zero)
+                    continue;
 
-                Vector3 forwardFlat = new Vector3(attackerForward.x, 0f, attackerForward.z);
+                Debug.DrawRay(attackerPosition, directionToEnemy * 4f, Color.yellow, debugDuration);
 
-                float angleToEnemy = Vector3.Angle(forwardFlat, directionToEnemy);
+                float angleToEnemy = Vector3.Angle(baseForward, directionToEnemy);
 
-                if (angleToEnemy <= _maxRotateAngle)
+                if (angleToEnemy <= _maxRotateAngleFromCenter)
                 {
+                    RotateObjectsTowards(enemyPosition);
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    private void RotateObjectsTowards(Vector3 targetPosition)
+    {
+        Vector3 baseForward = Vector3.ProjectOnPlane(_observePoint.forward, Vector3.up).normalized;
+
+        if (baseForward == Vector3.zero)
+            baseForward = Vector3.forward;
+
+        Vector3 directionToEnemy = Vector3.ProjectOnPlane(targetPosition - _buildingController.transform.position, Vector3.up).normalized;
+
+        if (directionToEnemy == Vector3.zero)
+            return;
+
+        Quaternion deltaRotation = Quaternion.FromToRotation(baseForward, directionToEnemy);
+
+        foreach (GameObject obj in _rotatingObjectList)
+        {
+            if (_initialLocalRotations.TryGetValue(obj.transform, out Quaternion initialLocalRot))
+            {
+                Quaternion initialWorldRotation = _buildingController.transform.rotation * initialLocalRot;
+                Quaternion targetWorldRotation = deltaRotation * initialWorldRotation;
+
+                obj.transform.DOKill();
+                obj.transform.DORotate(targetWorldRotation.eulerAngles, _rotationSpeed).SetSpeedBased(true).SetEase(Ease.Linear);
+            }
+        }
     }
 
     protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);

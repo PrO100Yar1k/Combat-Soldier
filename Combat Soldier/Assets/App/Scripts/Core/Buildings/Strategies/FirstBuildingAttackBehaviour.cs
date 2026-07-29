@@ -6,10 +6,10 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
     public class FirstBuildingAttackBehaviour : BaseBuildingAttack
     {
-        protected override int _maxRotateAngle => 90;
+        protected override int _maxRotateAngleFromCenter => 45;
 
-        public FirstBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
+        public FirstBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
             // Default attack without waves, just usual attack with fixed reloading time
         }
@@ -31,7 +31,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
                 Vector3 troopPosition = troopTransform.position;
                 Vector3 buildingPosition = _buildingController.transform.position;
 
-                if (Vector3.Distance(buildingPosition, troopPosition) > attackRange)
+                if (Vector3.Distance(buildingPosition, troopPosition) > attackRange || !isTargetWithinAngle(new[] { troopIDamagable }))
                     yield break;
 
                 Vector3 initialBulletPoint = _bulletInitialPointList[0].position;

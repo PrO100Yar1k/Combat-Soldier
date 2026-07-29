@@ -9,12 +9,12 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
     {
         private readonly Queue<Transform> _bulletPointQueue = new Queue<Transform>();
 
+        protected override int _maxRotateAngleFromCenter => 45;
+
         private const int _attackCannonCount = 2;
 
-        protected override int _maxRotateAngle => 90;
-
-        public ThirdBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, ICoroutineRunner coroutineRunner)
-            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, coroutineRunner)
+        public ThirdBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+            : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
             foreach (Transform targetPoint in bulletInitialPointList)
                 _bulletPointQueue.Enqueue(targetPoint);
@@ -48,7 +48,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
                 Vector3 troopPosition = troopTransform.position;
 
-                if (Vector3.Distance(buildingCenter, troopPosition) > attackRange)
+                if (Vector3.Distance(buildingCenter, troopPosition) > attackRange || !isTargetWithinAngle(new[] { troopIDamagable }))
                     yield break;
 
                 float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
