@@ -5,6 +5,6 @@ public class ThirdAttackBuildingController : BuildingController
     protected override void InitializeBuildingBehaviour()
     {
         _buildingAttack = new ThirdBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _rotatingObjectList, _observePoint, _coroutineRunner);
-        StartCoroutine(_buildingAttack.CheckAttackTargetCoroutine());
+        //StartCoroutine(_buildingAttack.CheckAttackTargetCoroutine());
     }
 }

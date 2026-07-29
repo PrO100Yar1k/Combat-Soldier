@@ -5,6 +5,6 @@ public class SecondAttackBuildingController : BuildingController
     protected override void InitializeBuildingBehaviour()
     {
         _buildingAttack = new SecondBuildingAttackBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _rotatingObjectList, _observePoint, _coroutineRunner);
-        StartCoroutine(_buildingAttack.CheckAttackTargetCoroutine());
+        //StartCoroutine(_buildingAttack.CheckAttackTargetCoroutine());
     }
 }

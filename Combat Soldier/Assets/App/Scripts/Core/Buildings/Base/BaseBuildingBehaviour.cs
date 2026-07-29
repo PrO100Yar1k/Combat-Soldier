@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
-public abstract class BaseBuildingAttack
+public abstract class BaseBuildingBehaviour
 {
     private readonly Dictionary<Transform, Quaternion> _initialLocalRotations = new Dictionary<Transform, Quaternion>();
 
@@ -19,14 +19,15 @@ public abstract class BaseBuildingAttack
 
     protected readonly Transform _observePoint;
 
-    protected const float _checkTargetDelay = 1f;
     protected const float _reactionTime = 0.5f;
 
     private const float _rotationSpeed = 120f;
 
+    public bool IsAttacking { get; private set; }
+
     protected abstract int _maxRotateAngleFromCenter { get; }
 
-    public BaseBuildingAttack(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+    public BaseBuildingBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
     {
         _buildingController = buildingController;
         _buildingScriptable = buildingScriptable;
@@ -42,33 +43,17 @@ public abstract class BaseBuildingAttack
         SetupRotatingObjectDictionary();
     }
 
-    private void SetupRotatingObjectDictionary()
+    public void CheckAndTryToAttackEnemy(Faction targetTroopSide = Faction.Allies, IDamagable targetPriorityEnemy = null)
     {
-        foreach (GameObject obj in _rotatingObjectList)
-        {
-            _initialLocalRotations[obj.transform] = obj.transform.localRotation;
-        }
-    }
-
-    public virtual IEnumerator CheckAttackTargetCoroutine() // to do
-    {
-        Faction targetTroopSide = Faction.Allies;
-        IDamagable targetPriorityEnemy = null;
-
         float attackRange = _buildingScriptable.AttackRange;
 
-        while (true)
+        Vector3 buildingCenter = _buildingController.transform.position;
+
+        IDamagable[] enemiesDamagableArray = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
+
+        if (enemiesDamagableArray != null && enemiesDamagableArray.Length > 0 && isTargetWithinAngle(enemiesDamagableArray))
         {
-            Vector3 buildingCenter = _buildingController.transform.position;
-
-            IDamagable[] enemiesDamagableArray = GetEnemyTargets(buildingCenter, attackRange, targetTroopSide, targetPriorityEnemy);
-
-            if (enemiesDamagableArray != null && enemiesDamagableArray.Length > 0 && isTargetWithinAngle(enemiesDamagableArray))
-            {
-                yield return _buildingController.StartCoroutine(AttackCoroutine(enemiesDamagableArray));
-            }
-
-            yield return new WaitForSeconds(_checkTargetDelay);
+            _buildingController.StartCoroutine(ExecuteAttackCoroutine(enemiesDamagableArray));
         }
     }
 
@@ -110,6 +95,15 @@ public abstract class BaseBuildingAttack
             return false;
 
         return true;
+    }
+
+
+    private void SetupRotatingObjectDictionary()
+    {
+        foreach (GameObject obj in _rotatingObjectList)
+        {
+            _initialLocalRotations[obj.transform] = obj.transform.localRotation;
+        }
     }
 
     protected bool isTargetWithinAngle(IDamagable[] enemiesDamagableArray)
@@ -182,6 +176,13 @@ public abstract class BaseBuildingAttack
                 obj.transform.DORotate(targetWorldRotation.eulerAngles, _rotationSpeed).SetSpeedBased(true).SetEase(Ease.Linear);
             }
         }
+    }
+
+    private IEnumerator ExecuteAttackCoroutine(IDamagable[] enemiesDamagableArray)
+    {
+        IsAttacking = true;
+        yield return AttackCoroutine(enemiesDamagableArray);
+        IsAttacking = false;
     }
 
     protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);

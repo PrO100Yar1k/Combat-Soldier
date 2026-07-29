@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
-    public class FirstBuildingAttackBehaviour : BaseBuildingAttack
+    public class FirstBuildingAttackBehaviour : BaseBuildingBehaviour
     {
         protected override int _maxRotateAngleFromCenter => 45;
 

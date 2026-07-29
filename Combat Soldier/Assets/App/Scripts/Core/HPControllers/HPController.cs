@@ -13,9 +13,9 @@ namespace Assets.App.Scripts.Core.Health
             InitializeData(config);
         }
 
-        protected abstract void InitializeData(TData config);
-
         public abstract void TakeDamage(int attackDamage);
+
+        protected abstract void InitializeData(TData config);
 
         protected abstract void UpdateSliderAndTextValues();
 

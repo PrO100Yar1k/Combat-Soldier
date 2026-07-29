@@ -41,6 +41,7 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<TargetSearchService>().AsSingle();
         Container.Bind<PatrolPointProvider>().AsSingle();
+        Container.Bind<BuildingTargetManager>().AsSingle();
 
         Container.BindInterfacesTo<GameplayBootstrap>().AsSingle();
     }

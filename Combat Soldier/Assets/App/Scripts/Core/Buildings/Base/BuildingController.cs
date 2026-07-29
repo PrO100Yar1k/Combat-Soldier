@@ -23,7 +23,7 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
 
     public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
-    protected BaseBuildingAttack _buildingAttack = default;
+    protected BaseBuildingBehaviour _buildingAttack = default;
 
     protected GameEventBus _gameEvents = default;
     protected ICoroutineRunner _coroutineRunner = default;
@@ -49,6 +49,14 @@ public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposabl
     public void TakeDamage(int attackDamage)
     {
         HPController.TakeDamage(attackDamage);
+    }
+
+    public void TryExecuteAttack()
+    {
+        if (_buildingAttack.IsAttacking)
+            return;
+
+        _buildingAttack.CheckAndTryToAttackEnemy();
     }
 
     public Faction GetFaction()

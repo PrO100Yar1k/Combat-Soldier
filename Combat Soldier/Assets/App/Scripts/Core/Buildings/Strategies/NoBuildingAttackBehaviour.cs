@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
-    public class NoBuildingAttackBehaviour : BaseBuildingAttack
+    public class NoBuildingAttackBehaviour : BaseBuildingBehaviour
     {
         public NoBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)

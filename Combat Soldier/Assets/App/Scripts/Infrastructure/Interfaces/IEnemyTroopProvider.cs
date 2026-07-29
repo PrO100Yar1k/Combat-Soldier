@@ -2,6 +2,6 @@
 {
     public interface IEnemyTroopProvider
     {
-        public void ProvideEnemyVisionStarter();
+        public void StartEnemyModelVision();
     }
 }

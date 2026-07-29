@@ -29,7 +29,7 @@ public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
 
     #region Coroutine Starter & Stopper
 
-    public void ProvideEnemyVisionStarter()
+    public void StartEnemyModelVision()
     {
         StopperCoroutine();
         StarterCoroutine();

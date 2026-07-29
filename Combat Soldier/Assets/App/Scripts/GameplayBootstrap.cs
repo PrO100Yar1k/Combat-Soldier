@@ -15,8 +15,9 @@ public class GameplayBootstrap : IInitializable
     private readonly TroopRepository _troopRepository;
     private readonly AudioController _audioController;
     private readonly BuildingRepository _buildingRepository;
+    private readonly BuildingTargetManager _buildingTargetManager;
 
-    public GameplayBootstrap(TroopRepository troopRepository, BuildingRepository buildingRepository, AudioController audioController,
+    public GameplayBootstrap(TroopRepository troopRepository, BuildingRepository buildingRepository, AudioController audioController, BuildingTargetManager buildingTargetManager,
         IObjectPool poolConfigurator, IEnemyTroopProvider troopModelManager, IEnemyFactory enemyFactoryManager)
     {
         _troopRepository = troopRepository;
@@ -26,21 +27,24 @@ public class GameplayBootstrap : IInitializable
         _poolConfigurator = poolConfigurator;
         _troopModelManager = troopModelManager;
         _enemyFactoryManager = enemyFactoryManager;
+        _buildingTargetManager = buildingTargetManager;
     }
 
     public void Initialize()
     {
+        _audioController.PlayBackgroundSoundtrack();
+
         _poolConfigurator.InitializePool();
 
         _troopRepository.InitializeAll();
         _buildingRepository.InitializeAll();
 
-        _troopModelManager.ProvideEnemyVisionStarter();
-
         //_trenchController.CreateTrench();
         _enemyFactoryManager.CreateEnemies();
 
-        _audioController.PlayBackgroundSoundtrack();
+        _buildingTargetManager.Initialize();
+
+        _troopModelManager.StartEnemyModelVision();
 
         Debug.Log("Managers were succefully initialized!");
     }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 { 
-    public class SecondBuildingAttackBehaviour : BaseBuildingAttack
+    public class SecondBuildingAttackBehaviour : BaseBuildingBehaviour
     {
         private int _remainingAttackWaves = default;
 

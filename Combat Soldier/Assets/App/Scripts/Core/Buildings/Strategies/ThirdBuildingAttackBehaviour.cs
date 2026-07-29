@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 { 
-    public class ThirdBuildingAttackBehaviour : BaseBuildingAttack
+    public class ThirdBuildingAttackBehaviour : BaseBuildingBehaviour
     {
         private readonly Queue<Transform> _bulletPointQueue = new Queue<Transform>();
 
