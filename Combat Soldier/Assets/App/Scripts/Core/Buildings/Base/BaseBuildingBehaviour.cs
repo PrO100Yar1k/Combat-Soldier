@@ -1,9 +1,9 @@
+using Assets.App.Scripts.Infrastructure.Others;
 using System.Collections.Generic;
 using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-using Assets.App.Scripts.Infrastructure.Others;
 
 public abstract class BaseBuildingBehaviour
 {
@@ -44,6 +44,14 @@ public abstract class BaseBuildingBehaviour
         _observePoint = observePoint;
 
         SetupRotatingObjectDictionary();
+    }
+
+    private void SetupRotatingObjectDictionary()
+    {
+        foreach (GameObject obj in _rotatingObjectList)
+        {
+            _initialLocalRotations[obj.transform] = obj.transform.localRotation;
+        }
     }
 
     public void CheckAndTryToAttackEnemy(IDamagable targetPriorityEnemy = null)
@@ -92,21 +100,10 @@ public abstract class BaseBuildingBehaviour
         MonoBehaviour troopMonobehaviour = troopObject as MonoBehaviour;
         troopTransform = troopMonobehaviour != null ? troopMonobehaviour.transform : null;
 
-        if (troopObject == null)
-            return false;
-
-        if (troopTransform == null)
+        if (troopObject == null || troopTransform == null)
             return false;
 
         return true;
-    }
-
-    private void SetupRotatingObjectDictionary()
-    {
-        foreach (GameObject obj in _rotatingObjectList)
-        {
-            _initialLocalRotations[obj.transform] = obj.transform.localRotation;
-        }
     }
 
     protected bool isTargetWithinAngle(IDamagable[] enemiesDamagableArray)
@@ -188,8 +185,12 @@ public abstract class BaseBuildingBehaviour
         IsAttacking = false;
     }
 
-    protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);
+    protected virtual IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFaction, IDamagable targetPriorityEnemy)
+    {
+        var IDamagableTroop = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, false);
+        return new IDamagable[] { IDamagableTroop as IDamagable };
+    }
 
-    protected abstract IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFactionSide, IDamagable targetPriorityEnemy);
+    protected abstract IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList);
 }
 

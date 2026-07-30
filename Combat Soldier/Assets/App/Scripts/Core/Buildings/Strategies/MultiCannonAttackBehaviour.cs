@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 { 
-    public class ThirdBuildingAttackBehaviour : BaseBuildingBehaviour
+    public class MultiCannonAttackBehaviour : BaseBuildingBehaviour
     {
         private readonly Queue<Transform> _bulletPointQueue = new Queue<Transform>();
 
@@ -14,13 +14,13 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
         private const int _attackCannonCount = 2;
 
-        public ThirdBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+        public MultiCannonAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
             foreach (Transform targetPoint in bulletInitialPointList)
                 _bulletPointQueue.Enqueue(targetPoint);
 
-            // damage all enemies (above _maxAttackUnitCount, but could make infinite enemy count too) in the attack range based on usual reload  // to do (edit this strategy)
+            // damage all enemies by multiple cannons based on Wave Attack Type
         }
 
         protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
@@ -30,7 +30,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
             const float fixedTimeDelay = 0.3f;
             float attackRange = _buildingScriptable.AttackRange;
-            float reloadingTime = _buildingScriptable.ReloadingTime - fixedTimeDelay;
+            float reloadingTime = _buildingScriptable.ReloadingTime;
 
             float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
 

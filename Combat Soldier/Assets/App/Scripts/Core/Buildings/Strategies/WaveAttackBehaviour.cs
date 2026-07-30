@@ -1,20 +1,21 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 { 
-    public class SecondBuildingAttackBehaviour : BaseBuildingBehaviour
+    public class WaveAttackBehaviour : BaseBuildingBehaviour
     {
         private int _remainingAttackWaves = default;
 
         protected override int _maxRotateAngleFromCenter => 45;
 
-        public SecondBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+        public WaveAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
-            // Large amount of damage in a short period of time,- Waves
             _remainingAttackWaves = _buildingScriptable.AttackWave;
+
+            // Large amount of damage in a short period of time,- Waves Attack Type
         }
 
         protected override IEnumerator AttackCoroutine(IDamagable[] IDamagableTroopList)
@@ -23,7 +24,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
             const float fixedTimeDelay = 0.3f;
             float attackRange = _buildingScriptable.AttackRange;
-            float reloadingTime = _buildingScriptable.ReloadingTime - fixedTimeDelay;
+            float reloadingTime = _buildingScriptable.ReloadingTime;
 
             float timeBetweenWaves = _buildingScriptable.TimeBetweenWaves;
 
@@ -58,16 +59,8 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
             for ( ; _remainingAttackWaves < totalAttackWavesCount + 1; _remainingAttackWaves++)
             {
                 float reloadingTime = _buildingScriptable.ReloadingTime;
-
                 yield return new WaitForSeconds(reloadingTime / totalAttackWavesCount);
             }
-        }
-
-        protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFaction, IDamagable targetPriorityEnemy)
-        {
-            IDamagable IDamagableTroop = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, false) as IDamagable;
-
-            return new IDamagable[] { IDamagableTroop };
         }
     }
 }

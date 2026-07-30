@@ -5,21 +5,12 @@ using System.Collections;
 using Assets.App.Scripts;
 using UnityEngine;
 
-public class EnemyModelManager : IEnemyTroopProvider, System.IDisposable
+public class EnemyModelManager : IEnemyTroopProvider
 {
     private readonly TroopRepository _troopRepository;
     private readonly ICoroutineRunner _coroutineRunner;
 
     private Coroutine _visionCoroutine = default;
-
-    #region Disposable
-
-    public void Dispose()
-    {
-        StopperCoroutine();
-    }
-
-    #endregion
 
     public EnemyModelManager(TroopRepository troopRepository, ICoroutineRunner coroutineRunner)
     {

@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
-    public class FirstBuildingAttackBehaviour : BaseBuildingBehaviour
+    public class SingleTargetAttackBehaviour : BaseBuildingBehaviour
     {
         protected override int _maxRotateAngleFromCenter => 45;
 
-        public FirstBuildingAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
+        public SingleTargetAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
             // Default attack without waves, just usual attack with fixed reloading time
@@ -18,9 +18,9 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
         {
             IDamagable troopIDamagable = IDamagableTroopList[0];
 
-            const float fixedTimeDelay = 0.3f;
+            const float fixedTimeDelay = 0.25f;
             float attackRange = _buildingScriptable.AttackRange;
-            float reloadingTime = _buildingScriptable.ReloadingTime - fixedTimeDelay;
+            float reloadingTime = _buildingScriptable.ReloadingTime;
 
             yield return new WaitForSeconds(_reactionTime);
 
@@ -42,13 +42,6 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 
                 yield return new WaitForSeconds(reloadingTime);
             }
-        }
-
-        protected override IDamagable[] GetEnemyTargets(Vector3 currentPosition, float attackRange, Faction targetFaction, IDamagable targetPriorityEnemy)
-        {
-            IDamagable IDamagableTroop = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, false) as IDamagable;
-
-            return new IDamagable[] { IDamagableTroop };
         }
     }
 }
