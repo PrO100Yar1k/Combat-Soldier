@@ -17,15 +17,13 @@ public abstract class TroopAttackState : TroopBaseState
     protected int _remainingAttackWaves = default;
     protected float _lastAttackTime = default;
 
-    protected bool _isReloading = false;
-
     protected override string StateIconLocation
         => "State Icons/Attack-State-Icon";
 
     protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
-        _remainingAttackWaves = _troopScriptable?.CountAttackWaves ?? 1;
+        _remainingAttackWaves = _troopScriptable?.CountAttackWaves ?? 1; // null-coalistic for unit-testing
     }
 
     #region Events
@@ -44,18 +42,12 @@ public abstract class TroopAttackState : TroopBaseState
 
     public override void OnStart()
     {
-        float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
-        if (Time.time - _lastAttackTime > timeBetweenAttackWaves) // to do
-        {
-            _lastAttackTime = Time.time - timeBetweenAttackWaves;
-        }
     }
 
     public override void OnStop()
     {
         DisableAttackCoroutine();
-        _isReloading = false;
     }
 
     protected override void PlayStateAnimation()
@@ -88,10 +80,14 @@ public abstract class TroopAttackState : TroopBaseState
         if (targetEnemy == null)
             return;
 
-        if (_currentTargetEnemy == targetEnemy) //_attackCoroutine != null &&
+        if (_currentTargetEnemy != null && _currentTargetEnemy == targetEnemy)
+            return;
+
+        if (_remainingAttackWaves <= 0) // maybe launch reloading in this case
             return;
 
         DisableAttackCoroutine();
+        StopReloadingAttack();
 
         _currentTargetEnemy = targetEnemy;
         _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(targetEnemy));
@@ -113,26 +109,13 @@ public abstract class TroopAttackState : TroopBaseState
 
     private IEnumerator AttackEnemyCoroutine(MonoBehaviour targetEnemy)
     {
-        yield return new WaitUntil(()=> !_isReloading && _remainingAttackWaves > 0);
-
         float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
 
-        while (_remainingAttackWaves > 0 && !_isReloading)
+        while (_remainingAttackWaves > 0)
         {
-            float timeSinceLastAttack = Time.time - _lastAttackTime;
-
-            //if (timeSinceLastAttack < timeBetweenAttackWaves)
-            //{
-            //    yield return new WaitForSeconds(timeBetweenAttackWaves - timeSinceLastAttack);
-            //}
-
-            if (isEnemyStillAlive(targetEnemy) == false)
+            if (!isEnemyStillAlive(targetEnemy) || !isEnemyWithinAttackRange(targetEnemy))
                 break;
 
-            if (isEnemyWithinAttackRange(targetEnemy) == false)
-                break;
-
-            _lastAttackTime = Time.time;
             _remainingAttackWaves--;
 
             PlayStateAnimation();
@@ -154,19 +137,19 @@ public abstract class TroopAttackState : TroopBaseState
             IDamagable targetDamagable = targetEnemy as IDamagable;
             targetDamagable?.TakeDamage(attackDamage);
 
-            if (isEnemyStillAlive(targetEnemy) == false)
+            if (!isEnemyStillAlive(targetEnemy) || !isEnemyWithinAttackRange(targetEnemy))
                 break;
 
             IReactableForDamage enemyReactableForDamage = targetEnemy as IReactableForDamage;
             enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
 
-            yield return new WaitForSeconds(timeBetweenAttackWaves - bulletLifetime);
+            float remainingDelay = timeBetweenAttackWaves - bulletLifetime;
+            float waitingDelay = remainingDelay <= 0 ? timeBetweenAttackWaves : remainingDelay;
+
+            yield return new WaitForSeconds(waitingDelay);
         }
 
-        if (_remainingAttackWaves <= 0)
-        {
-            StartReloadAttackCoroutine();
-        }
+        StartReloadingAttack();
         CheckForAttackStateCompletion();
     }
 
@@ -181,7 +164,9 @@ public abstract class TroopAttackState : TroopBaseState
     #region Helper Methods
 
     private bool isEnemyStillAlive(MonoBehaviour targetEnemy)
-        => targetEnemy != null;
+    {
+        return targetEnemy != null && targetEnemy.gameObject != null && targetEnemy.gameObject.activeInHierarchy;
+    }
 
     private bool isEnemyWithinAttackRange(MonoBehaviour targetEnemy)
     {
@@ -197,28 +182,25 @@ public abstract class TroopAttackState : TroopBaseState
 
     #region Reload Attack
 
-    private void StartReloadAttackCoroutine()
+    private void StartReloadingAttack()
     {
-        StopReloadAttackCoroutine();
+        StopReloadingAttack();
 
         _reloadAttackCoroutine = _troopController.StartCoroutine(ReloadAttack());
     }
 
-    private void StopReloadAttackCoroutine()
+    private void StopReloadingAttack()
     {
-        if (_reloadAttackCoroutine != null)
-        {
-            _troopController.StopCoroutine(_reloadAttackCoroutine);
-            _reloadAttackCoroutine = null;
-        }
+        if (_reloadAttackCoroutine == null)
+            return;
+
+        _troopController.StopCoroutine(_reloadAttackCoroutine);
+        _reloadAttackCoroutine = null;
     }
 
     private IEnumerator ReloadAttack()
     {
-        _isReloading = true;
-
         const float initialDelay = 0.25f;
-
         yield return new WaitForSeconds(initialDelay);
 
         int attackWavesCount = _troopScriptable.CountAttackWaves;
@@ -232,16 +214,13 @@ public abstract class TroopAttackState : TroopBaseState
         for ( ; _remainingAttackWaves < attackWavesCount; _remainingAttackWaves++)
         {
             _troopController.ChangeUnitCircleToReloading(timeToReloadAttack);
-
             yield return new WaitForSeconds(timeToReloadAttack);
         }
 
-        _isReloading = false;
-
-        CheckEnemies();
+        CheckEnemyToAttackAgain();
     }
 
-    private void CheckEnemies()
+    private void CheckEnemyToAttackAgain()
     {
         MonoBehaviour unit = _currentTargetEnemy;
 
@@ -250,6 +229,8 @@ public abstract class TroopAttackState : TroopBaseState
             _currentTargetEnemy = null;
             AttackEnemyCoroutineStarter(unit);
         }
+
+        CheckForAttackStateCompletion();
     }
 
     #endregion

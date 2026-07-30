@@ -101,7 +101,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3369770492529468642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d097bb449eb2cb429da22f235c3fe31, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f5f5b2f056911d45a1b743f749bd642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingScriptable: {fileID: 11400000, guid: f717b9ee8230bc14c8032ce9ce61f1a5, type: 2}
@@ -109,7 +109,7 @@ MonoBehaviour:
   _buildingWorldCanvasController: {fileID: 6911769255755400736}
   _observePoint: {fileID: 9182332619612176290}
   _rotatingObjectList:
-  - {fileID: 2426398352035568777}
+  - {fileID: 4713797756368256038}
   _bulletInitialPointList:
   - {fileID: 326729801817674275}
 --- !u!1 &7599387926298568829
@@ -348,9 +348,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
---- !u!1 &2426398352035568777 stripped
+--- !u!1 &4713797756368256038 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 3792140637659222371, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6081805318024655308, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
   m_PrefabInstance: {fileID: 1516639553499958762}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5920733022082581345 stripped

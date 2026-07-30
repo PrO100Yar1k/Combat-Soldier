@@ -7,18 +7,18 @@ namespace Assets.App.Scripts.Core.Canvases
 { 
     public class TroopWorldCanvasController : MonoBehaviour, IInitializableCanvas<TroopScriptable>, ICoroutineCanvas
     {
-        [SerializeField] private WorldRangeView _rangeView = default;
+        [SerializeField] protected WorldRangeView _rangeView = default;
 
-        [SerializeField] private RectTransform _unitCircleLining = default;
+        [SerializeField] protected RectTransform _unitCircleLining = default;
 
-        [SerializeField] private Image _unitCircleRange = default;
-        [SerializeField] private Image _unitReloadingCircleRange = default;
+        [SerializeField] protected Image _unitCircleRange = default;
+        [SerializeField] protected Image _unitReloadingCircleRange = default;
 
-        private Coroutine _reloadingCoroutine = default;
+        protected Coroutine _reloadingCoroutine = default;
 
-        private ICoroutineRunner _coroutineRunner = default;
+        protected ICoroutineRunner _coroutineRunner = default;
 
-        private bool _isReloading = false;
+        protected bool _isReloading = false;
 
         public void Initialize(TroopScriptable troopData)
         {
@@ -53,17 +53,17 @@ namespace Assets.App.Scripts.Core.Canvases
             _reloadingCoroutine = _coroutineRunner.StartCoroutine(ReloadingCoroutine(reloadingTime));
         }
 
+        public void StartTakingDamage()
+        {
+            _coroutineRunner.StartCoroutine(TakingDamageCoroutine());
+        }
+
         protected void StopReloading()
         {
             if (_reloadingCoroutine == null)
                 return;
 
             _coroutineRunner.StopCoroutine(_reloadingCoroutine);
-        }
-
-        public void StartTakingDamage()
-        {
-            _coroutineRunner.StartCoroutine(TakingDamageCoroutine());
         }
 
         private IEnumerator ReloadingCoroutine(float reloadingTime)

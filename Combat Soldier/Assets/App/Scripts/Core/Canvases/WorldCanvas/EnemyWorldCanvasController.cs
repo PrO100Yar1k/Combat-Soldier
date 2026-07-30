@@ -11,9 +11,16 @@
         public void OutsideViewRange()
         {
             StopReloading();
+            DisableReloadingCircles();
 
             const byte alphaColor = 85;
             SetupUnitRange(alphaColor);
+        }
+
+        public void DisableReloadingCircles()
+        {
+            _unitCircleLining.gameObject.SetActive(false);
+            _unitReloadingCircleRange.gameObject.SetActive(false);
         }
     }
 }
