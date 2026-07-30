@@ -764,6 +764,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &394404035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,6 +1081,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &473226401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,6 +1206,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &604769488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,6 +1317,125 @@ Transform:
   m_Children: []
   m_Father: {fileID: 302531451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &721559918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 721559919}
+  - component: {fileID: 721559920}
+  m_Layer: 0
+  m_Name: AstarPath - Pathfinding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &721559919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721559918}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &721559920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721559918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78396926cbbfc4ac3b48fc5fc34a87d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  data:
+    dataString: UEsDBBQAAAgIAAAIIezwkzhSUgIAABIFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGFVE1zmzAQ/SsendsOOB9Nemux4/SQxBO3kwuXtbQYjYXESCK2k/F/70qAIc6hJ8Tbt7tvP6R3JrWrkXtjF1aKByOQ/ZiwcGZfJoPxHvewMXol37DnvEjhy0CCyHkGLw3haXBzpkJvJf+pNyqQEwIbLQtjq7nYYGacdwQXoBySyRofvDVB7xO27xwO3fctfCdHOnHUHu3/WI3mCqoaRVA7kNOkp9MpEjVV0nGCam6Ukq6TwfyhjmVmULuGiiCCkEBlRQHJtxsCSpSb0tPvdOz+VBQOfSfLwmEmLfWnjct+mbZpFbhtq+0VVBMyfb++iaraoA+f7Om0tRfWVPd94rYoX0q+fYYDB+dHbR3Ds0F7Gnu0A7WFtcKXEvWjWVjTaDHybRxOZ6P/U3VZiTwo87bBk9ozsKk/zygdZnSM9e8zJat17OVlC6yUiT2/DT5oaTq/SXHcDNdFIjSI+OvwD2zGK9QZ7qR1nkxdQh3UrU1jA5XNY9NCMY3PjNUY4U5zjRqUPywpjD8f4pltlPbMcgfhsnTJO1t/B85cIjzwk+TMtDS707RcaXYP6MqnxiupcRAdDI/Up8xo3e6Y+2gMXqvGFsBHXptGio+7xfgtXgCI9Q2fYpFcTb9eYnINl1OxTtfXVxcpsLh7UlOZoJatzq47NDQ9BNe0Z/0TMllYqOO6Cwu7hXyrzEif1IVZcYuon9oIfYccWkpCF1PMhaT+rNB7qeO42XvOlOFbFPkpUB4rne+9hXyIkrNavhofkJxl8eHIWYBPm7y0+CpxF5L3wY7s+A9QSwMEFAAACAgAAAgh7HTLdZNtAAAAeAAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw0TPSMzTXUVBKL0osyCgGihiCOKWZKSB2tFKyZapxYmJKkkWyUWqagamRrkmqgVmiiVFKkmGSmamxYaJSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAAgh7PCTOFJSAgAAEgUAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAAgh7HTLdZNtAAAAeAAAAAkAJAAAAAAAAAAAAAAAnwIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAABXAwAAAAA=
+    upgradeData: 
+    file_cachedStartup: {fileID: 0}
+    data_cachedStartup: 
+    cacheStartup: 0
+  showNavGraphs: 1
+  showUnwalkableNodes: 1
+  debugMode: 0
+  debugFloor: 0
+  debugRoof: 1
+  manualDebugFloorRoof: 0
+  showSearchTree: 0
+  unwalkableNodeDebugSize: 0.3
+  logPathResults: 1
+  maxNearestNodeDistance: 100
+  scanOnStartup: 1
+  fullGetNearestSearch: 0
+  prioritizeGraphs: 0
+  prioritizeGraphsLimit: 1
+  colorSettings:
+    _SolidColor: {r: 0.11764706, g: 0.4, b: 0.7882353, a: 0.9}
+    _UnwalkableNode: {r: 1, g: 0, b: 0, a: 0.5}
+    _BoundsHandles: {r: 0.29, g: 0.454, b: 0.741, a: 0.9}
+    _ConnectionLowLerp: {r: 0, g: 1, b: 0, a: 0.5}
+    _ConnectionHighLerp: {r: 1, g: 0, b: 0, a: 0.5}
+    _MeshEdgeColor: {r: 0, g: 0, b: 0, a: 0.5}
+    _AreaColors:
+    - {r: 0, g: 0, b: 0, a: 0}
+  tagNames:
+  - Basic Ground
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
+  heuristic: 2
+  heuristicScale: 1
+  threadCount: 1
+  maxFrameTime: 10
+  batchGraphUpdates: 0
+  graphUpdateBatchingInterval: 0.2
+  euclideanEmbedding:
+    mode: 0
+    seed: 0
+    pivotPointRoot: {fileID: 0}
+    spreadOutCount: 1
+  showGraphs: 1
 --- !u!1 &722102064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,6 +1754,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &1024412858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1930,6 +2053,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &1093758888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,6 +2101,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1001 &1159713978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2213,6 +2338,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &1252957772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,6 +2559,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &1541860485
 GameObject:
   m_ObjectHideFlags: 0
@@ -2480,6 +2607,7 @@ MonoBehaviour:
   _trenchParent: {fileID: 1252957773}
   _trenchUnitPrefab: {fileID: 103606375929699822, guid: 88625844b03e77a4ea5ae0e96da8e564, type: 3}
   _targetDirection: 3
+  _unitCount: 20
 --- !u!1 &1728999707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2590,15 +2718,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7252e4c09e53094ebc664b9fb7bff85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _poolConfigurator: {fileID: 520543260}
+  _troopSelectionController: {fileID: 330585549}
+  _troopCommandController: {fileID: 330585551}
+  _audioControllerPrefab: {fileID: 7412488242858915121, guid: 4f106b49e885b6b409490a4e1b7e6e7b, type: 3}
   _enemyPatrollingPoints:
   - {fileID: 722102065}
   - {fileID: 1728999708}
   - {fileID: 604769489}
   - {fileID: 2026576245}
-  _poolConfigurator: {fileID: 520543260}
-  _troopSelectionController: {fileID: 330585549}
-  _troopCommandController: {fileID: 330585551}
-  _audioControllerPrefab: {fileID: 7412488242858915121, guid: 4f106b49e885b6b409490a4e1b7e6e7b, type: 3}
 --- !u!114 &1969066863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3557,3 +3685,4 @@ SceneRoots:
   - {fileID: 1024412859}
   - {fileID: 302531451}
   - {fileID: 394404036}
+  - {fileID: 721559919}

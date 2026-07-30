@@ -18,8 +18,8 @@ MonoBehaviour:
   <MaxHealPoint>k__BackingField: 100
   <MaxDefencePoint>k__BackingField: 100
   <BlockRate>k__BackingField: 0.3
-  <TimeToReloadAttack>k__BackingField: 10
-  <TimeBetweenAttackWaves>k__BackingField: 1
+  <TimeToReloadAttack>k__BackingField: 12
+  <TimeBetweenAttackWaves>k__BackingField: 3
   <AttackDamage>k__BackingField: 20
   <DamageUnderAttack>k__BackingField: 15
   <AttackRangeRadius>k__BackingField: 6

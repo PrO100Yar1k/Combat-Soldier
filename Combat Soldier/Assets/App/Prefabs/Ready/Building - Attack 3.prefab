@@ -164,8 +164,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 2.5, z: 6}
-  m_Center: {x: 0, y: 0.25, z: 0}
+  m_Size: {x: 6.416757, y: 2.5, z: 4.683359}
+  m_Center: {x: -0.70837855, y: 0.25, z: 0.20734787}
 --- !u!114 &2532498980037374122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +728,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: howitzer_1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6626450882599163346, guid: 8947de4f3a7540d4a96cd715781a7c07, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -807,7 +808,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: howitzer
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6626450882599163346, guid: 8947de4f3a7540d4a96cd715781a7c07, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -987,7 +989,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: ATGM
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5420464083290064029, guid: 05c692fe1b639a04582b1b4d15edd0f2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

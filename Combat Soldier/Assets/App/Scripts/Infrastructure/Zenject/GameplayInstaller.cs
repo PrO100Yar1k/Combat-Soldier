@@ -20,8 +20,7 @@ public class GameplayInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<ICoroutineRunner>().To<CoroutineStarter>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-
-        Container.Bind<AudioController>().FromComponentInNewPrefab(_audioControllerPrefab).AsSingle().NonLazy();
+        Container.Bind<AudioController>().FromComponentInNewPrefab(_audioControllerPrefab).AsSingle().NonLazy(); //
 
         Container.Bind<List<Transform>>().WithId("Enemy Points").FromInstance(_enemyPatrollingPoints).AsSingle();
 

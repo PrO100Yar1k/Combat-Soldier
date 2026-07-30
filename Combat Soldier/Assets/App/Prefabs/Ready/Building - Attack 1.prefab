@@ -90,8 +90,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.7268763, y: 2, z: 4}
-  m_Center: {x: -0.2975278, y: 0, z: 0}
+  m_Size: {x: 5.24449, y: 2.4363525, z: 4.9812164}
+  m_Center: {x: 0.7673638, y: 0.21817625, z: 0.02897942}
 --- !u!114 &6903615865002818145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +343,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Model - Artilery
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 433572569237082723, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+    - {fileID: 852075370164364006, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+    - {fileID: 119051030001970496, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+    - {fileID: 1967560237042093289, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+    - {fileID: 6886609020047806616, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+    - {fileID: 4900887919726335694, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

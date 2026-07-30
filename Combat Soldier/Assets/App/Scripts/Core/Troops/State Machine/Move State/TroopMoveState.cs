@@ -1,17 +1,16 @@
 using Assets.App.Scripts.Core.Canvases;
 using Assets.App.Scripts;
 using UnityEngine;
-using DG.Tweening;
 using System;
+using Pathfinding;
+using System.Collections;
 
 public abstract class TroopMoveState : TroopBaseState
 {
     private event Action<Vector3> OnActivateTroopMovement = default;
 
-    private Tween _movementTweenerController = default;
-    private Tween _rotationTweenerController = default;
-
-    private const float rotationSpeed = 270f;
+    private readonly IAstarAI _ai;
+    private Coroutine _checkArrivalCoroutine;
 
     protected override string StateIconLocation
         => "State Icons/Move-State-Icon";
@@ -19,7 +18,7 @@ public abstract class TroopMoveState : TroopBaseState
     protected TroopMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
     {
-
+        _ai = _troopController.GetComponent<IAstarAI>();
     }
 
     #region Events
@@ -39,11 +38,18 @@ public abstract class TroopMoveState : TroopBaseState
     public override void OnStart()
     {
         PlayStateAnimation();
+
+        if (_ai != null)
+        {
+            _ai.maxSpeed = _troopScriptable.Speed; // Встановлюємо швидкість із ScriptableObject
+            _ai.isStopped = false; // Дозволяємо рух при вході в стан
+        }
     }
 
     public override void OnStop()
     {
-
+        StopMovement();
+        StopCheckArrivalCoroutine();
     }
 
     protected override void PlayStateAnimation()
@@ -58,42 +64,44 @@ public abstract class TroopMoveState : TroopBaseState
 
     private void SetWaypoint(Vector3 point)
     {
-        Transform troopTransform = _troopController.transform;
-
-        Vector3 currentPos = troopTransform.position;
-        Vector3 pointPos = new Vector3(point.x, currentPos.y, point.z);
-
-        Vector3 offset = (pointPos - currentPos).normalized * 0.1f;
-        Vector3 finalPos = new Vector3(pointPos.x - offset.x, currentPos.y, pointPos.z - offset.z);
-
-        Vector3 moveDirection = (finalPos - currentPos).normalized;
-
-        SmoothlyRotateTroop(moveDirection);
-
-        float distance = Vector3.Distance(finalPos, currentPos);
-        float timeToArrive = distance / _troopScriptable.Speed;
-
-        _movementTweenerController?.Kill();
-        _movementTweenerController = troopTransform.DOMove(finalPos, timeToArrive)
-            .SetEase(Ease.Flash)
-            .OnComplete(delegate { ActionAfterFinish(); });
-    }
-
-    private void SmoothlyRotateTroop(Vector3 moveDirection)
-    {
-        if (moveDirection == Vector3.zero)
+        if (_ai == null)
             return;
 
-        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        float angle = Quaternion.Angle(_troopController.transform.rotation, targetRotation);
-        float rotationDuration = angle / rotationSpeed;
+        _ai.destination = point;
+        _ai.isStopped = false;
+        _ai.SearchPath();
 
-        _rotationTweenerController?.Kill();
-        _rotationTweenerController = _troopController.transform
-            .DORotateQuaternion(targetRotation, rotationDuration)
-            .SetEase(Ease.OutSine);
+        StopCheckArrivalCoroutine();
+        _checkArrivalCoroutine = _troopController.StartCoroutine(WaitUntilReachedDestination());
+    }
+    private IEnumerator WaitUntilReachedDestination()
+    {
+        yield return null;
+
+        while (_ai.pathPending || !_ai.reachedDestination)
+        {
+            yield return new WaitForSeconds(0.1f); // Перевіряємо раз на 100мс (економить ресурси)
+        }
+
+        ActionAfterFinish();
     }
 
+    private void StopCheckArrivalCoroutine()
+    {
+        if (_checkArrivalCoroutine != null)
+        {
+            _troopController.StopCoroutine(_checkArrivalCoroutine);
+            _checkArrivalCoroutine = null;
+        }
+    }
+
+    private void StopMovement()
+    {
+        if (_ai != null)
+        {
+            _ai.isStopped = true;
+        }
+    }
 
     private void ActionAfterFinish()
     {
