@@ -10,32 +10,42 @@ namespace Assets.App.Scripts
         [SerializeField] protected SkinnedMeshRenderer _meshRenderer = default;
 
         protected TroopController _troopController = default;
-        protected Material[] _defaultMaterials = default;
+
+        protected Material[] _defaultMaterialsArray = default;
+        protected Material[] _damagedMaterialsArray = default;
 
         protected LayerMask _defaultLayer = default;
 
         protected Coroutine _damagedMaterialCoroutine = default;
 
+        private readonly WaitForSeconds _damageDelay
+            = new WaitForSeconds(0.25f);
+
         public virtual void Initialize(TroopController troopController)
         {
             _troopController = troopController;
 
-            _defaultMaterials = _meshRenderer.sharedMaterials;
+            _defaultMaterialsArray = _meshRenderer.sharedMaterials;
             _defaultLayer = _troopController.gameObject.layer;
+
+            _damagedMaterialsArray = _damagedUnitMaterial.ToArray();
         }
 
         public void ChangeMaterialToDamaged()
         {
+            if (_damagedMaterialCoroutine != null)
+                _troopController.StopCoroutine(_damagedMaterialCoroutine);
+
             _damagedMaterialCoroutine = _troopController.StartCoroutine(ChangeMaterialToDamagedCoroutine());
         }
 
         private IEnumerator ChangeMaterialToDamagedCoroutine()
         {
-            _meshRenderer.materials = _damagedUnitMaterial.ToArray();
+            _meshRenderer.sharedMaterials = _damagedMaterialsArray;
 
-            yield return new WaitForSeconds(0.25f);
+            yield return _damageDelay;
 
-            _meshRenderer.materials = _defaultMaterials;
+            _meshRenderer.sharedMaterials = _defaultMaterialsArray;
         }
     }
 }

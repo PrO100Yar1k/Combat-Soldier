@@ -10,6 +10,14 @@ public class EnemyModelManager : IEnemyTroopProvider
     private readonly TroopRepository _troopRepository;
     private readonly ICoroutineRunner _coroutineRunner;
 
+    private readonly HashSet<TroopController> _visibleEnemiesSet
+        = new HashSet<TroopController>();
+
+    private readonly WaitForSeconds _checkDelay
+        = new WaitForSeconds(_checkTroopDeploymentDelay);
+
+    private const float _checkTroopDeploymentDelay = 0.3f;
+
     private Coroutine _visionCoroutine = default;
 
     public EnemyModelManager(TroopRepository troopRepository, ICoroutineRunner coroutineRunner)
@@ -20,13 +28,13 @@ public class EnemyModelManager : IEnemyTroopProvider
 
     #region Coroutine Starter & Stopper
 
-    public void StartEnemyModelVision()
+    public void StartProvidingEnemyDeploymentVision()
     {
-        StopperCoroutine();
-        StarterCoroutine();
+        StopProvidingEnemyDeploymentVision();
+        StartProvidingEnemyDeployment();
     }
 
-    private void StopperCoroutine()
+    public void StopProvidingEnemyDeploymentVision()
     {
         if (_visionCoroutine == null)
             return;
@@ -35,7 +43,7 @@ public class EnemyModelManager : IEnemyTroopProvider
         _visionCoroutine = null;
     }
 
-    private void StarterCoroutine()
+    private void StartProvidingEnemyDeployment()
     {
         _visionCoroutine = _coroutineRunner.StartCoroutine(ProvideTroopDeploymentData());
     }
@@ -46,11 +54,8 @@ public class EnemyModelManager : IEnemyTroopProvider
     {
         while (true)
         {
-            const float checkTroopDeploymentDelay = 0.3f;
-
             UpdateTroopDeploymentData();
-
-            yield return new WaitForSeconds(checkTroopDeploymentDelay);
+            yield return _checkDelay;
         }
     }
 
@@ -61,8 +66,6 @@ public class EnemyModelManager : IEnemyTroopProvider
 
         foreach (TroopController enemy in allEnemies)
         {
-            if (enemy == null) continue;
-
             if (enemy.TroopModelController is IVisableModel visable)
             {
                 if (visibleEnemies.Contains(enemy))
@@ -77,7 +80,8 @@ public class EnemyModelManager : IEnemyTroopProvider
 
     private HashSet<TroopController> GetVisibleEnemies()
     {
-        var visibleEnemiesSet = new HashSet<TroopController>();
+        _visibleEnemiesSet.Clear();
+
         var playerControllersList = _troopRepository.GetPlayerTroops();
 
         foreach (PlayerTroopController playerController in playerControllersList)
@@ -92,14 +96,12 @@ public class EnemyModelManager : IEnemyTroopProvider
 
             foreach (TroopController unit in enemiesInVisionRange)
             {
-                if (unit != null)
-                {
-                    visibleEnemiesSet.Add(unit);
-                }
+                if (unit != null) 
+                    _visibleEnemiesSet.Add(unit);
             }
         }
 
-        return visibleEnemiesSet;
+        return _visibleEnemiesSet;
     }
 
     #endregion

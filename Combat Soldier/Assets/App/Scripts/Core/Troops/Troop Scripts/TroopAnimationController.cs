@@ -28,15 +28,12 @@ public class TroopAnimationController : MonoBehaviour, ITroopAnimator
         if (IsAlreadyPlayingOrTransitioning(RunningHash))
             return;
 
-        CrossFade(RunningHash, 0.15f);
+        CrossFade(RunningHash, 0.1f);
     }
 
     public void PlayAttack()
     {
-        if (IsAlreadyPlayingOrTransitioning(AttackHash))
-            return;
-
-        CrossFade(AttackHash, 0.1f);
+        CrossFade(AttackHash, 0.05f);
     }
 
     public void PlayDefense()
@@ -44,7 +41,7 @@ public class TroopAnimationController : MonoBehaviour, ITroopAnimator
         if (IsAlreadyPlayingOrTransitioning(DefenseHash))
             return;
 
-        CrossFade(DefenseHash, 0.15f);
+        CrossFade(DefenseHash, 0.1f);
     }
 
     private void CrossFade(int stateHash, float duration)

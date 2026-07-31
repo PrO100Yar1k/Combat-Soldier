@@ -9,7 +9,7 @@ public class EnemyModelController : BaseTroopModelController, IVisableModel
     private GameEventBus _gameEventBus = default;
     private Material[] _disappearMaterials = default;
 
-    private const int _ignoreRaycastLayer = 2;
+    private int _ignoreRaycastLayer = default;
 
     public override void Initialize(TroopController troopController)
     {
@@ -25,20 +25,20 @@ public class EnemyModelController : BaseTroopModelController, IVisableModel
 
     private void PrepareDisappearMaterials()
     {
-        _disappearMaterials = new Material[_defaultMaterials.Length];
+        _disappearMaterials = new Material[_defaultMaterialsArray.Length];
 
         for (int i = 0; i < _disappearMaterials.Length; i++)
             _disappearMaterials[i] = _transparentBase;
+
+        _ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
     public void AppearTroopModel()
     {
-        if (_damagedMaterialCoroutine != null)
-            return;
+        if (_damagedMaterialCoroutine == null)
+            _troopController.UIController.ChangeUnitCircle(true);
 
-        _troopController.UIController.ChangeUnitCircle(true);
-
-        _meshRenderer.materials = _defaultMaterials;
+        _meshRenderer.sharedMaterials = _defaultMaterialsArray;
         _troopController.gameObject.layer = _defaultLayer;
     }
 
@@ -48,7 +48,7 @@ public class EnemyModelController : BaseTroopModelController, IVisableModel
         _troopController.gameObject.layer = _ignoreRaycastLayer;
 
         if (_disappearMaterials != null)
-            _meshRenderer.materials = _disappearMaterials;
+            _meshRenderer.sharedMaterials = _disappearMaterials;
 
         _gameEventBus.TroopDisableUI(_troopController);
     }

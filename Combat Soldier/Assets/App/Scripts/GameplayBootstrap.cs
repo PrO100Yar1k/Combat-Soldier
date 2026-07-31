@@ -51,7 +51,7 @@ public class GameplayBootstrap : IInitializable
 
         _buildingTargetManager.Initialize();
 
-        _troopModelManager.StartEnemyModelVision();
+        _troopModelManager.StartProvidingEnemyDeploymentVision();
 
         Debug.Log("Managers were succefully initialized!");
     }

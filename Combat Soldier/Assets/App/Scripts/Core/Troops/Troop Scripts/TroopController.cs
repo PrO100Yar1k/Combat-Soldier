@@ -1,15 +1,15 @@
-using Assets.App.Scripts;
 using Assets.App.Scripts.Core.Canvases;
-using System;
+using Assets.App.Scripts;
 using UnityEngine;
 using Zenject;
+using System;
 
 public abstract class TroopController : MonoBehaviour, IDisposable, IDamagable, IReactableForDamage, ICoroutineRunner
 {
     [SerializeField] protected Transform _bulletInitialPoint = default;
     [SerializeField] protected TroopScriptable _troopScriptable = default;
 
-    [SerializeField] protected BaseTroopModelController _troopModelController = default; //
+    [SerializeField] protected BaseTroopModelController _troopModelController = default;
     [SerializeField] protected TroopScreenCanvasController _screenCanvasController = default;
     [SerializeField] protected TroopWorldCanvasController _worldCanvasController = default;
 

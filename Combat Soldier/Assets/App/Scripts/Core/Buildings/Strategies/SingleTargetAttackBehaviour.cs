@@ -6,7 +6,7 @@ namespace Assets.App.Scripts.Core.Buildings.Strategies
 {
     public class SingleTargetAttackBehaviour : BaseBuildingBehaviour
     {
-        protected override int _maxRotateAngleFromCenter => 45;
+        protected override int _maxRotateAngleFromCenter => 65;
 
         public SingleTargetAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)

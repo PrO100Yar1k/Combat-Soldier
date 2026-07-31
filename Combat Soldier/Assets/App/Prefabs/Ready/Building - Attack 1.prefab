@@ -109,7 +109,7 @@ MonoBehaviour:
   _buildingWorldCanvasController: {fileID: 6911769255755400736}
   _observePoint: {fileID: 9182332619612176290}
   _rotatingObjectList:
-  - {fileID: 4713797756368256038}
+  - {fileID: 2426398352035568777}
   _bulletInitialPointList:
   - {fileID: 326729801817674275}
 --- !u!1 &7599387926298568829
@@ -354,9 +354,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
---- !u!1 &4713797756368256038 stripped
+--- !u!1 &2426398352035568777 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 6081805318024655308, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3792140637659222371, guid: 9d511d4112d74404b987fa45c43ffed2, type: 3}
   m_PrefabInstance: {fileID: 1516639553499958762}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5920733022082581345 stripped
