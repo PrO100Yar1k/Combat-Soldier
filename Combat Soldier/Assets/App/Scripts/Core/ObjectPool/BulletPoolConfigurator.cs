@@ -1,16 +1,19 @@
 using Assets.App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
-public class BulletPoolConfigurator : MonoBehaviour, IObjectPool
+namespace App.Scripts.Core.ObjectPool
 {
-    [SerializeField] private Transform _poolParent = default;
-    [SerializeField] private BulletController _bulletPrefab = default;
-
-    public void InitializePool()
+    public class BulletPoolConfigurator : MonoBehaviour, IObjectPool
     {
-        if (_poolParent == null || _bulletPrefab == null)
-            return;
+        [SerializeField] private Transform _poolParent;
+        [SerializeField] private BulletController _bulletPrefab;
 
-        ObjectPooler.SetupPool(_poolParent, _bulletPrefab, 10, "Bullet");
+        public void InitializePool()
+        {
+            if (_poolParent is null || _bulletPrefab is null)
+                return;
+
+            ObjectPooler.SetupPool(_poolParent, _bulletPrefab, 10, "Bullet");
+        }
     }
 }

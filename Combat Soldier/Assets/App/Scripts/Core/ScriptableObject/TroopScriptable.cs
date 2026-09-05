@@ -1,4 +1,4 @@
-using Assets.App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Enums;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TroopScriptable", menuName = "Scriptable Objects/TroopScriptable")]

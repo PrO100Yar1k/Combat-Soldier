@@ -3,6 +3,7 @@ using Assets.App.Scripts;
 using System.Collections;
 using UnityEngine;
 using System;
+using App.Scripts.Core.ObjectPool;
 
 public abstract class TroopAttackState : TroopBaseState
 {
