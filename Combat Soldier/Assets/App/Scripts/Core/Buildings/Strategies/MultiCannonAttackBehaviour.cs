@@ -1,10 +1,15 @@
-using Assets.App.Scripts.Infrastructure.Others;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Scriptable;
+using App.Scripts.Core.Services;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Infrastructure.Others;
 using UnityEngine;
 
-namespace Assets.App.Scripts.Core.Buildings.Strategies
+namespace App.Scripts.Core.Buildings.Strategies
 { 
     public class MultiCannonAttackBehaviour : BaseBuildingBehaviour
     {

@@ -1,46 +1,50 @@
-using Assets.App.Scripts.Core.Canvases;
-using Assets.App.Scripts.Core.Health;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.Scriptable;
 using UnityEngine;
 
-public class HPBuildingController : HPController<BuildingScriptable>
+namespace App.Scripts.Core.HPControllers
 {
-    protected readonly BuildingScreenCanvasController _buildingCanvasController = default;
-
-    private readonly BuildingController _buildingController = default;
-
-    public HPBuildingController(BuildingController buildingController, BuildingScreenCanvasController buildingCanvasController, BuildingScriptable buildingScriptable) : base(buildingScriptable)
+    public class HPBuildingController : HPController<BuildingScriptable>
     {
-        _buildingController = buildingController;
-        _buildingCanvasController = buildingCanvasController;
+        protected readonly BuildingScreenCanvasController _buildingCanvasController = default;
 
-        UpdateSliderAndTextValues();
-    }
+        private readonly BuildingController _buildingController = default;
 
-    protected override void InitializeData(BuildingScriptable buildingScriptable)
-    {
-        _unitName = buildingScriptable.Name;
-        _currentHealPoint = buildingScriptable.MaxHealPoint;
-    }
+        public HPBuildingController(BuildingController buildingController, BuildingScreenCanvasController buildingCanvasController, BuildingScriptable buildingScriptable) : base(buildingScriptable)
+        {
+            _buildingController = buildingController;
+            _buildingCanvasController = buildingCanvasController;
 
-    protected override void UpdateSliderAndTextValues()
-    {
-        _buildingCanvasController.UpdateHealth(_currentHealPoint);
-    }
+            UpdateSliderAndTextValues();
+        }
 
-    public override void TakeDamage(int attackDamage)
-    {
-        _currentHealPoint -= attackDamage;
+        protected override void InitializeData(BuildingScriptable buildingScriptable)
+        {
+            _unitName = buildingScriptable.Name;
+            _currentHealPoint = buildingScriptable.MaxHealPoint;
+        }
 
-        UpdateSliderAndTextValues();
-        CheckHealPointsForDeath();
-    }
+        protected override void UpdateSliderAndTextValues()
+        {
+            _buildingCanvasController.UpdateHealth(_currentHealPoint);
+        }
 
-    protected override void HandleDeath()
-    {
-        _buildingController.Dispose();
-        _buildingController.StopAllCoroutines();
+        public override void TakeDamage(int attackDamage)
+        {
+            _currentHealPoint -= attackDamage;
 
-        UnityEngine.Object.Destroy(_buildingController.gameObject);
-        Debug.Log($"The {_unitName} was died");
+            UpdateSliderAndTextValues();
+            CheckHealPointsForDeath();
+        }
+
+        protected override void HandleDeath()
+        {
+            _buildingController.Dispose();
+            _buildingController.StopAllCoroutines();
+
+            UnityEngine.Object.Destroy(_buildingController.gameObject);
+            Debug.Log($"The {_unitName} was died");
+        }
     }
 }

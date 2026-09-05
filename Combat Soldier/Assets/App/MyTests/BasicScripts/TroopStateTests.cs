@@ -1,3 +1,4 @@
+using App.Scripts.Core.Troops.Troop_Scripts;
 using NUnit.Framework;
 
 public class TroopStateTests

@@ -1,9 +1,12 @@
-using Assets.App.Scripts;
+using App.Scripts.Infrastructure.Interfaces;
 
-public class MiddleEnemyFactory : IEnemyFactory
+namespace App.Scripts.Core.EnemyFactories
 {
-    public void CreateEnemies()
+    public class MiddleEnemyFactory : IEnemyFactory
     {
+        public void CreateEnemies()
+        {
 
+        }
     }
 }

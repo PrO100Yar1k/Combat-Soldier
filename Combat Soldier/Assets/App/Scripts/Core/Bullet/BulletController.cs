@@ -1,33 +1,36 @@
 using App.Scripts.Core.ObjectPool;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
-public class BulletController : MonoBehaviour
+namespace App.Scripts.Core.Bullet
 {
-    private const float _bulletSpeed = 20f;
-
-    private Vector3 _targetPosition = default;
-
-    public void InitializeBullet(Vector3 startPosition, Vector3 targetPosition)
+    public class BulletController : MonoBehaviour
     {
-        _targetPosition = targetPosition;
+        private const float _bulletSpeed = 20f;
 
-        transform.position = startPosition;
-        gameObject.SetActive(true);
+        private Vector3 _targetPosition = default;
 
-        BulletStartMovement();
-    }
+        public void InitializeBullet(Vector3 startPosition, Vector3 targetPosition)
+        {
+            _targetPosition = targetPosition;
 
-    public float GetBulletLifetime()
-    {
-        return Vector3.Distance(transform.position, _targetPosition) / _bulletSpeed;
-    }
+            transform.position = startPosition;
+            gameObject.SetActive(true);
 
-    private void BulletStartMovement()
-    {
-        float duration = GetBulletLifetime();
+            BulletStartMovement();
+        }
 
-        transform.DOMove(_targetPosition, duration)
-            .OnComplete(() => ObjectPooler.EnqueueObject(this, "Bullet"));
+        public float GetBulletLifetime()
+        {
+            return Vector3.Distance(transform.position, _targetPosition) / _bulletSpeed;
+        }
+
+        private void BulletStartMovement()
+        {
+            float duration = GetBulletLifetime();
+
+            transform.DOMove(_targetPosition, duration)
+                .OnComplete(() => ObjectPooler.EnqueueObject(this, "Bullet"));
+        }
     }
 }

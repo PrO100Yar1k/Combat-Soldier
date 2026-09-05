@@ -1,6 +1,6 @@
-using Assets.App.Scripts;
 using NUnit.Framework;
 using System.Collections.Generic;
+using App.Scripts.Core.Services;
 using UnityEngine;
 
 [TestFixture]

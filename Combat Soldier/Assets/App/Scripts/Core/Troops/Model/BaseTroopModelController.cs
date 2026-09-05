@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
-namespace Assets.App.Scripts
+namespace App.Scripts.Core.Troops.Model
 {
     public abstract class BaseTroopModelController : MonoBehaviour, IChangeMaterial
     {

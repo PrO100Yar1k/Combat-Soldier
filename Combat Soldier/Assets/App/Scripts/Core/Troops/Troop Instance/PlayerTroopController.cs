@@ -1,54 +1,61 @@
-using Assets.App.Scripts.Core.Canvases;
-using Assets.App.Views;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.HPControllers;
+using App.Scripts.Core.Scriptable;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Views;
 using UnityEngine;
 
-public class PlayerTroopController : TroopController
+namespace App.Scripts.Core.Troops.Troop_Instance
 {
-    [SerializeField] private ChangePlayerStateView _changeStateButton = default;
-
-    public TroopVisionController VisionController { get; private set; }
-
-    #region Events
-
-    protected override void OnEnable()
+    public class PlayerTroopController : TroopController
     {
-        OnNotificationForGettingDamaged += NotifyForGettingDamaged;
-        base.OnEnable();
-    }
+        [SerializeField] private ChangePlayerStateView _changeStateButton = default;
 
-    protected override void OnDisable()
-    {
-        OnNotificationForGettingDamaged -= NotifyForGettingDamaged;
-        base.OnDisable();
-    }
+        public TroopVisionController VisionController { get; private set; }
 
-    #endregion
+        #region Events
 
-    public override void InitializeTroop()
-    {
-        StateController = new PlayerStateController(_targetSearchService, this, _screenCanvasController, _animationController);
-        VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
+        protected override void OnEnable()
+        {
+            OnNotificationForGettingDamaged += NotifyForGettingDamaged;
+            base.OnEnable();
+        }
 
-        UIController = new UICanvasController<TroopController, TroopScriptable>(this, _troopScriptable, _screenCanvasController, _worldCanvasController, _gameEventBus);
-        HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
+        protected override void OnDisable()
+        {
+            OnNotificationForGettingDamaged -= NotifyForGettingDamaged;
+            base.OnDisable();
+        }
 
-        _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
+        #endregion
 
-        _troopModelController.Initialize(this);
-    }
+        public override void InitializeTroop()
+        {
+            StateController = new PlayerStateController(_targetSearchService, this, _screenCanvasController, _animationController);
+            VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
 
-    private void NotifyForGettingDamaged()
-    {
-        Debug.Log("Lord, your unit was damaged!");
-    }
+            UIController = new UICanvasController<TroopController, TroopScriptable>(this, _troopScriptable, _screenCanvasController, _worldCanvasController, _gameEventBus);
+            HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
 
-    public void UpdateReloadingBar(float timeToReload)
-    {
-        (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
-    }
+            _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
 
-    public bool GetCanvasActivityState()
-    {
-        return (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+            _troopModelController.Initialize(this);
+        }
+
+        private void NotifyForGettingDamaged()
+        {
+            Debug.Log("Lord, your unit was damaged!");
+        }
+
+        public void UpdateReloadingBar(float timeToReload)
+        {
+            (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
+        }
+
+        public bool GetCanvasActivityState()
+        {
+            return (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+        }
     }
 }

@@ -1,7 +1,10 @@
-using Assets.App.Scripts;
+using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
-public class CoroutineStarter : MonoBehaviour, ICoroutineRunner
+namespace App.Scripts.Infrastructure.Others
 {
+    public class CoroutineStarter : MonoBehaviour, ICoroutineRunner
+    {
 
+    }
 }

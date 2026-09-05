@@ -1,25 +1,29 @@
+using App.Scripts.Core.Troops.Troop_Scripts;
 using UnityEngine;
 
-public class TrenchUnit : MonoBehaviour
+namespace App.Scripts.Core.Shelter
 {
-    private TroopController _troopInsideTrench = default;
-
-    public void EntryTroopInsideTrench(TroopController troopController)
+    public class TrenchUnit : MonoBehaviour
     {
-        if (_troopInsideTrench != null)
-            return;
+        private TroopController _troopInsideTrench = default;
 
-        if (troopController == null)
-            return;
+        public void EntryTroopInsideTrench(TroopController troopController)
+        {
+            if (_troopInsideTrench != null)
+                return;
 
-        _troopInsideTrench = troopController;
-    }
+            if (troopController == null)
+                return;
 
-    public void ExitTroopFromTrench(TroopController troopController)
-    {
-        if (troopController != _troopInsideTrench)
-            return;
+            _troopInsideTrench = troopController;
+        }
 
-        _troopInsideTrench = null;
+        public void ExitTroopFromTrench(TroopController troopController)
+        {
+            if (troopController != _troopInsideTrench)
+                return;
+
+            _troopInsideTrench = null;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Assets.App.Scripts.Infrastructure.Interfaces
+﻿namespace App.Scripts.Infrastructure.Interfaces
 {
     public interface IObjectPool
     {

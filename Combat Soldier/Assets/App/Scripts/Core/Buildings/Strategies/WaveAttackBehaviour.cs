@@ -1,8 +1,12 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Scriptable;
+using App.Scripts.Core.Services;
+using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
-namespace Assets.App.Scripts.Core.Buildings.Strategies
+namespace App.Scripts.Core.Buildings.Strategies
 { 
     public class WaveAttackBehaviour : BaseBuildingBehaviour
     {

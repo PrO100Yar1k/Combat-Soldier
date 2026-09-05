@@ -1,11 +1,17 @@
-using Assets.App.Scripts;
-using Assets.App.Scripts.Core.Canvases;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.Services;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
 
-public class PlayerDeathState : TroopDeathState
+namespace App.Scripts.Core.Troops.State_Machine.Death_State
 {
-    public PlayerDeathState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+    public class PlayerDeathState : TroopDeathState
     {
+        public PlayerDeathState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        {
 
+        }
     }
 }

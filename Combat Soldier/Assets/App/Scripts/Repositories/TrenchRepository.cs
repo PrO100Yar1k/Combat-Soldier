@@ -1,8 +1,9 @@
-﻿using Assets.App.Scripts.Infrastructure.Interfaces;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using App.Scripts.Infrastructure.Events;
+using App.Scripts.Infrastructure.Interfaces;
 
-namespace Assets.App.Scripts.Repositories
+namespace App.Scripts.Repositories
 {
     public class TrenchRepository : IDisposable
     {

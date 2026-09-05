@@ -1,9 +1,12 @@
 ﻿using System.Threading.Tasks;
-using UnityEngine.UI;
+using App.Scripts.Core.Scriptable;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Events;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
-namespace Assets.App.Scripts.Core.Canvases
+namespace App.Scripts.Core.Canvases.ScreenCanvas
 {
     public class PlayerScreenCanvasController : TroopScreenCanvasController
     {

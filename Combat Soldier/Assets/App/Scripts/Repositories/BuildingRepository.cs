@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Infrastructure.Events;
 
-namespace Assets.App.Scripts.Repositories
+namespace App.Scripts.Repositories
 {
     public class BuildingRepository : IDisposable
     {

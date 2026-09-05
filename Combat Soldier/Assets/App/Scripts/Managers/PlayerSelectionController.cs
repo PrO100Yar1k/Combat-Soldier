@@ -1,57 +1,62 @@
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Infrastructure.Events;
 using UnityEngine;
 using Zenject;
 
-public class PlayerSelectionController : MonoBehaviour
+namespace App.Scripts.Managers
 {
-    [SerializeField] private LayerMask _selectableLayers = default;
-
-    private MonoBehaviour _selectedTarget = default;
-    private GameEventBus _gameEventBus = default;
-
-    [Inject]
-    public void Construct(GameEventBus gameEvents)
+    public class PlayerSelectionController : MonoBehaviour
     {
-        _gameEventBus = gameEvents;
-    }
+        [SerializeField] private LayerMask _selectableLayers = default;
 
-    public void SelectObject()
-    {
-        RaycastHit hit = GetRaycastHit();
+        private MonoBehaviour _selectedTarget = default;
+        private GameEventBus _gameEventBus = default;
 
-        if (hit.collider == null)
-            return;
-
-        int hitLayer = hit.collider.gameObject.layer;
-
-        if (IsLayerInMask(hitLayer, _selectableLayers) && hit.collider.TryGetComponent(out IDamagable targetUnit))
+        [Inject]
+        public void Construct(GameEventBus gameEvents)
         {
-            if (targetUnit is MonoBehaviour targetMono)
-            {
-                DeselectAll();
-
-                _selectedTarget = targetMono;
-                _gameEventBus.OpenTroopMenu(_selectedTarget);
-            }
+            _gameEventBus = gameEvents;
         }
-        else DeselectAll();
-    }
 
-    public void DeselectAll()
-    {
-        _selectedTarget = null;
+        public void SelectObject()
+        {
+            RaycastHit hit = GetRaycastHit();
 
-        _gameEventBus.DeselectController();
-        _gameEventBus.DisableActiveCanvas();
-    }
+            if (hit.collider == null)
+                return;
 
-    private bool IsLayerInMask(int layer, int mask)
-    {
-        return ((1 << layer) & mask) != 0;
-    }
+            int hitLayer = hit.collider.gameObject.layer;
 
-    private RaycastHit GetRaycastHit()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray, out RaycastHit hit) ? hit : default;
+            if (IsLayerInMask(hitLayer, _selectableLayers) && hit.collider.TryGetComponent(out IDamagable targetUnit))
+            {
+                if (targetUnit is MonoBehaviour targetMono)
+                {
+                    DeselectAll();
+
+                    _selectedTarget = targetMono;
+                    _gameEventBus.OpenTroopMenu(_selectedTarget);
+                }
+            }
+            else DeselectAll();
+        }
+
+        public void DeselectAll()
+        {
+            _selectedTarget = null;
+
+            _gameEventBus.DeselectController();
+            _gameEventBus.DisableActiveCanvas();
+        }
+
+        private bool IsLayerInMask(int layer, int mask)
+        {
+            return ((1 << layer) & mask) != 0;
+        }
+
+        private RaycastHit GetRaycastHit()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            return Physics.Raycast(ray, out RaycastHit hit) ? hit : default;
+        }
     }
 }

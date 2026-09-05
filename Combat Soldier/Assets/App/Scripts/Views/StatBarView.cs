@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.App.Views
+namespace App.Scripts.Views
 {
     public class StatBarView : MonoBehaviour
     {

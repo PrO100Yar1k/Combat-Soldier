@@ -1,4 +1,6 @@
-using Assets.App.Scripts.Repositories;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Events;
+using App.Scripts.Repositories;
 using NUnit.Framework;
 using UnityEngine;
 

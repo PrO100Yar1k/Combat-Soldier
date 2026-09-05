@@ -1,4 +1,4 @@
-﻿namespace Assets.App.Scripts.Core.Canvases
+﻿namespace App.Scripts.Core.Canvases.ScreenCanvas
 {
     public class EnemyScreenCanvasController : TroopScreenCanvasController
     {

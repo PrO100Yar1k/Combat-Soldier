@@ -1,12 +1,18 @@
-using Assets.App.Scripts;
-using Assets.App.Scripts.Core.Canvases;
-using Assets.App.Scripts.Infrastructure.Others;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.Services;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Infrastructure.Others;
 
-public class PlayerAttackState : TroopAttackState
+namespace App.Scripts.Core.Troops.State_Machine.Attack_State
 {
-    public PlayerAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+    public class PlayerAttackState : TroopAttackState
     {
-        _enemyTroopSide = Faction.Allies.GetOpposite();
+        public PlayerAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        {
+            _enemyTroopSide = Faction.Allies.GetOpposite();
+        }
     }
 }

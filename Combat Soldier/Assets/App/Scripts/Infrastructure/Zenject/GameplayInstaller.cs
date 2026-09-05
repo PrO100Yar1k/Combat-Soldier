@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using App.Scripts.Core.Audio;
 using App.Scripts.Core.ObjectPool;
-using Assets.App.Scripts;
-using Assets.App.Scripts.Core.Audio;
-using Assets.App.Scripts.Infrastructure.Interfaces;
-using Assets.App.Scripts.Managers;
-using Assets.App.Scripts.Repositories;
+using App.Scripts.Core.Services;
+using App.Scripts.Core.Troops.Model;
+using App.Scripts.Infrastructure.Events;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Infrastructure.Others;
+using App.Scripts.Managers;
+using App.Scripts.Repositories;
 using UnityEngine;
 using Zenject;
 

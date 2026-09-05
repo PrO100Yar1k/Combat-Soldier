@@ -1,8 +1,11 @@
-﻿using Assets.App.Scripts.Repositories;
-using System.Collections;
+﻿using System.Collections;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Repositories;
 using UnityEngine;
 
-namespace Assets.App.Scripts.Managers
+namespace App.Scripts.Managers
 {
     public class BuildingTargetManager
     {

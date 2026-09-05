@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.App.Scripts
+namespace App.Scripts.Core.Services
 {
     public class PatrolPointProvider
     {

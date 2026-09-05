@@ -1,60 +1,65 @@
-﻿using Assets.App.Scripts.Repositories;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Repositories;
 using UnityEngine;
 
-public class TargetSearchService
+namespace App.Scripts.Core.Services
 {
-    private readonly TroopRepository _troopRepository;
-    private readonly BuildingRepository _buildingRepository;
-
-    public TargetSearchService(TroopRepository troopRepository, BuildingRepository buildingRepository)
+    public class TargetSearchService
     {
-        _troopRepository = troopRepository;
-        _buildingRepository = buildingRepository;
-    }
+        private readonly TroopRepository _troopRepository;
+        private readonly BuildingRepository _buildingRepository;
 
-    public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, Faction enemyTroopSide)
-    {
-        return _troopRepository.GetTroops(enemyTroopSide).ToArray()
-            .Where(troop => Vector3.Distance(troopPosition, troop.transform.position) <= troopRange)
-            .ToArray();
-    }
-
-    public MonoBehaviour GetClosestEnemyInRange(Vector3 origin, float range, Faction enemyFaction, IDamagable priorityTarget = null, bool includeBuildings = true)
-    {
-        float rangeSqr = range * range;
-        float closestDistanceSqr = Mathf.Infinity;
-
-        MonoBehaviour closestEnemy = null;
-
-        var candidates = new List<MonoBehaviour>(_troopRepository.GetTroops(enemyFaction));
-
-        if (includeBuildings)
+        public TargetSearchService(TroopRepository troopRepository, BuildingRepository buildingRepository)
         {
-            candidates.AddRange(_buildingRepository.GetEnemyBuildings());
+            _troopRepository = troopRepository;
+            _buildingRepository = buildingRepository;
         }
 
-        foreach (var enemy in candidates)
+        public TroopController[] GetEnemyListInRange(Vector3 troopPosition, float troopRange, Faction enemyTroopSide)
         {
-            if (enemy == null)
-                continue;
+            return _troopRepository.GetTroops(enemyTroopSide).ToArray()
+                .Where(troop => Vector3.Distance(troopPosition, troop.transform.position) <= troopRange)
+                .ToArray();
+        }
 
-            float distSqr = (enemy.transform.position - origin).sqrMagnitude;
+        public MonoBehaviour GetClosestEnemyInRange(Vector3 origin, float range, Faction enemyFaction, IDamagable priorityTarget = null, bool includeBuildings = true)
+        {
+            float rangeSqr = range * range;
+            float closestDistanceSqr = Mathf.Infinity;
 
-            if (distSqr > rangeSqr)
-                continue;
+            MonoBehaviour closestEnemy = null;
 
-            if (priorityTarget != null && enemy.TryGetComponent<IDamagable>(out var damagable) && damagable.Equals(priorityTarget))
-                return enemy;
+            var candidates = new List<MonoBehaviour>(_troopRepository.GetTroops(enemyFaction));
 
-            if (distSqr < closestDistanceSqr && enemy.GetComponent<IDamagable>() != null)
+            if (includeBuildings)
             {
-                closestDistanceSqr = distSqr;
-                closestEnemy = enemy;
+                candidates.AddRange(_buildingRepository.GetEnemyBuildings());
             }
-        }
 
-        return closestEnemy;
+            foreach (var enemy in candidates)
+            {
+                if (enemy == null)
+                    continue;
+
+                float distSqr = (enemy.transform.position - origin).sqrMagnitude;
+
+                if (distSqr > rangeSqr)
+                    continue;
+
+                if (priorityTarget != null && enemy.TryGetComponent<IDamagable>(out var damagable) && damagable.Equals(priorityTarget))
+                    return enemy;
+
+                if (distSqr < closestDistanceSqr && enemy.GetComponent<IDamagable>() != null)
+                {
+                    closestDistanceSqr = distSqr;
+                    closestEnemy = enemy;
+                }
+            }
+
+            return closestEnemy;
+        }
     }
 }

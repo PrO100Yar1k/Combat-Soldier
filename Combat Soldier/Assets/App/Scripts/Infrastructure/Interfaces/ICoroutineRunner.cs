@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets.App.Scripts
+namespace App.Scripts.Infrastructure.Interfaces
 {
     public interface ICoroutineRunner
     {

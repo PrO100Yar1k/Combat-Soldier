@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.App.Scripts.Infrastructure.Others
+namespace App.Scripts.Infrastructure.Others
 {
     public static class CombatMath
     {

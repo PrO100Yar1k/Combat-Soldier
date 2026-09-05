@@ -1,120 +1,124 @@
 using System;
-using UnityEngine;
-using Assets.App.Scripts;
 using System.Collections.Generic;
-using Assets.App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Events;
+using App.Scripts.Infrastructure.Interfaces;
+using UnityEngine;
 using Zenject;
 
-public class TrenchLineController : MonoBehaviour, ITrenchFactory
+namespace App.Scripts.Core.Shelter
 {
-    [SerializeField] private Transform _trenchParent = default;
-    [SerializeField] private TrenchUnit _trenchUnitPrefab = default;
-
-    [Space(3)]
-
-    [SerializeField] private Direction _targetDirection = default;
-    [SerializeField] private int _unitCount = 20;
-
-    private readonly HashSet<Vector3Int> _occupiedPositions = new HashSet<Vector3Int>();
-    private readonly Dictionary<Direction, Vector3> _directionVectors = new() {
-        { Direction.Up,    new Vector3(0, 0, 1)  },
-        { Direction.Right, new Vector3(1, 0, 0)  },
-        { Direction.Down,  new Vector3(0, 0, -1) },
-        { Direction.Left,  new Vector3(-1, 0, 0) }
-    };
-
-    private const float _unitSpacing = 1f;
-
-    private const int _branchingChance = 20;
-    private const int _maxBranchingAttempts = 25;
-
-    private GameEventBus _gameEventBus = default;
-
-    private void Awake()
+    public class TrenchLineController : MonoBehaviour, ITrenchFactory
     {
-        _gameEventBus.TrenchSpawned(this);
-    }
+        [SerializeField] private Transform _trenchParent = default;
+        [SerializeField] private TrenchUnit _trenchUnitPrefab = default;
 
-    [Inject]
-    public void Construct(GameEventBus gameEventBus)
-    {
-        _gameEventBus = gameEventBus;
-    }
+        [Space(3)]
 
-    public void CreateTrench()
-    {
-        Vector3 startPosition = transform.position;
-        GenerateTrench(startPosition, _targetDirection);
-    }
+        [SerializeField] private Direction _targetDirection = default;
+        [SerializeField] private int _unitCount = 20;
 
-    private void GenerateTrench(Vector3 startPosition, Direction baseDirection)
-    {
-        Vector3 currentPosition = startPosition;
-        Direction currentDirection = baseDirection;
+        private readonly HashSet<Vector3Int> _occupiedPositions = new HashSet<Vector3Int>();
+        private readonly Dictionary<Direction, Vector3> _directionVectors = new() {
+            { Direction.Up,    new Vector3(0, 0, 1)  },
+            { Direction.Right, new Vector3(1, 0, 0)  },
+            { Direction.Down,  new Vector3(0, 0, -1) },
+            { Direction.Left,  new Vector3(-1, 0, 0) }
+        };
 
-        _occupiedPositions.Add(Vector3Int.RoundToInt(currentPosition));
+        private const float _unitSpacing = 1f;
 
-        for (int i = 0; i < _unitCount; i++)
+        private const int _branchingChance = 20;
+        private const int _maxBranchingAttempts = 25;
+
+        private GameEventBus _gameEventBus = default;
+
+        private void Awake()
         {
-            int randomBranchingNumber = UnityEngine.Random.Range(0, 100);
-            bool shouldBranchChance = randomBranchingNumber < _branchingChance;
-
-            if (shouldBranchChance) {
-                Direction nextDir = GetClosestDirection(currentDirection, 1);
-                Direction prevDir = GetClosestDirection(currentDirection, -1);
-
-                currentDirection = UnityEngine.Random.Range(0, 2) == 0 ? nextDir : prevDir;
-            }
-            else {
-                currentDirection = baseDirection;
-            }
-
-            int currentBranchingAttempt = 0;
-
-            Vector3 nextPosition = currentPosition + _directionVectors[currentDirection] * _unitSpacing;
-            Vector3Int gridPos = Vector3Int.RoundToInt(nextPosition);
-
-            while (_occupiedPositions.Contains(gridPos) && currentBranchingAttempt < _maxBranchingAttempts)
-            {
-                currentDirection = GetRandomDirection();
-                nextPosition = currentPosition + _directionVectors[currentDirection] * _unitSpacing;
-                gridPos = Vector3Int.RoundToInt(nextPosition);
-
-                currentBranchingAttempt++;
-            }
-
-            if (currentBranchingAttempt >= _maxBranchingAttempts)
-            {
-                Debug.LogWarning($"Generating finished on unit {i}: There are no empty units closely");
-                break;
-            }
-
-            currentPosition = nextPosition;
-            _occupiedPositions.Add(gridPos);
-
-            TrenchUnit trenchUnit = Instantiate(_trenchUnitPrefab, currentPosition, Quaternion.identity);
-            trenchUnit.transform.SetParent(_trenchParent);
-            trenchUnit.gameObject.name = $"Unit - Trench {i}";
+            _gameEventBus.TrenchSpawned(this);
         }
-    }
 
-    private Direction GetClosestDirection(Direction direction, int movementPosition)
-    {
-        int total = GetDirectionLength();
+        [Inject]
+        public void Construct(GameEventBus gameEventBus)
+        {
+            _gameEventBus = gameEventBus;
+        }
 
-        int currentDirection = (int) direction;
-        int nextIndex = (total + currentDirection + movementPosition) % total;
+        public void CreateTrench()
+        {
+            Vector3 startPosition = transform.position;
+            GenerateTrench(startPosition, _targetDirection);
+        }
 
-        return (Direction) nextIndex;
-    }
+        private void GenerateTrench(Vector3 startPosition, Direction baseDirection)
+        {
+            Vector3 currentPosition = startPosition;
+            Direction currentDirection = baseDirection;
 
-    private Direction GetRandomDirection()
-    {
-        return (Direction) UnityEngine.Random.Range(0, GetDirectionLength());
-    }
+            _occupiedPositions.Add(Vector3Int.RoundToInt(currentPosition));
 
-    private int GetDirectionLength()
-    {
-        return Enum.GetNames(typeof(Direction)).Length;
+            for (int i = 0; i < _unitCount; i++)
+            {
+                int randomBranchingNumber = UnityEngine.Random.Range(0, 100);
+                bool shouldBranchChance = randomBranchingNumber < _branchingChance;
+
+                if (shouldBranchChance) {
+                    Direction nextDir = GetClosestDirection(currentDirection, 1);
+                    Direction prevDir = GetClosestDirection(currentDirection, -1);
+
+                    currentDirection = UnityEngine.Random.Range(0, 2) == 0 ? nextDir : prevDir;
+                }
+                else {
+                    currentDirection = baseDirection;
+                }
+
+                int currentBranchingAttempt = 0;
+
+                Vector3 nextPosition = currentPosition + _directionVectors[currentDirection] * _unitSpacing;
+                Vector3Int gridPos = Vector3Int.RoundToInt(nextPosition);
+
+                while (_occupiedPositions.Contains(gridPos) && currentBranchingAttempt < _maxBranchingAttempts)
+                {
+                    currentDirection = GetRandomDirection();
+                    nextPosition = currentPosition + _directionVectors[currentDirection] * _unitSpacing;
+                    gridPos = Vector3Int.RoundToInt(nextPosition);
+
+                    currentBranchingAttempt++;
+                }
+
+                if (currentBranchingAttempt >= _maxBranchingAttempts)
+                {
+                    Debug.LogWarning($"Generating finished on unit {i}: There are no empty units closely");
+                    break;
+                }
+
+                currentPosition = nextPosition;
+                _occupiedPositions.Add(gridPos);
+
+                TrenchUnit trenchUnit = Instantiate(_trenchUnitPrefab, currentPosition, Quaternion.identity);
+                trenchUnit.transform.SetParent(_trenchParent);
+                trenchUnit.gameObject.name = $"Unit - Trench {i}";
+            }
+        }
+
+        private Direction GetClosestDirection(Direction direction, int movementPosition)
+        {
+            int total = GetDirectionLength();
+
+            int currentDirection = (int) direction;
+            int nextIndex = (total + currentDirection + movementPosition) % total;
+
+            return (Direction) nextIndex;
+        }
+
+        private Direction GetRandomDirection()
+        {
+            return (Direction) UnityEngine.Random.Range(0, GetDirectionLength());
+        }
+
+        private int GetDirectionLength()
+        {
+            return Enum.GetNames(typeof(Direction)).Length;
+        }
     }
 }

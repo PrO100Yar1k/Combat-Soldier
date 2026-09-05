@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.App.Scripts.Core.Audio
+namespace App.Scripts.Core.Audio
 {
     [RequireComponent(typeof(AudioSource))]
 

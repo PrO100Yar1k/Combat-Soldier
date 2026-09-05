@@ -1,19 +1,23 @@
-using Assets.App.Scripts;
+using App.Scripts.Core.EnemyFactories;
+using App.Scripts.Infrastructure.Interfaces;
 
-public class EnemyFactoryManager : IEnemyFactory, System.IDisposable
+namespace App.Scripts.Managers
 {
-    #region Disposable
-
-    public void Dispose()
+    public class EnemyFactoryManager : IEnemyFactory, System.IDisposable
     {
+        #region Disposable
 
-    }
+        public void Dispose()
+        {
 
-    #endregion
+        }
 
-    public void CreateEnemies()
-    {
-        IEnemyFactory enemyFactory = new EasyEnemyFactory(); // control user input to do
-        enemyFactory.CreateEnemies();
+        #endregion
+
+        public void CreateEnemies()
+        {
+            IEnemyFactory enemyFactory = new EasyEnemyFactory(); // control user input to do
+            enemyFactory.CreateEnemies();
+        }
     }
 }

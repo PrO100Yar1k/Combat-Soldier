@@ -1,4 +1,6 @@
-﻿namespace Assets.App.Scripts.Core.Canvases
+﻿using App.Scripts.Infrastructure.Interfaces;
+
+namespace App.Scripts.Core.Canvases.WorldCanvas
 {
     public class EnemyWorldCanvasController : TroopWorldCanvasController, IViewRangeVisualizer
     {

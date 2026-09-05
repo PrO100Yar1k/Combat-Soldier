@@ -1,4 +1,4 @@
-﻿namespace Assets.App.Scripts
+﻿namespace App.Scripts.Infrastructure.Interfaces
 {
     internal interface IVisableModel
     {

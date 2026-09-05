@@ -3,59 +3,62 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class AppManager : MonoBehaviour // to do
+namespace App.Scripts.Managers
 {
-    public bool IsInitialized { get; private set; } = false;
-
-    public void Initialize()
+    public class AppManager : MonoBehaviour // to do
     {
-        Debug.Log("Welcome to " + Application.productName + " by " + Application.companyName);
-        Debug.Log("Build version: " + Application.version);
-        Debug.Log("Current app mode: " + (IsProductionVersion() ? "Production" : "Debug"));
-        Debug.Log("Target frame rate: " + Application.targetFrameRate);
+        public bool IsInitialized { get; private set; } = false;
 
-        IsInitialized = true;
-    }
-
-    public static IEnumerator CheckInternetConnection(Action<bool> result)
-    {
-        Debug.Log("Checking Internet availability...");
-
-        using var request = UnityWebRequest.Get("https://www.google.com");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
+        public void Initialize()
         {
-            Debug.Log("Internet connection is available");
-            result(true);
+            Debug.Log("Welcome to " + Application.productName + " by " + Application.companyName);
+            Debug.Log("Build version: " + Application.version);
+            Debug.Log("Current app mode: " + (IsProductionVersion() ? "Production" : "Debug"));
+            Debug.Log("Target frame rate: " + Application.targetFrameRate);
+
+            IsInitialized = true;
         }
-        else
+
+        public static IEnumerator CheckInternetConnection(Action<bool> result)
         {
-            Debug.LogError("Internet connection in unavailable");
-            result(false);
+            Debug.Log("Checking Internet availability...");
+
+            using var request = UnityWebRequest.Get("https://www.google.com");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Internet connection is available");
+                result(true);
+            }
+            else
+            {
+                Debug.LogError("Internet connection in unavailable");
+                result(false);
+            }
         }
-    }
 
-    public static bool IsProductionVersion()
-    {
-        return Application.version.Contains(".");
-    }
+        public static bool IsProductionVersion()
+        {
+            return Application.version.Contains(".");
+        }
 
-    #region Save Quit Date & Time
+        #region Save Quit Date & Time
 
-    private void OnApplicationPause(bool isApplicationPaused)
-    {
-        if (!isApplicationPaused)
-            return;
+        private void OnApplicationPause(bool isApplicationPaused)
+        {
+            if (!isApplicationPaused)
+                return;
     
-        //SaveQuitDateTime();
-    }
+            //SaveQuitDateTime();
+        }
 
-    private void OnApplicationQuit()
-    {
-        //SaveQuitDateTime();
-    }
+        private void OnApplicationQuit()
+        {
+            //SaveQuitDateTime();
+        }
 
-    #endregion
+        #endregion
+    }
 }

@@ -1,48 +1,52 @@
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
+using App.Scripts.Managers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
-public class PlayerInputController : MonoBehaviour
+namespace App.Scripts.Core.Camera
 {
-    private PlayerSelectionController _selectionController;
-    private PlayerCommandController _commandController;
-
-    [Inject]
-    public void Construct(PlayerSelectionController selectionController, PlayerCommandController commandController)
+    public class PlayerInputController : MonoBehaviour
     {
-        _selectionController = selectionController;
-        _commandController = commandController;
-    }
+        private PlayerSelectionController _selectionController;
+        private PlayerCommandController _commandController;
 
-    private void Update()
-    {
-        if (isPointerOverUI())
-            return;
-
-        if (Input.GetButtonDown("Fire1"))
+        [Inject]
+        public void Construct(PlayerSelectionController selectionController, PlayerCommandController commandController)
         {
-            _selectionController.SelectObject();
+            _selectionController = selectionController;
+            _commandController = commandController;
         }
 
-        if (Input.GetButtonDown("Fire2"))
+        private void Update()
         {
-            _commandController.ExecuteCommand();
+            if (isPointerOverUI())
+                return;
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                _selectionController.SelectObject();
+            }
+
+            if (Input.GetButtonDown("Fire2"))
+            {
+                _commandController.ExecuteCommand();
+            }
         }
-    }
 
-    private bool isPointerOverUI()
-    {
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        private bool isPointerOverUI()
+        {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 
-        for (int i = 0; i < results.Count; i++)
-            if (results[i].gameObject.layer == 5)
-                return true;
+            for (int i = 0; i < results.Count; i++)
+                if (results[i].gameObject.layer == 5)
+                    return true;
 
-        return false;
+            return false;
+        }
     }
 }

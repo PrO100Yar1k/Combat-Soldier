@@ -1,4 +1,5 @@
-using Assets.App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Core.Bullet;
+using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
 namespace App.Scripts.Core.ObjectPool

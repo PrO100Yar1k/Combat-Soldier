@@ -1,9 +1,11 @@
 ﻿using System.Collections;
-using Assets.App.Views;
-using UnityEngine.UI;
+using App.Scripts.Core.Scriptable;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Views;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Assets.App.Scripts.Core.Canvases
+namespace App.Scripts.Core.Canvases.WorldCanvas
 { 
     public class TroopWorldCanvasController : MonoBehaviour, IInitializableCanvas<TroopScriptable>, ICoroutineCanvas
     {

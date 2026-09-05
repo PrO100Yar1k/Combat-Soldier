@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Events;
 
-namespace Assets.App.Scripts.Repositories
+namespace App.Scripts.Repositories
 {
     public class TroopRepository : IDisposable
     {

@@ -1,8 +1,9 @@
+using System.Threading.Tasks;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 
-namespace Assets.App.Views
+namespace App.Scripts.Views
 {
     [RequireComponent(typeof(Button))]
     public class ChangePlayerStateView : MonoBehaviour

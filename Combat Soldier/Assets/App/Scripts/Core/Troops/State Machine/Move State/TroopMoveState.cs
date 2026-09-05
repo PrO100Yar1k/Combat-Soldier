@@ -1,110 +1,118 @@
-using Assets.App.Scripts.Core.Canvases;
-using Assets.App.Scripts;
-using UnityEngine;
 using System;
-using Pathfinding;
 using System.Collections;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.Services;
+using App.Scripts.Core.Troops.State_Machine.Base;
+using App.Scripts.Core.Troops.State_Machine.Default_State;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
+using Pathfinding;
+using UnityEngine;
 
-public abstract class TroopMoveState : TroopBaseState
+namespace App.Scripts.Core.Troops.State_Machine.Move_State
 {
-    private event Action<Vector3> OnActivateTroopMovement = default;
-
-    private readonly IAstarAI _ai;
-    private Coroutine _checkArrivalCoroutine;
-
-    protected override string StateIconLocation
-        => "State Icons/Move-State-Icon";
-
-    protected TroopMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-        : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+    public abstract class TroopMoveState : TroopBaseState
     {
-        _ai = _troopController.GetComponent<IAstarAI>();
-    }
+        private event Action<Vector3> OnActivateTroopMovement = default;
 
-    #region Events
+        private readonly IAstarAI _ai;
+        private Coroutine _checkArrivalCoroutine;
 
-    protected override void SubscribeToEvents()
-    {
-        OnActivateTroopMovement += SetWaypoint;
-    }
+        protected override string StateIconLocation
+            => "State Icons/Move-State-Icon";
 
-    protected override void UnSubscribeFromEvents()
-    {
-        OnActivateTroopMovement -= SetWaypoint;
-    }
-
-    #endregion
-
-    public override void OnStart()
-    {
-        PlayStateAnimation();
-
-        if (_ai != null)
+        protected TroopMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
         {
-            _ai.maxSpeed = _troopScriptable.Speed; // Встановлюємо швидкість із ScriptableObject
-            _ai.isStopped = false; // Дозволяємо рух при вході в стан
-        }
-    }
-
-    public override void OnStop()
-    {
-        StopMovement();
-        StopCheckArrivalCoroutine();
-    }
-
-    protected override void PlayStateAnimation()
-    {
-        _animatorController.PlayRunning();
-    }
-
-    public void ActivateTroopMovement(Vector3 point)
-    {
-        OnActivateTroopMovement?.Invoke(point);
-    }
-
-    private void SetWaypoint(Vector3 point)
-    {
-        if (_ai == null)
-            return;
-
-        _ai.destination = point;
-        _ai.isStopped = false;
-        _ai.SearchPath();
-
-        StopCheckArrivalCoroutine();
-        _checkArrivalCoroutine = _troopController.StartCoroutine(WaitUntilReachedDestination());
-    }
-    private IEnumerator WaitUntilReachedDestination()
-    {
-        yield return null;
-
-        while (_ai.pathPending || !_ai.reachedDestination)
-        {
-            yield return new WaitForSeconds(0.1f); // Перевіряємо раз на 100мс (економить ресурси)
+            _ai = _troopController.GetComponent<IAstarAI>();
         }
 
-        ActionAfterFinish();
-    }
+        #region Events
 
-    private void StopCheckArrivalCoroutine()
-    {
-        if (_checkArrivalCoroutine != null)
+        protected override void SubscribeToEvents()
         {
-            _troopController.StopCoroutine(_checkArrivalCoroutine);
-            _checkArrivalCoroutine = null;
+            OnActivateTroopMovement += SetWaypoint;
         }
-    }
 
-    private void StopMovement()
-    {
-        if (_ai != null)
+        protected override void UnSubscribeFromEvents()
         {
-            _ai.isStopped = true;
+            OnActivateTroopMovement -= SetWaypoint;
         }
-    }
 
-    private void ActionAfterFinish()
-    {
-        _switcherState.SwitchState<TroopDefaultState>();
+        #endregion
+
+        public override void OnStart()
+        {
+            PlayStateAnimation();
+
+            if (_ai != null)
+            {
+                _ai.maxSpeed = _troopScriptable.Speed; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ScriptableObject
+                _ai.isStopped = false; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
+            }
+        }
+
+        public override void OnStop()
+        {
+            StopMovement();
+            StopCheckArrivalCoroutine();
+        }
+
+        protected override void PlayStateAnimation()
+        {
+            _animatorController.PlayRunning();
+        }
+
+        public void ActivateTroopMovement(Vector3 point)
+        {
+            OnActivateTroopMovement?.Invoke(point);
+        }
+
+        private void SetWaypoint(Vector3 point)
+        {
+            if (_ai == null)
+                return;
+
+            _ai.destination = point;
+            _ai.isStopped = false;
+            _ai.SearchPath();
+
+            StopCheckArrivalCoroutine();
+            _checkArrivalCoroutine = _troopController.StartCoroutine(WaitUntilReachedDestination());
+        }
+        private IEnumerator WaitUntilReachedDestination()
+        {
+            yield return null;
+
+            while (_ai.pathPending || !_ai.reachedDestination)
+            {
+                yield return new WaitForSeconds(0.1f); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ 100пїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+            }
+
+            ActionAfterFinish();
+        }
+
+        private void StopCheckArrivalCoroutine()
+        {
+            if (_checkArrivalCoroutine != null)
+            {
+                _troopController.StopCoroutine(_checkArrivalCoroutine);
+                _checkArrivalCoroutine = null;
+            }
+        }
+
+        private void StopMovement()
+        {
+            if (_ai != null)
+            {
+                _ai.isStopped = true;
+            }
+        }
+
+        private void ActionAfterFinish()
+        {
+            _switcherState.SwitchState<TroopDefaultState>();
+        }
     }
 }

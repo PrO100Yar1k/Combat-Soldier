@@ -1,4 +1,6 @@
-﻿namespace Assets.App.Scripts.Infrastructure.Others
+﻿using App.Scripts.Core.Troops.Troop_Scripts;
+
+namespace App.Scripts.Infrastructure.Others
 {
     public static class ExtensionMethods
     {

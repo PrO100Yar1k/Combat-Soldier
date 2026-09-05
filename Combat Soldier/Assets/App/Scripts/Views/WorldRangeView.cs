@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.App.Views
+namespace App.Scripts.Views
 {
     public class WorldRangeView : MonoBehaviour
     {

@@ -1,9 +1,13 @@
-using Assets.App.Scripts.Core.Buildings.Strategies;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Buildings.Strategies;
 
-public class PeaceBuildingController : BuildingController
+namespace App.Scripts.Core.Buildings.Controllers
 {
-    protected override void InitializeBuildingBehaviour()
+    public class PeaceBuildingController : BuildingController
     {
-        _buildingAttack = new PeaceBuildingBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _rotatingObjectList, _observePoint, _coroutineRunner);
+        protected override void InitializeBuildingBehaviour()
+        {
+            _buildingAttack = new PeaceBuildingBehaviour(this, _targetSearchService, _buildingScriptable, _bulletInitialPointList, _rotatingObjectList, _observePoint, _coroutineRunner);
+        }
     }
 }

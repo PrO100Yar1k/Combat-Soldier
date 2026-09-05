@@ -1,7 +1,9 @@
-using Assets.App.Views;
+using App.Scripts.Core.Scriptable;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Views;
 using UnityEngine;
 
-namespace Assets.App.Scripts.Core.Canvases
+namespace App.Scripts.Core.Canvases.ScreenCanvas
 {
     public class BuildingScreenCanvasController : MonoBehaviour, IInitializableCanvas<BuildingScriptable>
     {

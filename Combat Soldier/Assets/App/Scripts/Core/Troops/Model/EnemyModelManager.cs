@@ -1,108 +1,112 @@
-using Assets.App.Scripts.Infrastructure.Interfaces;
-using Assets.App.Scripts.Repositories;
-using System.Collections.Generic;
 using System.Collections;
-using Assets.App.Scripts;
+using System.Collections.Generic;
+using App.Scripts.Core.Troops.Troop_Instance;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Repositories;
 using UnityEngine;
 
-public class EnemyModelManager : IEnemyTroopProvider
+namespace App.Scripts.Core.Troops.Model
 {
-    private readonly TroopRepository _troopRepository;
-    private readonly ICoroutineRunner _coroutineRunner;
-
-    private readonly HashSet<TroopController> _visibleEnemiesSet
-        = new HashSet<TroopController>();
-
-    private readonly WaitForSeconds _checkDelay
-        = new WaitForSeconds(_checkTroopDeploymentDelay);
-
-    private const float _checkTroopDeploymentDelay = 0.3f;
-
-    private Coroutine _visionCoroutine = default;
-
-    public EnemyModelManager(TroopRepository troopRepository, ICoroutineRunner coroutineRunner)
+    public class EnemyModelManager : IEnemyTroopProvider
     {
-        _troopRepository = troopRepository;
-        _coroutineRunner = coroutineRunner;
-    }
+        private readonly TroopRepository _troopRepository;
+        private readonly ICoroutineRunner _coroutineRunner;
 
-    #region Coroutine Starter & Stopper
+        private readonly HashSet<TroopController> _visibleEnemiesSet
+            = new HashSet<TroopController>();
 
-    public void StartProvidingEnemyDeploymentVision()
-    {
-        StopProvidingEnemyDeploymentVision();
-        StartProvidingEnemyDeployment();
-    }
+        private readonly WaitForSeconds _checkDelay
+            = new WaitForSeconds(_checkTroopDeploymentDelay);
 
-    public void StopProvidingEnemyDeploymentVision()
-    {
-        if (_visionCoroutine == null)
-            return;
+        private const float _checkTroopDeploymentDelay = 0.3f;
 
-        _coroutineRunner.StopCoroutine(_visionCoroutine);
-        _visionCoroutine = null;
-    }
+        private Coroutine _visionCoroutine = default;
 
-    private void StartProvidingEnemyDeployment()
-    {
-        _visionCoroutine = _coroutineRunner.StartCoroutine(ProvideTroopDeploymentData());
-    }
-
-    #endregion
-
-    private IEnumerator ProvideTroopDeploymentData()
-    {
-        while (true)
+        public EnemyModelManager(TroopRepository troopRepository, ICoroutineRunner coroutineRunner)
         {
-            UpdateTroopDeploymentData();
-            yield return _checkDelay;
+            _troopRepository = troopRepository;
+            _coroutineRunner = coroutineRunner;
         }
-    }
 
-    private void UpdateTroopDeploymentData()
-    {
-        var visibleEnemies = GetVisibleEnemies();
-        var allEnemies = _troopRepository.GetEnemyTroops();
+        #region Coroutine Starter & Stopper
 
-        foreach (TroopController enemy in allEnemies)
+        public void StartProvidingEnemyDeploymentVision()
         {
-            if (enemy.TroopModelController is IVisableModel visable)
-            {
-                if (visibleEnemies.Contains(enemy))
-                    visable.AppearTroopModel();
-                else
-                    visable.DisappearTroopModel();
-            }
+            StopProvidingEnemyDeploymentVision();
+            StartProvidingEnemyDeployment();
         }
-    }
 
-    #region Vision Logic
-
-    private HashSet<TroopController> GetVisibleEnemies()
-    {
-        _visibleEnemiesSet.Clear();
-
-        var playerControllersList = _troopRepository.GetPlayerTroops();
-
-        foreach (PlayerTroopController playerController in playerControllersList)
+        public void StopProvidingEnemyDeploymentVision()
         {
-            if (playerController == null || playerController.VisionController == null)
-                continue;
+            if (_visionCoroutine == null)
+                return;
 
-            TroopController[] enemiesInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
+            _coroutineRunner.StopCoroutine(_visionCoroutine);
+            _visionCoroutine = null;
+        }
 
-            if (enemiesInVisionRange == null)
-                continue;
+        private void StartProvidingEnemyDeployment()
+        {
+            _visionCoroutine = _coroutineRunner.StartCoroutine(ProvideTroopDeploymentData());
+        }
 
-            foreach (TroopController unit in enemiesInVisionRange)
+        #endregion
+
+        private IEnumerator ProvideTroopDeploymentData()
+        {
+            while (true)
             {
-                if (unit != null) 
-                    _visibleEnemiesSet.Add(unit);
+                UpdateTroopDeploymentData();
+                yield return _checkDelay;
             }
         }
 
-        return _visibleEnemiesSet;
-    }
+        private void UpdateTroopDeploymentData()
+        {
+            var visibleEnemies = GetVisibleEnemies();
+            var allEnemies = _troopRepository.GetEnemyTroops();
 
-    #endregion
+            foreach (TroopController enemy in allEnemies)
+            {
+                if (enemy.TroopModelController is IVisableModel visable)
+                {
+                    if (visibleEnemies.Contains(enemy))
+                        visable.AppearTroopModel();
+                    else
+                        visable.DisappearTroopModel();
+                }
+            }
+        }
+
+        #region Vision Logic
+
+        private HashSet<TroopController> GetVisibleEnemies()
+        {
+            _visibleEnemiesSet.Clear();
+
+            var playerControllersList = _troopRepository.GetPlayerTroops();
+
+            foreach (PlayerTroopController playerController in playerControllersList)
+            {
+                if (playerController == null || playerController.VisionController == null)
+                    continue;
+
+                TroopController[] enemiesInVisionRange = playerController.VisionController.GetEnemiesInVisionRange();
+
+                if (enemiesInVisionRange == null)
+                    continue;
+
+                foreach (TroopController unit in enemiesInVisionRange)
+                {
+                    if (unit != null) 
+                        _visibleEnemiesSet.Add(unit);
+                }
+            }
+
+            return _visibleEnemiesSet;
+        }
+
+        #endregion
+    }
 }

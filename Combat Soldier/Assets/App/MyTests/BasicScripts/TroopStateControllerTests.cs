@@ -1,3 +1,6 @@
+using App.Scripts.Core.Troops.State_Machine.Base;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.Troop_Scripts;
 using NUnit.Framework;
 using UnityEngine;
 

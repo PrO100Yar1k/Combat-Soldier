@@ -1,8 +1,6 @@
-using UnityEngine;
-
-namespace Assets.App.Scripts.Core.Health 
+namespace App.Scripts.Core.HPControllers 
 {
-    public abstract class HPController<TData> where TData : ScriptableObject
+    public abstract class HPController<TData> where TData : UnityEngine.ScriptableObject
     {
         protected string _unitName = default;
 

@@ -1,79 +1,82 @@
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+namespace App.Scripts.Core.Camera
 {
-    [Header("Movement Settings")]
-    [SerializeField] private float _movementSpeed = default;
-    [SerializeField] private float _smoothing = default;
-
-    [Header("Zoom Settings")]
-    [SerializeField] private float _zoomSpeed = default;
-    [SerializeField] private float _minHeight = default;
-    [SerializeField] private float _maxHeight = default;
-
-    private Vector3 _targetPosition = default;
-
-    private void Start()
+    public class CameraMovement : MonoBehaviour
     {
-        _targetPosition = transform.position;
-    }
+        [Header("Movement Settings")]
+        [SerializeField] private float _movementSpeed = default;
+        [SerializeField] private float _smoothing = default;
 
-    private void Update()
-    {
-        HandleMouseSwipe();
-        HandleZoom();
-        SmoothMove();
-    }
+        [Header("Zoom Settings")]
+        [SerializeField] private float _zoomSpeed = default;
+        [SerializeField] private float _minHeight = default;
+        [SerializeField] private float _maxHeight = default;
 
-    private void HandleMouseSwipe()
-    {
-        if (Input.GetMouseButton(0))
+        private Vector3 _targetPosition = default;
+
+        private void Start()
         {
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
+            _targetPosition = transform.position;
+        }
 
-            if (Mathf.Abs(mouseX) > 0f || Mathf.Abs(mouseY) > 0f)
+        private void Update()
+        {
+            HandleMouseSwipe();
+            HandleZoom();
+            SmoothMove();
+        }
+
+        private void HandleMouseSwipe()
+        {
+            if (Input.GetMouseButton(0))
             {
-                Vector3 forward = transform.forward;
-                Vector3 right = transform.right;
+                float mouseX = Input.GetAxis("Mouse X");
+                float mouseY = Input.GetAxis("Mouse Y");
 
-                forward.y = 0f;
-                right.y = 0f;
+                if (Mathf.Abs(mouseX) > 0f || Mathf.Abs(mouseY) > 0f)
+                {
+                    Vector3 forward = transform.forward;
+                    Vector3 right = transform.right;
 
-                forward.Normalize();
-                right.Normalize();
+                    forward.y = 0f;
+                    right.y = 0f;
 
-                Vector3 moveDirection = (right * -mouseX) + (forward * -mouseY);
-                _targetPosition += moveDirection * _movementSpeed;
+                    forward.Normalize();
+                    right.Normalize();
+
+                    Vector3 moveDirection = (right * -mouseX) + (forward * -mouseY);
+                    _targetPosition += moveDirection * _movementSpeed;
+                }
             }
         }
-    }
 
-    private void HandleZoom()
-    {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-
-        if (Mathf.Abs(scrollInput) > 0f)
+        private void HandleZoom()
         {
-            Vector3 zoomDirection = transform.forward * (scrollInput * _zoomSpeed);
-            Vector3 potentialPosition = _targetPosition + zoomDirection;
+            float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
-            if (potentialPosition.y >= _minHeight && potentialPosition.y <= _maxHeight)
+            if (Mathf.Abs(scrollInput) > 0f)
             {
-                _targetPosition = potentialPosition;
-            }
-            else
-            {
-                float clampedY = Mathf.Clamp(potentialPosition.y, _minHeight, _maxHeight);
+                Vector3 zoomDirection = transform.forward * (scrollInput * _zoomSpeed);
+                Vector3 potentialPosition = _targetPosition + zoomDirection;
 
-                if (!Mathf.Approximately(_targetPosition.y, clampedY))
-                    _targetPosition.y = clampedY;
+                if (potentialPosition.y >= _minHeight && potentialPosition.y <= _maxHeight)
+                {
+                    _targetPosition = potentialPosition;
+                }
+                else
+                {
+                    float clampedY = Mathf.Clamp(potentialPosition.y, _minHeight, _maxHeight);
+
+                    if (!Mathf.Approximately(_targetPosition.y, clampedY))
+                        _targetPosition.y = clampedY;
+                }
             }
         }
-    }
 
-    private void SmoothMove()
-    {
-        transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _smoothing);
+        private void SmoothMove()
+        {
+            transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _smoothing);
+        }
     }
 }

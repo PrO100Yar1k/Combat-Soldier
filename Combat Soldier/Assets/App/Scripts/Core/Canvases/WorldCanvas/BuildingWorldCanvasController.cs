@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using App.Scripts.Core.Scriptable;
+using App.Scripts.Infrastructure.Interfaces;
+using UnityEngine;
 
-namespace Assets.App.Scripts.Core.Canvases
+namespace App.Scripts.Core.Canvases.WorldCanvas
 {
     public class BuildingWorldCanvasController : MonoBehaviour, IInitializableCanvas<BuildingScriptable>
     {

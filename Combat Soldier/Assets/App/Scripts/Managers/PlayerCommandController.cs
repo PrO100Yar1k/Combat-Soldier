@@ -1,132 +1,138 @@
-﻿using Assets.App.Scripts;
-using Assets.App.Scripts.Infrastructure.Interfaces;
-using Assets.App.Scripts.Infrastructure.Others;
+﻿using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.Troop_Instance;
+using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Events;
+using App.Scripts.Infrastructure.Others;
 using UnityEngine;
 using Zenject;
 
-public class PlayerCommandController : MonoBehaviour
+namespace App.Scripts.Managers
 {
-    [SerializeField] private LayerMask _terrainLayer = default;
-    [SerializeField] private LayerMask _attackTargetLayers = default; //
-
-    private PlayerTroopController _controlledTroop;
-    private GameEventBus _gameEventBus;
-
-    [Inject]
-    public void Construct(GameEventBus gameEvents)
+    public class PlayerCommandController : MonoBehaviour
     {
-        _gameEventBus = gameEvents;
-    }
+        [SerializeField] private LayerMask _terrainLayer = default;
+        [SerializeField] private LayerMask _attackTargetLayers = default; //
 
-    private void OnEnable()
-    {
-        _gameEventBus.OnDeselectController += ClearControlledTroop;
-        _gameEventBus.OnOpenTroopMenu += SetControlledTroop;
+        private PlayerTroopController _controlledTroop;
+        private GameEventBus _gameEventBus;
 
-        _gameEventBus.OnTroopDiedUI += HandleTroopRemoval;
-        _gameEventBus.OnTroopDisableUI += HandleTroopRemoval;
-        _gameEventBus.OnBuildingDestroyed += HandleTroopRemoval;
-    }
-
-    private void OnDisable()
-    {
-        _gameEventBus.OnDeselectController -= ClearControlledTroop;
-        _gameEventBus.OnOpenTroopMenu -= SetControlledTroop;
-
-        _gameEventBus.OnTroopDiedUI -= HandleTroopRemoval;
-        _gameEventBus.OnTroopDisableUI -= HandleTroopRemoval;
-        _gameEventBus.OnBuildingDestroyed -= HandleTroopRemoval;
-    }
-
-    public void SetControlledTroop(MonoBehaviour controller)
-    {
-        if (controller is PlayerTroopController playerTroop)
-            _controlledTroop = playerTroop;
-    }
-
-    public void ClearControlledTroop()
-    {
-        _controlledTroop = null;
-    }
-
-    public void ExecuteCommand()
-    {
-        if (_controlledTroop == null)
-            return;
-
-        RaycastHit hit = GetRaycastHit();
-
-        if (hit.collider == null)
-            return;
-
-        TroopStateController stateController = _controlledTroop.StateController;
-
-        int hitLayer = hit.collider.gameObject.layer;
-        Vector3 targetPoint = hit.point;
-
-        if (IsLayerInMask(hitLayer, _attackTargetLayers) && hit.collider.TryGetComponent(out IDamagable enemy))
+        [Inject]
+        public void Construct(GameEventBus gameEvents)
         {
-            if (enemy.GetFaction() != Faction.Allies)
-            {
-                ActivateAttackState(enemy, stateController);
-                FinishCommandExecution();
+            _gameEventBus = gameEvents;
+        }
+
+        private void OnEnable()
+        {
+            _gameEventBus.OnDeselectController += ClearControlledTroop;
+            _gameEventBus.OnOpenTroopMenu += SetControlledTroop;
+
+            _gameEventBus.OnTroopDiedUI += HandleTroopRemoval;
+            _gameEventBus.OnTroopDisableUI += HandleTroopRemoval;
+            _gameEventBus.OnBuildingDestroyed += HandleTroopRemoval;
+        }
+
+        private void OnDisable()
+        {
+            _gameEventBus.OnDeselectController -= ClearControlledTroop;
+            _gameEventBus.OnOpenTroopMenu -= SetControlledTroop;
+
+            _gameEventBus.OnTroopDiedUI -= HandleTroopRemoval;
+            _gameEventBus.OnTroopDisableUI -= HandleTroopRemoval;
+            _gameEventBus.OnBuildingDestroyed -= HandleTroopRemoval;
+        }
+
+        public void SetControlledTroop(MonoBehaviour controller)
+        {
+            if (controller is PlayerTroopController playerTroop)
+                _controlledTroop = playerTroop;
+        }
+
+        public void ClearControlledTroop()
+        {
+            _controlledTroop = null;
+        }
+
+        public void ExecuteCommand()
+        {
+            if (_controlledTroop == null)
                 return;
+
+            RaycastHit hit = GetRaycastHit();
+
+            if (hit.collider == null)
+                return;
+
+            TroopStateController stateController = _controlledTroop.StateController;
+
+            int hitLayer = hit.collider.gameObject.layer;
+            Vector3 targetPoint = hit.point;
+
+            if (IsLayerInMask(hitLayer, _attackTargetLayers) && hit.collider.TryGetComponent(out IDamagable enemy))
+            {
+                if (enemy.GetFaction() != Faction.Allies)
+                {
+                    ActivateAttackState(enemy, stateController);
+                    FinishCommandExecution();
+                    return;
+                }
+            }
+
+            if (IsLayerInMask(hitLayer, _terrainLayer))
+            {
+                stateController.ActivateMoveState(targetPoint);
+                FinishCommandExecution();
             }
         }
 
-        if (IsLayerInMask(hitLayer, _terrainLayer))
+        private void ActivateAttackState(IDamagable enemy, TroopStateController stateController)
         {
-            stateController.ActivateMoveState(targetPoint);
-            FinishCommandExecution();
+            if (enemy is not MonoBehaviour enemyMono)
+                return;
+
+            Vector3 targetPos = enemyMono.transform.position;
+            Vector3 troopPos = _controlledTroop.transform.position;
+
+            float attackRange = _controlledTroop.TroopScriptable.AttackRangeRadius;
+
+            if (Vector3.Distance(targetPos, troopPos) <= attackRange)
+            {
+                _controlledTroop.transform.LookAt(new Vector3(targetPos.x, troopPos.y, targetPos.z));
+                stateController.ActivateAttackState(enemy);
+            }
+            else
+            {
+                Vector3 targetPoint = CombatMath.GetAttackDestination(troopPos, targetPos, attackRange);
+                stateController.ActivateMoveState(targetPoint);
+            }
         }
-    }
 
-    private void ActivateAttackState(IDamagable enemy, TroopStateController stateController)
-    {
-        if (enemy is not MonoBehaviour enemyMono)
-            return;
-
-        Vector3 targetPos = enemyMono.transform.position;
-        Vector3 troopPos = _controlledTroop.transform.position;
-
-        float attackRange = _controlledTroop.TroopScriptable.AttackRangeRadius;
-
-        if (Vector3.Distance(targetPos, troopPos) <= attackRange)
+        private void FinishCommandExecution()
         {
-            _controlledTroop.transform.LookAt(new Vector3(targetPos.x, troopPos.y, targetPos.z));
-            stateController.ActivateAttackState(enemy);
+            if (_controlledTroop.GetCanvasActivityState())
+                _gameEventBus.DisableActiveCanvas();
+
+            // make unit circle active (check out canvas ui layouts)
         }
-        else
+
+        private void HandleTroopRemoval(MonoBehaviour controller)
         {
-            Vector3 targetPoint = CombatMath.GetAttackDestination(troopPos, targetPos, attackRange);
-            stateController.ActivateMoveState(targetPoint);
+            if (_controlledTroop == controller)
+            {
+                ClearControlledTroop();
+            }
         }
-    }
 
-    private void FinishCommandExecution()
-    {
-        if (_controlledTroop.GetCanvasActivityState())
-            _gameEventBus.DisableActiveCanvas();
-
-        // make unit circle active (check out canvas ui layouts)
-    }
-
-    private void HandleTroopRemoval(MonoBehaviour controller)
-    {
-        if (_controlledTroop == controller)
+        private bool IsLayerInMask(int layer, int mask)
         {
-            ClearControlledTroop();
+            return ((1 << layer) & mask) != 0;
         }
-    }
 
-    private bool IsLayerInMask(int layer, int mask)
-    {
-        return ((1 << layer) & mask) != 0;
-    }
-
-    private RaycastHit GetRaycastHit()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray, out RaycastHit hit) ? hit : default;
+        private RaycastHit GetRaycastHit()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            return Physics.Raycast(ray, out RaycastHit hit) ? hit : default;
+        }
     }
 }

@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using App.Scripts.Core.Scriptable;
+using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Views;
+using UnityEngine;
 using UnityEngine.UI;
-using Assets.App.Views;
 
-namespace Assets.App.Scripts.Core.Canvases
+namespace App.Scripts.Core.Canvases.ScreenCanvas
 {
     public class TroopScreenCanvasController : MonoBehaviour, IInitializableCanvas<TroopScriptable>
     {

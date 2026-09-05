@@ -1,4 +1,4 @@
-﻿namespace Assets.App.Scripts.Core.Canvases
+﻿namespace App.Scripts.Core.Canvases.WorldCanvas
 {
     public class PlayerWorldCanvasController : TroopWorldCanvasController
     {
