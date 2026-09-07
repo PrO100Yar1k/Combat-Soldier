@@ -13,7 +13,7 @@ using Zenject;
 
 namespace App.Scripts.Infrastructure.Zenject
 {
-    public class GameplayInstaller : MonoInstaller
+    public class ProjectInstaller : MonoInstaller
     {
         [SerializeField] private BulletPoolConfigurator _poolConfigurator;
         [SerializeField] private PlayerSelectionController _troopSelectionController;

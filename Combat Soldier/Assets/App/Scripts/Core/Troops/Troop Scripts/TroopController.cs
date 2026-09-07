@@ -38,10 +38,9 @@ namespace App.Scripts.Core.Troops.Troop_Scripts
         public HPTroopController HPController { get; protected set; }
         public StatsController StatsController { get; protected set; }
 
-        public TroopScriptable TroopScriptable => _troopScriptable;
         public Faction TroopSide => _troopScriptable.TroopSide;
 
-        protected event Action OnNotificationForGettingDamaged;
+        protected event Action OnNotificationForGettingDamaged = default;
 
         protected TargetSearchService _targetSearchService;
         protected GameEventBus _gameEventBus;

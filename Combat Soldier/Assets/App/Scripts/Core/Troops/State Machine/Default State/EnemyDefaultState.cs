@@ -5,6 +5,7 @@ using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.Services;
 using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
 using App.Scripts.Infrastructure.Others;
 using UnityEngine;
@@ -14,17 +15,17 @@ namespace App.Scripts.Core.Troops.State_Machine.Default_State
 {
     public class EnemyDefaultState : TroopDefaultState
     {
-        private readonly Queue<Vector3> _patrollingPointsQueue = new Queue<Vector3>();
-
-        private Coroutine _patrollingCoroutine = default;
-        private Coroutine _findEnemyCoroutine = default;
-
+        private readonly Queue<Vector3> _patrollingPointsQueue = new();
+        
         private const float minWaitingTime = 8.0f;
         private const float maxWaitingTime = 15.0f;
 
         private const float _enemyFindingDelay = 0.5f;
         private const float _reactionTime = 0.3f;
 
+        private Coroutine _patrollingCoroutine;
+        private Coroutine _findEnemyCoroutine;
+        
         public EnemyDefaultState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
             [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
         {
@@ -115,8 +116,8 @@ namespace App.Scripts.Core.Troops.State_Machine.Default_State
 
         private IEnumerator FindingEnemyCoroutine(IDamagable targetPriorityEnemy = null, Faction targetFaction = Faction.Allies)
         {
-            float visibleRange = _troopScriptable.ViewRangeRadius;
-            float attackRange = _troopScriptable.AttackRangeRadius;
+            float visibleRange = _troopController.StatsController.GetStatValue(StatType.ViewRangeRadius);
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
 
             while (true)
             {

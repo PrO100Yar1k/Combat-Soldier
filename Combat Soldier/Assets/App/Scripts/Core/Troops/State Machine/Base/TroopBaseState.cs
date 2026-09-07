@@ -14,7 +14,6 @@ namespace App.Scripts.Core.Troops.State_Machine.Base
         protected readonly TargetSearchService _targetSearchService;
 
         protected readonly TroopController _troopController;
-        protected readonly TroopScriptable _troopScriptable;
         protected readonly ISwitchableState _switcherState;
 
         protected readonly ITroopAnimator _animatorController;
@@ -33,14 +32,11 @@ namespace App.Scripts.Core.Troops.State_Machine.Base
 
         public TroopBaseState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
         {
+            _switcherState = switcherState;
             _targetSearchService = targetSearchService;
 
             _troopController = troopController;
-            _switcherState = switcherState;
-
-            _troopScriptable = troopController?.TroopScriptable;
             _screenCanvasController = screenCanvasController;
-
             _animatorController = animatorController;
         }
 

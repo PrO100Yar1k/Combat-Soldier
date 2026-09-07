@@ -2,6 +2,7 @@
 using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using App.Scripts.Core.Troops.Troop_Instance;
 using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Others;
 using UnityEngine;
@@ -94,7 +95,7 @@ namespace App.Scripts.Managers
             Vector3 targetPos = enemyMono.transform.position;
             Vector3 troopPos = _controlledTroop.transform.position;
 
-            float attackRange = _controlledTroop.TroopScriptable.AttackRangeRadius;
+            float attackRange = _controlledTroop.StatsController.GetStatValue(StatType.AttackRangeRadius);
 
             if (Vector3.Distance(targetPos, troopPos) <= attackRange)
             {

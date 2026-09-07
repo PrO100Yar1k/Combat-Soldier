@@ -37,7 +37,7 @@ namespace App.Scripts.Core.Ability
             }
             
             var stat = statResult.Value;
-            stat?.RemoveModifiersFromSource(source);
+            stat?.RemoveModifier(source);
         }
     }
 }

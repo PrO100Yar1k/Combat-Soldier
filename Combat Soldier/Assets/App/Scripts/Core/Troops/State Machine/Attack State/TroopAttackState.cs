@@ -11,6 +11,7 @@ using App.Scripts.Core.Troops.State_Machine.Defense_State;
 using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using App.Scripts.Core.Troops.Troop_Instance;
 using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
         protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
             : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
         {
-            _remainingAttackWaves = _troopScriptable?.CountAttackWaves ?? 1; // null-coalistic for unit-testing
+            _remainingAttackWaves = troopController.StatsController.GetStatValueInt(StatType.AttackWaveCount);
         }
 
         #region Events
@@ -54,7 +55,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
 
         public override void OnStart()
         {
-
+            
         }
 
         public override void OnStop()
@@ -75,7 +76,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
         private void TryToAttackEnemy(IDamagable enemyDamagable)
         {
             Vector3 troopPosition = _troopController.transform.position;
-            float attackRange = _troopScriptable.AttackRangeRadius;
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
 
             MonoBehaviour enemyMonoBehaviour = _targetSearchService.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
 
@@ -121,7 +122,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
 
         private IEnumerator AttackEnemyCoroutine(MonoBehaviour targetEnemy)
         {
-            float timeBetweenAttackWaves = _troopScriptable.TimeBetweenAttackWaves;
+            float timeBetweenAttackWaves = _troopController.StatsController.GetStatValue(StatType.ReloadingWave);
 
             while (_remainingAttackWaves > 0)
             {
@@ -144,7 +145,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
                 float bulletLifetime = bulletController.GetBulletLifetime();
                 yield return new WaitForSeconds(bulletLifetime);
 
-                int attackDamage = _troopScriptable.AttackDamage;
+                int attackDamage = _troopController.StatsController.GetStatValueInt(StatType.AttackDamage);
 
                 IDamagable targetDamagable = targetEnemy as IDamagable;
                 targetDamagable?.TakeDamage(attackDamage);
@@ -185,7 +186,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
             Vector3 currentPosition = _troopController.transform.position;
             Vector3 enemyPosition = targetEnemy.transform.position;
 
-            float attackRange = _troopScriptable.AttackRangeRadius;
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
 
             return Vector3.Distance(currentPosition, enemyPosition) <= attackRange;
         }
@@ -215,9 +216,9 @@ namespace App.Scripts.Core.Troops.State_Machine.Attack_State
             const float initialDelay = 0.25f;
             yield return new WaitForSeconds(initialDelay);
 
-            int attackWavesCount = _troopScriptable.CountAttackWaves;
+            int attackWavesCount = _troopController.StatsController.GetStatValueInt(StatType.AttackWaveCount);
 
-            float timeToCompleteReload = _troopScriptable.TimeToReloadAttack;
+            float timeToCompleteReload = _troopController.StatsController.GetStatValue(StatType.ReloadingWave);
             float timeToReloadAttack = timeToCompleteReload / attackWavesCount;
 
             PlayerTroopController playerController = _troopController as PlayerTroopController;

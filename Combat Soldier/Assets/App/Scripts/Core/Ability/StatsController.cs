@@ -12,24 +12,22 @@ namespace App.Scripts.Core.Ability
         private readonly Dictionary<StatType, Stat> _stats = new();
         private readonly AIPath _aiPath;
 
-        public StatsController(TroopScriptable config, AIPath aiPath = null)
+        public StatsController(TroopScriptable config, AIPath aiPath)
         {
             _aiPath = aiPath;
 
             _stats[StatType.MoveSpeed] = new Stat(config.Speed);
-            _stats[StatType.ReloadSpeed] = new Stat(config.TimeToReloadAttack);
-            _stats[StatType.Damage] = new Stat(config.AttackDamage);
+            _stats[StatType.MaxSpeed] = new Stat(config.MaxSpeed);
+            _stats[StatType.AttackDamage] = new Stat(config.AttackDamage);
             _stats[StatType.BlockRate] = new Stat(config.BlockRate);
+            _stats[StatType.ReloadingAttack] = new Stat(config.TimeToReloadAttack);
+            _stats[StatType.ReloadingWave] = new Stat(config.TimeBetweenAttackWaves);
+            _stats[StatType.DamageUnderAttack] = new Stat(config.DamageUnderAttack);
+            _stats[StatType.ViewRangeRadius] = new Stat(config.ViewRangeRadius);
+            _stats[StatType.AttackRangeRadius] = new Stat(config.AttackRangeRadius);
+            _stats[StatType.AttackWaveCount] = new Stat(config.CountAttackWaves);
 
-            RefreshStats();
-        }
-
-        public Result<Stat> GetStat(StatType statType)
-        {
-            if (_stats.TryGetValue(statType, out var stat))
-                return Result<Stat>.Success(stat);
-            
-            return Result<Stat>.Failure($"[StatsController] Stat {statType} not found!");
+            RefreshSpeedStats();
         }
 
         public float GetStatValue(StatType statType)
@@ -44,13 +42,31 @@ namespace App.Scripts.Core.Ability
             var stat = statResult.Value;
             return stat.Value;
         }
-
-        public void RefreshStats()
+        
+        public int GetStatValueInt(StatType statType)
         {
-            if (_aiPath == null || !_stats.ContainsKey(StatType.MoveSpeed))
+            float floatValue = GetStatValue(statType);
+            int intValue = Mathf.RoundToInt(floatValue);
+            
+            //Debug.Log($"[StatsController] Round from {floatValue} to {intValue}");
+            return intValue;
+        }
+        
+        public Result<Stat> GetStat(StatType statType)
+        {
+            if (_stats.TryGetValue(statType, out var stat))
+                return Result<Stat>.Success(stat);
+            
+            return Result<Stat>.Failure($"[StatsController] Stat {statType} not found!");
+        }
+        
+        private void RefreshSpeedStats()
+        {
+            if (_aiPath == null || !_stats.ContainsKey(StatType.MaxSpeed))
                 return;
             
-            _aiPath.maxSpeed = GetStatValue(StatType.MoveSpeed);
+            //_aiPath.speed = GetStatValue(StatType.MoveSpeed);
+            _aiPath.maxSpeed = GetStatValue(StatType.MaxSpeed);
         }
     }
 }

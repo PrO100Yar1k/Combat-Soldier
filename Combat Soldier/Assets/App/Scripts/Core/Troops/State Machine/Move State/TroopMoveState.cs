@@ -6,6 +6,7 @@ using App.Scripts.Core.Troops.State_Machine.Base;
 using App.Scripts.Core.Troops.State_Machine.Default_State;
 using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
 using Pathfinding;
 using UnityEngine;
@@ -48,8 +49,8 @@ namespace App.Scripts.Core.Troops.State_Machine.Move_State
 
             if (_ai != null)
             {
-                _ai.maxSpeed = _troopScriptable.Speed; // ������������ �������� �� ScriptableObject
-                _ai.isStopped = false; // ���������� ��� ��� ���� � ����
+                _ai.maxSpeed = _troopController.StatsController.GetStatValue(StatType.MaxSpeed);
+                _ai.isStopped = false;
             }
         }
 

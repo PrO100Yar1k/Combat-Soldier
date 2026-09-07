@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f377d614b3de45fbbab0f3b5c89bd556, type: 3}
-  m_Name: Speed-Up_Modifier
+  m_Name: Increase-Damage-Flat-Modifier
   m_EditorClassIdentifier: 
-  _statType: 0
-  _modifierType: 1
-  _value: 50
-  _duration: 15
+  _statType: 2
+  _modifierType: 0
+  _value: 15
+  _duration: 10

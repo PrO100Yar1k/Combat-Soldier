@@ -59,7 +59,7 @@ namespace App.Scripts.Core.HPControllers
         private void TakeDamageWithDefenseState(int attackDamage)
         {
 
-            int blockedHP = (int) (attackDamage * _currentBlockRate);
+            int blockedHP = Mathf.RoundToInt(attackDamage * _currentBlockRate);
             int takenDamage = attackDamage - blockedHP;
 
             if (_currentDefensePoint >= blockedHP) {

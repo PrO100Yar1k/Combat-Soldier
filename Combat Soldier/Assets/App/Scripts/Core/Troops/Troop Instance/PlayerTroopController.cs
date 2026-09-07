@@ -1,3 +1,4 @@
+using App.Scripts.Core.Ability;
 using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.HPControllers;
 using App.Scripts.Core.Scriptable;
@@ -32,6 +33,7 @@ namespace App.Scripts.Core.Troops.Troop_Instance
 
         public override void InitializeTroop()
         {
+            StatsController = new StatsController(_troopScriptable, _aiPath);
             StateController = new PlayerStateController(_targetSearchService, this, _screenCanvasController, _animationController);
             VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
 
@@ -39,7 +41,6 @@ namespace App.Scripts.Core.Troops.Troop_Instance
             HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
 
             _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
-
             _troopModelController.Initialize(this);
         }
 

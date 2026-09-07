@@ -4,6 +4,7 @@ using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.Services;
 using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Default_State
             yield return new WaitForSeconds(initialDelay);
 
             Vector3 currentPosition = _troopController.transform.position;
-            float attackRange = _troopScriptable.AttackRangeRadius;
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
 
             MonoBehaviour enemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, true);
 

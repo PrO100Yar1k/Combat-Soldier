@@ -9,6 +9,7 @@ using App.Scripts.Core.Troops.State_Machine.Base;
 using App.Scripts.Core.Troops.State_Machine.Default_State;
 using App.Scripts.Core.Troops.State_Machine.State_Controller;
 using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
@@ -75,7 +76,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Defense_State
                 return;
 
             Vector3 troopPosition = _troopController.transform.position;
-            float attackRange = _troopController.TroopScriptable.AttackRangeRadius;
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
 
             if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
                 return;
@@ -121,7 +122,7 @@ namespace App.Scripts.Core.Troops.State_Machine.Defense_State
 
             yield return new WaitForSeconds(bulletController.GetBulletLifetime());
 
-            int damageUnderAttack = _troopScriptable.DamageUnderAttack;
+            int damageUnderAttack = _troopController.StatsController.GetStatValueInt(StatType.DamageUnderAttack);
             enemyDamagable.TakeDamage(damageUnderAttack);
 
             if (enemyMono == null)

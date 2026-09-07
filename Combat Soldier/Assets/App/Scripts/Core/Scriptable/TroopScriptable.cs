@@ -33,7 +33,6 @@ namespace App.Scripts.Core.Scriptable
         [field: SerializeField] public int AttackDamage { get; private set; }
         [field: SerializeField] public int DamageUnderAttack { get; private set; }
 
-        [field: SerializeField] public float AttackRangeRadius { get; private set; }
         [field: SerializeField] public int CountAttackWaves { get; private set; }
 
         [field: Space(8)]
@@ -41,7 +40,9 @@ namespace App.Scripts.Core.Scriptable
         [Header("Others Parameters")]
 
         [field: SerializeField] public float ViewRangeRadius { get; private set; }
+        [field: SerializeField] public float AttackRangeRadius { get; private set; }
 
         [field: SerializeField] public float Speed { get; private set; }
+        [field: SerializeField] public float MaxSpeed { get; private set; }
     }
 }

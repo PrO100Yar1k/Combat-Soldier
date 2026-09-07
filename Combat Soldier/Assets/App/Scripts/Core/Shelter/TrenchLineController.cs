@@ -50,7 +50,7 @@ namespace App.Scripts.Core.Shelter
             GenerateTrench(startPosition, _targetDirection);
         }
 
-        private void GenerateTrench(Vector3 startPosition, Direction baseDirection)
+        private void GenerateTrench(Vector3 startPosition, Direction baseDirection) // to do \ slice it for few smaller methods
         {
             Vector3 currentPosition = startPosition;
             Direction currentDirection = baseDirection;
