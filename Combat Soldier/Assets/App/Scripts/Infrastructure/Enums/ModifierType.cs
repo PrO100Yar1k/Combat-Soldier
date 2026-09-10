@@ -2,7 +2,7 @@
 {
     public enum ModifierType
     {
-        Flat, // linearChange
-        PercentMultiplier
+        Flat = 0,
+        PercentMultiplier = 1
     }
 }

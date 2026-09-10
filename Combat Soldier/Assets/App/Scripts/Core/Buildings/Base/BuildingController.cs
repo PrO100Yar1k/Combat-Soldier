@@ -6,7 +6,7 @@ using App.Scripts.Core.Canvases.WorldCanvas;
 using App.Scripts.Core.HPControllers;
 using App.Scripts.Core.Scriptable;
 using App.Scripts.Core.Services;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;

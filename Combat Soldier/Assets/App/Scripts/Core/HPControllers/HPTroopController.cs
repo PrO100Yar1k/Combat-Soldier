@@ -1,7 +1,7 @@
 using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.Scriptable;
-using App.Scripts.Core.Troops.State_Machine.Defense_State;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.StateMachine.Defense_State;
+using App.Scripts.Core.Troops.TroopScripts;
 using UnityEngine;
 
 namespace App.Scripts.Core.HPControllers

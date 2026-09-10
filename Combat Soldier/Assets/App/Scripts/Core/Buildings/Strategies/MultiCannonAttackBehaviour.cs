@@ -4,7 +4,7 @@ using System.Linq;
 using App.Scripts.Core.Buildings.Base;
 using App.Scripts.Core.Scriptable;
 using App.Scripts.Core.Services;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Interfaces;
 using App.Scripts.Infrastructure.Others;
 using UnityEngine;

@@ -1,4 +1,4 @@
-﻿using App.Scripts.Core.Troops.Troop_Scripts;
+﻿using App.Scripts.Core.Troops.TroopScripts;
 
 namespace App.Scripts.Infrastructure.Others
 {

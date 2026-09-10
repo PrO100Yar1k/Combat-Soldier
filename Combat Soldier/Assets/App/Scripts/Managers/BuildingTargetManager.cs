@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using App.Scripts.Core.Buildings.Base;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Interfaces;
 using App.Scripts.Repositories;
 using UnityEngine;

@@ -1,6 +1,6 @@
 using System;
 using App.Scripts.Core.Buildings.Base;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;

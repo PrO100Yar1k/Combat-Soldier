@@ -1,0 +1,251 @@
+using System;
+using System.Collections;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Core.Bullet;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.ObjectPool;
+using App.Scripts.Core.Services;
+using App.Scripts.Core.Troops.StateMachine.Base;
+using App.Scripts.Core.Troops.StateMachine.Default_State;
+using App.Scripts.Core.Troops.StateMachine.Defense_State;
+using App.Scripts.Core.Troops.StateMachine.State_Controller;
+using App.Scripts.Core.Troops.TroopInstance;
+using App.Scripts.Core.Troops.TroopScripts;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Interfaces;
+using UnityEngine;
+
+namespace App.Scripts.Core.Troops.StateMachine.Attack_State
+{
+    public abstract class TroopAttackState : TroopBaseState
+    {
+        protected event Action<IDamagable> OnActivateTroopAttack = default;
+
+        protected Coroutine _reloadAttackCoroutine = default;
+        protected Coroutine _attackCoroutine = default;
+
+        protected MonoBehaviour _currentTargetEnemy = default;
+
+        protected Faction _enemyTroopSide = default;
+        protected int _remainingAttackWaves = default;
+        protected float _lastAttackTime = default;
+
+        protected override string StateIconLocation
+            => "State Icons/Attack-State-Icon";
+
+        protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        {
+            _remainingAttackWaves = troopController.StatsController.GetStatValueInt(StatType.AttackWaveCount);
+        }
+
+        #region Events
+
+        protected override void SubscribeToEvents()
+        {
+            OnActivateTroopAttack += TryToAttackEnemy;
+        }
+
+        protected override void UnSubscribeFromEvents()
+        {
+            OnActivateTroopAttack -= TryToAttackEnemy;
+        }
+
+        #endregion
+
+        public override void OnStart()
+        {
+            
+        }
+
+        public override void OnStop()
+        {
+            DisableAttackCoroutine();
+        }
+
+        protected override void PlayStateAnimation()
+        {
+            _animatorController.PlayAttack();
+        }
+
+        public void ActivateAttack(IDamagable enemyDamagable)
+        {
+            OnActivateTroopAttack?.Invoke(enemyDamagable);
+        }
+
+        private void TryToAttackEnemy(IDamagable enemyDamagable)
+        {
+            Vector3 troopPosition = _troopController.transform.position;
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+
+            MonoBehaviour enemyMonoBehaviour = _targetSearchService.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
+
+            if (enemyMonoBehaviour == null)
+                _switcherState.SwitchState<TroopDefaultState>();
+
+            AttackEnemyCoroutineStarter(enemyMonoBehaviour);
+        }
+
+        #region Attack Coroutine Starter
+
+        private void AttackEnemyCoroutineStarter(MonoBehaviour targetEnemy)
+        {
+            if (targetEnemy == null)
+                return;
+
+            if (_currentTargetEnemy != null && _currentTargetEnemy == targetEnemy)
+                return;
+
+            if (_remainingAttackWaves <= 0) // maybe launch reloading in this case
+                return;
+
+            DisableAttackCoroutine();
+            StopReloadingAttack();
+
+            _currentTargetEnemy = targetEnemy;
+            _attackCoroutine = _troopController.StartCoroutine(AttackEnemyCoroutine(targetEnemy));
+        }
+
+        private void DisableAttackCoroutine()
+        {
+            if (_attackCoroutine == null)
+                return;
+
+            _troopController.StopCoroutine(_attackCoroutine);
+            _currentTargetEnemy = null;
+            _attackCoroutine = null;
+        }
+
+        #endregion
+
+        #region Attack Coroutine Performance
+
+        private IEnumerator AttackEnemyCoroutine(MonoBehaviour targetEnemy)
+        {
+            float timeBetweenAttackWaves = _troopController.StatsController.GetStatValue(StatType.ReloadingWave);
+
+            while (_remainingAttackWaves > 0)
+            {
+                if (!isEnemyStillAlive(targetEnemy) || !isEnemyWithinAttackRange(targetEnemy))
+                    break;
+
+                _remainingAttackWaves--;
+
+                PlayStateAnimation();
+
+                Vector3 initialBulletPosition = _troopController.BulletInitialPoint.position;
+                Vector3 targetBulletPosition = new Vector3(targetEnemy.transform.position.x, _troopController.BulletInitialPoint.position.y, targetEnemy.transform.position.z);
+
+                BulletController bulletController = ObjectPooler.DequeueObject<BulletController>("Bullet");
+                bulletController.InitializeBullet(initialBulletPosition, targetBulletPosition);
+
+                PlayerTroopController playerController = _troopController as PlayerTroopController;
+                playerController?.UpdateReloadingBar(timeBetweenAttackWaves);
+
+                float bulletLifetime = bulletController.GetBulletLifetime();
+                yield return new WaitForSeconds(bulletLifetime);
+
+                int attackDamage = _troopController.StatsController.GetStatValueInt(StatType.AttackDamage);
+
+                IDamagable targetDamagable = targetEnemy as IDamagable;
+                targetDamagable?.TakeDamage(attackDamage);
+
+                if (!isEnemyStillAlive(targetEnemy) || !isEnemyWithinAttackRange(targetEnemy))
+                    break;
+
+                IReactableForDamage enemyReactableForDamage = targetEnemy as IReactableForDamage;
+                enemyReactableForDamage?.ReactionForTakingDamage(_troopController);
+
+                float remainingDelay = timeBetweenAttackWaves - bulletLifetime;
+                float waitingDelay = remainingDelay <= 0 ? timeBetweenAttackWaves : remainingDelay;
+
+                yield return new WaitForSeconds(waitingDelay);
+            }
+
+            StartReloadingAttack();
+            CheckForAttackStateCompletion();
+        }
+
+        private void CheckForAttackStateCompletion()
+        {
+            if (!isEnemyStillAlive(_currentTargetEnemy) || !isEnemyWithinAttackRange(_currentTargetEnemy))
+                _switcherState.SwitchState<TroopDefaultState>();
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private bool isEnemyStillAlive(MonoBehaviour targetEnemy)
+        {
+            return targetEnemy != null && targetEnemy.gameObject != null && targetEnemy.gameObject.activeInHierarchy;
+        }
+
+        private bool isEnemyWithinAttackRange(MonoBehaviour targetEnemy)
+        {
+            Vector3 currentPosition = _troopController.transform.position;
+            Vector3 enemyPosition = targetEnemy.transform.position;
+
+            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+
+            return Vector3.Distance(currentPosition, enemyPosition) <= attackRange;
+        }
+
+        #endregion
+
+        #region Reload Attack
+
+        private void StartReloadingAttack()
+        {
+            StopReloadingAttack();
+
+            _reloadAttackCoroutine = _troopController.StartCoroutine(ReloadAttack());
+        }
+
+        private void StopReloadingAttack()
+        {
+            if (_reloadAttackCoroutine == null)
+                return;
+
+            _troopController.StopCoroutine(_reloadAttackCoroutine);
+            _reloadAttackCoroutine = null;
+        }
+
+        private IEnumerator ReloadAttack()
+        {
+            const float initialDelay = 0.25f;
+            yield return new WaitForSeconds(initialDelay);
+
+            int attackWavesCount = _troopController.StatsController.GetStatValueInt(StatType.AttackWaveCount);
+
+            float timeToCompleteReload = _troopController.StatsController.GetStatValue(StatType.ReloadingWave);
+            float timeToReloadAttack = timeToCompleteReload / attackWavesCount;
+
+            PlayerTroopController playerController = _troopController as PlayerTroopController;
+            playerController?.UpdateReloadingBar(timeToCompleteReload);
+
+            for ( ; _remainingAttackWaves < attackWavesCount; _remainingAttackWaves++)
+            {
+                _troopController.ChangeUnitCircleToReloading(timeToReloadAttack);
+                yield return new WaitForSeconds(timeToReloadAttack);
+            }
+
+            CheckEnemyToAttackAgain();
+        }
+
+        private void CheckEnemyToAttackAgain()
+        {
+            MonoBehaviour unit = _currentTargetEnemy;
+
+            if (isEnemyStillAlive(_currentTargetEnemy) && isEnemyWithinAttackRange(_currentTargetEnemy))
+            {
+                _currentTargetEnemy = null;
+                AttackEnemyCoroutineStarter(unit);
+            }
+
+            CheckForAttackStateCompletion();
+        }
+
+        #endregion
+    }
+}

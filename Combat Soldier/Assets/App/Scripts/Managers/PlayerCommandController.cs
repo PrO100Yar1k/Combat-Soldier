@@ -1,7 +1,7 @@
 ﻿using App.Scripts.Core.Buildings.Base;
-using App.Scripts.Core.Troops.State_Machine.State_Controller;
-using App.Scripts.Core.Troops.Troop_Instance;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.StateMachine.State_Controller;
+using App.Scripts.Core.Troops.TroopInstance;
+using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Others;

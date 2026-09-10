@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using App.Scripts.Core.Troops.State_Machine.State_Controller;
+using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using UnityEngine;
 using UnityEngine.UI;
 

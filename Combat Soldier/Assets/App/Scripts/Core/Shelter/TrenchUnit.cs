@@ -1,4 +1,4 @@
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.TroopScripts;
 using UnityEngine;
 
 namespace App.Scripts.Core.Shelter

@@ -1,5 +1,4 @@
-﻿using App.Scripts.Core.Troops.Troop_Scripts;
-using UnityEngine;
+﻿using App.Scripts.Core.Troops.TroopScripts;
 
 namespace App.Scripts.Core.Ability
 {

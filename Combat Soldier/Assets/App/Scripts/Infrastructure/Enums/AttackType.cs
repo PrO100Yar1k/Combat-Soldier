@@ -2,8 +2,8 @@
 {
     public enum AttackType
     {
-        Land,
-        Air,
-        Both
+        Land = 0,
+        Air = 1,
+        Both = 2
     }
 }

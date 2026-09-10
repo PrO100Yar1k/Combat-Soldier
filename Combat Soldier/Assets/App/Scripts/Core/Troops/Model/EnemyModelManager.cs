@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using App.Scripts.Core.Troops.Troop_Instance;
-using App.Scripts.Core.Troops.Troop_Scripts;
+using App.Scripts.Core.Troops.TroopInstance;
+using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Interfaces;
 using App.Scripts.Repositories;
 using UnityEngine;
