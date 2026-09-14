@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace App.Scripts.Core.Troops.TroopScripts
 {
+    [RequireComponent(typeof(Animator))]
     public class TroopAnimationController : MonoBehaviour, ITroopAnimator
     {
-        private readonly int IdleHash = Animator.StringToHash("Idle");
-        private readonly int RunningHash = Animator.StringToHash("Run");
-        private readonly int AttackHash = Animator.StringToHash("Attack");
-        private readonly int DefenseHash = Animator.StringToHash("Defense");
+        private readonly int _idleHash = Animator.StringToHash("Idle");
+        private readonly int _runningHash = Animator.StringToHash("Run");
+        private readonly int _attackHash = Animator.StringToHash("Attack");
+        private readonly int _defenseHash = Animator.StringToHash("Defense");
 
-        private Animator _animator = default;
+        private Animator _animator;
 
         private void Awake()
         {
@@ -19,31 +20,31 @@ namespace App.Scripts.Core.Troops.TroopScripts
 
         public void PlayIdle()
         {
-            if (IsAlreadyPlayingOrTransitioning(IdleHash))
+            if (IsAlreadyPlayingOrTransitioning(_idleHash))
                 return;
 
-            CrossFade(IdleHash, 0.15f);
+            CrossFade(_idleHash, 0.15f);
         }
 
         public void PlayRunning()
         {
-            if (IsAlreadyPlayingOrTransitioning(RunningHash))
+            if (IsAlreadyPlayingOrTransitioning(_runningHash))
                 return;
 
-            CrossFade(RunningHash, 0.1f);
+            CrossFade(_runningHash, 0.1f);
         }
 
         public void PlayAttack()
         {
-            CrossFade(AttackHash, 0.05f);
+            CrossFade(_attackHash, 0.05f);
         }
 
         public void PlayDefense()
         {
-            if (IsAlreadyPlayingOrTransitioning(DefenseHash))
+            if (IsAlreadyPlayingOrTransitioning(_defenseHash))
                 return;
 
-            CrossFade(DefenseHash, 0.1f);
+            CrossFade(_defenseHash, 0.1f);
         }
 
         private void CrossFade(int stateHash, float duration)

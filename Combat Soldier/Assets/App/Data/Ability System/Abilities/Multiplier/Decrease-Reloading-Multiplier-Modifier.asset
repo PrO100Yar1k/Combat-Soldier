@@ -17,7 +17,9 @@ MonoBehaviour:
     _modifierType: 1
     _value: 25
     _duration: 10
+    _cooldown: 60
   - _statType: 4
     _modifierType: 1
     _value: 25
     _duration: 10
+    _cooldown: 60

@@ -6,15 +6,17 @@ namespace App.Scripts.Views
 {
     public class StatBarView : MonoBehaviour
     {
-        [SerializeField] private Slider _slider = default;
-        [SerializeField] private TextMeshProUGUI _valueText = default;
+        [SerializeField] private Slider _slider;
+        [SerializeField] private TextMeshProUGUI _valueText;
 
-        public void Initialize(int maxValue)
+        public void Initialize(int maxValue, int? currentValue = null)
         {
+            int actualCurrentValue = currentValue ?? maxValue;
+            
             _slider.maxValue = maxValue;
-            _slider.value = maxValue;
+            _slider.value = actualCurrentValue;
 
-            UpdateText(maxValue);
+            UpdateText(actualCurrentValue);
         }
 
         public void UpdateValue(int currentValue, int maxValue)

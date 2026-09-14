@@ -1,25 +1,29 @@
-using App.Scripts.Core.Scriptable;
-using App.Scripts.Infrastructure.Interfaces;
-using App.Scripts.Views;
 using UnityEngine;
+using App.Scripts.Views;
+using App.Scripts.Core.Ability;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Interfaces;
 
 namespace App.Scripts.Core.Canvases.ScreenCanvas
 {
-    public class BuildingScreenCanvasController : MonoBehaviour, IInitializableCanvas<BuildingScriptable>
+    public class BuildingScreenCanvasController : MonoBehaviour, IInitializableCanvas
     {
-        [SerializeField] private StatBarView _healthBar = default;
-
-        private BuildingScriptable _buildingData = default;
-
-        public void Initialize(BuildingScriptable buildingData)
+        [SerializeField] private StatBarView _healthBar;
+        
+        private IStatsController _statsController;
+        
+        public void Initialize(IStatsController statsController)
         {
-            _buildingData = buildingData;
-            _healthBar.Initialize(_buildingData.MaxHealPoint);
+            _statsController = statsController;
+            
+            int maxHealPoint = statsController.GetStatValueInt(StatType.MaxHealPoint);
+            _healthBar.Initialize(maxHealPoint);
         }
 
         public void UpdateHealth(int currentHealth)
         {
-            _healthBar.UpdateValue(currentHealth, _buildingData.MaxHealPoint);
+            int maxHealPoint = _statsController.GetStatValueInt(StatType.MaxHealPoint);
+            _healthBar.UpdateValue(currentHealth, maxHealPoint);
         }
 
         public void EnableCanvas() => gameObject.SetActive(true);

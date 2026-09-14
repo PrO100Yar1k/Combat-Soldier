@@ -11,6 +11,8 @@
         DamageUnderAttack = 5,
         ViewRangeRadius = 6,
         AttackRangeRadius = 7,
-        AttackWaveCount = 8
+        AttackWaveCount = 8,
+        MaxHealPoint = 9,
+        MaxDefensePoint = 10,
     }
 }

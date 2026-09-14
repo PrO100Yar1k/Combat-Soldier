@@ -1,26 +1,26 @@
 ﻿using System;
 using App.Scripts.Core.Troops.TroopScripts;
+using UnityEngine;
 
 namespace App.Scripts.Core.Ability
 {
     public class AbilityRuntime
     {
-        public StatEffectConfiguration Config { get; }
-
-        public float CurrentCooldown { get; private set; }
-        public float CurrentActiveTime { get; private set; }
-
-        public bool IsActive { get; private set; }
-        public bool IsReady => CurrentCooldown <= 0 && !IsActive;
+        private readonly TroopController _owner;
+        private readonly Ability _config;
+        
+        private float _currentCooldown;
+        private float _currentActiveTime;
 
         public event Action OnCooldownChanged;
         public event Action OnStateChanged;
-
-        private readonly TroopController _owner;
-
-        public AbilityRuntime(StatEffectConfiguration config, TroopController owner)
+        
+        public bool IsActive { get; private set; }
+        public bool IsReady => _currentCooldown <= 0 && !IsActive;
+        
+        public AbilityRuntime(Ability config, TroopController owner)
         {
-            Config = config;
+            _config = config;
             _owner = owner;
         }
 
@@ -28,43 +28,35 @@ namespace App.Scripts.Core.Ability
         {
             if (IsActive)
             {
-                CurrentActiveTime -= deltaTime;
+                _currentActiveTime -= deltaTime;
 
-                if (CurrentActiveTime <= 0)
+                if (_currentActiveTime <= 0)
                 {
-                    //Deactivate();
+                    Deactivate();
                 }
             }
-            else if (CurrentCooldown > 0)
+            else if (_currentCooldown > 0)
             {
-                CurrentCooldown -= deltaTime;
-                if (CurrentCooldown < 0) CurrentCooldown = 0;
+                _currentCooldown -= deltaTime;
+                
+                if (_currentCooldown < 0) 
+                    _currentCooldown = 0;
 
                 OnCooldownChanged?.Invoke();
             }
         }
-        
-        /*
+
         public bool TryActivate()
         {
             if (!IsReady)
                 return false;
 
             IsActive = true;
-            CurrentActiveTime = Config.Duration;
+            _currentActiveTime = _config.Duration;
 
-            // Застосовуємо ефекти
-            for (int i = 0; i < Config.Effects.Count; i++)
-            {
-                Config.Effects[i].Apply(_owner, this);
-            }
+            _config.Apply(_owner, this);
 
             OnStateChanged?.Invoke();
-
-            if (Config.Duration <= 0)
-            {
-                Deactivate();
-            }
 
             return true;
         }
@@ -72,18 +64,16 @@ namespace App.Scripts.Core.Ability
         private void Deactivate()
         {
             IsActive = false;
+            _currentActiveTime = 0;
 
-            // Знімаємо ефекти
-            for (int i = 0; i < Config.Effects.Count; i++)
-            {
-                Config.Effects[i].Remove(_owner, this);
-            }
+            _config.Remove(_owner, this);
 
-            // Запускаємо кулдаун
-            CurrentCooldown = Config.Cooldown;
+            _currentCooldown = _config.Cooldown;
 
             OnStateChanged?.Invoke();
             OnCooldownChanged?.Invoke();
-        } */
+            
+            Debug.Log("Deactivated");
+        }
     }
 }

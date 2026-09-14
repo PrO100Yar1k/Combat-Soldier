@@ -8,17 +8,17 @@ namespace App.Scripts.Core.Troops.Model
 {
     public abstract class BaseTroopModelController : MonoBehaviour, IChangeMaterial
     {
-        [SerializeField] protected List<Material> _damagedUnitMaterial = default;
-        [SerializeField] protected SkinnedMeshRenderer _meshRenderer = default;
+        [SerializeField] protected List<Material> _damagedUnitMaterial;
+        [SerializeField] protected SkinnedMeshRenderer _meshRenderer;
 
-        protected TroopController _troopController = default;
+        protected TroopController _troopController;
 
-        protected Material[] _defaultMaterialsArray = default;
-        protected Material[] _damagedMaterialsArray = default;
+        protected Material[] _defaultMaterialsArray;
+        protected Material[] _damagedMaterialsArray;
 
-        protected LayerMask _defaultLayer = default;
+        protected LayerMask _defaultLayer;
 
-        protected Coroutine _damagedMaterialCoroutine = default;
+        protected Coroutine _damagedMaterialCoroutine;
 
         private readonly WaitForSeconds _damageDelay
             = new WaitForSeconds(0.25f);

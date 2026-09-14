@@ -1,19 +1,20 @@
 using System;
+using UnityEngine;
+using App.Scripts.Core.Ability;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Interfaces;
-using UnityEngine;
 
 namespace App.Scripts.Core.Troops.TroopScripts
 {
-    public class UICanvasController<TTarget, TData> : IDisposable where TTarget : MonoBehaviour
+    public class UICanvasController<TTarget> : IDisposable where TTarget : MonoBehaviour
     {
-        private readonly IInitializableCanvas<TData> _screenCanvasController = default;
-        private readonly IInitializableCanvas<TData> _worldCanvasController = default;
+        private readonly IInitializableCanvas _screenCanvasController;
+        private readonly IInitializableCanvas _worldCanvasController;
 
-        private readonly MonoBehaviour _currentController = default;
-        private readonly GameEventBus _gameEventBus = default;
+        private readonly MonoBehaviour _currentController;
+        private readonly GameEventBus _gameEventBus;
 
-        private bool _isSubscribedToActiveEvents = false;
+        private bool _isSubscribedToActiveEvents;
 
         #region Events
 
@@ -25,7 +26,7 @@ namespace App.Scripts.Core.Troops.TroopScripts
         private void SubscribeToEvents()
         {
             if (_isSubscribedToActiveEvents)
-                Debug.LogError("Already have subsciption!");
+                Debug.LogError("Already have subscription!");
 
             _gameEventBus.OnDisableActiveCanvases += DisableAllCanvases;
 
@@ -54,7 +55,7 @@ namespace App.Scripts.Core.Troops.TroopScripts
 
         #endregion
 
-        public UICanvasController(TTarget controller, TData data, IInitializableCanvas<TData> screenCanvasController, IInitializableCanvas<TData> worldCanvasController, GameEventBus gameEventBus) 
+        public UICanvasController(TTarget controller, IStatsController statsController, IInitializableCanvas screenCanvasController, IInitializableCanvas worldCanvasController, GameEventBus gameEventBus) 
         {
             _currentController = controller;
             _gameEventBus = gameEventBus;
@@ -62,8 +63,8 @@ namespace App.Scripts.Core.Troops.TroopScripts
             _screenCanvasController = screenCanvasController;
             _worldCanvasController = worldCanvasController;
 
-            _screenCanvasController?.Initialize(data);
-            _worldCanvasController?.Initialize(data);
+            _screenCanvasController?.Initialize(statsController);
+            _worldCanvasController?.Initialize(statsController);
 
             SetupCoroutineRunner();
 

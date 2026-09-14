@@ -1,14 +1,14 @@
-﻿using App.Scripts.Core.Scriptable;
+﻿using UnityEngine;
+using App.Scripts.Core.Ability;
 using App.Scripts.Infrastructure.Interfaces;
-using UnityEngine;
 
 namespace App.Scripts.Core.Canvases.WorldCanvas
 {
-    public class BuildingWorldCanvasController : MonoBehaviour, IInitializableCanvas<BuildingScriptable>
+    public class BuildingWorldCanvasController : MonoBehaviour, IInitializableCanvas
     {
-        public void Initialize(BuildingScriptable data)
+        public void Initialize(IStatsController statsController)
         {
-
+            // to do
         }
 
         public void EnableCanvas()

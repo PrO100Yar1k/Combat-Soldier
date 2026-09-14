@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8229417179709581853}
   - component: {fileID: 5736078924075622159}
   - component: {fileID: 4731258680116490885}
+  - component: {fileID: 4608809595979223652}
   m_Layer: 6
   m_Name: Player - Troop Animated
   m_TagString: Untagged
@@ -103,6 +104,7 @@ MonoBehaviour:
   _troopModelController: {fileID: 5138882568159140817}
   _screenCanvasController: {fileID: 4517450036441283602}
   _worldCanvasController: {fileID: 8719181355689485328}
+  _unitAbilityController: {fileID: 4608809595979223652}
   _animationController: {fileID: 3799694275326655661}
   _changeStateButton: {fileID: 1151862206163884626}
 --- !u!114 &3799694275326655661
@@ -224,6 +226,20 @@ MonoBehaviour:
   version: 1
   unwrap: 1
   splitAtEveryPortal: 0
+--- !u!114 &4608809595979223652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727976983087545205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aabe8ab6842e4560a8656c375a310494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialAbilities:
+  - {fileID: 11400000, guid: 530872a7ba116c14a9809add29e92d5a, type: 2}
 --- !u!1 &1962667261967993248
 GameObject:
   m_ObjectHideFlags: 0

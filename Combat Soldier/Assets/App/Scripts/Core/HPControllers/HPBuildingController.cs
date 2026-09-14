@@ -1,28 +1,29 @@
-using App.Scripts.Core.Buildings.Base;
-using App.Scripts.Core.Canvases.ScreenCanvas;
-using App.Scripts.Core.Scriptable;
 using UnityEngine;
+using App.Scripts.Core.Ability;
+using App.Scripts.Core.Buildings.Base;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Core.Canvases.ScreenCanvas;
 
 namespace App.Scripts.Core.HPControllers
 {
-    public class HPBuildingController : HPController<BuildingScriptable>
+    public class HPBuildingController : HPController
     {
-        protected readonly BuildingScreenCanvasController _buildingCanvasController = default;
+        private readonly BuildingScreenCanvasController _buildingCanvasController;
+        private readonly BuildingController _buildingController;
 
-        private readonly BuildingController _buildingController = default;
-
-        public HPBuildingController(BuildingController buildingController, BuildingScreenCanvasController buildingCanvasController, BuildingScriptable buildingScriptable) : base(buildingScriptable)
+        public HPBuildingController(BuildingController buildingController, BuildingScreenCanvasController buildingCanvasController)
         {
             _buildingController = buildingController;
             _buildingCanvasController = buildingCanvasController;
 
+            InitializeData(_buildingController.StatsController);
             UpdateSliderAndTextValues();
         }
 
-        protected override void InitializeData(BuildingScriptable buildingScriptable)
+        protected override void InitializeData(IStatsController statsController)
         {
-            _unitName = buildingScriptable.Name;
-            _currentHealPoint = buildingScriptable.MaxHealPoint;
+            _unitName = _buildingController.BuildingScriptable.Name;
+            _currentHealPoint = statsController.GetStatValueInt(StatType.MaxHealPoint);
         }
 
         protected override void UpdateSliderAndTextValues()

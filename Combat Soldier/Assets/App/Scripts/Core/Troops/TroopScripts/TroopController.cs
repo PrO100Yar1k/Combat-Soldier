@@ -13,7 +13,6 @@ using App.Scripts.Core.Troops.StateMachine.Defense_State;
 using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Interfaces;
-using Pathfinding;
 using UnityEngine;
 using Zenject;
 
@@ -27,26 +26,28 @@ namespace App.Scripts.Core.Troops.TroopScripts
         [SerializeField] protected BaseTroopModelController _troopModelController;
         [SerializeField] protected TroopScreenCanvasController _screenCanvasController;
         [SerializeField] protected TroopWorldCanvasController _worldCanvasController;
-
+        
+        [SerializeField] protected UnitAbilityController _unitAbilityController;
+        
         [SerializeField] protected TroopAnimationController _animationController;
 
         public Transform BulletInitialPoint => _bulletInitialPoint;
         public BaseTroopModelController TroopModelController => _troopModelController;
-
-        public UICanvasController<TroopController, TroopScriptable> UIController { get; protected set; }
+        public UnitAbilityController UnitAbilityController => _unitAbilityController;
+        public TroopScriptable TroopScriptable => _troopScriptable;
+        
+        public UICanvasController<TroopController> UIController { get; protected set; }
         public TroopStateController StateController { get; protected set; }
         public HPTroopController HPController { get; protected set; }
-        public StatsController StatsController { get; protected set; }
+        public TroopStatsController StatsController { get; protected set; }
 
         public Faction TroopSide => _troopScriptable.TroopSide;
 
-        protected event Action OnNotificationForGettingDamaged = default;
+        protected event Action OnNotificationForGettingDamaged;
 
         protected TargetSearchService _targetSearchService;
         protected GameEventBus _gameEventBus;
-    
-        protected AIPath _aiPath;
-
+        
         #region Events & Interface Implemention
 
         protected virtual void OnEnable() 
@@ -54,12 +55,7 @@ namespace App.Scripts.Core.Troops.TroopScripts
 
         protected virtual void OnDisable()
             => _gameEventBus.TroopDied(this, TroopSide);
-
-        protected void Awake()
-        {
-            _aiPath = GetComponent<AIPath>();
-        }
-
+        
         public void Dispose()
         {
             UIController.Dispose();
@@ -112,7 +108,7 @@ namespace App.Scripts.Core.Troops.TroopScripts
         public abstract void InitializeTroop();
     }
 
-    public enum Faction
+    public enum Faction //
     {
         None,
         Allies,

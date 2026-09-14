@@ -17,7 +17,7 @@ namespace App.Scripts.Core.Buildings.Strategies
         public WaveAttackBehaviour(BuildingController buildingController, TargetSearchService targetSearchService, BuildingScriptable buildingScriptable, List<Transform> bulletInitialPointList, List<GameObject> rotatingObjectList, Transform observePoint, ICoroutineRunner coroutineRunner)
             : base(buildingController, targetSearchService, buildingScriptable, bulletInitialPointList, rotatingObjectList, observePoint, coroutineRunner)
         {
-            _remainingAttackWaves = _buildingScriptable.AttackWave;
+            _remainingAttackWaves = _buildingScriptable.AttackWaveCount;
 
             // Large amount of damage in a short period of time,- Waves Attack Type
         }
@@ -58,7 +58,7 @@ namespace App.Scripts.Core.Buildings.Strategies
 
         private IEnumerator ReloadAttack()
         {
-            int totalAttackWavesCount = _buildingScriptable.AttackWave;
+            int totalAttackWavesCount = _buildingScriptable.AttackWaveCount;
 
             for ( ; _remainingAttackWaves < totalAttackWavesCount + 1; _remainingAttackWaves++)
             {

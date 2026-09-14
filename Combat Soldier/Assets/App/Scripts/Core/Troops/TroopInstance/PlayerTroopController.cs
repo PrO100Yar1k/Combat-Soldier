@@ -1,7 +1,6 @@
 using App.Scripts.Core.Ability;
 using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.HPControllers;
-using App.Scripts.Core.Scriptable;
 using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Views;
@@ -11,7 +10,7 @@ namespace App.Scripts.Core.Troops.TroopInstance
 {
     public class PlayerTroopController : TroopController
     {
-        [SerializeField] private ChangePlayerStateView _changeStateButton = default;
+        [SerializeField] private ChangePlayerStateView _changeStateButton;
 
         public TroopVisionController VisionController { get; private set; }
 
@@ -33,14 +32,17 @@ namespace App.Scripts.Core.Troops.TroopInstance
 
         public override void InitializeTroop()
         {
-            StatsController = new StatsController(_troopScriptable, _aiPath);
+            StatsController = new TroopStatsController(_troopScriptable);
+            _unitAbilityController.Initialize(this);
+
             StateController = new PlayerStateController(_targetSearchService, this, _screenCanvasController, _animationController);
             VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
 
-            UIController = new UICanvasController<TroopController, TroopScriptable>(this, _troopScriptable, _screenCanvasController, _worldCanvasController, _gameEventBus);
-            HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
+            UIController = new UICanvasController<TroopController>(this, StatsController, _screenCanvasController, _worldCanvasController, _gameEventBus);
+            HPController = new HPTroopController(this, _screenCanvasController);
 
             _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
+            
             _troopModelController.Initialize(this);
         }
 

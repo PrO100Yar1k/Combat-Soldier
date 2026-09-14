@@ -1,7 +1,9 @@
-﻿namespace App.Scripts.Infrastructure.Interfaces
+﻿using App.Scripts.Core.Ability;
+
+namespace App.Scripts.Infrastructure.Interfaces
 {
-    public interface IInitializableCanvas<TData> : ICanvasView
+    public interface IInitializableCanvas : ICanvasView
     {
-        public void Initialize(TData data);
+        public void Initialize(IStatsController statsController);
     }
 }

@@ -14,6 +14,9 @@ namespace App.Scripts.Core.Ability
         [SerializeField] private float _duration;
         [SerializeField] private float _cooldown;
         
+        public float Duration => _duration;
+        public float Cooldown => _cooldown;
+        
         public void Apply(TroopController target, object source)
         {
             var statResult = target.StatsController.GetStat(_statType);

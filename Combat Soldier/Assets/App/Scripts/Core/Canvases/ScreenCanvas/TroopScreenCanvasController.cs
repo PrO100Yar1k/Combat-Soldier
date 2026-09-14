@@ -1,36 +1,42 @@
-﻿using App.Scripts.Core.Scriptable;
-using App.Scripts.Infrastructure.Interfaces;
-using App.Scripts.Views;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using App.Scripts.Views;
+using App.Scripts.Core.Ability;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Interfaces;
 
 namespace App.Scripts.Core.Canvases.ScreenCanvas
 {
-    public class TroopScreenCanvasController : MonoBehaviour, IInitializableCanvas<TroopScriptable>
+    public class TroopScreenCanvasController : MonoBehaviour, IInitializableCanvas
     {
-        [SerializeField] private StatBarView _healthBar = default;
-        [SerializeField] private StatBarView _defenseBar = default;
+        [SerializeField] private StatBarView _healthBar;
+        [SerializeField] private StatBarView _defenseBar;
 
-        [SerializeField] private Image _stateIcon = default;
+        [SerializeField] private Image _stateIcon;
 
-        private TroopScriptable _troopData = default;
+        private IStatsController _statsController;
 
-        public virtual void Initialize(TroopScriptable troopData)
+        public virtual void Initialize(IStatsController statsController)
         {
-            _troopData = troopData;
-
-            _healthBar.Initialize(_troopData.MaxHealPoint);
-            _defenseBar.Initialize(_troopData.MaxDefencePoint);
+            _statsController = statsController;
+            
+            int maxHealPoint = statsController.GetStatValueInt(StatType.MaxHealPoint);
+            int maxDefensePoint = statsController.GetStatValueInt(StatType.MaxDefensePoint);
+            
+            _healthBar.Initialize(maxHealPoint);
+            _defenseBar.Initialize(maxDefensePoint);
         }
 
         public void UpdateHealth(int currentHealth)
         {
-            _healthBar.UpdateValue(currentHealth, _troopData.MaxHealPoint);
+            int maxHealPoint = _statsController.GetStatValueInt(StatType.MaxHealPoint);
+            _healthBar.UpdateValue(currentHealth, maxHealPoint);
         }
 
         public void UpdateDefense(int currentDefense)
         {
-            _defenseBar.UpdateValue(currentDefense, _troopData.MaxDefencePoint);
+            int maxDefensePoint = _statsController.GetStatValueInt(StatType.MaxDefensePoint);
+            _defenseBar.UpdateValue(currentDefense, maxDefensePoint);
         }
 
         public void ChangeStateIcon(Sprite icon)

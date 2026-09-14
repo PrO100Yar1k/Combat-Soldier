@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using App.Scripts.Core.Ability;
 using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.Canvases.WorldCanvas;
 using App.Scripts.Core.HPControllers;
@@ -16,26 +17,27 @@ namespace App.Scripts.Core.Buildings.Base
 {
     public abstract class BuildingController : MonoBehaviour, IDamagable, IDisposable
     {
-        [SerializeField] protected BuildingScriptable _buildingScriptable = default;
+        [SerializeField] protected BuildingScriptable _buildingScriptable;
 
-        [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController = default;
-        [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController = default;
+        [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController;
+        [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController;
 
-        [SerializeField] protected Transform _observePoint = default;
+        [SerializeField] protected Transform _observePoint;
 
-        [SerializeField, Space(2)] protected List<GameObject> _rotatingObjectList = default;
-        [SerializeField, Space(2)] protected List<Transform> _bulletInitialPointList = default;
+        [SerializeField, Space(2)] protected List<GameObject> _rotatingObjectList;
+        [SerializeField, Space(2)] protected List<Transform> _bulletInitialPointList;
 
-        public UICanvasController<BuildingController, BuildingScriptable> UIController { get; protected set; }
+        public UICanvasController<BuildingController> UIController { get; protected set; }
         public HPBuildingController HPController { get; protected set; }
+        public BuildingStatsController StatsController { get; protected set; }
 
         public BuildingScriptable BuildingScriptable => _buildingScriptable;
 
         protected BaseBuildingBehaviour _buildingAttack = default;
 
-        protected GameEventBus _gameEvents = default;
-        protected ICoroutineRunner _coroutineRunner = default;
-        protected TargetSearchService _targetSearchService = default;
+        private GameEventBus _gameEvents;
+        protected ICoroutineRunner _coroutineRunner;
+        protected TargetSearchService _targetSearchService;
 
         #region Events & Interface Implemention
 
@@ -84,8 +86,9 @@ namespace App.Scripts.Core.Buildings.Base
 
         public virtual void InitializeBuilding()
         {
-            UIController = new UICanvasController<BuildingController, BuildingScriptable>(this, _buildingScriptable, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
-            HPController = new HPBuildingController(this, _buildingScreenCanvasController, _buildingScriptable);
+            StatsController = new BuildingStatsController(_buildingScriptable);
+            UIController = new UICanvasController<BuildingController>(this, StatsController, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
+            HPController = new HPBuildingController(this, _buildingScreenCanvasController);
 
             InitializeBuildingBehaviour();
         }
@@ -94,13 +97,13 @@ namespace App.Scripts.Core.Buildings.Base
     }
 
 
-    public interface IDamagable
+    public interface IDamagable //
     {
         public void TakeDamage(int attackDamage);
         public Faction GetFaction();
     }
 
-    public interface IAttackable
+    public interface IAttackable //
     {
         public void Attack(IDamagable attackTarget);
         public IEnumerator CheckAttackTargetCoroutine();

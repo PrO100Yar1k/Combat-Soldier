@@ -12,7 +12,7 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
 
         public void OutsideViewRange()
         {
-            StopReloading();
+            StopReloadingCoroutine();
             DisableReloadingCircles();
 
             const byte alphaColor = 85;

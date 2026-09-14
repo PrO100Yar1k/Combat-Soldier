@@ -23,11 +23,13 @@ namespace App.Scripts.Core.Troops.TroopInstance
         {
             Transform[] transforms = _patrolPointProvider.GetRandomPatrolPoints();
 
-            StatsController = new StatsController(_troopScriptable, _aiPath);
+            StatsController = new TroopStatsController(_troopScriptable);
+            _unitAbilityController.Initialize(this);
+
             StateController = new EnemyStateController(_targetSearchService, this, _screenCanvasController, transforms, _animationController);
             
-            UIController = new UICanvasController<TroopController, TroopScriptable>(this, _troopScriptable, _screenCanvasController, _worldCanvasController, _gameEventBus);
-            HPController = new HPTroopController(this, _screenCanvasController, _troopScriptable);
+            UIController = new UICanvasController<TroopController>(this, StatsController, _screenCanvasController, _worldCanvasController, _gameEventBus);
+            HPController = new HPTroopController(this, _screenCanvasController);
 
             _troopModelController.Initialize(this);
         }

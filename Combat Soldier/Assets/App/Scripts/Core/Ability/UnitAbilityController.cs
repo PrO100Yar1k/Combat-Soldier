@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using App.Scripts.Core.Troops.TroopScripts;
-using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
 namespace App.Scripts.Core.Ability
@@ -11,12 +10,19 @@ namespace App.Scripts.Core.Ability
         
         private readonly List<AbilityRuntime> _abilities = new();
         public IReadOnlyList<AbilityRuntime> Abilities => _abilities;
-
-        public void Initialize(TroopController troop, ICoroutineRunner runner)
+        
+        public void Initialize(TroopController troop)
         {
             foreach (var config in _initialAbilities)
             {
-                //_abilities.Add(new AbilityRuntime(config, troop, runner));
+                foreach (var ability in config.Abilities)
+                {
+                    var abilityRuntime = new AbilityRuntime(ability, troop);
+                    _abilities.Add(abilityRuntime);
+                    
+                    bool result = abilityRuntime.TryActivate();
+                    //Debug.Log($"Ability result: {result}");
+                }
             }
         }
         

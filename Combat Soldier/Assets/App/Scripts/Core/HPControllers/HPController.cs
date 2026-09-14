@@ -1,19 +1,16 @@
+using App.Scripts.Core.Ability;
+using UnityEngine;
+
 namespace App.Scripts.Core.HPControllers 
 {
-    public abstract class HPController<TData> where TData : UnityEngine.ScriptableObject
+    public abstract class HPController
     {
-        protected string _unitName = default;
-
-        protected int _currentHealPoint = default;
-
-        protected HPController(TData config)
-        {
-            InitializeData(config);
-        }
+        protected string _unitName;
+        protected int _currentHealPoint;
 
         public abstract void TakeDamage(int attackDamage);
 
-        protected abstract void InitializeData(TData config);
+        protected abstract void InitializeData(IStatsController statsController);
 
         protected abstract void UpdateSliderAndTextValues();
 

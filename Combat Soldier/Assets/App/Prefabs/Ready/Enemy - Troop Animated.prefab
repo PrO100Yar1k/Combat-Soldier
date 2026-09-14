@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 8484599590294953158}
   - component: {fileID: 6985094625357622038}
   m_Layer: 0
-  m_Name: Player - Troop Model
+  m_Name: Enemy - Troop Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1005,6 +1005,7 @@ GameObject:
   - component: {fileID: 6267599735737403615}
   - component: {fileID: 3701193457662307755}
   - component: {fileID: 44770014988942857}
+  - component: {fileID: 5903918961117829079}
   m_Layer: 6
   m_Name: Enemy - Troop Animated
   m_TagString: Untagged
@@ -1091,6 +1092,7 @@ MonoBehaviour:
   _troopModelController: {fileID: 6985094625357622038}
   _screenCanvasController: {fileID: 791896892640001953}
   _worldCanvasController: {fileID: 6397000838203454863}
+  _unitAbilityController: {fileID: 5903918961117829079}
   _animationController: {fileID: 4268166416854095039}
 --- !u!114 &4268166416854095039
 MonoBehaviour:
@@ -1211,6 +1213,20 @@ MonoBehaviour:
   version: 1
   unwrap: 1
   splitAtEveryPortal: 0
+--- !u!114 &5903918961117829079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9051208081295333354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aabe8ab6842e4560a8656c375a310494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialAbilities:
+  - {fileID: 11400000, guid: f7a94b25213b125419847bd6a5ef7fba, type: 2}
 --- !u!1001 &2183686051163142806
 PrefabInstance:
   m_ObjectHideFlags: 0

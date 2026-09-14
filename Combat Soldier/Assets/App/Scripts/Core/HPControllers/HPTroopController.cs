@@ -1,37 +1,38 @@
-using App.Scripts.Core.Canvases.ScreenCanvas;
-using App.Scripts.Core.Scriptable;
-using App.Scripts.Core.Troops.StateMachine.Defense_State;
-using App.Scripts.Core.Troops.TroopScripts;
 using UnityEngine;
+using App.Scripts.Core.Ability;
+using App.Scripts.Core.Troops.TroopScripts;
+using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.Troops.StateMachine.Defense_State;
+using App.Scripts.Infrastructure.Enums;
 
 namespace App.Scripts.Core.HPControllers
 {
-    public class HPTroopController : HPController<TroopScriptable>
+    public class HPTroopController : HPController // apply chain of responsibility pattern
     {
-        protected readonly TroopScreenCanvasController _troopCanvasController = default;
-        protected readonly TroopController _troopController = default;
+        protected readonly TroopScreenCanvasController _troopCanvasController;
+        protected readonly TroopController _troopController;
 
-        private int _currentDefensePoint = default;
-        private float _currentBlockRate = default;
+        private int _currentDefensePoint;
+        private float _currentBlockRate;
 
-        public HPTroopController(TroopController troopController, TroopScreenCanvasController troopCanvasController, TroopScriptable troopScriptable) : base(troopScriptable)
+        public HPTroopController(TroopController troopController, TroopScreenCanvasController troopCanvasController)
         {
-            _troopCanvasController = troopCanvasController;
             _troopController = troopController;
+            _troopCanvasController = troopCanvasController;
 
+            InitializeData(_troopController.StatsController);
             UpdateSliderAndTextValues();
         }
 
-        protected override void InitializeData(TroopScriptable troopScriptable)
+        protected override void InitializeData(IStatsController statsController)
         {
-            _unitName = troopScriptable.Name;
+            _unitName = _troopController.TroopScriptable.Name;
 
-            _currentHealPoint = troopScriptable.MaxHealPoint;
-            _currentDefensePoint = troopScriptable.MaxDefencePoint;
-
-            _currentBlockRate = troopScriptable.BlockRate;
+            _currentHealPoint = statsController.GetStatValueInt(StatType.MaxHealPoint);
+            _currentDefensePoint = statsController.GetStatValueInt(StatType.MaxDefensePoint);
+            _currentBlockRate = statsController.GetStatValueInt(StatType.BlockRate);
         }
-
+        
         protected override void UpdateSliderAndTextValues()
         {
             _troopCanvasController.UpdateHealth(_currentHealPoint);
@@ -58,7 +59,6 @@ namespace App.Scripts.Core.HPControllers
 
         private void TakeDamageWithDefenseState(int attackDamage)
         {
-
             int blockedHP = Mathf.RoundToInt(attackDamage * _currentBlockRate);
             int takenDamage = attackDamage - blockedHP;
 

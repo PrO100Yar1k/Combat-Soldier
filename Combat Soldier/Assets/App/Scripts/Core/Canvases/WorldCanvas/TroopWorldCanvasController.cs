@@ -1,30 +1,37 @@
-﻿using System.Collections;
-using App.Scripts.Core.Scriptable;
-using App.Scripts.Infrastructure.Interfaces;
-using App.Scripts.Views;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using App.Scripts.Views;
+using System.Collections;
+using App.Scripts.Core.Ability;
+using App.Scripts.Infrastructure.Enums;
+using App.Scripts.Infrastructure.Interfaces;
 
 namespace App.Scripts.Core.Canvases.WorldCanvas
 { 
-    public class TroopWorldCanvasController : MonoBehaviour, IInitializableCanvas<TroopScriptable>, ICoroutineCanvas
+    public class TroopWorldCanvasController : MonoBehaviour, IInitializableCanvas, ICoroutineCanvas
     {
-        [SerializeField] protected WorldRangeView _rangeView = default;
+        [SerializeField] protected WorldRangeView _rangeView;
 
-        [SerializeField] protected RectTransform _unitCircleLining = default;
+        [SerializeField] protected RectTransform _unitCircleLining;
 
-        [SerializeField] protected Image _unitCircleRange = default;
-        [SerializeField] protected Image _unitReloadingCircleRange = default;
+        [SerializeField] protected Image _unitCircleRange;
+        [SerializeField] protected Image _unitReloadingCircleRange;
 
-        protected Coroutine _reloadingCoroutine = default;
+        private IStatsController _statsController;
+        
+        private Coroutine _reloadingCoroutine;
+        private ICoroutineRunner _coroutineRunner;
 
-        protected ICoroutineRunner _coroutineRunner = default;
+        private bool _isReloading;
 
-        protected bool _isReloading = false;
-
-        public void Initialize(TroopScriptable troopData)
+        public void Initialize(IStatsController statsController)
         {
-            _rangeView.SetupRanges(troopData.AttackRangeRadius, troopData.ViewRangeRadius);
+            _statsController = statsController;
+            
+            float attackRangeRadius = statsController.GetStatValue(StatType.AttackRangeRadius);
+            float viewRangeRadius = statsController.GetStatValue(StatType.ViewRangeRadius);
+            
+            _rangeView.SetupRanges(attackRangeRadius, viewRangeRadius);
         }
 
         public void SetupCoroutineRunner(ICoroutineRunner coroutineRunner)
@@ -50,8 +57,7 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
 
         public void StartReloading(float reloadingTime)
         {
-            StopReloading();
-
+            StopReloadingCoroutine();
             _reloadingCoroutine = _coroutineRunner.StartCoroutine(ReloadingCoroutine(reloadingTime));
         }
 
@@ -60,7 +66,7 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
             _coroutineRunner.StartCoroutine(TakingDamageCoroutine());
         }
 
-        protected void StopReloading()
+        protected void StopReloadingCoroutine()
         {
             if (_reloadingCoroutine == null)
                 return;
