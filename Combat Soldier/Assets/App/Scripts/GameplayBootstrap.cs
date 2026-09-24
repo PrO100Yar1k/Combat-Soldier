@@ -54,7 +54,7 @@ namespace App.Scripts
 
             _troopModelManager.StartProvidingEnemyDeploymentVision();
 
-            Debug.Log("Managers were succefully initialized!");
+            Debug.Log("Managers were successfully initialized!");
         }
     }
 }

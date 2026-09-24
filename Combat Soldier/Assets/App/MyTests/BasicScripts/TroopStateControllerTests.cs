@@ -103,7 +103,7 @@ public class TroopStateControllerTests
 
         protected override string StateIconLocation => "";
 
-        public MockTroopState() : base(null, _dummyGo.GetComponent<TroopController>(), null, null, null) { }
+        public MockTroopState() : base(null, _dummyGo.GetComponent<TroopController>(), null, null) { }
 
         public override void OnStart() => IsStarted = true;
         public override void OnStop() => IsStopped = true;
@@ -124,7 +124,7 @@ public class TroopStateControllerTests
 
         protected override string StateIconLocation => "";
 
-        public AnotherMockTroopState() : base(null, _dummyGo.GetComponent<TroopController>(), null, null, null) { }
+        public AnotherMockTroopState() : base(null, _dummyGo.GetComponent<TroopController>(), null, null) { }
 
         public override void OnStart() => IsStarted = true;
         public override void OnStop() => IsStopped = true;

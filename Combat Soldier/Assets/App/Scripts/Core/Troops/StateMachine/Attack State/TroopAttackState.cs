@@ -33,8 +33,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
         protected override string StateIconLocation
             => "State Icons/Attack-State-Icon";
 
-        protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        protected TroopAttackState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, switcherState, animatorController)
         {
             _remainingAttackWaves = troopController.StatsController.GetStatValueInt(StatType.AttackWaveCount);
         }

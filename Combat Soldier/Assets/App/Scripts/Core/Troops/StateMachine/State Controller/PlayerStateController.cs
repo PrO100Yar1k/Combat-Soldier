@@ -15,16 +15,15 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
 {
     public class PlayerStateController : TroopStateController
     {
-        public PlayerStateController(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ITroopAnimator animationController)
+        public PlayerStateController(TargetSearchService targetSearchService, TroopController troopController, ITroopAnimator animationController)
         {
             _states = new Dictionary<Type, TroopBaseState>
             {
-                { typeof(TroopDefaultState), new PlayerDefaultState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-                { typeof(TroopDefenseState), new PlayerDefenseState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-                { typeof(TroopAttackState),  new PlayerAttackState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-                { typeof(TroopMoveState),    new PlayerMoveState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-
-                { typeof(TroopDeathState),   new PlayerDeathState(targetSearchService, troopController, screenCanvasController, this, animationController) }
+                { typeof(TroopDefaultState), new PlayerDefaultState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopDefenseState), new PlayerDefenseState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopAttackState),  new PlayerAttackState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopMoveState),    new PlayerMoveState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopDeathState),   new PlayerDeathState(targetSearchService, troopController, this, animationController) }
             };
 
             ActivateDefaultState();

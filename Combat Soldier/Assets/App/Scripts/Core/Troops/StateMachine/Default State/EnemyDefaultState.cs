@@ -26,8 +26,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
         private Coroutine _patrollingCoroutine;
         private Coroutine _findEnemyCoroutine;
         
-        public EnemyDefaultState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState,
-            [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        public EnemyDefaultState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState,
+            [Inject(Id = "Enemy Points")] Transform[] patrollingPointsList, ITroopAnimator animatorController) : base(targetSearchService, troopController, switcherState, animatorController)
         {
             foreach (Transform targetPoint in patrollingPointsList)
                 _patrollingPointsQueue.Enqueue(targetPoint.position);

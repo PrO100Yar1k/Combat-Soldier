@@ -16,16 +16,15 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
 {
     public class EnemyStateController : TroopStateController
     {
-        public EnemyStateController(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, Transform[] targetPointsList, ITroopAnimator animationController)
+        public EnemyStateController(TargetSearchService targetSearchService, TroopController troopController, Transform[] targetPointsList, ITroopAnimator animationController)
         {
             _states = new Dictionary<Type, TroopBaseState>
             {
-                { typeof(TroopDefaultState), new EnemyDefaultState(targetSearchService, troopController, screenCanvasController, this, targetPointsList, animationController) },
-                { typeof(TroopDefenseState), new EnemyDefenseState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-                { typeof(TroopAttackState),  new EnemyAttackState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-                { typeof(TroopMoveState),    new EnemyMoveState(targetSearchService, troopController, screenCanvasController, this, animationController) },
-
-                { typeof(TroopDeathState),   new EnemyDeathState(targetSearchService, troopController, screenCanvasController, this, animationController) }
+                { typeof(TroopDefaultState), new EnemyDefaultState(targetSearchService, troopController, this, targetPointsList, animationController) },
+                { typeof(TroopDefenseState), new EnemyDefenseState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopAttackState),  new EnemyAttackState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopMoveState),    new EnemyMoveState(targetSearchService, troopController, this, animationController) },
+                { typeof(TroopDeathState),   new EnemyDeathState(targetSearchService, troopController, this, animationController) }
             };
 
             ActivateDefaultState();

@@ -8,8 +8,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Move_State
 {
     public class PlayerMoveState : TroopMoveState
     {
-        public PlayerMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        public PlayerMoveState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, switcherState, animatorController)
         {
 
         }

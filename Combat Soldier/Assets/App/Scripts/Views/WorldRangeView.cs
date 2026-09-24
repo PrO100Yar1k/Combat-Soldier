@@ -4,8 +4,8 @@ namespace App.Scripts.Views
 {
     public class WorldRangeView : MonoBehaviour
     {
-        [SerializeField] private RectTransform _viewCircleRange = default;
-        [SerializeField] private RectTransform _attackCircleRange = default;
+        [SerializeField] private RectTransform _viewCircleRange;
+        [SerializeField] private RectTransform _attackCircleRange;
 
         public void SetupRanges(float attackRadius, float viewRadius)
         {

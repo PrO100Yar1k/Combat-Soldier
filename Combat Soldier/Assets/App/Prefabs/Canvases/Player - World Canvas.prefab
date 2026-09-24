@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 4dac2dca0fea0f642b2bba4971805687, type: 2}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7058824}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 5171245507660997114}
   - component: {fileID: 816327804137524028}
   - component: {fileID: 4506433085044286233}
-  - component: {fileID: 9026973823260282654}
+  - component: {fileID: 4360452453324158588}
   - component: {fileID: 2344884058811798928}
   m_Layer: 5
   m_Name: Player - World Canvas
@@ -408,7 +408,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9026973823260282654
+--- !u!114 &4360452453324158588
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -417,13 +417,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5442098046358702981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f83bb3961073fbf41b88a7667166d3aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 83851e0f8fd14b2a8dc79605644ec27d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeView: {fileID: 2344884058811798928}
-  _unitCircleLining: {fileID: 4999831795312376010}
-  _unitCircleRange: {fileID: 644979100329691108}
-  _unitReloadingCircleRange: {fileID: 6200915127138517004}
+  _unitCircleLining: {fileID: 4433790408839362679}
+  _unitCircleBar: {fileID: 644979100329691108}
+  _unitReloadingCircleBar: {fileID: 6200915127138517004}
 --- !u!114 &2344884058811798928
 MonoBehaviour:
   m_ObjectHideFlags: 0

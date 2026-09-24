@@ -12,8 +12,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
         protected override string StateIconLocation
             => "State Icons/Default-State-Icon";
 
-        protected TroopDefaultState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        protected TroopDefaultState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, switcherState, animatorController)
         {
 
         }

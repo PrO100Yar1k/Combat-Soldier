@@ -12,8 +12,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
 {
     public class PlayerDefaultState : TroopDefaultState
     {
-        public PlayerDefaultState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        public PlayerDefaultState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, switcherState, animatorController)
         {
 
         }

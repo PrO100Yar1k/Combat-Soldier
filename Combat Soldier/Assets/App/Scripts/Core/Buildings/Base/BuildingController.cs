@@ -8,6 +8,7 @@ using App.Scripts.Core.HPControllers;
 using App.Scripts.Core.Scriptable;
 using App.Scripts.Core.Services;
 using App.Scripts.Core.Troops.TroopScripts;
+using App.Scripts.Core.UI;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace App.Scripts.Core.Buildings.Base
     {
         [SerializeField] protected BuildingScriptable _buildingScriptable;
 
-        [SerializeField] protected BuildingScreenCanvasController _buildingScreenCanvasController;
+        // view
         [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController;
 
         [SerializeField] protected Transform _observePoint;
@@ -27,8 +28,8 @@ namespace App.Scripts.Core.Buildings.Base
         [SerializeField, Space(2)] protected List<GameObject> _rotatingObjectList;
         [SerializeField, Space(2)] protected List<Transform> _bulletInitialPointList;
 
-        public UICanvasController<BuildingController> UIController { get; protected set; }
-        public HPBuildingController HPController { get; protected set; }
+        public UICanvasMediator<BuildingController> UICanvasMediator { get; protected set; }
+        public BuildingHealthComponent HealthComponent { get; protected set; }
         public BuildingStatsController StatsController { get; protected set; }
 
         public BuildingScriptable BuildingScriptable => _buildingScriptable;
@@ -53,12 +54,12 @@ namespace App.Scripts.Core.Buildings.Base
 
         public void Dispose()
         {
-            UIController.Dispose();
+            UICanvasMediator.Dispose();
         }
 
         public void TakeDamage(int attackDamage)
         {
-            HPController.TakeDamage(attackDamage);
+            HealthComponent.TakeDamage(attackDamage);
         }
 
         public void TryExecuteAttack()
@@ -87,8 +88,8 @@ namespace App.Scripts.Core.Buildings.Base
         public virtual void InitializeBuilding()
         {
             StatsController = new BuildingStatsController(_buildingScriptable);
-            UIController = new UICanvasController<BuildingController>(this, StatsController, _buildingScreenCanvasController, _buildingWorldCanvasController, _gameEvents);
-            HPController = new HPBuildingController(this, _buildingScreenCanvasController);
+            UICanvasMediator = new UICanvasMediator<BuildingController>(this, _gameEvents, _buildingWorldCanvasController);
+            HealthComponent = new BuildingHealthComponent(this, StatsController, null);
 
             InitializeBuildingBehaviour();
         }
@@ -101,11 +102,5 @@ namespace App.Scripts.Core.Buildings.Base
     {
         public void TakeDamage(int attackDamage);
         public Faction GetFaction();
-    }
-
-    public interface IAttackable //
-    {
-        public void Attack(IDamagable attackTarget);
-        public IEnumerator CheckAttackTargetCoroutine();
     }
 }

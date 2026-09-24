@@ -11,6 +11,7 @@ using App.Scripts.Core.Troops.StateMachine.Attack_State;
 using App.Scripts.Core.Troops.StateMachine.Death_State;
 using App.Scripts.Core.Troops.StateMachine.Defense_State;
 using App.Scripts.Core.Troops.StateMachine.State_Controller;
+using App.Scripts.Core.UI;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
@@ -24,8 +25,11 @@ namespace App.Scripts.Core.Troops.TroopScripts
         [SerializeField] protected TroopScriptable _troopScriptable;
 
         [SerializeField] protected BaseTroopModelController _troopModelController;
-        [SerializeField] protected TroopScreenCanvasController _screenCanvasController;
-        [SerializeField] protected TroopWorldCanvasController _worldCanvasController;
+        
+        
+        [SerializeField] protected ScreenStatsCanvasView _screenStatsCanvasView;
+        [SerializeField] protected WorldCanvasView _worldCanvasView;
+        
         
         [SerializeField] protected UnitAbilityController _unitAbilityController;
         
@@ -36,9 +40,10 @@ namespace App.Scripts.Core.Troops.TroopScripts
         public UnitAbilityController UnitAbilityController => _unitAbilityController;
         public TroopScriptable TroopScriptable => _troopScriptable;
         
-        public UICanvasController<TroopController> UIController { get; protected set; }
+        public UICanvasMediator<TroopController> UICanvasController { get; protected set; }
         public TroopStateController StateController { get; protected set; }
-        public HPTroopController HPController { get; protected set; }
+        public UnitHealthComponent<TroopController> HealthComponent { get; protected set; }
+        public WorldCanvasPresenter WorldPresenter { get; protected set; }
         public TroopStatsController StatsController { get; protected set; }
 
         public Faction TroopSide => _troopScriptable.TroopSide;
@@ -58,16 +63,16 @@ namespace App.Scripts.Core.Troops.TroopScripts
         
         public void Dispose()
         {
-            UIController.Dispose();
+            UICanvasController.Dispose();
             StateController.Dispose();
         }
 
         public void TakeDamage(int attackDamage)
         {
-            HPController.TakeDamage(attackDamage);
-            OnNotificationForGettingDamaged?.Invoke();
+            HealthComponent.TakeDamage(attackDamage);
+            OnNotificationForGettingDamaged?.Invoke(); //
 
-            _worldCanvasController.StartTakingDamage();
+            _worldCanvasView.PlayDamageEffect();
         }
 
         public Faction GetFaction()
@@ -77,7 +82,7 @@ namespace App.Scripts.Core.Troops.TroopScripts
 
         public void ChangeUnitCircleToReloading(float reloadingTime)
         {
-            _worldCanvasController.StartReloading(reloadingTime);
+            _worldCanvasView.StartReloading(reloadingTime);
         }
 
         #endregion

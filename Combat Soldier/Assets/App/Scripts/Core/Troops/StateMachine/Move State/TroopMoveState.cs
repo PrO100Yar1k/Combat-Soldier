@@ -23,8 +23,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Move_State
         protected override string StateIconLocation
             => "State Icons/Move-State-Icon";
 
-        protected TroopMoveState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
-            : base(targetSearchService, troopController, screenCanvasController, switcherState, animatorController)
+        protected TroopMoveState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState, ITroopAnimator animatorController)
+            : base(targetSearchService, troopController, switcherState, animatorController)
         {
             _ai = _troopController.GetComponent<IAstarAI>();
         }

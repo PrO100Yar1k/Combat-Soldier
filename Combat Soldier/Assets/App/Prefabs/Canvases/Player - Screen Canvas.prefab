@@ -713,6 +713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3671728360184497090}
   - component: {fileID: 687549993485676115}
+  - component: {fileID: 5433584522412674829}
   m_Layer: 5
   m_Name: Slider - Reloading Bar
   m_TagString: Untagged
@@ -793,6 +794,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5433584522412674829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4524820533510297960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2dbf2680f44b47a0b2bd3c85a11b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reloadingSlider: {fileID: 687549993485676115}
 --- !u!1 &4606444744850581556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,7 +1347,7 @@ GameObject:
   - component: {fileID: 1721170313035103452}
   - component: {fileID: 1317245962920727786}
   - component: {fileID: 7227305365118012153}
-  - component: {fileID: 7626070199664475996}
+  - component: {fileID: 2862539831850710389}
   m_Layer: 5
   m_Name: Player - Screen Canvas
   m_TagString: Untagged
@@ -1427,7 +1441,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7626070199664475996
+--- !u!114 &2862539831850710389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1436,13 +1450,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7430802114628971994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58cb34ba931d1cb498b6e3d302b3ce75, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a42190d9514f908963b4efd8dc52f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 7524917454487982368}
   _defenseBar: {fileID: 6302346622159895778}
-  _stateIcon: {fileID: 3141245122770379269}
-  _reloadingSlider: {fileID: 687549993485676115}
 --- !u!1 &7481340996954376178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1613,8 +1625,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 3917793ee38633f4f92324f5d7c2ff19, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

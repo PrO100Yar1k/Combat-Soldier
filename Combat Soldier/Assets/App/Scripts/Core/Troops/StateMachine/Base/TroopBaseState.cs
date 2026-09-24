@@ -16,7 +16,6 @@ namespace App.Scripts.Core.Troops.StateMachine.Base
         protected readonly ISwitchableState _switcherState;
 
         protected readonly ITroopAnimator _animatorController;
-        protected readonly TroopScreenCanvasController _screenCanvasController;
 
         protected abstract string StateIconLocation { get; }
 
@@ -29,13 +28,12 @@ namespace App.Scripts.Core.Troops.StateMachine.Base
 
         #endregion
 
-        public TroopBaseState(TargetSearchService targetSearchService, TroopController troopController, TroopScreenCanvasController screenCanvasController, ISwitchableState switcherState, ITroopAnimator animatorController)
+        public TroopBaseState(TargetSearchService targetSearchService, TroopController troopController, ISwitchableState switcherState, ITroopAnimator animatorController)
         {
             _switcherState = switcherState;
             _targetSearchService = targetSearchService;
 
             _troopController = troopController;
-            _screenCanvasController = screenCanvasController;
             _animatorController = animatorController;
         }
 
@@ -60,7 +58,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Base
             if (targetIcon == null)
                 return;
 
-            _screenCanvasController.ChangeStateIcon(targetIcon);
+            //_screenCanvasController.ChangeStateIcon(targetIcon);
         }
 
         public abstract void OnStart();

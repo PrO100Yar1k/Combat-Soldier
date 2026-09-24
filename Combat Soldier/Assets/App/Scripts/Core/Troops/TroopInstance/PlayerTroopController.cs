@@ -1,8 +1,10 @@
 using App.Scripts.Core.Ability;
 using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.Canvases.WorldCanvas;
 using App.Scripts.Core.HPControllers;
 using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using App.Scripts.Core.Troops.TroopScripts;
+using App.Scripts.Core.UI;
 using App.Scripts.Views;
 using UnityEngine;
 
@@ -11,54 +13,41 @@ namespace App.Scripts.Core.Troops.TroopInstance
     public class PlayerTroopController : TroopController
     {
         [SerializeField] private ChangePlayerStateView _changeStateButton;
-
+        [SerializeField] private ReloadingBarView _reloadingBarView;
+        
         public TroopVisionController VisionController { get; private set; }
-
-        #region Events
-
-        protected override void OnEnable()
-        {
-            OnNotificationForGettingDamaged += NotifyForGettingDamaged;
-            base.OnEnable();
-        }
-
-        protected override void OnDisable()
-        {
-            OnNotificationForGettingDamaged -= NotifyForGettingDamaged;
-            base.OnDisable();
-        }
-
-        #endregion
-
+        
         public override void InitializeTroop()
         {
             StatsController = new TroopStatsController(_troopScriptable);
-            _unitAbilityController.Initialize(this);
-
-            StateController = new PlayerStateController(_targetSearchService, this, _screenCanvasController, _animationController);
+            StateController = new PlayerStateController(_targetSearchService, this, _animationController);
+            
             VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
 
-            UIController = new UICanvasController<TroopController>(this, StatsController, _screenCanvasController, _worldCanvasController, _gameEventBus);
-            HPController = new HPTroopController(this, _screenCanvasController);
+            UICanvasController = new UICanvasMediator<TroopController>(this, _gameEventBus, _screenStatsCanvasView,_worldCanvasView);
+            HealthComponent = new UnitHealthComponent<TroopController>(this, StatsController, _screenStatsCanvasView);
 
-            _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
+            _worldCanvasView.SetupRunner(this);
+
+            WorldCanvasModel worldModel = new WorldCanvasModel(StatsController);
+            WorldPresenter = new WorldCanvasPresenter(worldModel, _worldCanvasView);
+            WorldPresenter.DisablePresenter();
             
+            _unitAbilityController.Initialize(this);
+            HealthComponent.Initialize();
+            
+            _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
             _troopModelController.Initialize(this);
         }
-
-        private void NotifyForGettingDamaged()
-        {
-            Debug.Log("Lord, your unit was damaged!");
-        }
-
+        
         public void UpdateReloadingBar(float timeToReload)
         {
-            (_screenCanvasController as PlayerScreenCanvasController)?.UpdateReloadingBar(timeToReload);
+            _reloadingBarView?.UpdateReloadingBar(timeToReload);
         }
 
         public bool GetCanvasActivityState()
         {
-            return (_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+            return true;  //(_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
         }
     }
 }

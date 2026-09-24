@@ -22,14 +22,14 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
         private Coroutine _reloadingCoroutine;
         private ICoroutineRunner _coroutineRunner;
 
-        private bool _isReloading;
+        private bool _isReloading; //
 
         public void Initialize(IStatsController statsController)
         {
             _statsController = statsController;
             
-            float attackRangeRadius = statsController.GetStatValue(StatType.AttackRangeRadius);
-            float viewRangeRadius = statsController.GetStatValue(StatType.ViewRangeRadius);
+            float attackRangeRadius = _statsController.GetStatValue(StatType.AttackRangeRadius);
+            float viewRangeRadius = _statsController.GetStatValue(StatType.ViewRangeRadius);
             
             _rangeView.SetupRanges(attackRangeRadius, viewRangeRadius);
         }

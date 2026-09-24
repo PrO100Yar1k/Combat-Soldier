@@ -8,12 +8,12 @@ namespace App.Scripts.Core.Troops.Model
 {
     public class EnemyModelController : BaseTroopModelController, IVisableModel
     {
-        [SerializeField] private Material _transparentBase = default;
+        [SerializeField] private Material _transparentBase;
 
-        private GameEventBus _gameEventBus = default;
-        private Material[] _disappearMaterials = default;
+        private GameEventBus _gameEventBus;
+        private Material[] _disappearMaterials;
 
-        private int _ignoreRaycastLayer = default;
+        private int _ignoreRaycastLayer;
 
         public override void Initialize(TroopController troopController)
         {
@@ -40,7 +40,7 @@ namespace App.Scripts.Core.Troops.Model
         public void AppearTroopModel()
         {
             if (_damagedMaterialCoroutine == null)
-                _troopController.UIController.ChangeUnitCircle(true);
+                _troopController.UICanvasController.ShowAllViews(); //
 
             _meshRenderer.sharedMaterials = _defaultMaterialsArray;
             _troopController.gameObject.layer = _defaultLayer;
@@ -48,7 +48,7 @@ namespace App.Scripts.Core.Troops.Model
 
         public void DisappearTroopModel()
         {
-            _troopController.UIController.ChangeUnitCircle(false);
+            _troopController.UICanvasController.HideAllViews(); //
             _troopController.gameObject.layer = _ignoreRaycastLayer;
 
             if (_disappearMaterials != null)

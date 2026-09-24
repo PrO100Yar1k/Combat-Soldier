@@ -26,7 +26,7 @@ namespace App.Scripts.Core.Ability
             }
         }
         
-        private void Update()
+        private void Update() //
         {
             float deltaTime = Time.deltaTime;
 

@@ -1,9 +1,10 @@
 using App.Scripts.Core.Ability;
+using App.Scripts.Core.Canvases.WorldCanvas;
 using App.Scripts.Core.HPControllers;
-using App.Scripts.Core.Scriptable;
 using App.Scripts.Core.Services;
 using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using App.Scripts.Core.Troops.TroopScripts;
+using App.Scripts.Core.UI;
 using UnityEngine;
 using Zenject;
 
@@ -24,13 +25,20 @@ namespace App.Scripts.Core.Troops.TroopInstance
             Transform[] transforms = _patrolPointProvider.GetRandomPatrolPoints();
 
             StatsController = new TroopStatsController(_troopScriptable);
-            _unitAbilityController.Initialize(this);
-
-            StateController = new EnemyStateController(_targetSearchService, this, _screenCanvasController, transforms, _animationController);
+            StateController = new EnemyStateController(_targetSearchService, this, transforms, _animationController);
             
-            UIController = new UICanvasController<TroopController>(this, StatsController, _screenCanvasController, _worldCanvasController, _gameEventBus);
-            HPController = new HPTroopController(this, _screenCanvasController);
+            UICanvasController = new UICanvasMediator<TroopController>(this, _gameEventBus, _screenStatsCanvasView, _worldCanvasView);
+            HealthComponent = new UnitHealthComponent<TroopController>(this, StatsController, _screenStatsCanvasView);
 
+            _worldCanvasView.SetupRunner(this);
+
+            WorldCanvasModel worldModel = new WorldCanvasModel(StatsController);
+            WorldPresenter = new WorldCanvasPresenter(worldModel, _worldCanvasView);
+            WorldPresenter.DisablePresenter();
+
+            
+            _unitAbilityController.Initialize(this);
+            HealthComponent.Initialize();
             _troopModelController.Initialize(this);
         }
     }
