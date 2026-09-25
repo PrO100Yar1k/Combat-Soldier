@@ -93,6 +93,11 @@ public class TroopStateControllerTests
         {
             _states[typeof(T)] = state;
         }
+
+        public override void Initialize()
+        {
+            
+        }
     }
 
     private class MockTroopState : TroopBaseState
@@ -105,8 +110,8 @@ public class TroopStateControllerTests
 
         public MockTroopState() : base(null, _dummyGo.GetComponent<TroopController>(), null, null) { }
 
-        public override void OnStart() => IsStarted = true;
-        public override void OnStop() => IsStopped = true;
+        public override void Start() => IsStarted = true;
+        public override void Stop() => IsStopped = true;
         protected override void PlayStateAnimation() { }
 
         public override void Dispose()
@@ -126,8 +131,8 @@ public class TroopStateControllerTests
 
         public AnotherMockTroopState() : base(null, _dummyGo.GetComponent<TroopController>(), null, null) { }
 
-        public override void OnStart() => IsStarted = true;
-        public override void OnStop() => IsStopped = true;
+        public override void Start() => IsStarted = true;
+        public override void Stop() => IsStopped = true;
 
         protected override void PlayStateAnimation() { }
 
@@ -140,6 +145,7 @@ public class TroopStateControllerTests
 
     private class TestableTroopController : TroopController
     {
+        public override Faction TroopSide { get; }
         protected override void OnEnable() { }
         protected override void OnDisable() { }
 

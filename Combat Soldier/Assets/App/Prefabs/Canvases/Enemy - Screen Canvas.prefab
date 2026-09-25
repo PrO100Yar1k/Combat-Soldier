@@ -377,6 +377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5341486522058754632}
   - component: {fileID: 8697960022175955818}
+  - component: {fileID: 3330127029869362344}
   m_Layer: 5
   m_Name: Button - Change Troop State
   m_TagString: Untagged
@@ -450,6 +451,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3330127029869362344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4009469635631771169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c0f911ce1f2494ab87400f4d09a72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateIconImage: {fileID: 2584766838985155600}
+  _cooldownImage: {fileID: 5966006322042390867}
 --- !u!1 &4221183273309549461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,7 +1022,7 @@ GameObject:
   - component: {fileID: 2282143254275488457}
   - component: {fileID: 1877669320573997823}
   - component: {fileID: 7783791929793252588}
-  - component: {fileID: 1491642433623491895}
+  - component: {fileID: 3263184265095468753}
   m_Layer: 5
   m_Name: Enemy - Screen Canvas
   m_TagString: Untagged
@@ -1100,7 +1115,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1491642433623491895
+--- !u!114 &3263184265095468753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1109,12 +1124,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8022772762415016911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15eb759bfd2372c44a23ae3117cf1a34, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a42190d9514f908963b4efd8dc52f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 3178792157056213500}
   _defenseBar: {fileID: 501386821552176736}
-  _stateIcon: {fileID: 2584766838985155600}
 --- !u!1 &8041759371858477543
 GameObject:
   m_ObjectHideFlags: 0

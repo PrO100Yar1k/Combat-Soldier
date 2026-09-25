@@ -110,6 +110,6 @@ public class TargetSearchServiceTests
 
         public override void InitializeTroop() { }
 
-        public new Faction GetFaction() => Faction.Enemies;
+        public override Faction TroopSide => Faction.Enemies;
     }
 }

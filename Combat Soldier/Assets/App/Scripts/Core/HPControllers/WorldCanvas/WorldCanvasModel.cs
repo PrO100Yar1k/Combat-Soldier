@@ -14,14 +14,14 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
         {
             _statsController = statsController;
             
-            AttackRange = _statsController.GetStatValue(StatType.AttackRangeRadius);
-            ViewRange = _statsController.GetStatValue(StatType.ViewRangeRadius);
+            AttackRange = _statsController.GetStatValueFloat(StatType.AttackRangeRadius);
+            ViewRange = _statsController.GetStatValueFloat(StatType.ViewRangeRadius);
         }
 
         public void UpdateFromStats()
         {
-            AttackRange = _statsController.GetStatValue(StatType.AttackRangeRadius);
-            ViewRange = _statsController.GetStatValue(StatType.ViewRangeRadius);
+            AttackRange = _statsController.GetStatValueFloat(StatType.AttackRangeRadius);
+            ViewRange = _statsController.GetStatValueFloat(StatType.ViewRangeRadius);
         }
 
         public override void ResetState()

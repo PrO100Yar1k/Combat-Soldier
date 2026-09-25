@@ -16,7 +16,7 @@ namespace App.Scripts.Core.Ability
         
         protected abstract void InitializeData(TData config);
         
-        public float GetStatValue(StatType statType)
+        public float GetStatValueFloat(StatType statType)
         {
             var statResult = GetStat(statType);
             if (!statResult.IsSuccess)
@@ -31,7 +31,7 @@ namespace App.Scripts.Core.Ability
         
         public int GetStatValueInt(StatType statType)
         {
-            float floatValue = GetStatValue(statType);
+            float floatValue = GetStatValueFloat(statType);
             int intValue = Mathf.RoundToInt(floatValue);
             
             //Debug.Log($"[StatsController] Round from {floatValue} to {intValue}");

@@ -21,7 +21,7 @@ namespace App.Scripts.Core.Buildings.Base
         [SerializeField] protected BuildingScriptable _buildingScriptable;
 
         // view
-        [SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController;
+        //[SerializeField] protected BuildingWorldCanvasController _buildingWorldCanvasController;
 
         [SerializeField] protected Transform _observePoint;
 
@@ -31,14 +31,15 @@ namespace App.Scripts.Core.Buildings.Base
         public UICanvasMediator<BuildingController> UICanvasMediator { get; protected set; }
         public BuildingHealthComponent HealthComponent { get; protected set; }
         public BuildingStatsController StatsController { get; protected set; }
+        
+        public Faction TroopSide => Faction.Enemies;
 
-        public BuildingScriptable BuildingScriptable => _buildingScriptable;
+        protected BaseBuildingBehaviour _buildingAttack;
 
-        protected BaseBuildingBehaviour _buildingAttack = default;
-
-        private GameEventBus _gameEvents;
         protected ICoroutineRunner _coroutineRunner;
         protected TargetSearchService _targetSearchService;
+
+        private GameEventBus _gameEvents;
 
         #region Events & Interface Implemention
 
@@ -59,9 +60,9 @@ namespace App.Scripts.Core.Buildings.Base
 
         public void TakeDamage(int attackDamage)
         {
-            HealthComponent.TakeDamage(attackDamage);
+            HealthComponent.TakeDamage(attackDamage, false);
         }
-
+        
         public void TryExecuteAttack()
         {
             if (_buildingAttack.IsAttacking)
@@ -88,7 +89,7 @@ namespace App.Scripts.Core.Buildings.Base
         public virtual void InitializeBuilding()
         {
             StatsController = new BuildingStatsController(_buildingScriptable);
-            UICanvasMediator = new UICanvasMediator<BuildingController>(this, _gameEvents, _buildingWorldCanvasController);
+            UICanvasMediator = new UICanvasMediator<BuildingController>(this, _gameEvents, null, null);
             HealthComponent = new BuildingHealthComponent(this, StatsController, null);
 
             InitializeBuildingBehaviour();
@@ -98,9 +99,9 @@ namespace App.Scripts.Core.Buildings.Base
     }
 
 
-    public interface IDamagable //
+    public interface IDamagable
     {
         public void TakeDamage(int attackDamage);
-        public Faction GetFaction();
+        public Faction TroopSide { get; }
     }
 }

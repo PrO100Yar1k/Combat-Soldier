@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using App.Scripts.Core.Canvases.ScreenCanvas;
+using App.Scripts.Core.HPControllers;
 using App.Scripts.Core.Services;
 using App.Scripts.Core.Troops.StateMachine.Attack_State;
 using App.Scripts.Core.Troops.StateMachine.Base;
@@ -13,7 +13,7 @@ using App.Scripts.Infrastructure.Interfaces;
 
 namespace App.Scripts.Core.Troops.StateMachine.State_Controller
 {
-    public class PlayerStateController : TroopStateController
+    public class PlayerStateController : TroopStateController, ISwitchableOppositeState
     {
         public PlayerStateController(TargetSearchService targetSearchService, TroopController troopController, ITroopAnimator animationController)
         {
@@ -25,20 +25,25 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
                 { typeof(TroopMoveState),    new PlayerMoveState(targetSearchService, troopController, this, animationController) },
                 { typeof(TroopDeathState),   new PlayerDeathState(targetSearchService, troopController, this, animationController) }
             };
-
+        }
+        
+        public override void Initialize()
+        {
             ActivateDefaultState();
         }
 
-        public bool TrySwitchToOppositeState() //maybe remove this feature
+        public bool TrySwitchToOppositeState()
         {
-            bool isAttack = CheckStateForActivity<TroopAttackState>();
-            bool isDefense = CheckStateForActivity<TroopDefenseState>();
+            bool isAttackStateActivated = CheckStateForActivity<TroopAttackState>();
+            bool isDefenseStateActivated = CheckStateForActivity<TroopDefenseState>();
 
-            if (!isAttack && !isDefense)
+            if (!isAttackStateActivated && !isDefenseStateActivated)
                 return false;
 
-            if (isAttack) SwitchState<TroopDefenseState>();
-            else if (isDefense) SwitchState<TroopAttackState>();
+            if (isAttackStateActivated)
+                SwitchState<TroopDefenseState>();
+            else
+                SwitchState<TroopAttackState>();
 
             return true;
         }

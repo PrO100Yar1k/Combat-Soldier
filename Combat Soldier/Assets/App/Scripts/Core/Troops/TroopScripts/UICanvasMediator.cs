@@ -10,18 +10,20 @@ namespace App.Scripts.Core.UI
         private readonly TTarget _unitController;
         private readonly GameEventBus _gameEventBus;
 
-        private readonly IView _screenView;
-        private readonly IView _worldView;
+        private readonly IPresenter _screenPresenter;
+        private readonly IPresenter _worldPresenter;
 
         private bool _isSubscribedToActiveEvents;
+        
+        public bool DeactivateCanvasAfterOrder => true;
 
-        public UICanvasMediator(TTarget unitController, GameEventBus gameEventBus, IView screenView = null, IView worldView = null)
+        public UICanvasMediator(TTarget unitController, GameEventBus gameEventBus, IPresenter screenPresenter, IPresenter worldPresenter)
         {
             _unitController = unitController;
             _gameEventBus = gameEventBus;
 
-            _screenView = screenView;
-            _worldView = worldView;
+            _screenPresenter = screenPresenter;
+            _worldPresenter = worldPresenter;
 
             SubscribeToBasicEvents();
             HideAllViews();
@@ -81,16 +83,16 @@ namespace App.Scripts.Core.UI
 
         public void ShowAllViews()
         {
-            _screenView?.Show();
-            _worldView?.Show();
+            _screenPresenter?.EnablePresenter();
+            _worldPresenter?.EnablePresenter();
 
             SubscribeToActiveEvents();
         }
 
         public void HideAllViews()
         {
-            _screenView?.Hide();
-            _worldView?.Hide();
+            _screenPresenter?.DisablePresenter();
+            _worldPresenter?.DisablePresenter();
 
             UnsubscribeFromActiveEvents();
         }

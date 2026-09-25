@@ -7,7 +7,7 @@ namespace App.Scripts.Core.Canvases.ScreenCanvas
     public class ReloadingBarView : MonoBehaviour
     {
         [SerializeField] private Slider _reloadingSlider;
-
+        
         public void UpdateReloadingBar(float timeToReload)
         {
             _ = UpdateReloadingSliderAsync(timeToReload);

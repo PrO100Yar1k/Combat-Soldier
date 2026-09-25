@@ -72,7 +72,7 @@ namespace App.Scripts.Managers
 
             if (IsLayerInMask(hitLayer, _attackTargetLayers) && hit.collider.TryGetComponent(out IDamagable enemy))
             {
-                if (enemy.GetFaction() != Faction.Allies)
+                if (enemy.TroopSide != Faction.Allies)
                 {
                     ActivateAttackState(enemy, stateController);
                     FinishCommandExecution();
@@ -95,7 +95,7 @@ namespace App.Scripts.Managers
             Vector3 targetPos = enemyMono.transform.position;
             Vector3 troopPos = _controlledTroop.transform.position;
 
-            float attackRange = _controlledTroop.StatsController.GetStatValue(StatType.AttackRangeRadius);
+            float attackRange = _controlledTroop.StatsController.GetStatValueFloat(StatType.AttackRangeRadius);
 
             if (Vector3.Distance(targetPos, troopPos) <= attackRange)
             {
@@ -111,7 +111,7 @@ namespace App.Scripts.Managers
 
         private void FinishCommandExecution()
         {
-            if (_controlledTroop.GetCanvasActivityState())
+            if (_controlledTroop.UICanvasMediator.DeactivateCanvasAfterOrder)
                 _gameEventBus.DisableActiveCanvas();
 
             // make unit circle active (check out canvas ui layouts)

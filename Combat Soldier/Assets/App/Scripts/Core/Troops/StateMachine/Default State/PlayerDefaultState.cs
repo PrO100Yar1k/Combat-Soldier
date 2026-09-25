@@ -18,13 +18,13 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
 
         }
 
-        public override void OnStart()
+        public override void Start()
         {
             PlayStateAnimation();
             CheckEnemyInAttackRange();
         }
 
-        public override void OnStop()
+        public override void Stop()
         {
 
         }
@@ -41,7 +41,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
             yield return new WaitForSeconds(initialDelay);
 
             Vector3 currentPosition = _troopController.transform.position;
-            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+            float attackRange = _troopController.StatsController.GetStatValueFloat(StatType.AttackRangeRadius);
 
             MonoBehaviour enemyInAttackRange = _targetSearchService.GetClosestEnemyInRange(currentPosition, attackRange, targetFaction, targetPriorityEnemy, true);
 

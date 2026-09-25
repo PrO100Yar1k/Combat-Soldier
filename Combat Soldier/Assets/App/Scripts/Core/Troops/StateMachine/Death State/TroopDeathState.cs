@@ -17,12 +17,12 @@ namespace App.Scripts.Core.Troops.StateMachine.Death_State
 
         }
 
-        public override void OnStart()
+        public override void Start()
         {
             PlayStateAnimation();
         }
 
-        public override void OnStop()
+        public override void Stop()
         {
 
         }

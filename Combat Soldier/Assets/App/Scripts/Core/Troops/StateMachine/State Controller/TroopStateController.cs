@@ -7,17 +7,16 @@ using App.Scripts.Core.Troops.StateMachine.Death_State;
 using App.Scripts.Core.Troops.StateMachine.Default_State;
 using App.Scripts.Core.Troops.StateMachine.Defense_State;
 using App.Scripts.Core.Troops.StateMachine.Move_State;
-using App.Scripts.Infrastructure.Interfaces;
 using UnityEngine;
 
 namespace App.Scripts.Core.Troops.StateMachine.State_Controller
 {
     public abstract class TroopStateController : ISwitchableState, IDisposable
     {
-        protected ITroopAnimator _troopAnimationController = default;
-
         protected Dictionary<Type, TroopBaseState> _states = new();
-        protected TroopBaseState _currentState;
+        private TroopBaseState _currentState;
+
+        public event Action<Sprite> OnStateIconChanged;
 
         #region Disposable
 
@@ -31,6 +30,8 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
 
         #endregion
 
+        public abstract void Initialize();
+        
         public TGet GetState<TGet>() where TGet : TroopBaseState
         {
             if (_states.TryGetValue(typeof(TGet), out var state))
@@ -74,7 +75,7 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
             SwitchState<TroopDefaultState>();
         }
 
-        public void ActivateDeathState()
+        public void ActivateDeathState() //
         {
             SwitchState<TroopDeathState>();
         }
@@ -94,9 +95,11 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
                 return;
             }
 
-            _currentState?.Stop();
+            _currentState?.ExitState();
             _currentState = nextState;
-            _currentState.Start();
+            _currentState.EnterState();
+            
+            OnStateIconChanged?.Invoke(_currentState.StateIcon);
         }
     }
 

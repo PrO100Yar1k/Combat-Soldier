@@ -15,15 +15,14 @@ namespace App.Scripts.Core.HPControllers
 
         public override void Handle(DamageContext context)
         {
-            if (context.IsInDefenseState && _defenseModel != null && _defenseModel.CurrentDefense > 0)
+            if (context.IsInDefenseState && _defenseModel.CurrentDefense > 0)
             {
-                int blockedHP = Mathf.RoundToInt(context.IncomingDamage * _blockRate);
-                int remainingDamage = context.IncomingDamage - blockedHP;
+                int blockedHealth = Mathf.RoundToInt(context.IncomingDamage * _blockRate);
+                int remainingDamage = context.IncomingDamage - blockedHealth;
 
-                int actualBlocked = _defenseModel.AbsorbDamage(blockedHP);
+                int actualBlocked = _defenseModel.AbsorbDamage(blockedHealth);
+                int unabsorbedBlock = blockedHealth - actualBlocked; 
                 
-                // Шкода, яку не зміг ввібрати щит, іде в здоров'я
-                int unabsorbedBlock = blockedHP - actualBlocked; 
                 context.DamageToHealth = remainingDamage + unabsorbedBlock;
             }
 

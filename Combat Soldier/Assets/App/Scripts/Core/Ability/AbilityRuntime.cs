@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace App.Scripts.Core.Ability
 {
-    public class AbilityRuntime
+    public class AbilityRuntime // to do
     {
         private readonly TroopController _owner;
         private readonly Ability _config;

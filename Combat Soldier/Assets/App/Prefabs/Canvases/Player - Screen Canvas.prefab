@@ -903,6 +903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c0f911ce1f2494ab87400f4d09a72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateIconImage: {fileID: 3141245122770379269}
   _cooldownImage: {fileID: 6521948182120828742}
 --- !u!1 &5189440453448828550
 GameObject:
@@ -1455,6 +1456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBar: {fileID: 7524917454487982368}
   _defenseBar: {fileID: 6302346622159895778}
+  _changeStateIconButton: {fileID: 0}
 --- !u!1 &7481340996954376178
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
 using System;
-using App.Scripts.Core.Canvases.ScreenCanvas;
 using App.Scripts.Core.Services;
 using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using App.Scripts.Core.Troops.TroopScripts;
@@ -19,6 +18,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Base
 
         protected abstract string StateIconLocation { get; }
 
+        public Sprite StateIcon { get; }
+
         #region Disposable
 
         public virtual void Dispose()
@@ -35,34 +36,29 @@ namespace App.Scripts.Core.Troops.StateMachine.Base
 
             _troopController = troopController;
             _animatorController = animatorController;
+            
+            StateIcon = GetStateIcon();
         }
 
-        public void Start()
+        public void EnterState()
         {
             SubscribeToEvents();
-            EnableStateIcon();
-
-            OnStart();
+            Start();
         }
 
-        public void Stop()
+        public void ExitState()
         {
             UnSubscribeFromEvents();
-            OnStop();
+            Stop();
         }
 
-        protected void EnableStateIcon()
+        private Sprite GetStateIcon() //
         {
-            Sprite targetIcon = Resources.Load<Sprite>(StateIconLocation);
-
-            if (targetIcon == null)
-                return;
-
-            //_screenCanvasController.ChangeStateIcon(targetIcon);
+            return Resources.Load<Sprite>(StateIconLocation);
         }
 
-        public abstract void OnStart();
-        public abstract void OnStop();
+        public abstract void Start();
+        public abstract void Stop();
 
         protected abstract void PlayStateAnimation();
 

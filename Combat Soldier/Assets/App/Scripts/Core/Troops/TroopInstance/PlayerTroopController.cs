@@ -12,42 +12,39 @@ namespace App.Scripts.Core.Troops.TroopInstance
 {
     public class PlayerTroopController : TroopController
     {
-        [SerializeField] private ChangePlayerStateView _changeStateButton;
         [SerializeField] private ReloadingBarView _reloadingBarView;
-        
+
         public TroopVisionController VisionController { get; private set; }
-        
+        public override Faction TroopSide => Faction.Allies;
+
         public override void InitializeTroop()
         {
             StatsController = new TroopStatsController(_troopScriptable);
-            StateController = new PlayerStateController(_targetSearchService, this, _animationController);
-            
-            VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
+            _unitAbilityController.Initialize(this);
 
-            UICanvasController = new UICanvasMediator<TroopController>(this, _gameEventBus, _screenStatsCanvasView,_worldCanvasView);
-            HealthComponent = new UnitHealthComponent<TroopController>(this, StatsController, _screenStatsCanvasView);
+            HealthComponent = new UnitHealthComponent<TroopController>(this, StatsController, _screenCanvasView);
+            HealthComponent.Initialize();
 
             _worldCanvasView.SetupRunner(this);
 
             WorldCanvasModel worldModel = new WorldCanvasModel(StatsController);
             WorldPresenter = new WorldCanvasPresenter(worldModel, _worldCanvasView);
-            WorldPresenter.DisablePresenter();
             
-            _unitAbilityController.Initialize(this);
-            HealthComponent.Initialize();
+            StateController = new PlayerStateController(_targetSearchService, this, _animationController);
+            StatePresenter = new StatePresenter(StateController, StateIconView);
+
+            ScreenPresenter = HealthComponent.CanvasPresenter;
+
+            UICanvasMediator = new UICanvasMediator<TroopController>(this, _gameEventBus, ScreenPresenter, WorldPresenter);
+            VisionController = new TroopVisionController(this, _troopScriptable, _targetSearchService);
             
-            _changeStateButton.SetupChangeStateButton(StateController as PlayerStateController);
             _troopModelController.Initialize(this);
+            StateController.Initialize();
         }
         
         public void UpdateReloadingBar(float timeToReload)
         {
-            _reloadingBarView?.UpdateReloadingBar(timeToReload);
-        }
-
-        public bool GetCanvasActivityState()
-        {
-            return true;  //(_screenCanvasController as PlayerScreenCanvasController).DisableCanvasAfterOrder;
+            _reloadingBarView.UpdateReloadingBar(timeToReload);
         }
     }
 }

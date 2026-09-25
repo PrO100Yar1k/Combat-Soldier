@@ -35,7 +35,6 @@ namespace App.Scripts
             _troopModelManager = troopModelManager;
             _enemyFactoryManager = enemyFactoryManager;
             _buildingTargetManager = buildingTargetManager;
-
         }
 
         public void Initialize()
@@ -45,8 +44,8 @@ namespace App.Scripts
             _poolConfigurator.InitializePool();
 
             _troopRepository.InitializeAll();
-            _buildingRepository.InitializeAll();
-            _trenchRepository.InitializeAll();
+            //_buildingRepository.InitializeAll();
+            //_trenchRepository.InitializeAll();
 
             _enemyFactoryManager.CreateEnemies();
 

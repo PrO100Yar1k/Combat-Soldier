@@ -14,32 +14,37 @@ namespace App.Scripts.Core.Troops.TroopInstance
     {
         private PatrolPointProvider _patrolPointProvider;
 
+        public override Faction TroopSide => Faction.Enemies;
+
         [Inject]
         public void Construct(PatrolPointProvider patrolPointProvider)
         {
             _patrolPointProvider = patrolPointProvider;
         }
-
+        
         public override void InitializeTroop()
         {
-            Transform[] transforms = _patrolPointProvider.GetRandomPatrolPoints();
-
             StatsController = new TroopStatsController(_troopScriptable);
-            StateController = new EnemyStateController(_targetSearchService, this, transforms, _animationController);
-            
-            UICanvasController = new UICanvasMediator<TroopController>(this, _gameEventBus, _screenStatsCanvasView, _worldCanvasView);
-            HealthComponent = new UnitHealthComponent<TroopController>(this, StatsController, _screenStatsCanvasView);
+            _unitAbilityController.Initialize(this);
+
+            HealthComponent = new UnitHealthComponent<TroopController>(this, StatsController, _screenCanvasView);
+            HealthComponent.Initialize();
 
             _worldCanvasView.SetupRunner(this);
 
             WorldCanvasModel worldModel = new WorldCanvasModel(StatsController);
             WorldPresenter = new WorldCanvasPresenter(worldModel, _worldCanvasView);
-            WorldPresenter.DisablePresenter();
-
             
-            _unitAbilityController.Initialize(this);
-            HealthComponent.Initialize();
+            Transform[] transforms = _patrolPointProvider.GetRandomPatrolPoints();
+            StateController = new EnemyStateController(_targetSearchService, this, transforms, _animationController);
+            StatePresenter = new StatePresenter(StateController, StateIconView);
+            
+            ScreenPresenter = HealthComponent.CanvasPresenter;
+
+            UICanvasMediator = new UICanvasMediator<TroopController>(this, _gameEventBus, ScreenPresenter, WorldPresenter);
+            
             _troopModelController.Initialize(this);
+            StateController.Initialize();
         }
     }
 }

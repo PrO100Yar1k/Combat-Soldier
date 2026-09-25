@@ -4,7 +4,7 @@ namespace App.Scripts.Infrastructure.Others
 {
     public static class ExtensionMethods
     {
-        public static Faction GetOpposite(this Faction faction)
+        public static Faction GetOpposite(this Faction faction) // make a dictionary if it would be more than 2 various of faction
         {
             if (faction == Faction.None)
                 return Faction.None;

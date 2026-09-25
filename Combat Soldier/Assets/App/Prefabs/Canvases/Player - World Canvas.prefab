@@ -421,9 +421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeView: {fileID: 2344884058811798928}
-  _unitCircleLining: {fileID: 4433790408839362679}
   _unitCircleBar: {fileID: 644979100329691108}
   _unitReloadingCircleBar: {fileID: 6200915127138517004}
+  _unitCircleLining: {fileID: 4433790408839362679}
 --- !u!114 &2344884058811798928
 MonoBehaviour:
   m_ObjectHideFlags: 0

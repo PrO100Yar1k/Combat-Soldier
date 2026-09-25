@@ -11,9 +11,9 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
     {
         [SerializeField] private WorldRangeView _rangeView;
 
-        [SerializeField] private GameObject _unitCircleLining;
         [SerializeField] private Image _unitCircleBar;
         [SerializeField] private Image _unitReloadingCircleBar;
+        [SerializeField] private GameObject _unitCircleLining;
 
         private Coroutine _reloadingCoroutine;
         private Coroutine _damageEffectCoroutine;

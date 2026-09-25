@@ -14,6 +14,7 @@ using App.Scripts.Core.Troops.StateMachine.State_Controller;
 using App.Scripts.Core.UI;
 using App.Scripts.Infrastructure.Events;
 using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Views;
 using UnityEngine;
 using Zenject;
 
@@ -23,30 +24,31 @@ namespace App.Scripts.Core.Troops.TroopScripts
     {
         [SerializeField] protected Transform _bulletInitialPoint;
         [SerializeField] protected TroopScriptable _troopScriptable;
-
-        [SerializeField] protected BaseTroopModelController _troopModelController;
         
-        
-        [SerializeField] protected ScreenStatsCanvasView _screenStatsCanvasView;
+        [SerializeField] protected ScreenCanvasView _screenCanvasView;
         [SerializeField] protected WorldCanvasView _worldCanvasView;
         
-        
         [SerializeField] protected UnitAbilityController _unitAbilityController;
-        
+        [SerializeField] protected BaseTroopModelController _troopModelController;
         [SerializeField] protected TroopAnimationController _animationController;
+        
+        [SerializeField] protected StateIconView StateIconView;
 
         public Transform BulletInitialPoint => _bulletInitialPoint;
         public BaseTroopModelController TroopModelController => _troopModelController;
-        public UnitAbilityController UnitAbilityController => _unitAbilityController;
-        public TroopScriptable TroopScriptable => _troopScriptable;
         
-        public UICanvasMediator<TroopController> UICanvasController { get; protected set; }
+        
+        public ScreenCanvasPresenter ScreenPresenter { get; protected set; }
+        public WorldCanvasPresenter WorldPresenter { get; protected set; }
+        public StatePresenter StatePresenter { get; protected set; }
+        public UICanvasMediator<TroopController> UICanvasMediator { get; protected set; }
+        
+        
+        public TroopStatsController StatsController { get; protected set; }
         public TroopStateController StateController { get; protected set; }
         public UnitHealthComponent<TroopController> HealthComponent { get; protected set; }
-        public WorldCanvasPresenter WorldPresenter { get; protected set; }
-        public TroopStatsController StatsController { get; protected set; }
 
-        public Faction TroopSide => _troopScriptable.TroopSide;
+        public abstract Faction TroopSide { get; }
 
         protected event Action OnNotificationForGettingDamaged;
 
@@ -55,31 +57,31 @@ namespace App.Scripts.Core.Troops.TroopScripts
         
         #region Events & Interface Implemention
 
-        protected virtual void OnEnable() 
-            => _gameEventBus.TroopSpawned(this, TroopSide);
+        protected virtual void OnEnable()
+        {
+            _gameEventBus.TroopSpawned(this, TroopSide);
+        } 
 
         protected virtual void OnDisable()
-            => _gameEventBus.TroopDied(this, TroopSide);
-        
-        public void Dispose()
         {
-            UICanvasController.Dispose();
+            _gameEventBus.TroopDied(this, TroopSide);
+        } 
+        
+        public void Dispose() //
+        {
+            UICanvasMediator.Dispose();
             StateController.Dispose();
         }
 
         public void TakeDamage(int attackDamage)
         {
-            HealthComponent.TakeDamage(attackDamage);
+            bool underDefense = StateController.CheckStateForActivity<TroopDefenseState>();
+            HealthComponent.TakeDamage(attackDamage, underDefense);
+            
             OnNotificationForGettingDamaged?.Invoke(); //
-
-            _worldCanvasView.PlayDamageEffect();
+            _worldCanvasView.PlayDamageEffect(); //
         }
-
-        public Faction GetFaction()
-        {
-            return TroopSide;
-        }
-
+        
         public void ChangeUnitCircleToReloading(float reloadingTime)
         {
             _worldCanvasView.StartReloading(reloadingTime);

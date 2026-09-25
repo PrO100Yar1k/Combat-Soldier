@@ -5,33 +5,33 @@ using UnityEngine;
 
 namespace App.Scripts.Core.HPControllers
 {
-    public class UnitHealthComponent<T> : IDamageable, IDisposable where T : MonoBehaviour // rename to stats
+    public class UnitHealthComponent<T> : IDisposable where T : MonoBehaviour
     {
+        public ScreenCanvasPresenter CanvasPresenter { get; private set; }
         public HealthModel Health { get; private set; }
         public DefenseModel Defense { get; private set; }
 
-        public event Action OnDamagedVisualEffect;
-        public event Action OnUnitDied;
-
+        public event Action OnDamagedVisualEffect; //
+        public event Action OnUnitDied; //
+        
         private readonly T _controller;
         private readonly IStatsController _statsController;
-        private readonly ScreenStatsCanvasView _screenStatsCanvasView;
+        private readonly ScreenCanvasView _screenCanvasView;
         
-        private ScreenStatsCanvasPresenter canvasPresenter;
         private IDamageHandler _damageChain;
 
-        public UnitHealthComponent(T controller, IStatsController statsController, ScreenStatsCanvasView screenStatsCanvasView)
+        public UnitHealthComponent(T controller, IStatsController statsController, ScreenCanvasView screenCanvasView)
         {
             _controller = controller;
             _statsController = statsController;
-            _screenStatsCanvasView = screenStatsCanvasView;
+            _screenCanvasView = screenCanvasView;
         }
 
         public void Initialize()
         {
             int maxHealth = _statsController.GetStatValueInt(StatType.MaxHealPoint);
             int maxDefense = _statsController.GetStatValueInt(StatType.MaxDefensePoint);
-            float blockRate = _statsController.GetStatValueInt(StatType.BlockRate);
+            float blockRate = _statsController.GetStatValueFloat(StatType.BlockRate);
                 
             int initialHealth = maxHealth;
             int initialDefense = maxDefense;
@@ -39,8 +39,7 @@ namespace App.Scripts.Core.HPControllers
             Health = new HealthModel(initialHealth, maxHealth);
             Defense = new DefenseModel(initialDefense, maxDefense);
 
-            canvasPresenter = new ScreenStatsCanvasPresenter(Health, Defense, _screenStatsCanvasView);
-            canvasPresenter.DisablePresenter();
+            CanvasPresenter = new ScreenCanvasPresenter(Health, Defense, _screenCanvasView);
 
             var healthHandler = new HealthDamageHandler(Health);
 
@@ -58,22 +57,23 @@ namespace App.Scripts.Core.HPControllers
             Health.OnDied += HandleDeath;
         }
 
-        public void TakeDamage(int attackDamage, bool isInDefenseState = false)
+        public void TakeDamage(int attackDamage, bool isDefenseStateEnabled)
         {
             if (attackDamage <= 0 || Health.IsDead)
                 return;
+            
+            if (_damageChain == null)
+            {
+                Debug.LogError("DamageChain is not initialized yet!");
+                return;
+            }
 
-            var context = new DamageContext(attackDamage, isInDefenseState);
+            var context = new DamageContext(attackDamage, isDefenseStateEnabled);
             _damageChain?.Handle(context);
 
             OnDamagedVisualEffect?.Invoke();
         }
-
-        public void TakeDamage(int amount)
-        {
-            TakeDamage(amount, false);
-        }
-
+        
         private void HandleDeath()
         {
             OnUnitDied?.Invoke();
@@ -91,7 +91,7 @@ namespace App.Scripts.Core.HPControllers
         public void Dispose()
         {
             Health.OnDied -= HandleDeath;
-            canvasPresenter?.Dispose();
+            CanvasPresenter?.Dispose();
         }
     }
 }

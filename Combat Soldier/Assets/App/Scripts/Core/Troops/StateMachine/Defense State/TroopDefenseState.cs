@@ -48,13 +48,13 @@ namespace App.Scripts.Core.Troops.StateMachine.Defense_State
 
         #endregion
 
-        public override void OnStart()
+        public override void Start()
         {
             PlayStateAnimation();
             StartAutoChangeState();
         }
 
-        public override void OnStop()
+        public override void Stop()
         {
             StopAutoChangeState();
             StopFightBackCoroutine();
@@ -76,7 +76,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Defense_State
                 return;
 
             Vector3 troopPosition = _troopController.transform.position;
-            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+            float attackRange = _troopController.StatsController.GetStatValueFloat(StatType.AttackRangeRadius);
 
             if (Vector3.Distance(troopPosition, enemyPosition) > attackRange)
                 return;

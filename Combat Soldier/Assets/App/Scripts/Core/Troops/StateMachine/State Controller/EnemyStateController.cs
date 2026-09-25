@@ -26,8 +26,11 @@ namespace App.Scripts.Core.Troops.StateMachine.State_Controller
                 { typeof(TroopMoveState),    new EnemyMoveState(targetSearchService, troopController, this, animationController) },
                 { typeof(TroopDeathState),   new EnemyDeathState(targetSearchService, troopController, this, animationController) }
             };
+        }
 
-            ActivateDefaultState();
+        public override void Initialize()
+        {
+             ActivateDefaultState();
         }
     }
 }

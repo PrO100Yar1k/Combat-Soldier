@@ -87,7 +87,7 @@ namespace App.Scripts.Core.Troops.Model
 
             var playerControllersList = _troopRepository.GetPlayerTroops();
 
-            foreach (PlayerTroopController playerController in playerControllersList)
+            foreach (PlayerTroopController playerController in playerControllersList) //
             {
                 if (playerController == null || playerController.VisionController == null)
                     continue;

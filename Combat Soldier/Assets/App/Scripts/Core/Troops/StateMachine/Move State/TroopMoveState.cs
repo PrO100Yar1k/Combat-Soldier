@@ -43,18 +43,18 @@ namespace App.Scripts.Core.Troops.StateMachine.Move_State
 
         #endregion
 
-        public override void OnStart()
+        public override void Start()
         {
             PlayStateAnimation();
 
             if (_ai != null)
             {
-                _ai.maxSpeed = _troopController.StatsController.GetStatValue(StatType.MaxSpeed);
+                _ai.maxSpeed = _troopController.StatsController.GetStatValueFloat(StatType.MaxSpeed);
                 _ai.isStopped = false;
             }
         }
 
-        public override void OnStop()
+        public override void Stop()
         {
             StopMovement();
             StopCheckArrivalCoroutine();

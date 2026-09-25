@@ -13,22 +13,24 @@ using App.Scripts.Core.Troops.TroopInstance;
 using App.Scripts.Core.Troops.TroopScripts;
 using App.Scripts.Infrastructure.Enums;
 using App.Scripts.Infrastructure.Interfaces;
+using App.Scripts.Infrastructure.Others;
 using UnityEngine;
 
 namespace App.Scripts.Core.Troops.StateMachine.Attack_State
 {
     public abstract class TroopAttackState : TroopBaseState
     {
-        protected event Action<IDamagable> OnActivateTroopAttack = default;
+        protected event Action<IDamagable> OnActivateTroopAttack;
+        protected abstract Faction TroopSide { get; }
 
-        protected Coroutine _reloadAttackCoroutine = default;
-        protected Coroutine _attackCoroutine = default;
+        private Coroutine _reloadAttackCoroutine;
+        private Coroutine _attackCoroutine;
 
-        protected MonoBehaviour _currentTargetEnemy = default;
+        private MonoBehaviour _currentTargetEnemy;
 
-        protected Faction _enemyTroopSide = default;
-        protected int _remainingAttackWaves = default;
-        protected float _lastAttackTime = default;
+        private int _remainingAttackWaves;
+        
+        //protected float _lastAttackTime;
 
         protected override string StateIconLocation
             => "State Icons/Attack-State-Icon";
@@ -53,12 +55,12 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
 
         #endregion
 
-        public override void OnStart()
+        public override void Start()
         {
             
         }
 
-        public override void OnStop()
+        public override void Stop()
         {
             DisableAttackCoroutine();
         }
@@ -76,9 +78,10 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
         private void TryToAttackEnemy(IDamagable enemyDamagable)
         {
             Vector3 troopPosition = _troopController.transform.position;
-            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+            float attackRange = _troopController.StatsController.GetStatValueFloat(StatType.AttackRangeRadius);
 
-            MonoBehaviour enemyMonoBehaviour = _targetSearchService.GetClosestEnemyInRange(troopPosition, attackRange, _enemyTroopSide, enemyDamagable, true);
+            Faction enemyTroopSide = TroopSide.GetOpposite();
+            MonoBehaviour enemyMonoBehaviour = _targetSearchService.GetClosestEnemyInRange(troopPosition, attackRange, enemyTroopSide, enemyDamagable, true);
 
             if (enemyMonoBehaviour == null)
                 _switcherState.SwitchState<TroopDefaultState>();
@@ -122,7 +125,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
 
         private IEnumerator AttackEnemyCoroutine(MonoBehaviour targetEnemy)
         {
-            float timeBetweenAttackWaves = _troopController.StatsController.GetStatValue(StatType.ReloadingWave);
+            float timeBetweenAttackWaves = _troopController.StatsController.GetStatValueFloat(StatType.ReloadingWave);
 
             while (_remainingAttackWaves > 0)
             {
@@ -140,7 +143,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
                 bulletController.InitializeBullet(initialBulletPosition, targetBulletPosition);
 
                 PlayerTroopController playerController = _troopController as PlayerTroopController;
-                playerController?.UpdateReloadingBar(timeBetweenAttackWaves);
+                playerController?.UpdateReloadingBar(timeBetweenAttackWaves); //
 
                 float bulletLifetime = bulletController.GetBulletLifetime();
                 yield return new WaitForSeconds(bulletLifetime);
@@ -186,7 +189,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
             Vector3 currentPosition = _troopController.transform.position;
             Vector3 enemyPosition = targetEnemy.transform.position;
 
-            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+            float attackRange = _troopController.StatsController.GetStatValueFloat(StatType.AttackRangeRadius);
 
             return Vector3.Distance(currentPosition, enemyPosition) <= attackRange;
         }
@@ -218,7 +221,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Attack_State
 
             int attackWavesCount = _troopController.StatsController.GetStatValueInt(StatType.AttackWaveCount);
 
-            float timeToCompleteReload = _troopController.StatsController.GetStatValue(StatType.ReloadingWave);
+            float timeToCompleteReload = _troopController.StatsController.GetStatValueFloat(StatType.ReloadingWave);
             float timeToReloadAttack = timeToCompleteReload / attackWavesCount;
 
             PlayerTroopController playerController = _troopController as PlayerTroopController;

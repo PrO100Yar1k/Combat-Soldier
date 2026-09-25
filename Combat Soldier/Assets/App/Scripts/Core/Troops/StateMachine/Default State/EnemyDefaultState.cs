@@ -33,7 +33,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
                 _patrollingPointsQueue.Enqueue(targetPoint.position);
         }
 
-        public override void OnStart()
+        public override void Start()
         {
             PlayStateAnimation();
 
@@ -41,7 +41,7 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
             StartPatrollingCoroutine();
         }
 
-        public override void OnStop()
+        public override void Stop()
         {
             StopFindingEnemyCoroutine();
             StopPatrollingCoroutine();
@@ -116,8 +116,8 @@ namespace App.Scripts.Core.Troops.StateMachine.Default_State
 
         private IEnumerator FindingEnemyCoroutine(IDamagable targetPriorityEnemy = null, Faction targetFaction = Faction.Allies)
         {
-            float visibleRange = _troopController.StatsController.GetStatValue(StatType.ViewRangeRadius);
-            float attackRange = _troopController.StatsController.GetStatValue(StatType.AttackRangeRadius);
+            float visibleRange = _troopController.StatsController.GetStatValueFloat(StatType.ViewRangeRadius);
+            float attackRange = _troopController.StatsController.GetStatValueFloat(StatType.AttackRangeRadius);
 
             while (true)
             {

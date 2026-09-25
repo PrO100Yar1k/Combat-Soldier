@@ -9,14 +9,10 @@ namespace App.Scripts.Views
         [SerializeField] private Slider _slider;
         [SerializeField] private TextMeshProUGUI _valueText;
 
-        public void Initialize(int maxValue, int? currentValue = null)
+        public void Initialize(int currentValue, int maxValue)
         {
-            int actualCurrentValue = currentValue ?? maxValue;
-            
             _slider.maxValue = maxValue;
-            _slider.value = actualCurrentValue;
-
-            UpdateText(actualCurrentValue);
+            UpdateValue(currentValue, maxValue);
         }
 
         public void UpdateValue(int currentValue, int maxValue)

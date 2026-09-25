@@ -5,7 +5,7 @@ namespace App.Scripts.Core.Ability
 {
     public interface IStatsController
     {
-        float GetStatValue(StatType statType);
+        float GetStatValueFloat(StatType statType);
         int GetStatValueInt(StatType statType);
         Result<Stat> GetStat(StatType statType);
     }

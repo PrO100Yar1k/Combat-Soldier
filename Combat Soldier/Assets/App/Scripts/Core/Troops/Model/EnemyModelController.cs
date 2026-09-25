@@ -40,7 +40,9 @@ namespace App.Scripts.Core.Troops.Model
         public void AppearTroopModel()
         {
             if (_damagedMaterialCoroutine == null)
-                _troopController.UICanvasController.ShowAllViews(); //
+            {
+                _troopController.WorldPresenter.UpdateViewRangeState(true);
+            }
 
             _meshRenderer.sharedMaterials = _defaultMaterialsArray;
             _troopController.gameObject.layer = _defaultLayer;
@@ -48,7 +50,7 @@ namespace App.Scripts.Core.Troops.Model
 
         public void DisappearTroopModel()
         {
-            _troopController.UICanvasController.HideAllViews(); //
+            _troopController.WorldPresenter.UpdateViewRangeState(false);
             _troopController.gameObject.layer = _ignoreRaycastLayer;
 
             if (_disappearMaterials != null)
