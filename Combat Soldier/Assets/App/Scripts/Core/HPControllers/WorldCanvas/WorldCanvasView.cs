@@ -23,6 +23,7 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
         public void SetupRunner(ICoroutineRunner coroutineRunner)
         {
             _coroutineRunner = coroutineRunner;
+            _unitReloadingCircleBar.gameObject.SetActive(false);
         }
 
         public void SetupRanges(float attackRange, float viewRange)
@@ -109,7 +110,7 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
             SetUnitRangeAlpha(85);
         }
 
-        public void StopReloadingAnimation()
+        private void StopReloadingAnimation()
         {
             if (_reloadingCoroutine == null)
                 return;
@@ -125,5 +126,15 @@ namespace App.Scripts.Core.Canvases.WorldCanvas
         }
 
         #endregion
+        
+        public override void Show()
+        {
+            
+        }
+        
+        public override void Hide()
+        {
+            
+        }
     }
 }

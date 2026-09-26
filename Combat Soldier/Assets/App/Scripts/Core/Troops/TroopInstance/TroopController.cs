@@ -84,7 +84,7 @@ namespace App.Scripts.Core.Troops.TroopScripts
         
         public void ChangeUnitCircleToReloading(float reloadingTime)
         {
-            _worldCanvasView.StartReloading(reloadingTime);
+            WorldPresenter.TriggerReloading(reloadingTime);
         }
 
         #endregion
